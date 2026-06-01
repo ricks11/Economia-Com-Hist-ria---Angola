@@ -1,0 +1,232 @@
+using EconomiaComHistoria.Core.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace EconomiaComHistoria.Infrastructure.Data;
+
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
+
+    public DbSet<Utilizador> Utilizadores => Set<Utilizador>();
+    public DbSet<Escola> Escolas => Set<Escola>();
+    public DbSet<Turma> Turmas => Set<Turma>();
+    public DbSet<Conteudo> Conteudos => Set<Conteudo>();
+    public DbSet<ConteudoJindungo> ConteudosJindungo => Set<ConteudoJindungo>();
+    public DbSet<Quiz> Quizzes => Set<Quiz>();
+    public DbSet<Pergunta> Perguntas => Set<Pergunta>();
+    public DbSet<TentativaQuiz> TentativasQuiz => Set<TentativaQuiz>();
+    public DbSet<RespostaPergunta> RespostasPerguntas => Set<RespostaPergunta>();
+    public DbSet<TopicoForum> TopicosForum => Set<TopicoForum>();
+    public DbSet<Comentario> Comentarios => Set<Comentario>();
+    public DbSet<RespostaForum> RespostasForum => Set<RespostaForum>();
+    public DbSet<Reacao> Reacoes => Set<Reacao>();
+    public DbSet<DenunciaConteudo> DenunciasConteudo => Set<DenunciaConteudo>();
+    public DbSet<Moderacao> Moderacoes => Set<Moderacao>();
+    public DbSet<DecisaoModeracao> DecisoesModeracao => Set<DecisaoModeracao>();
+    public DbSet<Badge> Badges => Set<Badge>();
+    public DbSet<BadgeConquistado> BadgesConquistados => Set<BadgeConquistado>();
+    public DbSet<EventoGamificacao> EventosGamificacao => Set<EventoGamificacao>();
+    public DbSet<SessaoEstudo> SessoesEstudo => Set<SessaoEstudo>();
+    public DbSet<PlanoEstudo> PlanosEstudo => Set<PlanoEstudo>();
+    public DbSet<RelatorioProgresso> RelatoriosProgresso => Set<RelatorioProgresso>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Utilizador>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Nome).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.Email).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.Telemovel).HasMaxLength(50);
+            entity.Property(x => x.PasswordHash).HasMaxLength(500).IsRequired();
+            entity.HasIndex(x => x.Email).IsUnique();
+            entity.HasOne(x => x.Escola)
+                .WithMany(x => x.Utilizadores)
+                .HasForeignKey(x => x.EscolaId);
+        });
+
+        modelBuilder.Entity<Escola>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Nome).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.Localizacao).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<Turma>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Nome).HasMaxLength(100).IsRequired();
+            entity.HasOne(x => x.Escola)
+                .WithMany(x => x.Turmas)
+                .HasForeignKey(x => x.EscolaId);
+        });
+
+        modelBuilder.Entity<Conteudo>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.Resumo).HasMaxLength(500);
+            entity.Property(x => x.Texto).HasColumnType("longtext");
+            entity.HasOne(x => x.Autor)
+                .WithMany(x => x.Conteudos)
+                .HasForeignKey(x => x.AutorId);
+        });
+
+        modelBuilder.Entity<ConteudoJindungo>(entity =>
+        {
+            entity.Property(x => x.Origem).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<Quiz>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
+            entity.HasOne(x => x.Conteudo)
+                .WithMany(x => x.Quizzes)
+                .HasForeignKey(x => x.ConteudoId);
+        });
+
+        modelBuilder.Entity<Pergunta>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Texto).HasMaxLength(500).IsRequired();
+            entity.HasOne(x => x.Quiz)
+                .WithMany(x => x.Perguntas)
+                .HasForeignKey(x => x.QuizId);
+        });
+
+        modelBuilder.Entity<TentativaQuiz>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.TentativasQuiz)
+                .HasForeignKey(x => x.UtilizadorId);
+            entity.HasOne(x => x.Quiz)
+                .WithMany(x => x.Tentativas)
+                .HasForeignKey(x => x.QuizId);
+        });
+
+        modelBuilder.Entity<RespostaPergunta>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.TextoResposta).HasMaxLength(500);
+            entity.HasOne(x => x.Pergunta)
+                .WithMany(x => x.Respostas)
+                .HasForeignKey(x => x.PerguntaId);
+            entity.HasOne(x => x.TentativaQuiz)
+                .WithMany(x => x.Respostas)
+                .HasForeignKey(x => x.TentativaQuizId);
+        });
+
+        modelBuilder.Entity<TopicoForum>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.Conteudo).HasColumnType("longtext");
+            entity.HasOne(x => x.Autor)
+                .WithMany(x => x.Topicos)
+                .HasForeignKey(x => x.AutorId);
+        });
+
+        modelBuilder.Entity<Comentario>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Texto).HasMaxLength(1000).IsRequired();
+            entity.HasOne(x => x.Autor)
+                .WithMany(x => x.Comentarios)
+                .HasForeignKey(x => x.AutorId);
+        });
+
+        modelBuilder.Entity<RespostaForum>(entity =>
+        {
+            entity.Property(x => x.Texto).HasMaxLength(1000).IsRequired();
+            entity.HasOne(x => x.Comentario)
+                .WithMany(x => x.Respostas)
+                .HasForeignKey(x => x.ComentarioId);
+        });
+
+        modelBuilder.Entity<Reacao>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Tipo).HasMaxLength(50).IsRequired();
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.Reacoes)
+                .HasForeignKey(x => x.UtilizadorId);
+        });
+
+        modelBuilder.Entity<DenunciaConteudo>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Motivo).HasMaxLength(500).IsRequired();
+        });
+
+        modelBuilder.Entity<Moderacao>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Status).HasMaxLength(100).IsRequired();
+        });
+
+        modelBuilder.Entity<DecisaoModeracao>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Decisao).HasMaxLength(200).IsRequired();
+            entity.HasOne(x => x.Moderacao)
+                .WithMany(x => x.Decisoes)
+                .HasForeignKey(x => x.ModeracaoId);
+        });
+
+        modelBuilder.Entity<Badge>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Nome).HasMaxLength(200).IsRequired();
+        });
+
+        modelBuilder.Entity<BadgeConquistado>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.BadgesConquistados)
+                .HasForeignKey(x => x.UtilizadorId);
+            entity.HasOne(x => x.Badge)
+                .WithMany(x => x.BadgesConquistados)
+                .HasForeignKey(x => x.BadgeId);
+        });
+
+        modelBuilder.Entity<EventoGamificacao>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Descricao).HasMaxLength(500).IsRequired();
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.EventosGamificacao)
+                .HasForeignKey(x => x.UtilizadorId);
+        });
+
+        modelBuilder.Entity<SessaoEstudo>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.SessoesEstudo)
+                .HasForeignKey(x => x.UtilizadorId);
+        });
+
+        modelBuilder.Entity<PlanoEstudo>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.PlanosEstudo)
+                .HasForeignKey(x => x.UtilizadorId);
+        });
+
+        modelBuilder.Entity<RelatorioProgresso>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Resumo).HasMaxLength(500).IsRequired();
+            entity.HasOne(x => x.Utilizador)
+                .WithMany(x => x.RelatoriosProgresso)
+                .HasForeignKey(x => x.UtilizadorId);
+        });
+    }
+}

@@ -1,0 +1,83 @@
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+*.nupkg
+*.snupkg
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+
+# Rider/VS Code
+.idea/
+.vscode/
+
+# NuGet
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Test results
+TestResults/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ASP.NET Core
+appsettings.*.json
+!appsettings.json
+secrets.json
+
+# EF Core migrations snapshots
+*.db
+*.db-shm
+*.db-wal
+
+# Azure/Local Settings
+local.settings.json
+
+# MAUI
+**/Platforms/Android/obj/
+**/Platforms/Android/bin/
+**/Platforms/iOS/obj/
+**/Platforms/iOS/bin/
+**/Platforms/MacCatalyst/obj/
+**/Platforms/MacCatalyst/bin/
+**/Platforms/Windows/obj/
+**/Platforms/Windows/bin/
+*.ipa
+*.apk
+*.aab
+*.appx
+*.appxbundle
+
+# User secrets
+secrets.json
+
+# Publish artifacts
+publish/
+**/AppPackages/
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+*.swp

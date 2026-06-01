@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/docs/">
+    <File Path="../Economia com História/docs/actaES-M1.pdf" />
+    <File Path="../Economia com História/docs/Aplicação Educativa Economia com História Fundamentação pedagógica.docx" />
+    <File Path="../Economia com História/docs/Diagrama de Actividade Fórum.pdf" />
+    <File Path="../Economia com História/docs/Diagrama de Actividades.pdf" />
+    <File Path="../Economia com História/docs/Diagrama de Caso de Uso.pdf" />
+    <File Path="../Economia com História/docs/economia_historia_angola_analise.docx" />
+    <File Path="../Economia com História/docs/Economia_Historia_Mobile_Estudantes.docx" />
+    <File Path="../Economia com História/docs/Economia_Historia_Web_Clientes_Admin.docx" />
+    <File Path="../Economia com História/docs/Estrutura Navegável ppt.docx" />
+    <File Path="../Economia com História/docs/Prototipo app Economia com História1.pptx" />
+    <File Path="../Economia com História/docs/uml_economia_angola.docx" />
+  </Folder>
+  <Folder Name="/source/">
+    <Project Path="ECHA.API/ECHA.API.csproj" />
+    <Project Path="ECHA.Infrastructure/ECHA.Infrastructure.csproj" />
+    <Project Path="ECHA.Mobile/ECHA.Mobile.csproj" Id="1a8600d6-d947-4bd3-aae7-053ff61c823d" />
+    <Project Path="Economia Com História - Angola.Core/ECHA.Core.csproj" />
+  </Folder>
+</Solution>
