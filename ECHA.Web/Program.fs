@@ -29,7 +29,10 @@ module Program =
             .AddRazorRuntimeCompilation()
 
         builder.Services
-            .AddAuthentication("CookieAuthentication")
+            .AddAuthentication(fun options ->
+                options.DefaultAuthenticateScheme <- "CookieAuthentication"
+                options.DefaultChallengeScheme <- "CookieAuthentication"
+                options.DefaultSignInScheme <- "CookieAuthentication")
             .AddCookie("CookieAuthentication", (fun options ->
                 options.LoginPath <- Microsoft.AspNetCore.Http.PathString("/Auth/Login")
                 options.LogoutPath <- Microsoft.AspNetCore.Http.PathString("/Auth/Logout")
@@ -37,6 +40,9 @@ module Program =
                 options.Cookie.SecurePolicy <- Microsoft.AspNetCore.Http.CookieSecurePolicy.Always))
 
         builder.Services.AddRazorPages()
+
+        builder.Services.AddHttpClient<Services.ApiClient>(fun client ->
+            client.BaseAddress <- System.Uri(builder.Configuration["ApiSettings:BaseUrl"]!))
 
         let app = builder.Build()
 

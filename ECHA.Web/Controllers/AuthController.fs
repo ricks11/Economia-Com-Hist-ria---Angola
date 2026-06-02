@@ -4,7 +4,11 @@ open Microsoft.AspNetCore.Mvc
 open System.Threading.Tasks
 open ECHA.Core.DTOs
 
-type AuthController () =
+open Microsoft.AspNetCore.Authentication
+open Microsoft.AspNetCore.Authentication.Cookies
+open System.Security.Claims
+
+type AuthController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
     [<HttpGet>]
@@ -13,6 +17,17 @@ type AuthController () =
 
     [<HttpPost>]
     member this.Login (request: LoginRequestDto) =
-        // TODO: Implement actual API call to ECHA.API/api/auth/login
-        // For now, redirect to Home/Index to allow basic flow testing
-        this.RedirectToAction("Index", "Home")
+        task {
+            let! token = apiClient.LoginAsync(request)
+            match token with
+            | Some jwtToken ->
+                let claims = [| Claim(ClaimTypes.Name, request.Email) |]
+                let claimsIdentity = ClaimsIdentity(claims, "CookieAuthentication")
+                let claimsPrincipal = ClaimsPrincipal(claimsIdentity)
+                
+                do! this.HttpContext.SignInAsync("CookieAuthentication", claimsPrincipal)
+                return this.RedirectToAction("Index", "Home") :> IActionResult
+            | None ->
+                this.ModelState.AddModelError("", "Login failed")
+                return this.View(request) :> IActionResult
+        }
