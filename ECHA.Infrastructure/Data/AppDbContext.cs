@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<TentativaQuiz> TentativasQuiz => Set<TentativaQuiz>();
     public DbSet<RespostaPergunta> RespostasPerguntas => Set<RespostaPergunta>();
     public DbSet<Ranking> Rankings => Set<Ranking>();
+    public DbSet<CategoriaForum> CategoriasForum => Set<CategoriaForum>();
     public DbSet<TopicoForum> TopicosForum => Set<TopicoForum>();
     public DbSet<Comentario> Comentarios => Set<Comentario>();
     public DbSet<RespostaForum> RespostasForum => Set<RespostaForum>();
@@ -193,9 +194,23 @@ public class AppDbContext : DbContext
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
             entity.Property(x => x.Conteudo).HasColumnType("longtext");
+            entity.Property(x => x.MotivoRejeicao).HasMaxLength(500);
             entity.HasOne(x => x.Autor)
                 .WithMany(x => x.Topicos)
                 .HasForeignKey(x => x.AutorId);
+            entity.HasOne(x => x.Categoria)
+                .WithMany(x => x.Topicos)
+                .HasForeignKey(x => x.CategoriaId);
+            entity.HasIndex(x => x.EstadoTopico);
+            entity.HasIndex(x => x.CategoriaId);
+        });
+
+        modelBuilder.Entity<CategoriaForum>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Nome).HasMaxLength(150).IsRequired();
+            entity.Property(x => x.Descricao).HasMaxLength(500);
+            entity.Property(x => x.Icone).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Comentario>(entity =>
@@ -205,29 +220,60 @@ public class AppDbContext : DbContext
             entity.HasOne(x => x.Autor)
                 .WithMany(x => x.Comentarios)
                 .HasForeignKey(x => x.AutorId);
+            entity.Ignore(x => x.Respostas);
         });
 
         modelBuilder.Entity<RespostaForum>(entity =>
         {
-            entity.Property(x => x.Texto).HasMaxLength(1000).IsRequired();
-            entity.HasOne(x => x.Comentario)
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Conteudo).HasColumnType("longtext");
+            entity.HasOne(x => x.Topico)
                 .WithMany(x => x.Respostas)
-                .HasForeignKey(x => x.ComentarioId);
+                .HasForeignKey(x => x.TopicoId);
+            entity.HasOne(x => x.Autor)
+                .WithMany(x => x.RespostasForum)
+                .HasForeignKey(x => x.AutorId);
+            entity.HasOne(x => x.RespostaPai)
+                .WithMany(x => x.RespostasFilhas)
+                .HasForeignKey(x => x.RespostaPaiId)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasIndex(x => x.EstadoResposta);
+            entity.HasIndex(x => x.TopicoId);
         });
 
         modelBuilder.Entity<Reacao>(entity =>
         {
             entity.HasKey(x => x.Id);
-            entity.Property(x => x.Tipo).HasMaxLength(50).IsRequired();
             entity.HasOne(x => x.Utilizador)
                 .WithMany(x => x.Reacoes)
                 .HasForeignKey(x => x.UtilizadorId);
+            entity.HasOne(x => x.Topico)
+                .WithMany(x => x.Reacoes)
+                .HasForeignKey(x => x.TopicoId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Resposta)
+                .WithMany(x => x.Reacoes)
+                .HasForeignKey(x => x.RespostaId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(x => new { x.UtilizadorId, x.TopicoId, x.RespostaId, x.TipoReacao }).IsUnique();
         });
 
         modelBuilder.Entity<DenunciaConteudo>(entity =>
         {
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Motivo).HasMaxLength(500).IsRequired();
+            entity.HasOne(x => x.Denunciante)
+                .WithMany()
+                .HasForeignKey(x => x.DenuncianteId);
+            entity.HasOne(x => x.Topico)
+                .WithMany(x => x.Denuncias)
+                .HasForeignKey(x => x.TopicoId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Resposta)
+                .WithMany(x => x.Denuncias)
+                .HasForeignKey(x => x.RespostaId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(x => x.TopicoId);
         });
 
         modelBuilder.Entity<Moderacao>(entity =>
