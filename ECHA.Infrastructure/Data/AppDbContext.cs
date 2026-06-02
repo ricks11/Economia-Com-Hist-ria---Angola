@@ -19,8 +19,10 @@ public class AppDbContext : DbContext
     public DbSet<ModuloProgresso> ModulosProgresso => Set<ModuloProgresso>();
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Pergunta> Perguntas => Set<Pergunta>();
+    public DbSet<OpcaoResposta> OpcoesRespostas => Set<OpcaoResposta>();
     public DbSet<TentativaQuiz> TentativasQuiz => Set<TentativaQuiz>();
     public DbSet<RespostaPergunta> RespostasPerguntas => Set<RespostaPergunta>();
+    public DbSet<Ranking> Rankings => Set<Ranking>();
     public DbSet<TopicoForum> TopicosForum => Set<TopicoForum>();
     public DbSet<Comentario> Comentarios => Set<Comentario>();
     public DbSet<RespostaForum> RespostasForum => Set<RespostaForum>();
@@ -130,9 +132,7 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
-            entity.HasOne(x => x.Conteudo)
-                .WithMany(x => x.Quizzes)
-                .HasForeignKey(x => x.ConteudoId);
+            entity.Property(x => x.Tema).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Pergunta>(entity =>
@@ -142,6 +142,16 @@ public class AppDbContext : DbContext
             entity.HasOne(x => x.Quiz)
                 .WithMany(x => x.Perguntas)
                 .HasForeignKey(x => x.QuizId);
+        });
+
+        modelBuilder.Entity<OpcaoResposta>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Texto).HasMaxLength(500).IsRequired();
+            entity.Property(x => x.Explicacao).HasMaxLength(1000);
+            entity.HasOne(x => x.Pergunta)
+                .WithMany(x => x.Opcoes)
+                .HasForeignKey(x => x.PerguntaId);
         });
 
         modelBuilder.Entity<TentativaQuiz>(entity =>
@@ -158,13 +168,24 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<RespostaPergunta>(entity =>
         {
             entity.HasKey(x => x.Id);
-            entity.Property(x => x.TextoResposta).HasMaxLength(500);
             entity.HasOne(x => x.Pergunta)
                 .WithMany(x => x.Respostas)
                 .HasForeignKey(x => x.PerguntaId);
             entity.HasOne(x => x.TentativaQuiz)
                 .WithMany(x => x.Respostas)
                 .HasForeignKey(x => x.TentativaQuizId);
+            entity.HasOne(x => x.OpcaoResposta)
+                .WithMany()
+                .HasForeignKey(x => x.OpcaoRespostaId);
+        });
+
+        modelBuilder.Entity<Ranking>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Provincia).HasMaxLength(100);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany()
+                .HasForeignKey(x => x.UtilizadorId);
         });
 
         modelBuilder.Entity<TopicoForum>(entity =>
