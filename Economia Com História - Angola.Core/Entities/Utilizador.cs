@@ -13,6 +13,8 @@ public class Utilizador
     public DateTime DataRegisto { get; set; }
     public int PontosTotais { get; set; }
     public int StreakAtual { get; set; }
+    public DateTime? SuspensoAte { get; set; }
+    public bool SuspensaoPermanente { get; set; }
     public string? Provincia { get; set; }
     public int? EscolaId { get; set; }
     public Escola? Escola { get; set; }
@@ -20,6 +22,7 @@ public class Utilizador
     public Turma? Turma { get; set; }
     public ICollection<TentativaQuiz> TentativasQuiz { get; set; } = new List<TentativaQuiz>();
     public ICollection<TopicoForum> Topicos { get; set; } = new List<TopicoForum>();
+    public ICollection<RespostaForum> RespostasForum { get; set; } = new List<RespostaForum>();
     public ICollection<Conteudo> Conteudos { get; set; } = new List<Conteudo>();
     public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
     public ICollection<Reacao> Reacoes { get; set; } = new List<Reacao>();
