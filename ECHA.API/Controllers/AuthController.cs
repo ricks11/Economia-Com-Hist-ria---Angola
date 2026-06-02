@@ -1,5 +1,5 @@
-using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Enums;
+using EconomiaComHistoria.API.DTOs;
 using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;

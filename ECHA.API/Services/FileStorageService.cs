@@ -1,3 +1,5 @@
+using EconomiaComHistoria.Core.Interfaces;
+
 namespace EconomiaComHistoria.API.Services;
 
 public class FileStorageService : IFileStorageService

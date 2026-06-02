@@ -1,6 +1,6 @@
 using EconomiaComHistoria.Core.Entities;
 
-namespace EconomiaComHistoria.Core.Repositories;
+namespace EconomiaComHistoria.Core.Interfaces;
 
 public interface IConteudoRepository
 {

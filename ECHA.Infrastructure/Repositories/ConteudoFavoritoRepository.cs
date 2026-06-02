@@ -1,5 +1,5 @@
 using EconomiaComHistoria.Core.Entities;
-using EconomiaComHistoria.Core.Repositories;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

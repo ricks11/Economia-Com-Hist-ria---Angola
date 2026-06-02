@@ -1,6 +1,6 @@
-using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
+using EconomiaComHistoria.API.DTOs;
 using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.API.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;

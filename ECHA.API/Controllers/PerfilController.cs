@@ -1,4 +1,4 @@
-using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.API.DTOs;
 using EconomiaComHistoria.API.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;

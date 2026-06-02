@@ -1,4 +1,4 @@
-namespace EconomiaComHistoria.API.Services;
+namespace EconomiaComHistoria.Core.Interfaces;
 
 public interface IAuthService
 {

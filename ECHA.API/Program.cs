@@ -1,6 +1,6 @@
 using System.Text;
 using EconomiaComHistoria.API.Services;
-using EconomiaComHistoria.Core.Repositories;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using EconomiaComHistoria.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
