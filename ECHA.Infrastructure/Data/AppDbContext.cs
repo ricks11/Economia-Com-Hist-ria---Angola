@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<ConteudoJindungo> ConteudosJindungo => Set<ConteudoJindungo>();
     public DbSet<VisualizacaoConteudo> VisualizacoesConteudo => Set<VisualizacaoConteudo>();
     public DbSet<ConteudoFavorito> ConteudosFavoritos => Set<ConteudoFavorito>();
+    public DbSet<ModuloProgresso> ModulosProgresso => Set<ModuloProgresso>();
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Pergunta> Perguntas => Set<Pergunta>();
     public DbSet<TentativaQuiz> TentativasQuiz => Set<TentativaQuiz>();
@@ -57,6 +58,8 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Nome).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.CodigoMEC).HasMaxLength(20);
+            entity.Property(x => x.Provincia).HasMaxLength(100);
             entity.Property(x => x.Localizacao).HasMaxLength(200);
         });
 
@@ -64,9 +67,13 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Nome).HasMaxLength(100).IsRequired();
+            entity.Property(x => x.Ano);
             entity.HasOne(x => x.Escola)
                 .WithMany(x => x.Turmas)
                 .HasForeignKey(x => x.EscolaId);
+            entity.HasOne(x => x.Professor)
+                .WithMany()
+                .HasForeignKey(x => x.ProfessorId);
         });
 
         modelBuilder.Entity<Conteudo>(entity =>
@@ -80,6 +87,7 @@ public class AppDbContext : DbContext
             entity.Property(x => x.Regiao).HasMaxLength(100);
             entity.Property(x => x.Tipo).HasMaxLength(50);
             entity.Property(x => x.ImagemCapa).HasMaxLength(500);
+            entity.Property(x => x.UrlMedia).HasMaxLength(500);
             entity.HasOne(x => x.Autor)
                 .WithMany(x => x.Conteudos)
                 .HasForeignKey(x => x.AutorId);
@@ -266,6 +274,17 @@ public class AppDbContext : DbContext
             entity.HasOne(x => x.Utilizador)
                 .WithMany(x => x.RelatoriosProgresso)
                 .HasForeignKey(x => x.UtilizadorId);
+        });
+
+        modelBuilder.Entity<ModuloProgresso>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Tema).HasMaxLength(200).IsRequired();
+            entity.Property(x => x.PercentagemCompleta).HasPrecision(5, 2);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany()
+                .HasForeignKey(x => x.UtilizadorId);
+            entity.HasIndex(x => new { x.UtilizadorId, x.Tema }).IsUnique();
         });
     }
 }

@@ -17,6 +17,7 @@ public class Conteudo
     public string? Tipo { get; set; }
     public EstadoConteudo Estado { get; set; } = EstadoConteudo.Ativo;
     public string? ImagemCapa { get; set; }
+    public string? UrlMedia { get; set; }
     public int Visualizacoes { get; set; } = 0;
     public ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
     public ICollection<VisualizacaoConteudo> Visualizacoes_Rastreamento { get; set; } = new List<VisualizacaoConteudo>();

@@ -1,11 +1,20 @@
 using System.Text;
 using EconomiaComHistoria.API.Services;
+using EconomiaComHistoria.Core.Repositories;
 using EconomiaComHistoria.Infrastructure.Data;
+using EconomiaComHistoria.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure multipart form data upload limit (100 MB)
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100 MB
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -59,6 +68,14 @@ builder.Services.AddCors(options =>
 
 // Register Authentication Service
 builder.Services.AddScoped<IAuthService, BCryptAuthService>();
+
+// Register File Storage Service
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+
+// Register Repositories
+builder.Services.AddScoped<IConteudoRepository, ConteudoRepository>();
+builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
+builder.Services.AddScoped<IConteudoFavoritoRepository, ConteudoFavoritoRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
