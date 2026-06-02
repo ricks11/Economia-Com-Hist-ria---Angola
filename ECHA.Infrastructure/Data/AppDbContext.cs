@@ -14,6 +14,8 @@ public class AppDbContext : DbContext
     public DbSet<Turma> Turmas => Set<Turma>();
     public DbSet<Conteudo> Conteudos => Set<Conteudo>();
     public DbSet<ConteudoJindungo> ConteudosJindungo => Set<ConteudoJindungo>();
+    public DbSet<VisualizacaoConteudo> VisualizacoesConteudo => Set<VisualizacaoConteudo>();
+    public DbSet<ConteudoFavorito> ConteudosFavoritos => Set<ConteudoFavorito>();
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Pergunta> Perguntas => Set<Pergunta>();
     public DbSet<TentativaQuiz> TentativasQuiz => Set<TentativaQuiz>();
@@ -40,11 +42,15 @@ public class AppDbContext : DbContext
             entity.Property(x => x.Nome).HasMaxLength(200).IsRequired();
             entity.Property(x => x.Email).HasMaxLength(200).IsRequired();
             entity.Property(x => x.Telemovel).HasMaxLength(50);
+            entity.Property(x => x.Provincia).HasMaxLength(100);
             entity.Property(x => x.PasswordHash).HasMaxLength(500).IsRequired();
             entity.HasIndex(x => x.Email).IsUnique();
             entity.HasOne(x => x.Escola)
                 .WithMany(x => x.Utilizadores)
                 .HasForeignKey(x => x.EscolaId);
+            entity.HasOne(x => x.Turma)
+                .WithMany()
+                .HasForeignKey(x => x.TurmaId);
         });
 
         modelBuilder.Entity<Escola>(entity =>
@@ -69,9 +75,42 @@ public class AppDbContext : DbContext
             entity.Property(x => x.Titulo).HasMaxLength(200).IsRequired();
             entity.Property(x => x.Resumo).HasMaxLength(500);
             entity.Property(x => x.Texto).HasColumnType("longtext");
+            entity.Property(x => x.Tema).HasMaxLength(100);
+            entity.Property(x => x.Nivel).HasMaxLength(50);
+            entity.Property(x => x.Regiao).HasMaxLength(100);
+            entity.Property(x => x.Tipo).HasMaxLength(50);
+            entity.Property(x => x.ImagemCapa).HasMaxLength(500);
             entity.HasOne(x => x.Autor)
                 .WithMany(x => x.Conteudos)
                 .HasForeignKey(x => x.AutorId);
+        });
+
+        modelBuilder.Entity<VisualizacaoConteudo>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.HasOne(x => x.Conteudo)
+                .WithMany(x => x.Visualizacoes_Rastreamento)
+                .HasForeignKey(x => x.ConteudoId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany()
+                .HasForeignKey(x => x.UtilizadorId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(x => new { x.ConteudoId, x.UtilizadorId }).IsUnique();
+        });
+
+        modelBuilder.Entity<ConteudoFavorito>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.HasOne(x => x.Conteudo)
+                .WithMany(x => x.Favoritos)
+                .HasForeignKey(x => x.ConteudoId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Utilizador)
+                .WithMany()
+                .HasForeignKey(x => x.UtilizadorId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(x => new { x.ConteudoId, x.UtilizadorId }).IsUnique();
         });
 
         modelBuilder.Entity<ConteudoJindungo>(entity =>
