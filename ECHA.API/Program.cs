@@ -4,7 +4,6 @@ using EconomiaComHistoria.Infrastructure.Services;
 using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
-using EconomiaComHistoria.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
@@ -79,10 +78,15 @@ builder.Services.AddScoped<IConteudoRepository, ConteudoRepository>();
 builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
 builder.Services.AddScoped<IConteudoFavoritoRepository, ConteudoFavoritoRepository>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<ITopicoForumRepository, TopicoForumRepository>();
+builder.Services.AddScoped<IRespostaForumRepository, RespostaForumRepository>();
+builder.Services.AddScoped<IDenunciaRepository, DenunciaRepository>();
 
 // Register Services
 builder.Services.AddScoped<IQuizScoringService, QuizScoringService>();
 builder.Services.AddScoped<IRankingService, RankingService>();
+builder.Services.AddScoped<IModeracaoService, ModeracaoService>();
+builder.Services.AddScoped<INotificacaoService, FirebaseNotificacaoService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<WeeklyRankingJob>();
 
