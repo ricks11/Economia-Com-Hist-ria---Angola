@@ -1,6 +1,6 @@
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.API.DTOs;
-using EconomiaComHistoria.API.Services;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +51,7 @@ public class AuthController : ControllerBase
             Email = request.Email,
             Telemovel = request.Telemovel,
             PasswordHash = passwordHash,
-            Tipo = TipoUtilizador.Registado,
+            Tipo = TipoUtilizador.Estudante,
             DataRegisto = DateTime.UtcNow,
             PontosTotais = 0,
             StreakAtual = 0

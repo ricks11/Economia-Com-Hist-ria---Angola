@@ -1,4 +1,6 @@
 using System.Text;
+using EconomiaComHistoria.Infrastructure.Repositories;
+using EconomiaComHistoria.Infrastructure.Services;
 using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
@@ -76,6 +78,13 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConteudoRepository, ConteudoRepository>();
 builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
 builder.Services.AddScoped<IConteudoFavoritoRepository, ConteudoFavoritoRepository>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+
+// Register Services
+builder.Services.AddScoped<IQuizScoringService, QuizScoringService>();
+builder.Services.AddScoped<IRankingService, RankingService>();
+builder.Services.AddMemoryCache();
+builder.Services.AddHostedService<WeeklyRankingJob>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
