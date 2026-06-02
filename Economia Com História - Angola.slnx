@@ -16,6 +16,7 @@
     <Project Path="ECHA.API/ECHA.API.csproj" />
     <Project Path="ECHA.Infrastructure/ECHA.Infrastructure.csproj" />
     <Project Path="ECHA.Mobile/ECHA.Mobile.csproj" Id="1a8600d6-d947-4bd3-aae7-053ff61c823d" />
+    <Project Path="ECHA.Web/ECHA.Web.fsproj" Id="428c9049-e9c2-4ddb-bc29-2fe1fe293c64" />
     <Project Path="Economia Com História - Angola.Core/ECHA.Core.csproj" />
   </Folder>
 </Solution>
