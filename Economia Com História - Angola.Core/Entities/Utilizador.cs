@@ -13,8 +13,11 @@ public class Utilizador
     public DateTime DataRegisto { get; set; }
     public int PontosTotais { get; set; }
     public int StreakAtual { get; set; }
+    public string? Provincia { get; set; }
     public int? EscolaId { get; set; }
     public Escola? Escola { get; set; }
+    public int? TurmaId { get; set; }
+    public Turma? Turma { get; set; }
     public ICollection<TentativaQuiz> TentativasQuiz { get; set; } = new List<TentativaQuiz>();
     public ICollection<TopicoForum> Topicos { get; set; } = new List<TopicoForum>();
     public ICollection<Conteudo> Conteudos { get; set; } = new List<Conteudo>();
