@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Sovereign Archive - Início</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#af2b3e",
+                        "on-tertiary-container": "#7cb0c0",
+                        "on-primary-container": "#ff828a",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d9e5e7",
+                        "primary-container": "#800020",
+                        "outline-variant": "#e0bfbf",
+                        "primary-fixed": "#ffdada",
+                        "on-secondary-fixed": "#131d1f",
+                        "surface-container-low": "#f3f3f3",
+                        "on-error": "#ffffff",
+                        "background": "#f9f9f9",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "surface": "#f9f9f9",
+                        "tertiary-container": "#004451",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "on-secondary-container": "#5b6668",
+                        "secondary": "#556062",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-surface-variant": "#584141",
+                        "surface-container": "#eeeeee",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "on-primary-fixed": "#40000b",
+                        "tertiary": "#002c36",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d9e5e7",
+                        "inverse-primary": "#ffb3b5",
+                        "inverse-surface": "#2f3131",
+                        "surface-dim": "#dadada",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline": "#8c7071",
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "tertiary-fixed": "#b6ebfb",
+                        "on-surface": "#1a1c1c",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#570013",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Public Sans", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline, .font-display {
+            font-family: 'Manrope', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        .bg-map-watermark {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M50 10 L90 50 L50 90 L10 50 Z" fill="%231a1c1c"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .ambient-shadow {
+            box-shadow: 0px 8px 32px rgba(26, 28, 28, 0.06);
+        }
+        .glass-panel {
+            background-color: rgba(249, 249, 249, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, theme('colors.primary') 0%, theme('colors.primary-container') 100%);
+        }
+        
+        /* User requested yellow primary actions, mapping to a utility class while keeping brand colors for main theme */
+        .bg-action-yellow {
+            background-color: #FFD700;
+            color: #1a1c1c; /* Ensuring high contrast text on yellow */
+        }
+        .text-action-yellow {
+            color: #FFD700;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background relative min-h-screen pb-24 overflow-x-hidden">
+<!-- Subtle Map Background -->
+<div class="fixed inset-0 z-0 pointer-events-none bg-map-watermark opacity-20"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl shadow-[0px_8px_32px_rgba(0,0,0,0.06)] bg-zinc-50/50 dark:bg-zinc-950/50">
+<button class="text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors active:scale-95 duration-200 ease-in-out p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="text-lg font-extrabold uppercase tracking-widest text-red-900 dark:text-red-500 font-manrope font-bold tracking-tighter text-on-surface">
+            The Sovereign Archive
+        </div>
+<button class="text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors active:scale-95 duration-200 ease-in-out p-1 rounded-full bg-surface-container-high overflow-hidden w-8 h-8 flex items-center justify-center">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="close up portrait of a young professional looking forward with a neutral expression in natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATfEE_pG1TL_AVK5NiWzIwBGe5IRu8KhnnvjmoP4_o3gneTu0YcuZLwh1Mpwd75uzwnwCCgqkb3HZusWXybHo42q95q1aHR1rG0J4lgW6wdKqZ2MoYgkE1iPv8Xxv8cINrLx3GT0xXTG0jmvFQ0ao0174G_nljlFAGzL2a-r4zmibDCA83EK1nIi_6raM_PB4KNi5V9ZO671nV3n5DgnfEzoBDBYQ6_jGYd3WzAvQvOdwSBmXJtQk3zZxqkkexLBImWjXkR6DX85OB"/>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 pt-24 px-6 md:px-8 max-w-4xl mx-auto">
+<!-- Welcome / Hero Section -->
+<section class="mb-10">
+<h1 class="font-headline text-3xl font-bold text-on-surface mb-2">Bom dia, Curador.</h1>
+<p class="font-body text-on-surface-variant text-base">Explore a evolução económica de Angola através de novos arquivos desenterrados hoje.</p>
+</section>
+<!-- Recommended Articles Carousel (Bento-ish asymmetric approach) -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline text-xl font-bold text-on-surface">Arquivos em Destaque</h2>
+<button class="font-body text-sm font-semibold text-primary">Ver todos</button>
+</div>
+<div class="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory hide-scrollbar" style="scrollbar-width: none;">
+<!-- Main Highlight Card -->
+<article class="snap-center shrink-0 w-72 md:w-80 bg-surface-container-lowest rounded-xl ambient-shadow overflow-hidden flex flex-col relative border border-outline-variant/15">
+<div class="h-40 bg-surface-container-high relative">
+<img alt="Economic graph concept" class="w-full h-full object-cover opacity-80" data-alt="abstract close up of financial charts and graphs with a warm dramatic lighting overlay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPlQnBiPuucPFyDkXKrVIPq-2sHgzQ0wk3dQCAR6dQFQdmPq2M7oZ1wniErgT4jMPAhKP99qBtX9xFbZTgmHocOwAuAT7VmmU5KObdA2oyIKd65vwI8Wafkc3JQ1XGW85px2IZbcyWNq_ZLApT2_Q7mrLQWsm9Y0DVSWHg_wlbSsjtdIVltAuW8TdHta1vlUC1ZL12LNMeLC1-zdU1D1rZCASDIfnkdP49CYTQXZhMfE9uwN3aCplCRiKbc3oV_loN-EZy71aCxdrW"/>
+<div class="absolute top-3 left-3 bg-action-yellow text-on-surface text-xs font-bold px-2 py-1 rounded">Novo</div>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<span class="text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">Economia Colonial</span>
+<h3 class="font-headline text-lg font-bold text-on-surface mb-3 leading-tight">O Ciclo da Borracha (1890-1910)</h3>
+<p class="font-body text-sm text-on-surface-variant mb-4 line-clamp-2">Uma análise detalhada das rotas comerciais e do impacto nas comunidades locais durante o boom da borracha.</p>
+<div class="mt-auto">
+<button class="w-full bg-action-yellow text-on-surface font-body font-bold text-sm py-2.5 rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="menu_book">menu_book</span>
+                                Ler Arquivo
+                            </button>
+</div>
+</div>
+</article>
+<!-- Secondary Card -->
+<article class="snap-center shrink-0 w-72 md:w-80 bg-surface-container-lowest rounded-xl ambient-shadow overflow-hidden flex flex-col relative border border-outline-variant/15">
+<div class="h-40 bg-surface-container-high relative">
+<img alt="Historical port" class="w-full h-full object-cover opacity-80" data-alt="sepia toned historical photograph of a busy maritime port with old ships and cargo crates" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8FPOcc8S3UsDN6KDKmVj5gHp9dk2jYsW0-Mc_1yVzyU_4UCNU4wtKr6OeEoDFATTaTAdPgbMFgK7ojHNbfRGeuX6wZK3-cqty-eqF5Tsw1heq2DqGkUuk9qigTvNSz8dfRqfchwKcuBkhdr7VUAnYDjZh0dqCFNyOLQc4wWfgBv6uszUmTx4HmAzpECTLCpkrbQQvtEiWtwwiy_9lmhjRQ0gxUpMOCzacm6ULjFoGjTOK7AJz7yE_1EP6a5xhIMPhSajLK83XWn7B"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<span class="text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">Comércio Marítimo</span>
+<h3 class="font-headline text-lg font-bold text-on-surface mb-3 leading-tight">Porto de Luanda: Uma Retrospectiva</h3>
+<p class="font-body text-sm text-on-surface-variant mb-4 line-clamp-2">Como a infraestrutura portuária moldou as exportações no início do século XX.</p>
+<div class="mt-auto">
+<button class="w-full bg-surface-container-highest text-on-surface font-body font-semibold text-sm py-2.5 rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                                Ler Arquivo
+                            </button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Timeline Node Teaser -->
+<section class="mb-10 pl-[24px] pr-[32px] md:pl-0 md:pr-0">
+<h2 class="font-headline text-xl font-bold text-on-surface mb-6">Sua Jornada Histórica</h2>
+<div class="bg-surface-container-lowest rounded-xl ambient-shadow p-6 border border-outline-variant/15 relative overflow-hidden">
+<div class="absolute right-0 bottom-0 w-32 h-32 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="explore">explore</span>
+</div>
+<div class="flex gap-4">
+<!-- Custom Vertical Progress -->
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<div class="w-0.5 h-12 bg-tertiary my-1"></div>
+<div class="w-3 h-3 rounded-full border-2 border-outline-variant"></div>
+</div>
+<div class="flex-1">
+<div class="mb-4">
+<span class="text-xs font-bold text-tertiary uppercase tracking-wider block mb-1">Concluído</span>
+<h4 class="font-headline text-base font-bold text-on-surface">Era Pré-Colonial</h4>
+</div>
+<div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Próximo Módulo</span>
+<h4 class="font-headline text-base font-bold text-on-surface mb-2">A Chegada dos Navegadores</h4>
+<button class="text-action-yellow font-body font-bold text-sm flex items-center gap-1 active:scale-95 transition-transform">
+                                Continuar
+                                <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-2xl z-50 rounded-t-3xl shadow-[0px_-8px_32px_rgba(0,0,0,0.06)] bg-zinc-100 dark:bg-zinc-800">
+<!-- Início (Active) -->
+<a class="flex flex-col items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-400 rounded-xl px-3 py-1.5 transition-all scale-100 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-sans text-[10px] uppercase tracking-wider font-semibold">Início</span>
+</a>
+<!-- Aprender (Inactive) -->
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 px-3 py-1.5 hover:text-red-700 dark:hover:text-red-300 scale-100 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="menu_book">menu_book</span>
+<span class="font-sans text-[10px] uppercase tracking-wider font-semibold">Aprender</span>
+</a>
+<!-- Jogar (Inactive) -->
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 px-3 py-1.5 hover:text-red-700 dark:hover:text-red-300 scale-100 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="sports_esports">sports_esports</span>
+<span class="font-sans text-[10px] uppercase tracking-wider font-semibold">Jogar</span>
+</a>
+<!-- Participar (Inactive) -->
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 px-3 py-1.5 hover:text-red-700 dark:hover:text-red-300 scale-100 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="groups">groups</span>
+<span class="font-sans text-[10px] uppercase tracking-wider font-semibold">Participar</span>
+</a>
+<!-- Perfil (Inactive) -->
+<a class="flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 px-3 py-1.5 hover:text-red-700 dark:hover:text-red-300 scale-100 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-sans text-[10px] uppercase tracking-wider font-semibold">Perfil</span>
+</a>
+</nav>
+<!-- Web Side Nav (Hidden on Mobile, placeholder for standard layout continuity if scaled up) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full w-64 bg-surface-container-low pt-24 px-4 z-40 border-r border-outline-variant/15">
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 text-red-900 font-semibold" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+                 Início
+             </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+                 Aprender
+             </a>
+</div>
+</aside>
+</body></html>

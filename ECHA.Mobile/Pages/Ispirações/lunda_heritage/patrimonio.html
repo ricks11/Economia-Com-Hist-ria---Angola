@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progresso – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FFD700",
+            "on-primary": "#000000",
+            "brand-red": "#570013",
+            "surface": "#ffffff",
+            "on-surface": "#1a1c1c"
+          },
+          fontFamily: { body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body p-6">
+  <h1 class="text-3xl font-bold mb-6">O Meu Progresso</h1>
+  
+  <div class="p-6 rounded-2xl bg-brand-red text-white">
+    <h2 class="text-lg font-bold mb-2">Jornada Académica</h2>
+    <p class="text-sm opacity-80">Concluiu 65% do percurso histórico.</p>
+    <div class="h-2 mt-4 bg-white/20 rounded-full">
+      <div class="h-full bg-primary w-[65%] rounded-full"></div>
+    </div>
+  </div>
+</body>
+</html>

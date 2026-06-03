@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Public_Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#131d1f",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d9e5e7",
+                    "primary-fixed-dim": "#ffb3b5",
+                    "primary-container": "#800020",
+                    "tertiary-fixed": "#b6ebfb",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f1f1f1",
+                    "surface-container-highest": "#e2e2e2",
+                    "inverse-surface": "#2f3131",
+                    "surface-dim": "#dadada",
+                    "secondary-fixed-dim": "#bdc9cb",
+                    "on-tertiary-fixed": "#001f26",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e8e8e8",
+                    "surface": "#f9f9f9",
+                    "surface-container-low": "#f3f3f3",
+                    "on-primary-container": "#ff828a",
+                    "primary": "#570013",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#eeeeee",
+                    "primary-fixed": "#ffdada",
+                    "background": "#f9f9f9",
+                    "on-secondary-container": "#5b6668",
+                    "tertiary-fixed-dim": "#9acfde",
+                    "tertiary": "#002c36",
+                    "on-background": "#1a1c1c",
+                    "on-primary-fixed-variant": "#8e0f28",
+                    "surface-bright": "#f9f9f9",
+                    "inverse-primary": "#ffb3b5",
+                    "surface-tint": "#af2b3e",
+                    "secondary-container": "#d9e5e7",
+                    "tertiary-container": "#004451",
+                    "on-surface-variant": "#584141",
+                    "outline-variant": "#e0bfbf",
+                    "surface-variant": "#e2e2e2",
+                    "secondary": "#556062",
+                    "on-surface": "#1a1c1c",
+                    "on-tertiary-container": "#7cb0c0",
+                    "on-primary-fixed": "#40000b",
+                    "on-secondary": "#ffffff",
+                    "outline": "#8c7071",
+                    "on-secondary-fixed-variant": "#3e494b",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#114d5b",
+                    "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 duration-200 text-red-900 dark:text-red-500">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-lg text-red-950 dark:text-red-400">Discussão</h1><button class="text-red-900/40 hover:text-red-900 transition-colors ml-2" title="Denunciar Conteúdo">
+<span class="material-symbols-outlined text-[18px]" data-icon="flag">flag</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-neutral-500 font-['Manrope'] font-bold tracking-tight text-sm">Kz 0.00</span>
+<span class="material-symbols-outlined text-red-900 dark:text-red-500" data-icon="signal_wifi_off">signal_wifi_off</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-4 max-w-4xl mx-auto">
+<!-- Main Post Card -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(26,28,28,0.04)] mb-8 relative border-l-4 border-primary">
+<button class="absolute top-4 right-4 text-on-surface-variant/40 hover:text-error transition-colors" title="Denunciar">
+<span class="material-symbols-outlined text-[20px]" data-icon="report">report</span>
+</button>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="portrait of an angolan historian in professional attire with soft natural lighting and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7ep4MUCyS3WyJg83rntRgPIoQGMRl0djKMCJW-Un70K3yziIkusRMiW9kBqxoEdkRKw1iRCY4enkp-qCAn-bcX3WTxC8xvn89ve75Py-QP2McUDlfzkbcS6Hpz-yhVA4JNP-_aw1pum85Zs_Q-Tmqx5rb-aiBgllhUJvRAvz0F1lNMEQSQ0Ep0KwgfSyHqo8dX2hL1AP3WTYKaJpWDmv16svTB2Ijtd96XYlmwg-jBRxO-LqlpwXtV5m6qOYy1gVwxzOUw_CgTHYy"/>
+</div>
+<div>
+<h2 class="font-headline font-bold text-on-surface leading-tight">Dr. Manuel dos Santos</h2>
+<p class="text-xs text-on-surface-variant/70 uppercase tracking-wider">Curador de Economia • 2h atrás</p>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-extrabold text-red-950 mb-4 tracking-tight leading-snug">
+                A Influência da Moeda Colonial na Estrutura Bancária de Luanda (1926-1950)
+            </h3><div class="flex items-center gap-1.5 mb-6 text-[10px] font-bold uppercase tracking-widest text-primary/60 bg-primary/5 w-fit px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px]" data-icon="lock">lock</span>
+Conteúdo Privado - Acesso Restrito
+</div>
+<p class="text-on-surface-variant leading-relaxed text-lg mb-6">
+                Como os ciclos do café e do diamante moldaram não apenas a balança comercial, mas a própria arquitetura física das instituições financeiras na Baixa de Luanda? Precisamos discutir como esses vestígios ainda informam a centralidade bancária atual.
+            </p>
+<div class="flex items-center gap-6 pt-4 border-t border-outline-variant/15">
+<div class="flex items-center gap-2 text-on-surface-variant font-semibold text-sm">
+<span class="material-symbols-outlined text-primary" data-icon="forum">forum</span>
+                    14 Comentários
+                </div>
+<div class="flex items-center gap-2 text-on-surface-variant font-semibold text-sm">
+<span class="material-symbols-outlined text-primary" data-icon="share">share</span>
+                    Partilhar
+                </div>
+</div>
+</article>
+<!-- Replies List Header -->
+<div class="flex items-center justify-between mb-6 px-2">
+<h4 class="font-headline font-bold text-on-surface-variant">Respostas da Comunidade</h4>
+<div class="flex items-center gap-1 text-xs font-bold text-primary uppercase tracking-widest">
+<span>Recentes</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Vertical List of Replies -->
+<section class="space-y-4">
+<!-- Reply 1 -->
+<div class="bg-surface rounded-xl p-5 relative border-l-2 border-outline-variant/30 ml-4 md:ml-8">
+<button class="absolute top-4 right-4 text-on-surface-variant/20 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="report">report</span>
+</button>
+<div class="flex gap-3">
+<div class="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img alt="User" class="w-full h-full object-cover" data-alt="close-up portrait of a young male angolan student in a classroom setting with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqZwdvx3eq1rZHjskferYTgSA14afraZzrYgITLzurtSwvEOpBeC3y6pzpQCNqdOtp403eARnqaQb5bZlScgdt83vOoj_LvbAJS4e6wGBcWXoXEfO8RVUYkvBSrQvNtG11DOtejXgCHcvzzrmuE08x0B8JaDjHBnSUNM3DpYYYq87thlEI3yEy6YLUydIwLrKL019zYowVbyF34WSHAQo3_hfKvxXGSIl6FQ2gHWrFNLlgEC8vHGkrzyTiDEO6Po4m_WwukPAq0vMT"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold text-sm text-on-surface">Artur Mendes</span>
+<span class="text-[10px] text-on-surface-variant/60">• 1h atrás</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                            É fascinante notar que muitos desses edifícios mantêm o estilo Art Déco, simbolizando a "modernidade" que a economia da época pretendia projetar para a metrópole.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Reply 2 (Nested Style) -->
+<div class="bg-surface-container-low rounded-xl p-5 relative border-l-2 border-tertiary/20 ml-8 md:ml-16">
+<button class="absolute top-4 right-4 text-on-surface-variant/20 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="report">report</span>
+</button>
+<div class="flex gap-3">
+<div class="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img alt="User" class="w-full h-full object-cover" data-alt="headshot of a business professional woman in a modern office with glass walls in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CnhM8-nZLDLld9lrJaCqOvGXfk7emgodhj0yHQpXGMLvBDvUDrStl6k55VGJRhcuT3O05fSF5jOt0htZa3lldA2YCMH8wm4yatAUSaqaukXXr1V-BZbRgGWHDfD63Wntggpz7IV74smPCDAecKo0OVlmrlS5EcsPfuxn4PkdsRVomqaQndOWW8lic1KwVqaglyzMaCbznFwUDH9vtZbcohlp2sDnjLIwOo4bv1aHLyCHk77_hzXsL9GFtuYdAC7-A6QSxKaKdCId"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold text-sm text-on-surface">Isabel Chipenda</span>
+<span class="text-[10px] text-on-surface-variant/60">• 45min atrás</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                            Exato, Artur. E se olharmos para a localização do antigo Banco de Angola, vemos como a economia era desenhada para o escoamento marítimo.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Reply 3 -->
+<div class="bg-surface rounded-xl p-5 relative border-l-2 border-outline-variant/30 ml-4 md:ml-8">
+<button class="absolute top-4 right-4 text-on-surface-variant/20 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="report">report</span>
+</button>
+<div class="flex gap-3">
+<div class="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img alt="User" class="w-full h-full object-cover" data-alt="portrait of a focused man in a library surrounded by books with soft intellectual lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg26BJqv7OXq5CVpz7TllzZ_ViDO8HVVFOPLt-jY_1zVQLfCgdlt6dIpzZyVJZoH83EHbHEKMthGoTRVOODRy86LH5XIGgpYmNK39wsZPEYYHEdDglJHT_B3XR6Mcu0AZJVWb7x0UjpfMYmnXL5z1STM2g4SElf4-K3apXMD1sS6xVFGK593sdKWsC2rRAS7BHM61oO_X4aKDLlGXZufRfnyBHi2_Vt7xZZaovDUCJgbcDY4uzalzOAVbabgqk7RLpWnhLWhXHqVN-"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold text-sm text-on-surface">Paulo Vunge</span>
+<span class="text-[10px] text-on-surface-variant/60">• 15min atrás</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                            Algum de vocês tem dados sobre a circulação do Angolar comparado ao Escudo na região do Planalto Central nesse período?
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Input Bar -->
+<footer class="fixed bottom-0 left-0 w-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl px-4 pt-3 pb-6 border-t border-outline-variant/10 z-50">
+<div class="max-w-4xl mx-auto flex items-center gap-3">
+<div class="flex-1 bg-surface-container-high rounded-full px-4 py-2.5 flex items-center gap-3 shadow-inner">
+<span class="material-symbols-outlined text-on-surface-variant/50" data-icon="edit">edit</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-sm placeholder:text-on-surface-variant/60 font-body" placeholder="Escreva a sua resposta..." type="text"/>
+<button class="text-primary hover:bg-primary/10 p-1 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary w-12 h-12 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</footer>
+<!-- BottomNavBar (Hidden on desktop, logic from JSON applied) -->
+<nav class="md:hidden fixed bottom-16 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-[0_-8px_32px_rgba(26,28,28,0.06)] rounded-t-xl z-40">
+<div class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Início</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Aprender</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1">
+<span class="material-symbols-outlined" data-icon="sports_esports">sports_esports</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Jogar</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-red-50 dark:bg-red-900/30 text-red-900 dark:text-red-100 rounded-2xl px-3 py-1">
+<span class="material-symbols-outlined" data-icon="groups" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Participar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Perfil</span>
+</div>
+</nav>
+<!-- Territorial Stylized Map Watermark -->
+<div class="fixed bottom-0 right-0 opacity-[0.03] pointer-events-none z-[-1]">
+<svg fill="none" height="800" viewbox="0 0 450 600" width="600" xmlns="http://www.w3.org/2000/svg">
+<path d="M120 10C150 20 180 5 210 15C240 25 270 40 300 45C330 50 360 40 390 55C420 70 440 100 430 135C420 170 380 190 370 225C360 260 380 290 375 325C370 360 340 380 320 410C300 440 290 480 260 505C230 530 180 540 140 530C100 520 70 480 50 445C30 410 10 370 5 330C0 290 20 250 35 215C50 180 40 140 60 105C80 70 90 0 120 10Z" fill="#570013"></path>
+</svg>
+</div>
+</body></html>

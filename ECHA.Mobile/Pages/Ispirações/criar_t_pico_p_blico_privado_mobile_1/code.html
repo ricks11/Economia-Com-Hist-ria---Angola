@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Criar Novo Tópico - The Sovereign Archive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#5b6668",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-tint": "#af2b3e",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-tertiary-container": "#7cb0c0",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#d9e5e7",
+                        "surface-variant": "#e2e2e2",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#ffb3b5",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdada",
+                        "inverse-on-surface": "#f1f1f1",
+                        "secondary-container": "#d9e5e7",
+                        "inverse-surface": "#2f3131",
+                        "outline-variant": "#e0bfbf",
+                        "on-surface": "#1a1c1c",
+                        "on-error": "#ffffff",
+                        "secondary": "#556062",
+                        "primary": "#570013",
+                        "background": "#f9f9f9",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "surface-dim": "#dadada",
+                        "surface-container-low": "#f3f3f3",
+                        "surface": "#f9f9f9",
+                        "primary-container": "#800020",
+                        "on-primary-container": "#ff828a",
+                        "tertiary-fixed": "#b6ebfb",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "on-primary-fixed": "#40000b",
+                        "on-background": "#1a1c1c",
+                        "surface-container": "#eeeeee",
+                        "tertiary-container": "#004451",
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "on-surface-variant": "#584141",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#131d1f",
+                        "outline": "#8c7071",
+                        "tertiary": "#002c36",
+                        "tertiary-fixed-dim": "#9acfde"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Public Sans", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(249, 249, 249, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .ambient-shadow {
+            box-shadow: 0 8px 32px 0 rgba(26, 28, 28, 0.06);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #570013 0%, #800020 100%);
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md shadow-sm shadow-stone-200/20">
+<div class="flex items-center justify-between px-4 h-16 w-full">
+<button aria-label="Menu" class="text-[#800020] hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-lg font-extrabold tracking-tighter text-[#570013] font-['Manrope']">The Sovereign Archive</h1>
+<div class="flex items-center space-x-2">
+<button aria-label="Denunciar ou Opções" class="text-on-surface-variant hover:text-error transition-colors p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Portrait of a young woman with natural makeup and subtle smile, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0brxMikAv-xZ6BdQtnp7ykKJoA97n4f6NRCilablKvlAA5EsqQjYQoMFKZWZmZtINXR7bYAQOPPQh2fO3M47YouDWwc-I8AiW_TZ1kZSTlajQwpfGNMF7maw4xkG2AtqpOFCYMP0kGAqr_UZef9ItnXe1dPWl7TQRs8E12z15hUKZXT90_rTyrh_6Lz-rPVOmi78CBcGa2XhxE0xd_oeQeU8amkV32fLe4wKxinQMjAPoJ3ZH7ojKZBbMqcYMPxy2lztLaiVfIzH-"/>
+</div>
+</div>
+</div>
+<div class="bg-gradient-to-b from-stone-200/50 to-transparent h-px w-full"></div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 px-4 md:px-8 max-w-3xl mx-auto space-y-8">
+<!-- Page Header -->
+<div class="pt-4 pb-2">
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-primary">Criar Novo Tópico</h2>
+<p class="font-body text-base text-on-surface-variant mt-2">Inicie uma nova discussão no acervo documental.</p>
+</div>
+<!-- Visibility Selection Bento -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Public Option (Selected State) -->
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="visibility" type="radio" value="public"/>
+<div class="h-full bg-surface-container-lowest rounded-xl p-5 ambient-shadow border-2 border-primary/20 peer-checked:border-primary transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">public</span>
+<h3 class="font-headline font-bold text-lg text-on-surface">Fórum Público</h3>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary opacity-100 transition-opacity"></div>
+</div>
+</div>
+<p class="font-body text-sm text-on-surface-variant mt-3">Qualquer utilizador pode visualizar este tópico. Requer autenticação para comentar.</p>
+</div>
+</label>
+<!-- Private Option -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="visibility" type="radio" value="private"/>
+<div class="h-full bg-surface-container-lowest rounded-xl p-5 ambient-shadow border-2 border-transparent peer-checked:border-primary transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-on-surface-variant">lock</span>
+<h3 class="font-headline font-bold text-lg text-on-surface">Fórum Privado</h3>
+</div>
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center peer-checked:border-primary">
+<div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<p class="font-body text-sm text-on-surface-variant mt-3">Acesso restrito. Apenas utilizadores convidados poderão visualizar e participar.</p>
+</div>
+</label>
+</section>
+<!-- Form Area -->
+<form class="space-y-6">
+<!-- Conditional Invite Field (Hidden by default in static HTML, imagine it toggles with the private radio) -->
+<div class="hidden">
+<div class="bg-surface-container-low rounded-xl p-5 border border-outline-variant/15">
+<label class="block font-headline font-semibold text-on-surface mb-2" for="invites">Convidar Participantes</label>
+<p class="text-xs text-on-surface-variant mb-3">Insira endereços de email ou IDs de utilizador separados por vírgula.</p>
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3 font-body text-on-surface focus:ring-2 focus:ring-primary focus:outline-none transition-shadow" id="invites" placeholder="ex: investigador@arquivo.ao, ID4920" type="text"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 ambient-shadow space-y-5">
+<!-- Title -->
+<div>
+<label class="block font-headline font-semibold text-on-surface mb-2" for="topic-title">Título do Tópico</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3 font-body text-on-surface focus:ring-2 focus:ring-primary focus:outline-none transition-shadow placeholder:text-on-surface-variant/50" id="topic-title" placeholder="Insira um título claro e descritivo" type="text"/>
+</div>
+<!-- Category -->
+<div>
+<label class="block font-headline font-semibold text-on-surface mb-2" for="topic-category">Categoria</label>
+<div class="relative">
+<select class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3 font-body text-on-surface focus:ring-2 focus:ring-primary focus:outline-none appearance-none cursor-pointer" id="topic-category">
+<option disabled="" selected="" value="">Selecione uma categoria histórica ou económica</option>
+<option value="economia">Economia de Lunda</option>
+<option value="historia">História Pré-Colonial</option>
+<option value="arte">Arte e Artefactos</option>
+<option value="debates">Debates Contemporâneos</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Content -->
+<div>
+<label class="block font-headline font-semibold text-on-surface mb-2" for="topic-content">Mensagem Inicial</label>
+<textarea class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3 font-body text-on-surface focus:ring-2 focus:ring-primary focus:outline-none transition-shadow resize-none placeholder:text-on-surface-variant/50" id="topic-content" placeholder="Desenvolva o seu raciocínio, cite fontes se possível..." rows="6"></textarea>
+</div>
+<!-- Permitir Comentários Toggle -->
+<div class="flex items-center justify-between py-2 border-t border-outline-variant/20 mt-4 pt-4">
+<div class="pr-4">
+<h4 class="font-headline font-semibold text-sm text-on-surface">Permitir Comentários</h4>
+<p class="text-xs text-on-surface-variant font-body mt-0.5">Outros utilizadores poderão responder a este tópico.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Adicionar Quiz Button -->
+<button class="w-full mt-2 bg-secondary-container text-on-secondary-container font-headline font-semibold text-sm py-3 rounded-lg flex justify-center items-center space-x-2 hover:bg-secondary-container/80 transition-colors border border-outline-variant/30" type="button">
+<span class="material-symbols-outlined text-[18px]">quiz</span>
+<span>Adicionar Quiz ao Tópico</span>
+</button>
+</div>
+<!-- Moderation Rules Banner -->
+<div class="bg-surface-container-low rounded-xl p-4 flex items-start space-x-4">
+<span class="material-symbols-outlined text-primary mt-0.5">policy</span>
+<div>
+<h4 class="font-headline font-semibold text-sm text-on-surface">Regras de Moderação</h4>
+<p class="font-body text-xs text-on-surface-variant mt-1 leading-relaxed">
+                        Ao publicar, concorda em manter um tom académico e respeitoso. Discursos de ódio ou desinformação resultarão na remoção do tópico.
+                    </p>
+</div>
+</div>
+<!-- Submit Action -->
+<button class="w-full bg-[#FFD700] text-[#570013] font-headline font-bold text-lg py-4 rounded-xl shadow-md hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center space-x-2" type="button">
+<span>Publicar Tópico</span>
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</form>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border-t border-stone-100 dark:border-stone-800 shadow-[0_-8px_32px_rgba(26,28,28,0.06)] md:hidden">
+<ul class="flex justify-around items-center h-20 px-2 w-full">
+<li>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-[#800020] dark:hover:text-[#fbbf24] transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-['Public_Sans'] text-[10px] font-semibold uppercase tracking-widest">Início</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-[#800020] dark:hover:text-[#fbbf24] transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Public_Sans'] text-[10px] font-semibold uppercase tracking-widest">Explorar</span>
+</a>
+</li>
+<li>
+<!-- Active State -->
+<a class="flex flex-col items-center justify-center text-[#fbbf24] dark:text-[#fcd34d] transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-['Public_Sans'] text-[10px] font-semibold uppercase tracking-widest">Criar</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-[#800020] dark:hover:text-[#fbbf24] transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">history_edu</span>
+<span class="font-['Public_Sans'] text-[10px] font-semibold uppercase tracking-widest">Arquivo</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-[#800020] dark:hover:text-[#fbbf24] transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Public_Sans'] text-[10px] font-semibold uppercase tracking-widest">Perfil</span>
+</a>
+</li>
+</ul>
+</nav>
+</body></html>

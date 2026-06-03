@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ECHA.Mobile.Models"
+             x:Class="ECHA.Mobile.Pages.ExplorePage"
+             Title="Explorar">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center" />
+        
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Conteudos}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ConteudoDto">
+                    <Frame Margin="0,10" CornerRadius="10">
+                        <StackLayout>
+                            <Image Source="{Binding ThumbnailUrl}" HeightRequest="150" Aspect="AspectFill" />
+                            <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="18" />
+                            <Label Text="{Binding Descricao}" MaxLines="2" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

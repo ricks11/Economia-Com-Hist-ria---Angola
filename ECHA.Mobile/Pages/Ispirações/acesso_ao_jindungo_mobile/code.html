@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Sovereign Archive - Acesso Restrito</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#af2b3e",
+                        "on-tertiary-container": "#7cb0c0",
+                        "on-primary-container": "#ff828a",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d9e5e7",
+                        "primary-container": "#800020",
+                        "outline-variant": "#e0bfbf",
+                        "primary-fixed": "#ffdada",
+                        "on-secondary-fixed": "#131d1f",
+                        "surface-container-low": "#f3f3f3",
+                        "on-error": "#ffffff",
+                        "background": "#f9f9f9",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "surface": "#f9f9f9",
+                        "tertiary-container": "#004451",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "on-secondary-container": "#5b6668",
+                        "secondary": "#556062",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-surface-variant": "#584141",
+                        "surface-container": "#eeeeee",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "on-primary-fixed": "#40000b",
+                        "tertiary": "#002c36",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d9e5e7",
+                        "inverse-primary": "#ffb3b5",
+                        "inverse-surface": "#2f3131",
+                        "surface-dim": "#dadada",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline": "#8c7071",
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "tertiary-fixed": "#b6ebfb",
+                        "on-surface": "#1a1c1c",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#570013",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Public Sans", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.surface'); }
+        .ambient-shadow { box-shadow: 0px 8px 32px rgba(26, 28, 28, 0.06); }
+        .bg-map-watermark {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="%23e2e2e2" stroke-width="0.5"><path d="M20,80 Q40,20 80,40 T90,90 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body text-on-surface antialiased min-h-screen relative overflow-hidden flex flex-col">
+<!-- Watermark Map Background -->
+<div aria-hidden="true" class="absolute inset-0 z-0 pointer-events-none bg-map-watermark"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/80 backdrop-blur-xl shadow-[0px_8px_32px_rgba(0,0,0,0.06)]">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-zinc-100/50 transition-colors active:scale-95 duration-200 ease-in-out text-primary">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<span class="font-headline text-lg font-extrabold uppercase tracking-widest text-primary">The Sovereign Archive</span>
+<button class="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border border-outline-variant/15 hover:bg-zinc-100/50 transition-colors active:scale-95 duration-200 ease-in-out">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="close up portrait of a professional black man with a serious expression, cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3z4cis3cnCq4K8fqPCBBztfsj_dfOHpNCsjjyCreIF4fRXyA488XLoGOTbKEHdVag-qyXykpsaE_RRULoBzyGrxxqzLRv6PZcDTld4-Ir99e8jP_DHkwaasuvvJLPb-WTOL7uf2HwiinISmbKZXn96gYcpK12HbLH-rcM9OxLRqJdFeNEWg0Nko_Ypv61Vw98UyH0wT-EeK6BvX0AJwnPv3dkXCPZ8qBnDNPOGb7IooI7f5RFS6Lw10XeQWCIZCv1mCiuL3gbzDf3"/>
+</button>
+</header>
+<!-- Main Content Canvas (Mobile Optimized, Asymmetric Layout) -->
+<main class="flex-1 w-full max-w-lg mx-auto z-10 pt-28 pb-32 pl-6 pr-8 flex flex-col relative">
+<!-- Context Label -->
+<div class="mb-4">
+<span class="font-body text-[10px] font-bold uppercase tracking-widest text-secondary px-3 py-1 bg-surface-container-high rounded-full">
+                Texto com Jindungo
+            </span>
+</div>
+<!-- Headline -->
+<h1 class="font-headline text-4xl font-extrabold tracking-tighter text-on-surface leading-tight mb-8">
+            A Economia Informal de Luanda no Pós-Guerra
+        </h1>
+<!-- Locked Content Card (Glassmorphism & Depth) -->
+<div class="mt-4 bg-surface-container-lowest rounded-xl p-8 flex flex-col items-center text-center ambient-shadow relative overflow-hidden border border-outline-variant/15">
+<!-- Decorative background gradient inside card -->
+<div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-primary-container"></div>
+<div class="w-20 h-20 rounded-full bg-surface-container-low flex items-center justify-center mb-6 shadow-inner">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<h2 class="font-headline text-xl font-bold text-on-surface mb-3 tracking-tight">
+                Arquivo Fechado
+            </h2>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed mb-8">
+                Este documento contém análises aprofundadas e dados sensíveis exclusivos para curadores autorizados. Por favor, solicite acesso para ler a pesquisa completa.
+            </p>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-body font-bold py-3.5 px-6 rounded-md shadow-md active:scale-95 transition-transform duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">key</span>
+                Solicitar Acesso à Leitura
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/90 backdrop-blur-2xl rounded-t-3xl shadow-[0px_-8px_32px_rgba(0,0,0,0.06)] z-50 md:hidden border-t-0">
+<!-- Item 1: Início -->
+<button class="flex flex-col items-center justify-center text-secondary px-3 py-1.5 hover:text-primary transition-colors scale-100 active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1 text-[22px]">home</span>
+<span class="font-body text-[10px] uppercase tracking-wider font-semibold">Início</span>
+</button>
+<!-- Item 2: Aprender (ACTIVE) -->
+<button class="flex flex-col items-center justify-center bg-primary-fixed text-primary rounded-xl px-3 py-1.5 transition-all scale-100 active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1 text-[22px]" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-body text-[10px] uppercase tracking-wider font-bold">Aprender</span>
+</button>
+<!-- Item 3: Jogar -->
+<button class="flex flex-col items-center justify-center text-secondary px-3 py-1.5 hover:text-primary transition-colors scale-100 active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1 text-[22px]">sports_esports</span>
+<span class="font-body text-[10px] uppercase tracking-wider font-semibold">Jogar</span>
+</button>
+<!-- Item 4: Participar -->
+<button class="flex flex-col items-center justify-center text-secondary px-3 py-1.5 hover:text-primary transition-colors scale-100 active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1 text-[22px]">groups</span>
+<span class="font-body text-[10px] uppercase tracking-wider font-semibold">Participar</span>
+</button>
+<!-- Item 5: Perfil -->
+<button class="flex flex-col items-center justify-center text-secondary px-3 py-1.5 hover:text-primary transition-colors scale-100 active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1 text-[22px]">person</span>
+<span class="font-body text-[10px] uppercase tracking-wider font-semibold">Perfil</span>
+</button>
+</nav>
+</body></html>

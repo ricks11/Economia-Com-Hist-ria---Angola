@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuda – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FFD700",
+            "on-primary": "#000000",
+            "brand-red": "#570013",
+            "surface": "#ffffff",
+            "on-surface": "#1a1c1c",
+            "on-surface-variant": "#584141",
+            "surface-container-low": "#f9f9f9"
+          },
+          fontFamily: { body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body p-6">
+  <h1 class="text-3xl font-bold mb-8">Centro de Ajuda</h1>
+  
+  <div class="mb-8">
+    <input type="text" placeholder="Pesquisar..." class="w-full p-4 rounded-full border border-stone-200">
+  </div>
+
+  <div class="space-y-4">
+    <details class="bg-surface-container-low p-4 rounded-xl">
+      <summary class="font-bold cursor-pointer">Como citar documentos?</summary>
+      <p class="mt-2 text-sm text-on-surface-variant">Utilize a norma APA ou NP 405 disponível em cada documento.</p>
+    </details>
+    <details class="bg-surface-container-low p-4 rounded-xl">
+      <summary class="font-bold cursor-pointer">Funciona offline?</summary>
+      <p class="mt-2 text-sm text-on-surface-variant">Apenas se descarregar os ficheiros previamente.</p>
+    </details>
+  </div>
+</body>
+</html>

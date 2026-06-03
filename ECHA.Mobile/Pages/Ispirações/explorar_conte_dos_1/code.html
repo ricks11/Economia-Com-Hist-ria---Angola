@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Economia com História - Explorar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#40000b",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "secondary-container": "#d9e5e7",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "tertiary": "#002c36",
+                        "on-surface": "#1a1c1c",
+                        "outline-variant": "#e0bfbf",
+                        "inverse-surface": "#2f3131",
+                        "primary-fixed": "#ffdada",
+                        "on-primary-container": "#ff828a",
+                        "inverse-primary": "#ffb3b5",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "secondary": "#556062",
+                        "on-background": "#1a1c1c",
+                        "primary-container": "#800020",
+                        "tertiary-fixed": "#b6ebfb",
+                        "surface-tint": "#af2b3e",
+                        "surface-dim": "#dadada",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d9e5e7",
+                        "background": "#f9f9f9",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "on-tertiary-container": "#7cb0c0",
+                        "surface": "#f9f9f9",
+                        "surface-container-low": "#f3f3f3",
+                        "on-surface-variant": "#584141",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "surface-container": "#eeeeee",
+                        "on-surface": "#1a1c1c",
+                        "surface-bright": "#f9f9f9",
+                        "tertiary-container": "#004451",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container-high": "#e8e8e8",
+                        "outline": "#8c7071",
+                        "surface-variant": "#e2e2e2",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#131d1f",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-secondary-container": "#5b6668",
+                        "primary": "#570013"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="flex items-center gap-2 text-xl font-extrabold text-red-900 dark:text-red-500 font-headline tracking-tight">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span>Economia com História</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-200/50 transition-all duration-200">
+<span class="material-symbols-outlined text-stone-500" data-icon="search">search</span>
+</button>
+</header>
+<main class="pt-20 pb-24 px-6 max-w-2xl mx-auto">
+<!-- Editorial Header -->
+<section class="mb-8">
+<p class="text-on-surface-variant font-medium text-sm tracking-widest uppercase mb-2">Arquivo Digital</p>
+<h1 class="text-4xl font-extrabold text-on-surface tracking-tighter leading-none mb-4">Explorar Conteúdos</h1>
+<div class="h-1 w-12 bg-primary-container rounded-full"></div>
+</section>
+<!-- Filter Chips Section -->
+<section class="mb-10 space-y-4">
+<div class="flex items-center gap-2 overflow-x-auto scrollbar-hide -mx-6 px-6">
+<button class="bg-primary text-on-primary px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap flex items-center gap-2 shadow-lg shadow-primary/20">
+                    Todos
+                </button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="play_circle">play_circle</span>
+                    Vídeos
+                </button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="article">article</span>
+                    Textos
+                </button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="mic">mic</span>
+                    Podcasts
+                </button>
+<button class="bg-surface-container-high text-on-surface-variant px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="bolt">bolt</span>
+                    Textos com Jindungo
+                </button>
+</div>
+<div class="flex items-center gap-3 overflow-x-auto scrollbar-hide -mx-6 px-6">
+<span class="text-xs font-bold text-on-surface-variant/60 uppercase tracking-widest shrink-0">Temas</span>
+<button class="border border-outline-variant/30 text-on-surface-variant px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider">Inflação</button>
+<button class="border border-outline-variant/30 text-on-surface-variant px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider">Petróleo</button>
+<button class="border border-outline-variant/30 text-on-surface-variant px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider">Urbanização</button>
+<button class="border border-outline-variant/30 text-on-surface-variant px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap uppercase tracking-wider">Kwanza</button>
+</div>
+</section>
+<!-- Content Feed -->
+<section class="space-y-6">
+<!-- Card 1 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(26,28,28,0.04)] transition-all hover:shadow-[0_12px_48px_rgba(26,28,28,0.08)]">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Angola History" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="dramatic wide shot of Luanda skyline during twilight with golden light reflecting off modern towers and historical architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFoxUCReBKZV-IqEg5hn5wdmOUsw8N5_tO9iQ7x1oMXbJ5_XCCYxbvz3mMt-yUwnSDj_VaFa34qhDuoIk1ivmGoe5rVLp80dKR8zXTxWYjHShAWncTk29kbatUjskE9C5oW9gGyTDX6U0XxoOTgUgeshMyo057G-xHLNmw2-qL0hV07dqNkR6UfVyenTX3rk9arbg6d7gFGrL52noOgwtnYEOp_BjqBmNu4uR1iwZDFJcJT5p3vTNBN0CoIL2XKQgWiAABtg1qNV6u"/>
+<div class="absolute top-4 right-4 bg-primary/90 text-white px-2 py-1 rounded-md flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase backdrop-blur-sm">
+<span class="material-symbols-outlined text-xs" data-icon="offline_pin" style="font-variation-settings: 'FILL' 1;">offline_pin</span>
+                        Disponível Offline
+                    </div>
+<div class="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black/60 to-transparent w-full">
+<span class="bg-tertiary text-on-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter">Vídeo</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="text-xl font-bold text-on-surface mb-2 leading-tight group-hover:text-primary transition-colors">A Ascensão do Kwanza: 1977-1990</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 font-body leading-relaxed">
+                        Uma análise profunda sobre a transição monetária pós-independência e os desafios da economia centralizada.
+                    </p>
+<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="history_edu">history_edu</span>
+</div>
+<span class="text-xs font-medium text-on-surface-variant">Aula 04 • 12 min</span>
+</div>
+<button class="text-primary font-bold text-sm flex items-center gap-1 group/btn">
+                            Ver agora
+                            <span class="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(26,28,28,0.04)]">
+<div class="flex p-4 gap-4">
+<div class="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-surface-container">
+<img alt="Petroleum Industry" class="w-full h-full object-cover" data-alt="macro close-up of dark crude oil drops with metallic reflections against a warm sepia historical background texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcGOkvFjMBVmg_meH0vfqILCiXo8He3c6_HHkHvfksWD3oIZl1IzjHxSJgSIdpsuWhtbyEy74XXwv-eihnGKC4rF2Ef4UEuhPi7R0udv1XzRnhZVGg46dLoRYFbUntm_6blGGkmWT2aruIhfNORSHl_oJ5NRRZpH6AxJ6e8EsnU7BGXzFjwRhBdbX74FIy1YBpGvEZZPBhD_nZBfpEG0gmsggmAgACbww8mWLiHkaJypvGgRyvaY7oHUkq4xDCCw43KVXXw-FOpCpq"/>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="mic">mic</span>
+</div>
+</div>
+<div class="flex flex-col justify-center flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold text-primary tracking-widest uppercase">Podcast • Ep. 12</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-sm" data-icon="download_done" style="font-variation-settings: 'FILL' 1;">download_done</span>
+</div>
+<h3 class="font-bold text-on-surface leading-tight mb-1">O Ciclo do Ouro Negro</h3>
+<p class="text-on-surface-variant text-xs line-clamp-2">Como o petróleo moldou a infraestrutura urbana de Luanda nos últimos 20 anos.</p>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(26,28,28,0.04)] transition-all">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Market Scene" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="artistic atmospheric photo of a traditional open-air market in Angola with vibrant textiles and soft natural light filtering through canvas roofs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFV3PVsHqpCMrQZGJXiCRRNX1GRgW9kbTF4EQeGA7TGwyNqTia6yB_DcRUno9lQdVhRpv1aSZ5ZtNfSJseCHoFfkSjdKKw02A7sm0wn6UIf6Rxv4dv7T8THehjpZ4FaIqxWi3vDlBA9wKaUSgPZtO0mk-RpXOUSOWiN_sWTOr3pruRLF7ssmee4Zjnywm-JTbANqp5TgDUccholThWhaUc39KeJ6KDAT9F-SZnK3dIKZkCFz1r_7Th_DOD-DyXE_z3pFrLfgPSRoE8"/>
+<div class="absolute inset-0 bg-gradient-to-r from-primary/40 to-transparent"></div>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        Jindungo
+                    </div>
+</div>
+<div class="p-5">
+<h3 class="text-xl font-bold text-on-surface mb-2 leading-tight">A Economia Informal: Sobrevivência e Engenho</h3>
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">
+                        Um olhar cru e direto sobre as zungueiras e a circulação de capital fora dos circuitos bancários tradicionais.
+                    </p>
+<div class="mt-4 pt-4 border-t border-surface-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-xs font-semibold text-on-surface-variant">Leitura de 8 min</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-stone-400 text-lg" data-icon="cloud_off">cloud_off</span>
+<span class="text-[10px] font-bold text-stone-400 uppercase tracking-tighter">Apenas Online</span>
+</div>
+</div>
+</div>
+</article>
+</section>
+<!-- Stylized Map Watermark (Deconstructed) -->
+<div class="fixed bottom-20 right-[-10%] opacity-5 pointer-events-none z-0">
+<span class="material-symbols-outlined text-[300px]" data-icon="map">map</span>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 rounded-t-xl shadow-[0_-8px_32px_rgba(26,28,28,0.06)]">
+<a class="flex flex-col items-center justify-center bg-red-900/10 dark:bg-red-500/10 text-red-900 dark:text-red-400 rounded-2xl px-3 py-1.5 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Explorar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 transition-transform scale-95 active:scale-90 hover:text-red-800" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Quiz</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 transition-transform scale-95 active:scale-90 hover:text-red-800" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Fórum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 transition-transform scale-95 active:scale-90 hover:text-red-800" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Comentários</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 transition-transform scale-95 active:scale-90 hover:text-red-800" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Perfil</span>
+</a>
+</nav>
+</body></html>

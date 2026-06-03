@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public_Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#131d1f",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d9e5e7",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "primary-container": "#800020",
+                        "tertiary-fixed": "#b6ebfb",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container-highest": "#e2e2e2",
+                        "inverse-surface": "#2f3131",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "surface": "#f9f9f9",
+                        "surface-container-low": "#f3f3f3",
+                        "on-primary-container": "#ff828a",
+                        "primary": "#570013",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeeeee",
+                        "primary-fixed": "#ffdada",
+                        "background": "#f9f9f9",
+                        "on-secondary-container": "#5b6668",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "tertiary": "#002c36",
+                        "on-background": "#1a1c1c",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "surface-bright": "#f9f9f9",
+                        "inverse-primary": "#ffb3b5",
+                        "surface-tint": "#af2b3e",
+                        "secondary-container": "#d9e5e7",
+                        "tertiary-container": "#004451",
+                        "on-surface-variant": "#584141",
+                        "outline-variant": "#e0bfbf",
+                        "surface-variant": "#e2e2e2",
+                        "secondary": "#556062",
+                        "on-surface": "#1a1c1c",
+                        "on-tertiary-container": "#7cb0c0",
+                        "on-primary-fixed": "#40000b",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8c7071",
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-red-900" data-icon="signal_wifi_off">signal_wifi_off</span>
+<h1 class="font-headline font-bold tracking-tight text-red-950 text-lg">Ranking Regional</h1>
+</div>
+<div class="flex items-center">
+<span class="font-headline font-bold tracking-tight text-red-900 px-4 py-1.5 bg-red-50 rounded-full text-sm">Kz 0.00</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Hero Ranking Card: Podium Visual -->
+<section class="mb-10 relative">
+<div class="absolute -z-10 top-0 right-0 w-48 h-48 opacity-10 pointer-events-none" data-location="Angola" style="">
+<img alt="Angola Map Watermark" class="w-full h-full object-contain filter grayscale" data-alt="Stylized map outline of Angola used as a subtle background watermark in a professional archive style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSBMQb6TNLINgStQWxP5oSJy-eetJQfS9hTh0_OG1qiuzxXEqx9DI2fsdWom4Mh53ZYOplrY-4O1zUt9Op2u-NNHCODpRHyj9veImXcHueclQwYSAkeHTF7YS21VpALmr9sK3gZEWmISlAKYMzRC11X0eLqoYxTYykpKev-tFBoRO2UGFEN7Gq-L9ZtKK9vdvD7Zeei6N0FWTQV1R9onvr6wD14j4YUuc0NUjT6mhy3iYnB_gEPUrN5xCoVhciJH--h3Drv0LtbNX-"/>
+</div>
+<div class="grid grid-cols-3 gap-2 items-end mb-8">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center">
+<div class="relative mb-2">
+<img class="w-14 h-14 rounded-full bg-surface-container-high p-0.5 border-2 border-surface-container-highest" data-alt="Portrait of a young Angolan man with a friendly expression, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8QAXmzoUrR2MqFIfIlMPs_TCIVzskRBPymV0Xh_dDvcVXuo91CQvpVHYi5ggMHt5e778furWJ4N1ODqZbTJqGNhe37qBrskCPdpOKgEedeT1jMRyjQIdRmLC6MigmnVgwpOKXfyqsuQNvxcOJH-_Z1cEC06i_Jl_n-Tvfvm9eY7a2z9iQUsk0YrMeuz2NYNaQ5VxUdzqMEgV_N0G8XqpoJLjYDnw_1Kn4o_azMKz-8GB2qH4SfTmm_AuSYrfRqYDXjnqwEOx9ncDH"/>
+<div class="absolute -bottom-1 -right-1 bg-surface-variant text-on-surface text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">2</div>
+</div>
+<span class="text-xs font-semibold truncate w-full text-center">João M.</span>
+<span class="text-[10px] text-on-surface-variant">12,450 pts</span>
+</div>
+<!-- Rank 1 -->
+<div class="flex flex-col items-center">
+<div class="relative mb-3">
+<img class="w-20 h-20 rounded-full bg-primary-fixed p-1 border-4 border-primary-container" data-alt="Portrait of an Angolan woman with a bright smile, professional studio lighting, warm tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG6Ps-pO9H_CcUyCmebQ211uXMzt5wTrHtjEauSeLXseLSdVnxV-pECedxG-5L-MCOI9LXfdtvdystKlRCPXPfBbEM_eEBRAV9zQuGQiuGQ3PT1ZaR5btOgHtr-uRgETRgZz-dw8zLK5iUYtn4aCnEfHmypZkiEQHBSDGivXoHnmIoGA3HwlT752UYaUkeHLPQZth4ZJYdq7rnojCa5MVG6yXtnqPJsTAky3wFXmYFZjZ3PjaztCaJ1DuhrAxX534Eh0fVhBo_6Fyh"/>
+<div class="absolute -bottom-1 -right-1 bg-primary-container text-white text-[12px] font-bold w-7 h-7 flex items-center justify-center rounded-full border-2 border-white">1</div>
+</div>
+<span class="text-sm font-bold truncate w-full text-center">Ana Paula</span>
+<span class="text-xs font-bold text-primary">15,800 pts</span>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center">
+<div class="relative mb-2">
+<img class="w-14 h-14 rounded-full bg-surface-container-high p-0.5 border-2 border-outline-variant/30" data-alt="Portrait of a teenage student with glasses, neutral background, sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnIXZ5VCWAHmICCAAIKfE83JS1VX93Iges1agO6s-_toOZlEnR8QNrz0M1AttV_20yVSJ4NhgRvTFf7uylfLPrGCuy12pCtpePsIPqAL_ofyIKDjaqUZO5kx8Wnqzo48dRjuj84WW1-pIdxpO0KBZxULK5dXLEpabtI4YxENiPE1mSeHPYwltFJWIS5ZNv0w4emxruzcOswC4XioQ9KN-8q6RJzbh3RAyZhJ2eQ-O9WqSloKyHTL_1DYbGLEYVc9qE3QzUfOgboqaH"/>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-highest text-on-surface text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">3</div>
+</div>
+<span class="text-xs font-semibold truncate w-full text-center">Carlos D.</span>
+<span class="text-[10px] text-on-surface-variant">10,120 pts</span>
+</div>
+</div>
+</section>
+<!-- Segmented Control -->
+<nav class="flex p-1 bg-surface-container-high rounded-xl mb-8">
+<button class="flex-1 py-2 text-xs font-bold rounded-lg bg-white shadow-sm text-primary">Geral</button>
+<button class="flex-1 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface transition-colors">Escola</button>
+<button class="flex-1 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface transition-colors">Província</button>
+</nav>
+<!-- Leaderboard List -->
+<div class="space-y-4">
+<!-- User Rank Item -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-xl shadow-sm transition-transform active:scale-[0.98]">
+<span class="w-6 text-center font-headline font-extrabold text-on-surface-variant">4</span>
+<img class="w-10 h-10 rounded-full" data-alt="Close up avatar of a person in a modern digital painting style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBepu72bAsGG-cY_iTpAQmcOn8x4SlmT6Nd4ur-FtvhDf6bDqZpn4DKwO1MPltvuTqL-FeDLoBuDAMX8N8hQVGPSK8r7vErTC-02GEUK3kOvcMKiuaUhIExb3V_Md5F0puMGv4lB4n9oc26UnW8MtLCu_WcmDExAsPbGr_pY7O37gMpL6fPak8K8c9jwErosT4j_PwYd2-eC3wFGNlb9_qapin3FXqH8K9JJPWhMwhEzSYRYcJnnNR0XdSWccMuw_3x2IQIp3N7Dd5w"/>
+<div class="flex-1">
+<h3 class="text-sm font-bold text-on-surface">Marta Sebastião</h3>
+<p class="text-[11px] text-on-surface-variant">Luanda, Angola</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-bold text-tertiary">9,840</span>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">PTS</p>
+</div>
+</div>
+<!-- Current User Highlighted Card -->
+<div class="flex items-center gap-4 p-4 bg-yellow-50 border border-yellow-200/50 rounded-xl shadow-md transform scale-[1.02] z-10">
+<span class="w-6 text-center font-headline font-extrabold text-primary">12</span>
+<img class="w-12 h-12 rounded-full border-2 border-primary/20" data-alt="Self-portrait style avatar of a young professional, warm lighting, approachable look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWl3_7arl-oyxOAIbCB0pywfkl1L6s_FBA46OYEVNnbyQJBxt25qfDkIi7vcPfs9RHew7AHWuc_Rl12cY_wNK88nhJnTaqhdyzm34ZLrE7cIe_S4ApnBV3pVUDOi85E8a7zuraBADqSEgqWZoeSLMg6zCtdeCgNIv9Bb8bzzO6yRdA2cqMuY6MT0cz-HBTkP_lhpuCmZqlado4Q3YT25vwnZi5yZPLH9aSOAbt-_rBj4Jb6JUfo63kLz-Fmn95_9zou_dgBpcpSurh"/>
+<div class="flex-1">
+<h3 class="text-sm font-extrabold text-primary">Tu (Francisco)</h3>
+<p class="text-[11px] text-on-primary-fixed-variant">Sua posição atual</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-extrabold text-primary-container">4,210</span>
+<p class="text-[10px] text-primary/60 uppercase tracking-wider">PTS</p>
+</div>
+</div>
+<!-- More Users -->
+<div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-xl shadow-sm">
+<span class="w-6 text-center font-headline font-extrabold text-on-surface-variant">5</span>
+<img class="w-10 h-10 rounded-full" data-alt="Digital avatar of a man with short hair and a focused look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwdFfWb9F_NI36WdscbnjGHW_zfVtLUvjSzJ3ahqdyVifsQYuqsbZLjtPCdb4Uqq0BS6AbEDxzIEmKOOp-kftkMkVjh7oOp0BvbSoLth-l8P32snCCww2OUe1G9EyaXbnBiFBd9hR_zoLblmPn7py3zdi_HnDoghypleK0ENloMeUHhaSFbBSnrG5s2u8u-re32srLOwQf_13ZiU1SBjjczy27bO_ZBv5ShuFGXmqujzZ9Tff-9OEavKRwBkr2K8CelrvDe61ojfNf"/>
+<div class="flex-1">
+<h3 class="text-sm font-bold text-on-surface">Beatriz Costa</h3>
+<p class="text-[11px] text-on-surface-variant">Benguela</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-bold text-tertiary">8,200</span>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">PTS</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-xl shadow-sm">
+<span class="w-6 text-center font-headline font-extrabold text-on-surface-variant">6</span>
+<img class="w-10 h-10 rounded-full" data-alt="Digital avatar of a woman with braided hair and a professional demeanor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6nsSVMAy1QevRtp681gyaEgIOnMwFVtjlZxBUKOtE8RsLTfvkaSIHHB_U-gUhHiEn3Fz5EE34sDphSUniDTTcxJ2fAi0FjJ-buv6LrqBk97-wtcBEx2rRbW5CBERO5w8716K_tHi5LkIgAjDNdmTyl70vD1rhb008Saef8Yezmi4YQku-U4VEyei2vzWnhKtN4nq1qU7qQA3APSUQpz0xCoCRbyRSCOkU9AzVXTKqdvHXnkNoz750z_FcdyTjjWD1ckzxusPYB5Ws"/>
+<div class="flex-1">
+<h3 class="text-sm font-bold text-on-surface">André Vunge</h3>
+<p class="text-[11px] text-on-surface-variant">Huambo</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-bold text-tertiary">7,950</span>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">PTS</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container-lowest rounded-xl shadow-sm">
+<span class="w-6 text-center font-headline font-extrabold text-on-surface-variant">7</span>
+<img class="w-10 h-10 rounded-full" data-alt="Avatar of a male user with a clean and modern illustration style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN2k91CO62Hq2QFc0HnWJOveLvriVrbXvaXNXgfqAc6cu6U2xlm_t_qGNWRsxBgfLvmFRdpUi9rfrNC-sg6Klg8kxSBPkePQ5vhXVvAC_bMRnA7lOBqgft2m778o9X54cRJdUppeIKwaaXdwkwxdcaCHi_XIP39Zy11868hnbmp7p1HQZSSr35qpRrfw7KfWhuTBP6E39xz4ChBqzeyGi6uZqBg4638i05FtDnuFPMWSpqQ9xV9B8csO39W1Rymn2ET8UcXw1ArJ15"/>
+<div class="flex-1">
+<h3 class="text-sm font-bold text-on-surface">Teresa G.</h3>
+<p class="text-[11px] text-on-surface-variant">Cabinda</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-bold text-tertiary">7,100</span>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">PTS</p>
+</div>
+</div>
+</div>
+<!-- Footer Incentive Card -->
+<div class="mt-12 p-6 bg-tertiary rounded-2xl text-white relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-headline font-bold text-lg mb-2">Suba no Ranking!</h4>
+<p class="text-sm text-tertiary-fixed opacity-80 mb-4">Complete o módulo "História da Moeda" para ganhar +500 pontos hoje.</p>
+<button class="px-6 py-2 bg-primary-fixed text-primary font-bold rounded-lg text-sm transition-all active:scale-95">Aprender Agora</button>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl opacity-10 rotate-12" data-icon="trending_up">trending_up</span>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-white/80 backdrop-blur-md shadow-[0_-8px_32px_rgba(26,28,28,0.06)] rounded-t-xl z-50">
+<div class="flex flex-col items-center justify-center text-neutral-500 px-3 py-1 hover:bg-neutral-100 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label text-[11px] font-medium">Início</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 px-3 py-1 hover:bg-neutral-100 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="school">school</span>
+<span class="font-label text-[11px] font-medium">Aprender</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 px-3 py-1 hover:bg-neutral-100 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="sports_esports">sports_esports</span>
+<span class="font-label text-[11px] font-medium">Jogar</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-red-50 text-red-900 rounded-2xl px-3 py-1 active:scale-90 duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="groups">groups</span>
+<span class="font-label text-[11px] font-bold">Participar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-neutral-500 px-3 py-1 hover:bg-neutral-100 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label text-[11px] font-medium">Perfil</span>
+</div>
+</nav>
+</body></html>

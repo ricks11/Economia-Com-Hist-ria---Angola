@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:models="clr-namespace:ECHA.Mobile.Models"
+             x:Class="ECHA.Mobile.Pages.QuizListPage"
+             x:DataType="pageModels:QuizListPageModel"
+             Title="Quizzes">
+
+    <CollectionView ItemsSource="{Binding Quizzes}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:QuizDto">
+                <Frame Margin="10">
+                    <StackLayout>
+                        <Label Text="{Binding Titulo}" FontAttributes="Bold" />
+                        <Label Text="{Binding Tema}" />
+                    </StackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

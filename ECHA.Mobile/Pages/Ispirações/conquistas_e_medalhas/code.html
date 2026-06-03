@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public_Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#131d1f",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d9e5e7",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "primary-container": "#800020",
+                        "tertiary-fixed": "#b6ebfb",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container-highest": "#e2e2e2",
+                        "inverse-surface": "#2f3131",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "surface": "#f9f9f9",
+                        "surface-container-low": "#f3f3f3",
+                        "on-primary-container": "#ff828a",
+                        "primary": "#570013",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeeeee",
+                        "primary-fixed": "#ffdada",
+                        "background": "#f9f9f9",
+                        "on-secondary-container": "#5b6668",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "tertiary": "#002c36",
+                        "on-background": "#1a1c1c",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "surface-bright": "#f9f9f9",
+                        "inverse-primary": "#ffb3b5",
+                        "surface-tint": "#af2b3e",
+                        "secondary-container": "#d9e5e7",
+                        "tertiary-container": "#004451",
+                        "on-surface-variant": "#584141",
+                        "outline-variant": "#e0bfbf",
+                        "surface-variant": "#e2e2e2",
+                        "secondary": "#556062",
+                        "on-surface": "#1a1c1c",
+                        "on-tertiary-container": "#7cb0c0",
+                        "on-primary-fixed": "#40000b",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8c7071",
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<nav class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-red-900 dark:text-red-500">arrow_back</span>
+<h1 class="font-headline font-bold tracking-tight text-red-950 dark:text-red-400 text-lg">Minhas Conquistas</h1>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-headline font-bold text-red-900 dark:text-red-500">Kz 2.450,00</span>
+</div>
+</nav>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Profile Summary Section (Asymmetric Editorial Layout) -->
+<section class="mb-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+<div class="md:col-span-8">
+<p class="text-on-surface-variant font-medium tracking-wide mb-2 uppercase text-xs">Jornada do Curador</p>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-primary tracking-tight leading-tight mb-6">
+                    Seu progresso na <br/><span class="text-tertiary">História de Angola</span>
+</h2>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="w-3/5 h-full bg-gradient-to-r from-primary to-primary-container"></div>
+</div>
+<div class="flex justify-between mt-3 text-sm font-medium">
+<span>12 de 20 Insígnias</span>
+<span class="text-on-surface-variant">60% Concluído</span>
+</div>
+</div>
+<div class="md:col-span-4 hidden md:block">
+<div class="relative aspect-square rounded-xl overflow-hidden shadow-2xl rotate-3">
+<img alt="Angolan Culture" class="object-cover w-full h-full grayscale opacity-40" data-alt="abstract close-up of traditional Angolan textile patterns with rich textures and deep shadows in a museum lighting setup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPfCVDaR66PNzQHuifurBH6CRcMTJ7XWjPLlpN9rMpLwgnKdGJgBzKyLYaFq1Ohr69iam0HmwDfQwiefTPQPg66PzuGRjlsdyIBlWvjwI86FTOn3zijS1_bVpMfYEkJa4PnndIrqQ10PoWWYeZ1_BgpNGwBLPR2IMg154VeU-g-285F0cd_jlHu-c-nl3xY0RlM0DFafFjSpnyRazeeLrcgmHq26qTciX3WlWX5tNabpGvTM3bGNf9FCqkCjYg6m-8M0t_NJ0YhAlz"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
+</div>
+</div>
+</section>
+<!-- Achievements Grid -->
+<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 md:gap-10">
+<!-- Unlocked Badge 1 -->
+<div class="group relative flex flex-col items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-lowest shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center justify-center p-4 border border-outline-variant/15 transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-semibold text-center leading-tight">Banco Nacional</p>
+<!-- Tooltip / How to Earn -->
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Conclua o módulo 'Origens do Kwanza' com nota máxima.</p>
+</div>
+</div>
+<!-- Unlocked Badge 2 -->
+<div class="group relative flex flex-col items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-lowest shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center justify-center p-4 border border-outline-variant/15 transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-gradient-to-br from-tertiary to-tertiary-container flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-semibold text-center leading-tight">Arquivista Mor</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Leia 50 artigos sobre a economia colonial.</p>
+</div>
+</div>
+<!-- Unlocked Badge 3 -->
+<div class="group relative flex flex-col items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-lowest shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center justify-center p-4 border border-outline-variant/15 transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-gradient-to-br from-yellow-600 to-yellow-800 flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">oil_barrel</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-semibold text-center leading-tight">Barão do Petróleo</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Ganhe o desafio 'Boom do Lobito'.</p>
+</div>
+</div>
+<!-- Locked Badge 1 (Grayscale) -->
+<div class="group relative flex flex-col items-center opacity-60">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-low flex items-center justify-center p-4 border border-dashed border-outline-variant transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-neutral-300 dark:bg-neutral-700 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined text-neutral-500 text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 0;">lock</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-medium text-center text-on-surface-variant leading-tight">Reforma 1990</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Desbloqueie o capítulo sobre a Transição Económica.</p>
+</div>
+</div>
+<!-- Locked Badge 2 -->
+<div class="group relative flex flex-col items-center opacity-60">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-low flex items-center justify-center p-4 border border-dashed border-outline-variant transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-neutral-300 dark:bg-neutral-700 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined text-neutral-500 text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 0;">agriculture</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-medium text-center text-on-surface-variant leading-tight">Rei do Café</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Complete a simulação de exportação do Uíge.</p>
+</div>
+</div>
+<!-- Locked Badge 3 -->
+<div class="group relative flex flex-col items-center opacity-60">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-low flex items-center justify-center p-4 border border-dashed border-outline-variant transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-neutral-300 dark:bg-neutral-700 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined text-neutral-500 text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 0;">diamond</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-medium text-center text-on-surface-variant leading-tight">Lunda Norte</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Explore todos os marcos geográficos de mineração.</p>
+</div>
+</div>
+<!-- More grid items for visual rhythm -->
+<div class="group relative flex flex-col items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-lowest shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center justify-center p-4 border border-outline-variant/15 transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">directions_boat</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-semibold text-center leading-tight">Porto de Luanda</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Complete o módulo de Comércio Exterior.</p>
+</div>
+</div>
+<div class="group relative flex flex-col items-center">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-lowest shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center justify-center p-4 border border-outline-variant/15 transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-gradient-to-br from-tertiary to-tertiary-container flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 1;">train</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-semibold text-center leading-tight">Caminho de Ferro</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Estude a história da malha ferroviária nacional.</p>
+</div>
+</div>
+<div class="group relative flex flex-col items-center opacity-60">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-surface-container-low flex items-center justify-center p-4 border border-dashed border-outline-variant transition-transform active:scale-95 duration-200">
+<div class="w-full h-full rounded-full bg-neutral-300 dark:bg-neutral-700 flex items-center justify-center grayscale">
+<span class="material-symbols-outlined text-neutral-500 text-3xl md:text-4xl" style="font-variation-settings: 'FILL' 0;">museum</span>
+</div>
+</div>
+<p class="mt-3 text-xs md:text-sm font-medium text-center text-on-surface-variant leading-tight">Mestre Curador</p>
+<div class="absolute top-full mt-2 w-40 p-3 bg-surface-container-lowest shadow-xl rounded-xl border border-outline-variant/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="text-[10px] uppercase font-bold text-primary mb-1">Como ganhar</p>
+<p class="text-xs text-on-surface-variant">Complete todos os desafios de trivia histórica.</p>
+</div>
+</div>
+</div>
+<!-- Achievement Narrative (Bento-style info card) -->
+<section class="mt-20">
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center overflow-hidden relative">
+<div class="md:w-2/3 z-10">
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-4">Próximo Marco: Visionário Económico</h3>
+<p class="text-on-surface-variant leading-relaxed">Você está a apenas 3 módulos de desbloquear a insígnia mais rara da plataforma. Ao completar o estudo sobre as 'Reformas de 2017', você receberá o título de Visionário e terá acesso a documentos exclusivos do arquivo nacional digitalizado.</p>
+<button class="mt-6 px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-lg font-bold text-sm shadow-lg active:scale-95 transition-transform">
+                        Continuar Aprendizado
+                    </button>
+</div>
+<div class="md:w-1/3 flex justify-center z-10">
+<span class="material-symbols-outlined text-[120px] text-primary/10" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+<!-- Stylized Watermark Map -->
+<div class="absolute -right-10 -bottom-10 opacity-[0.03] pointer-events-none">
+<span class="material-symbols-outlined text-[300px]">map</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-[0_-8px_32px_rgba(26,28,28,0.06)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors rounded-2xl active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Início</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors rounded-2xl active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Aprender</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors rounded-2xl active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Jogar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors rounded-2xl active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium">Participar</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-red-50 dark:bg-red-900/30 text-red-900 dark:text-red-100 rounded-2xl px-3 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Public_Sans'] text-[11px] font-bold">Perfil</span>
+</a>
+</footer>
+</body></html>

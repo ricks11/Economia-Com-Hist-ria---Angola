@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bem-vindo – Economia com História – Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FFD700",
+            "on-primary": "#000000",
+            "brand-red": "#570013",
+            "surface": "#ffffff",
+            "on-surface": "#1a1c1c",
+            "on-surface-variant": "#584141"
+          },
+          fontFamily: { headline: ["Public Sans"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body h-screen flex flex-col items-center justify-center p-6 text-center">
+  <div class="mb-10 w-24 h-24 bg-brand-red/10 rounded-3xl flex items-center justify-center">
+    <span class="material-symbols-outlined text-brand-red text-5xl">history_edu</span>
+  </div>
+  
+  <h1 class="font-headline font-extrabold text-3xl text-on-surface leading-tight mb-4">
+    Economia com História<br/>
+    <span class="text-brand-red">Angola</span>
+  </h1>
+  
+  <p class="text-on-surface-variant text-base mb-12 max-w-xs leading-relaxed">
+    Aprender e transformar realidades através da preservação da narrativa económica nacional.
+  </p>
+  
+  <button class="w-full max-w-xs py-4 bg-primary text-on-primary rounded-full font-bold shadow-md hover:scale-105 transition-transform">
+    Entrar no Portal
+  </button>
+</body>
+</html>

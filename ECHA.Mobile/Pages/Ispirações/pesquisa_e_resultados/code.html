@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FFD700",
+            "on-primary": "#000000",
+            "brand-red": "#570013",
+            "surface": "#ffffff",
+            "on-surface": "#1a1c1c",
+            "surface-container-low": "#f9f9f9"
+          },
+          fontFamily: { body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body p-6">
+  <h1 class="text-3xl font-bold mb-6">Resultados</h1>
+  
+  <div class="mb-6">
+    <input type="text" placeholder="Café em Angola..." class="w-full p-4 rounded-full bg-surface-container-low border-none">
+  </div>
+  
+  <div class="space-y-4">
+    <div class="p-4 rounded-xl border border-stone-100">
+      <h3 class="font-bold">Ciclo do Café (1870-1970)</h3>
+      <p class="text-sm text-on-surface-variant">Análise da transformação económica.</p>
+    </div>
+    <div class="p-4 rounded-xl border border-stone-100">
+      <h3 class="font-bold">Relatório Porto Luanda 1952</h3>
+      <p class="text-sm text-on-surface-variant">Documento original digitalizado.</p>
+    </div>
+  </div>
+</body>
+</html>

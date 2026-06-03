@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Public_Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#3e494b",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#40000b",
+                    "tertiary-fixed-dim": "#9acfde",
+                    "secondary-container": "#d9e5e7",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary": "#002c36",
+                    "on-surface": "#1a1c1c",
+                    "outline-variant": "#e0bfbf",
+                    "inverse-surface": "#2f3131",
+                    "primary-fixed": "#ffdada",
+                    "on-primary-container": "#ff828a",
+                    "inverse-primary": "#ffb3b5",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-tertiary-fixed-variant": "#114d5b",
+                    "secondary": "#556062",
+                    "on-background": "#1a1c1c",
+                    "primary-container": "#800020",
+                    "tertiary-fixed": "#b6ebfb",
+                    "surface-tint": "#af2b3e",
+                    "surface-dim": "#dadada",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d9e5e7",
+                    "background": "#f9f9f9",
+                    "primary-fixed-dim": "#ffb3b5",
+                    "on-primary-fixed-variant": "#8e0f28",
+                    "on-tertiary-container": "#7cb0c0",
+                    "surface": "#f9f9f9",
+                    "surface-container-low": "#f3f3f3",
+                    "on-surface-variant": "#584141",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#bdc9cb",
+                    "surface-container": "#eeeeee",
+                    "on-surface": "#1a1c1c",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#f9f9f9",
+                    "tertiary-container": "#004451",
+                    "surface-container-highest": "#e2e2e2",
+                    "surface-container-high": "#e8e8e8",
+                    "outline": "#8c7071",
+                    "surface-variant": "#e2e2e2",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#131d1f",
+                    "on-tertiary-fixed": "#001f26",
+                    "on-secondary-container": "#5b6668",
+                    "primary": "#570013"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .angola-mask {
+            mask-image: url('https://img.icons8.com/ios-filled/500/angola.png');
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            mask-position: center;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="text-xl font-extrabold text-red-900 dark:text-red-500 flex items-center gap-2 font-headline tracking-tight">
+<span class="material-symbols-outlined text-red-900 dark:text-red-500">map</span>
+<span>Economia com História</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-all duration-200">
+<span class="material-symbols-outlined text-stone-500">settings</span>
+</button>
+</header>
+<main class="pt-20 px-6 max-w-2xl mx-auto">
+<!-- Hero Profile Section -->
+<section class="relative mb-8 pt-4">
+<!-- Background Graphic -->
+<div class="absolute -right-12 -top-4 w-48 h-48 bg-primary-container/5 rounded-full blur-3xl -z-10"></div>
+<div class="flex flex-col items-center">
+<div class="relative mb-4">
+<img alt="User Profile" class="w-28 h-28 rounded-full object-cover shadow-xl border-4 border-surface-container-lowest" data-alt="Close up portrait of a young Angolan professional woman smiling with a warm background and natural sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbclHZauKzeFQricWWYzr3U16Iz20R9FcBu3ga2kdwS9I4660wMYBAs692JRNbOEy3D026xSoAz14XttFl48nbuja7CWxjlWPc3DRIqaCcJoShK3xrU6FScf8G1hbx4pII0OsfXlbCPJKhYmuXOXfn3Dcpz2-G2ThfaD6ncj4i62R0upY7oxUYJoS-JJtepMIYM9Lf335hYEkVLCEHZjNQqtFtffFSiCzc1Ak-bbvuwSa9AjF-S2tPQHx6CsEwtQaN4HLOGRrVF43w"/>
+<div class="absolute bottom-1 right-1 bg-tertiary text-on-tertiary rounded-full p-1.5 shadow-lg">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<h1 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight">Kátia dos Santos</h1>
+<p class="text-on-surface-variant font-medium text-sm mt-1">Curadora de Nível 4 • Luanda</p>
+</div>
+<!-- Badges Section -->
+<div class="mt-8">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-headline font-bold text-on-surface">Badges Conquistadas</h2>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Ver Todos</span>
+</div>
+<div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+<div class="flex-shrink-0 flex flex-col items-center gap-2 w-20">
+<div class="w-16 h-16 bg-surface-container-low rounded-2xl flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight">Pioneira Económica</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2 w-20">
+<div class="w-16 h-16 bg-surface-container-low rounded-2xl flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight">Historiadora Local</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2 w-20">
+<div class="w-16 h-16 bg-surface-container-low rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">diamond</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight">Expert em Diamantes</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center gap-2 w-20">
+<div class="w-16 h-16 bg-surface-container-low rounded-2xl flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-3xl">lock</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight text-on-surface-variant">???</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Subscription CTA -->
+<section class="mb-10">
+<div class="relative overflow-hidden bg-primary-container rounded-2xl p-6 shadow-2xl">
+<!-- Abstract Map Pattern -->
+<div class="absolute right-[-20%] top-[-20%] w-64 h-64 opacity-10 pointer-events-none angola-mask bg-white"></div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-on-primary-container uppercase tracking-widest mb-3">Premium Access</span>
+<h3 class="font-headline text-2xl font-bold text-white mb-2 leading-tight">Conteúdos Exclusivos</h3>
+<p class="text-on-primary-container text-sm font-medium mb-6 leading-relaxed opacity-90">Acesse relatórios profundos sobre a economia colonial e dados exclusivos de 2024.</p>
+<button class="w-full bg-surface-container-lowest text-primary py-3 rounded-lg font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        Subscrever por 1.500 Kz/mês
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Learning History -->
+<section class="mb-10">
+<h2 class="font-headline font-bold text-lg mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                Atividade Recente
+            </h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest p-5 rounded-2xl shadow-[0_8px_32px_rgba(26,28,28,0.04)] col-span-2">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">Histórico de Aprendizagem</p>
+<h4 class="font-headline font-bold text-base">Indústria de Petróleo (1950)</h4>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-1 rounded text-[10px] font-bold">85% Completo</span>
+</div>
+<div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary w-[85%] h-full"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-2xl">
+<span class="material-symbols-outlined text-primary mb-2">quiz</span>
+<h4 class="font-headline font-bold text-sm">Meus Quizzes</h4>
+<p class="text-3xl font-black text-on-surface mt-2">12</p>
+<p class="text-[10px] font-medium text-on-surface-variant mt-1">Concluídos com sucesso</p>
+</div>
+<div class="bg-surface-container-low p-5 rounded-2xl">
+<span class="material-symbols-outlined text-tertiary mb-2">download_for_offline</span>
+<h4 class="font-headline font-bold text-sm">Offline</h4>
+<p class="text-3xl font-black text-on-surface mt-2">4</p>
+<p class="text-[10px] font-medium text-on-surface-variant mt-1">Módulos guardados</p>
+</div>
+</div>
+</section>
+<!-- Settings List -->
+<section class="mb-10 space-y-2">
+<h2 class="font-headline font-bold text-lg mb-4">Gestão e Privacidade</h2>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low/50 rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person_outline</span>
+</div>
+<span class="font-bold text-sm">Detalhes da Conta</span>
+</div>
+<span class="material-symbols-outlined text-stone-400">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low/50 rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">cloud_download</span>
+</div>
+<span class="font-bold text-sm">Gerenciar Downloads</span>
+</div>
+<span class="material-symbols-outlined text-stone-400">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low/50 rounded-xl hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">lock_reset</span>
+</div>
+<span class="font-bold text-sm">Alterar Password</span>
+</div>
+<span class="material-symbols-outlined text-stone-400">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-error/5 rounded-xl hover:bg-error/10 transition-colors group mt-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<span class="font-bold text-sm text-error">Sair da Conta</span>
+</div>
+</button>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 rounded-t-xl shadow-[0_-8px_32px_rgba(26,28,28,0.06)]">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 dark:hover:text-red-300 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Explorar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 dark:hover:text-red-300 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Quiz</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 dark:hover:text-red-300 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Fórum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 dark:hover:text-red-300 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Comentários</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-red-900/10 dark:bg-red-500/10 text-red-900 dark:text-red-400 rounded-2xl px-3 py-1.5 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Perfil</span>
+</a>
+</nav>
+</body></html>
