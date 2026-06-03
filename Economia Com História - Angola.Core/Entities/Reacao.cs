@@ -14,6 +14,6 @@ public class Reacao
     public Utilizador Utilizador { get; set; } = null!;
     public int? TopicoForumId { get; set; }
     public TopicoForum? TopicoForum { get; set; }
-    public int? ComentarioId { get; set; }
-    public Comentario? Comentario { get; set; }
+    public int? RespostaForumId { get; set; }        // era ComentarioId
+    public RespostaForum? RespostaForum { get; set; } // era Comentario
 }

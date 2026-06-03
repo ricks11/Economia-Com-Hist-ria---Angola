@@ -35,6 +35,7 @@ public class Utilizador
 
     public ICollection<TentativaQuiz> TentativasQuiz { get; set; } = new List<TentativaQuiz>();
     public ICollection<TopicoForum> TopicosForum { get; set; } = new List<TopicoForum>();
+    public ICollection<RespostaForum> RespostaForums { get; set; } = new List<RespostaForum>();
     public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
     public ICollection<BadgeConquistado> BadgesConquistados { get; set; } = new List<BadgeConquistado>();
     public ICollection<SessaoEstudo> SessoesEstudo { get; set; } = new List<SessaoEstudo>();
