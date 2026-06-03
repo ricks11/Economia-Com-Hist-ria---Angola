@@ -13,6 +13,9 @@
     <Compile Include="Controllers/QuizzesController.fs" />
     <Compile Include="Controllers/ModeracaoController.fs" />
     <Compile Include="Controllers/GamificacaoController.fs" />
+    <Compile Include="Controllers/EscolasController.fs" />
+    <Compile Include="Controllers/TurmasController.fs" />
+    <Compile Include="Controllers/RelatoriosController.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

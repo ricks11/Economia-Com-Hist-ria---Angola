@@ -1,0 +1,65 @@
+@model EconomiaComHistoria.Core.DTOs.SolicitarRelatorioDto
+@{
+    ViewData["Title"] = "Relatórios e Exportação";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Gerar" class="card shadow-sm">
+            <div class="card-header bg-primary text-white">Configurar Novo Relatório</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label asp-for="Titulo" class="form-label">Título do Relatório</label>
+                    <input asp-for="Titulo" class="form-control" placeholder="Ex: Desempenho Turma 10ªA - Junho" required />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Tipo" class="form-label">Formato de Exportação</label>
+                        <select asp-for="Tipo" class="form-control">
+                            <option value="PDF">Documento PDF</option>
+                            <option value="CSV">Planilha Excel (CSV)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Escopo</label>
+                        <select name="Escopo" class="form-control">
+                            <option value="Escola">Toda a Escola</option>
+                            <option value="Turma">Turma Específica</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Inicio" class="form-label">Data Início</label>
+                        <input asp-for="Inicio" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Fim" class="form-label">Data Fim</label>
+                        <input asp-for="Fim" type="date" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="alert alert-info small">
+                    <i class="bi bi-info-circle"></i> O relatório será processado em segundo plano. Você poderá descarregá-lo na seção "Meus Relatórios" assim que estiver pronto.
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg">Solicitar Geração</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header">Dashboards Comparativos</div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">Turmas da Mesma Escola</a>
+                <a href="#" class="list-group-item list-group-item-action">Desempenho por Tema</a>
+                <a href="#" class="list-group-item list-group-item-action">Média Escolar Nacional</a>
+            </div>
+        </div>
+    </div>
+</div>

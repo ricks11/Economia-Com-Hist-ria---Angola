@@ -90,6 +90,8 @@ builder.Services.AddScoped<INotificacaoService, FirebaseNotificacaoService>();
 builder.Services.AddScoped<IGamificacaoService, GamificacaoService>();
 builder.Services.AddScoped<IStreakService, StreakService>();
 builder.Services.AddScoped<IPlanoEstudoService, PlanoEstudoService>();
+builder.Services.AddScoped<IEscolaService, EscolaService>();
+builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<WeeklyRankingJob>();
 

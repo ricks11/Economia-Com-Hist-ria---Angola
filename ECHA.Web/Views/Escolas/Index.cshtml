@@ -1,0 +1,49 @@
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.EscolaResponseDto>
+@{
+    ViewData["Title"] = "Gestão de Escolas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Create" class="btn btn-success">Nova Escola</a>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">@item.Nome</h5>
+                    <p class="mb-1 text-muted"><i class="bi bi-geo-alt"></i> @item.Provincia - @item.Localizacao</p>
+                    <hr />
+                    <div class="row text-center mb-3">
+                        <div class="col-6 border-end">
+                            <h4 class="mb-0">@item.TotalAlunos</h4>
+                            <small class="text-muted text-uppercase">Alunos</small>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="mb-0">@item.TotalTurmas</h4>
+                            <small class="text-muted text-uppercase">Turmas</small>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(item.CodigoConvite)) {
+                        <div class="alert alert-light border mb-3">
+                            <small class="text-muted d-block">Código de Convite Ativo:</small>
+                            <strong class="h4">@item.CodigoConvite</strong>
+                            <small class="text-muted d-block">Expira em: @item.ConviteExpiraEm?.ToString("dd/MM/yyyy HH:mm")</small>
+                        </div>
+                    }
+
+                    <div class="d-flex gap-2">
+                        <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="btn btn-outline-primary btn-sm flex-grow-1">Ver Turmas</a>
+                        <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post" class="flex-grow-1">
+                            <button type="submit" class="btn btn-outline-info btn-sm w-100">Novo Código</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

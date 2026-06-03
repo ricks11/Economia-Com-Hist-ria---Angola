@@ -9,4 +9,5 @@ public class Turma
     public Escola? Escola { get; set; }
     public int? ProfessorId { get; set; }
     public Utilizador? Professor { get; set; }
+    public ICollection<Utilizador> Alunos { get; set; } = new List<Utilizador>();
 }

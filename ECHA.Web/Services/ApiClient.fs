@@ -266,3 +266,75 @@ type ApiClient(httpClient: HttpClient) =
             else
                 return None
         }
+
+    // Institutional Methods
+    member this.ListEscolasAsync(token: string) : Task<EscolaResponseDto list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/escolas")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<EscolaResponseDto list>()
+                return result
+            else
+                return []
+        }
+
+    member this.CreateEscolaAsync(request: CreateEscolaDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/escolas", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.GerarCodigoConviteAsync(escolaId: int, token: string) : Task<InviteCodeResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsync($"/api/escolas/{escolaId}/convite", null)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<InviteCodeResponseDto>()
+                return Some result
+            else
+                return None
+        }
+
+    member this.ListTurmasAsync(token: string, ?escolaId: int) : Task<TurmaResponseDto list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let mutable url = "/api/turmas"
+            escolaId |> Option.iter (fun id -> url <- url + $"?escolaId={id}")
+            let! response = httpClient.GetAsync(url)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<TurmaResponseDto list>()
+                return result
+            else
+                return []
+        }
+
+    member this.GetTurmaDetalheAsync(id: int, token: string) : Task<TurmaDetalheDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/turmas/{id}")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<TurmaDetalheDto>()
+                return Some result
+            else
+                return None
+        }
+
+    member this.CreateTurmaAsync(request: CreateTurmaDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/turmas", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.SolicitarRelatorioAsync(request: SolicitarRelatorioDto, token: string) : Task<RelatorioStatusDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/relatorios/gerar", request)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>()
+                return Some result
+            else
+                return None
+        }
