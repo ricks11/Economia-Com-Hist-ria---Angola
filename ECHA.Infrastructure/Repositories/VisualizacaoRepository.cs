@@ -16,7 +16,7 @@ public class VisualizacaoRepository : IVisualizacaoRepository
 
     public async Task<VisualizacaoConteudo?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.VisualizacoesConteudo
+        return await _dbContext.Visualizacoes
             .FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
     }
 
@@ -24,9 +24,9 @@ public class VisualizacaoRepository : IVisualizacaoRepository
         int conteudoId,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.VisualizacoesConteudo
+        return await _dbContext.Visualizacoes
             .Where(v => v.ConteudoId == conteudoId)
-            .OrderByDescending(v => v.DataVisualizacao)
+            .OrderByDescending(v => v.DataHora)
             .ToListAsync(cancellationToken);
     }
 
@@ -34,9 +34,9 @@ public class VisualizacaoRepository : IVisualizacaoRepository
         int utilizadorId,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.VisualizacoesConteudo
+        return await _dbContext.Visualizacoes
             .Where(v => v.UtilizadorId == utilizadorId)
-            .OrderByDescending(v => v.DataVisualizacao)
+            .OrderByDescending(v => v.DataHora)
             .ToListAsync(cancellationToken);
     }
 
@@ -45,25 +45,25 @@ public class VisualizacaoRepository : IVisualizacaoRepository
         int utilizadorId,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.VisualizacoesConteudo
+        return await _dbContext.Visualizacoes
             .FirstOrDefaultAsync(v => v.ConteudoId == conteudoId && v.UtilizadorId == utilizadorId, cancellationToken);
     }
 
     public async Task<VisualizacaoConteudo> AddAsync(VisualizacaoConteudo visualizacao, CancellationToken cancellationToken = default)
     {
-        _dbContext.VisualizacoesConteudo.Add(visualizacao);
+        _dbContext.Visualizacoes.Add(visualizacao);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return visualizacao;
     }
 
     public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        var visualizacao = await _dbContext.VisualizacoesConteudo.FindAsync(
+        var visualizacao = await _dbContext.Visualizacoes.FindAsync(
             new object[] { id }, cancellationToken: cancellationToken);
 
         if (visualizacao != null)
         {
-            _dbContext.VisualizacoesConteudo.Remove(visualizacao);
+            _dbContext.Visualizacoes.Remove(visualizacao);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }

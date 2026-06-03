@@ -1,22 +1,13 @@
 using EconomiaComHistoria.Core.Entities;
+using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace EconomiaComHistoria.Infrastructure.Repositories;
 
-public interface IQuizRepository
-{
-    Task<Quiz?> GetByIdAsync(int id);
-    Task<List<Quiz>> GetAvailableQuizzesAsync(string? nivel, string? tema);
-    Task CreateAsync(Quiz quiz);
-    Task UpdateAsync(Quiz quiz);
-    Task DeleteAsync(int id);
-    Task<TentativaQuiz?> GetLastAttemptAsync(int userId, int quizId);
-    Task CreateAttemptAsync(TentativaQuiz tentativa);
-    Task<TentativaQuiz?> GetAttemptByIdAsync(int id);
-    Task AddRespostasAsync(List<RespostaPergunta> respostas);
-}
+
 
 public class QuizRepository : IQuizRepository
 {
@@ -27,17 +18,22 @@ public class QuizRepository : IQuizRepository
         _context = context;
     }
 
-    public async Task<Quiz?> GetByIdAsync(int id)
+    public async Task<Quiz?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Quizzes
             .Include(q => q.Perguntas)
-            .ThenInclude(p => p.Opcoes)
-            .FirstOrDefaultAsync(q => q.Id == id && !q.IsDeleted);
+                .ThenInclude(p => p.Opcoes)
+            .FirstOrDefaultAsync(q => q.Id == id && q.Ativo, cancellationToken);
     }
 
-    public async Task<List<Quiz>> GetAvailableQuizzesAsync(string? nivel, string? tema)
+    public async Task<List<Quiz>> GetAvailableQuizzesAsync(NivelDificuldade? nivel, string? tema, CancellationToken cancellationToken = default)
     {
-        var query = _context.Quizzes.Where(q => !q.IsDeleted);
+        var query = _context.Quizzes.Where(q => q.Ativo);
+
+        if (nivel.HasValue)
+        {
+            query = query.Where(q => q.Nivel == nivel.Value);
+        }
 
         if (!string.IsNullOrEmpty(tema))
         {
@@ -47,52 +43,52 @@ public class QuizRepository : IQuizRepository
         return await query.ToListAsync();
     }
 
-    public async Task<TentativaQuiz?> GetAttemptByIdAsync(int id)
+    public async Task<TentativaQuiz?> GetAttemptByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.TentativasQuiz
             .Include(t => t.Quiz)
-            .FirstOrDefaultAsync(t => t.Id == id);
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
-    public async Task AddRespostasAsync(List<RespostaPergunta> respostas)
+    public async Task AddRespostasAsync(List<RespostaPergunta> respostas, CancellationToken cancellationToken = default)
     {
         await _context.RespostasPerguntas.AddRangeAsync(respostas);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<TentativaQuiz?> GetLastAttemptAsync(int userId, int quizId)
+    public async Task<TentativaQuiz?> GetLastAttemptAsync(int userId, int quizId, CancellationToken cancellationToken = default)
     {
         return await _context.TentativasQuiz
             .Where(t => t.UtilizadorId == userId && t.QuizId == quizId)
-            .OrderByDescending(t => t.DataInicio)
-            .FirstOrDefaultAsync();
+            .OrderByDescending(t => t.DataHora)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task CreateAttemptAsync(TentativaQuiz tentativa)
+    public async Task CreateAttemptAsync(TentativaQuiz tentativa, CancellationToken cancellationToken = default)
     {
         await _context.TentativasQuiz.AddAsync(tentativa);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task CreateAsync(Quiz quiz)
+    public async Task CreateAsync(Quiz quiz, CancellationToken cancellationToken = default)
     {
         await _context.Quizzes.AddAsync(quiz);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(Quiz quiz)
+    public async Task UpdateAsync(Quiz quiz, CancellationToken cancellationToken = default)
     {
         _context.Quizzes.Update(quiz);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         var quiz = await _context.Quizzes.FindAsync(id);
         if (quiz != null)
         {
-            quiz.IsDeleted = true;
-            await _context.SaveChangesAsync();
+            quiz.Ativo = false;
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

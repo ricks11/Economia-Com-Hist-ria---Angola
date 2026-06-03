@@ -16,7 +16,7 @@ public class ConteudoFavoritoRepository : IConteudoFavoritoRepository
 
     public async Task<ConteudoFavorito?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.ConteudosFavoritos
+        return await _dbContext.Favoritos
             .FirstOrDefaultAsync(f => f.Id == id, cancellationToken);
     }
 
@@ -24,10 +24,10 @@ public class ConteudoFavoritoRepository : IConteudoFavoritoRepository
         int utilizadorId,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.ConteudosFavoritos
+        return await _dbContext.Favoritos
             .Where(f => f.UtilizadorId == utilizadorId)
             .Include(f => f.Conteudo)
-            .ThenInclude(c => c.Autor)
+            .ThenInclude(c => c.Editor)
             .OrderByDescending(f => f.DataAdicionado)
             .ToListAsync(cancellationToken);
     }
@@ -37,25 +37,25 @@ public class ConteudoFavoritoRepository : IConteudoFavoritoRepository
         int utilizadorId,
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.ConteudosFavoritos
+        return await _dbContext.Favoritos
             .FirstOrDefaultAsync(f => f.ConteudoId == conteudoId && f.UtilizadorId == utilizadorId, cancellationToken);
     }
 
     public async Task<ConteudoFavorito> AddAsync(ConteudoFavorito favorito, CancellationToken cancellationToken = default)
     {
-        _dbContext.ConteudosFavoritos.Add(favorito);
+        _dbContext.Favoritos.Add(favorito);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return favorito;
     }
 
     public async Task RemoveAsync(int id, CancellationToken cancellationToken = default)
     {
-        var favorito = await _dbContext.ConteudosFavoritos.FindAsync(
+        var favorito = await _dbContext.Favoritos.FindAsync(
             new object[] { id }, cancellationToken: cancellationToken);
 
         if (favorito != null)
         {
-            _dbContext.ConteudosFavoritos.Remove(favorito);
+            _dbContext.Favoritos.Remove(favorito);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
@@ -65,12 +65,12 @@ public class ConteudoFavoritoRepository : IConteudoFavoritoRepository
         int utilizadorId,
         CancellationToken cancellationToken = default)
     {
-        var favorito = await _dbContext.ConteudosFavoritos
+        var favorito = await _dbContext.Favoritos
             .FirstOrDefaultAsync(f => f.ConteudoId == conteudoId && f.UtilizadorId == utilizadorId, cancellationToken);
 
         if (favorito != null)
         {
-            _dbContext.ConteudosFavoritos.Remove(favorito);
+            _dbContext.Favoritos.Remove(favorito);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }

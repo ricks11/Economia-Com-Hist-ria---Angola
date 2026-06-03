@@ -22,7 +22,7 @@ public class TopicoForum
     public int AutorId { get; set; }
     public Utilizador Autor { get; set; } = null!;
 
-    public ICollection<RespostaForum> Comentarios { get; set; } = new List<RespostaForum>();
+    public ICollection<RespostaForum> Respostas { get; set; } = new List<RespostaForum>();
     public ICollection<DenunciaConteudo> Denuncias { get; set; } = new List<DenunciaConteudo>();
     public ICollection<Reacao> Reacoes { get; set; } = new List<Reacao>();
 }

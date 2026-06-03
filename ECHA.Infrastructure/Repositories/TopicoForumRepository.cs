@@ -15,55 +15,86 @@ public class TopicoForumRepository : ITopicoForumRepository
         _dbContext = dbContext;
     }
 
-    public async Task<TopicoForum?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<TopicoForum?> GetByIdAsync(
+        int id,
+        CancellationToken cancellationToken = default)
     {
         return await _dbContext.TopicosForum
             .Include(x => x.Autor)
             .Include(x => x.Categoria)
             .Include(x => x.Respostas)
+                .ThenInclude(x => x.Autor)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<TopicoForum>> GetAllAprovadosAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TopicoForum>> GetAllAprovadosAsync(
+        CancellationToken cancellationToken = default)
     {
         return await _dbContext.TopicosForum
             .Include(x => x.Autor)
             .Include(x => x.Categoria)
-            .Where(x => x.EstadoTopico == EstadoTopico.Aprovado)
-            .OrderByDescending(x => x.DataCriacao)
+            .Where(x => x.Estado == EstadoTopicoForum.Ativo)
+            .OrderByDescending(x => x.CriadoEm)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TopicoForum>> GetPendentesAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TopicoForum>> GetPendentesAsync(
+        CancellationToken cancellationToken = default)
     {
         return await _dbContext.TopicosForum
             .Include(x => x.Autor)
             .Include(x => x.Categoria)
-            .Where(x => x.EstadoTopico == EstadoTopico.Pendente)
-            .OrderBy(x => x.DataCriacao)
+            .Where(x => x.Estado == EstadoTopicoForum.Pendente)
+            .OrderBy(x => x.CriadoEm)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TopicoForum>> GetByCategoriaAsync(int categoriaId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TopicoForum>> GetByCategoriaAsync(
+        int categoriaId,
+        CancellationToken cancellationToken = default)
     {
         return await _dbContext.TopicosForum
             .Include(x => x.Autor)
             .Include(x => x.Categoria)
-            .Where(x => x.CategoriaId == categoriaId && x.EstadoTopico == EstadoTopico.Aprovado)
-            .OrderByDescending(x => x.DataCriacao)
+            .Where(x => x.CategoriaId == categoriaId
+                && x.Estado == EstadoTopicoForum.Ativo)
+            .OrderByDescending(x => x.CriadoEm)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task UpdateEstadoAsync(int id, EstadoTopico estado, CancellationToken cancellationToken = default)
+    public async Task<TopicoForum> AddAsync(
+        TopicoForum topico,
+        CancellationToken cancellationToken = default)
     {
-        var topico = await _dbContext.TopicosForum.FindAsync(new object[] { id }, cancellationToken);
+        _dbContext.TopicosForum.Add(topico);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return topico;
+    }
+
+    public async Task<TopicoForum> UpdateAsync(
+        TopicoForum topico,
+        CancellationToken cancellationToken = default)
+    {
+        _dbContext.TopicosForum.Update(topico);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return topico;
+    }
+
+    public async Task UpdateEstadoAsync(
+        int id,
+        EstadoTopicoForum estado,
+        CancellationToken cancellationToken = default)
+    {
+        var topico = await _dbContext.TopicosForum
+            .FindAsync(new object[] { id }, cancellationToken);
+
         if (topico is null)
             return;
 
-        topico.EstadoTopico = estado;
+        topico.Estado = estado;
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }
