@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace EconomiaComHistoria.Core.Entities;
 
 public class CategoriaForum
 {
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
     public string? Descricao { get; set; }
     public string? Icone { get; set; }

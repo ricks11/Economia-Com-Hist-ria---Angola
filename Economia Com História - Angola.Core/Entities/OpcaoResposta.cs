@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace EconomiaComHistoria.Core.Entities;
 
 public class OpcaoResposta
 {
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
     public int PerguntaId { get; set; }
     public Pergunta? Pergunta { get; set; }
     public string Texto { get; set; } = string.Empty;
