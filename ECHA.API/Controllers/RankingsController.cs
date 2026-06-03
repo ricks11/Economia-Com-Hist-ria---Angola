@@ -1,3 +1,5 @@
+using EconomiaComHistoria.API.DTOs;
+using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -19,23 +21,61 @@ public class RankingsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> GetRanking(
-        [FromQuery] string tipo,
+        [FromQuery] TipoRanking tipo,
         [FromQuery] PeriodoRanking periodo,
         [FromQuery] int? escolaId,
-        [FromQuery] string? provincia)
+        [FromQuery] string? provincia,
+        CancellationToken cancellationToken)
     {
-        var rankings = await _rankingService.GetRankingAsync(tipo, periodo, escolaId, provincia);
+        // Valida combinação tipo + filtro
+        if (tipo == TipoRanking.Escola && !escolaId.HasValue)
+            return BadRequest(new { message = "escolaId é obrigatório para ranking por escola" });
 
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var userRank = rankings.FirstOrDefault(r => r.UtilizadorId == userId);
-        int userPosition = rankings.FindIndex(r => r.UtilizadorId == userId) + 1;
+        if (tipo == TipoRanking.Provincia && string.IsNullOrWhiteSpace(provincia))
+            return BadRequest(new { message = "provincia é obrigatória para ranking por província" });
+
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                     ?? User.FindFirstValue("sub");
+        if (!int.TryParse(userIdStr, out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
+
+        var entradas = await _rankingService
+            .GetRankingAsync(tipo, periodo, escolaId, provincia);
+
+        var dtos = entradas.Select(e => new RankingEntradaDto(
+            e.Posicao,
+            e.UtilizadorId,
+            e.Utilizador?.Nome ?? string.Empty,
+            e.Pontos,
+            e.QuizzesCompletados,
+            e.Escola?.Nome)).ToList();
+
+        // Posição do utilizador autenticado
+        var userIndex = dtos.FindIndex(r => r.UtilizadorId == userId);
+        var userPosition = userIndex >= 0 ? userIndex + 1 : 0;
+        var userEntry = userIndex >= 0 ? dtos[userIndex] : null;
 
         return Ok(new
         {
-            Top100 = rankings,
-            UserPosition = userPosition > 0 ? userPosition : 0,
-            UserScore = userRank?.Pontuacao
+            Tipo = tipo.ToString(),
+            Periodo = periodo.ToString(),
+            Top100 = dtos,
+            PosicaoUtilizador = userPosition,
+            PontosUtilizador = userEntry?.Pontos
         });
+    }
+
+    [HttpGet("semanal/gerar")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> GerarSnapshotManual(CancellationToken cancellationToken)
+    {
+        await _rankingService.GerarSnapshotSemanalAsync();
+        return Ok(new { message = "Snapshot semanal gerado com sucesso" });
     }
 }

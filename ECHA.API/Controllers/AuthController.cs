@@ -4,6 +4,7 @@ using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ECHA.API.DTOs;
 
 namespace EconomiaComHistoria.API.Controllers;
 
@@ -13,6 +14,8 @@ public class AuthController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly IAuthService _authService;
+    // TODO Sprint 8: substituir por RefreshToken persistido na base de dados
+    // campo RefreshToken e RefreshTokenExpiry na entidade Utilizador
     private static readonly Dictionary<string, string> RefreshTokenStore = new(); // Simple in-memory store
 
     public AuthController(AppDbContext dbContext, IAuthService authService)
@@ -51,7 +54,7 @@ public class AuthController : ControllerBase
             Email = request.Email,
             Telemovel = request.Telemovel,
             PasswordHash = passwordHash,
-            Tipo = TipoUtilizador.Estudante,
+            Tipo = TipoUtilizador.Registado,
             DataRegisto = DateTime.UtcNow,
             PontosTotais = 0,
             StreakAtual = 0
@@ -88,14 +91,13 @@ public class AuthController : ControllerBase
         }
 
         var user = await _dbContext.Utilizadores
-            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
-        // Verify user exists and password is correct
         if (user is null || !_authService.VerifyPassword(request.Password, user.PasswordHash))
-        {
-            return Unauthorized(new { message = "Invalid email or password." });
-        }
+            return Unauthorized(new { message = "Email ou password inválidos." });
+
+        user.UltimoAcesso = DateTime.UtcNow;
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         // Generate tokens
         var accessToken = _authService.GenerateAccessToken(user.Id, user.Email, user.Tipo.ToString());

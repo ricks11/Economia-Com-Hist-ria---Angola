@@ -1,6 +1,5 @@
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
-using EconomiaComHistoria.API.DTOs;
 using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.API.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;
@@ -8,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using ECHA.API.DTOs;
+using EconomiaComHistoria.Core.Interfaces;
 
 namespace EconomiaComHistoria.API.Controllers;
 
@@ -51,14 +52,14 @@ public class ConteudosController : ControllerBase
         {
             Titulo = request.Titulo,
             Resumo = request.Resumo,
-            Texto = request.Texto,
+            CorpoTexto = request.CorpoTexto,
             Tema = request.Tema,
             Nivel = request.Nivel,
             Regiao = request.Regiao,
             Tipo = request.Tipo,
-            AutorId = userId,
+            EditorId = userId,
             DataPublicacao = DateTime.UtcNow,
-            Estado = EstadoConteudo.Ativo
+            Estado = EstadoConteudo.Publicado
         };
 
         _dbContext.Conteudos.Add(conteudo);
@@ -76,9 +77,9 @@ public class ConteudosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResult<ConteudoResponseDto>>> ListConteudos(
         [FromQuery] string? tema,
-        [FromQuery] string? nivel,
+        [FromQuery] NivelDificuldade? nivel,
+        [FromQuery] TipoConteudo? tipo,
         [FromQuery] string? regiao,
-        [FromQuery] string? tipo,
         [FromQuery] int pagina = 1,
         [FromQuery] int tamanho = 20,
         CancellationToken cancellationToken = default)
@@ -90,30 +91,27 @@ public class ConteudosController : ControllerBase
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
 
         var query = _dbContext.Conteudos
-            .Where(c => c.Estado == EstadoConteudo.Ativo)
+            .Where(c => c.Estado == EstadoConteudo.Publicado)
             .AsNoTracking();
 
         // Apply filters
-        if (!string.IsNullOrEmpty(tema))
-            query = query.Where(c => c.Tema == tema);
-        if (!string.IsNullOrEmpty(nivel))
-            query = query.Where(c => c.Nivel == nivel);
-        if (!string.IsNullOrEmpty(regiao))
-            query = query.Where(c => c.Regiao == regiao);
-        if (!string.IsNullOrEmpty(tipo))
-            query = query.Where(c => c.Tipo == tipo);
+        if (!string.IsNullOrEmpty(tema)) query = query.Where(c => c.Tema == tema);
+        if (nivel.HasValue) query = query.Where(c => c.Nivel == nivel.Value);
+        if (tipo.HasValue) query = query.Where(c => c.Tipo == tipo.Value);
+        if (!string.IsNullOrEmpty(regiao)) query = query.Where(c => c.Regiao == regiao);
+    
 
         var totalCount = await query.CountAsync(cancellationToken);
 
         var conteudos = await query
-            .Include(c => c.Autor)
+            .Include(c => c.Editor)
             .Skip((pagina - 1) * tamanho)
             .Take(tamanho)
             .OrderByDescending(c => c.DataPublicacao)
             .ToListAsync(cancellationToken);
 
         var response = conteudos.Select(c => MapToResponseDto(c, userId > 0 && 
-            _dbContext.ConteudosFavoritos.Any(f => f.ConteudoId == c.Id && f.UtilizadorId == userId))).ToList();
+            _dbContext.Favoritos.Any(f => f.ConteudoId == c.Id && f.UtilizadorId == userId))).ToList();
 
         var pagedResult = PagedResult<ConteudoResponseDto>.Create(response, totalCount, pagina, tamanho);
 
@@ -136,8 +134,8 @@ public class ConteudosController : ControllerBase
         CancellationToken cancellationToken)
     {
         var conteudo = await _dbContext.Conteudos
-            .Include(c => c.Autor)
-            .FirstOrDefaultAsync(c => c.Id == id && c.Estado == EstadoConteudo.Ativo, cancellationToken);
+            .Include(c => c.Editor)
+            .FirstOrDefaultAsync(c => c.Id == id && c.Estado == EstadoConteudo.Publicado, cancellationToken);
 
         if (conteudo is null)
             return NotFound(new { message = "Conteúdo não encontrado" });
@@ -145,7 +143,7 @@ public class ConteudosController : ControllerBase
         var userIdClaim = User.FindFirst("sub")?.Value;
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
 
-        var isFavorito = userId > 0 && await _dbContext.ConteudosFavoritos
+        var isFavorito = userId > 0 && await _dbContext.Favoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
         var response = MapToResponseDto(conteudo, isFavorito);
@@ -163,48 +161,71 @@ public class ConteudosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ConteudoResponseDto>> UpdateConteudo(
-        int id,
-        [FromBody] UpdateConteudoDto request,
-        CancellationToken cancellationToken)
+    int id,
+    [FromBody] UpdateConteudoDto request,
+    CancellationToken cancellationToken)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
+        var conteudo = await _dbContext.Conteudos
+            .Include(c => c.Editor)
+            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
         if (conteudo is null)
             return NotFound(new { message = "Conteúdo não encontrado" });
 
-        // Get current user and check authorization
-        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                       ?? User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
-        var isAdmin = roleClaim == "Admin";
-        var isAuthor = conteudo.AutorId == userId;
+        var isAdmin = roleClaim is "Admin" or "SuperAdmin";
+        var isEditor = conteudo.EditorId == userId;
 
-        if (!isAuthor && !isAdmin)
+        if (!isEditor && !isAdmin)
             return Forbid();
 
-        // Update properties
-        if (!string.IsNullOrEmpty(request.Titulo))
-            conteudo.Titulo = request.Titulo;
-        if (request.Resumo != null)
-            conteudo.Resumo = request.Resumo;
-        if (request.Texto != null)
-            conteudo.Texto = request.Texto;
-        if (request.Tema != null)
-            conteudo.Tema = request.Tema;
-        if (request.Nivel != null)
-            conteudo.Nivel = request.Nivel;
-        if (request.Regiao != null)
-            conteudo.Regiao = request.Regiao;
-        if (request.Tipo != null)
-            conteudo.Tipo = request.Tipo;
+        // Valida Jindungo — se activado, referência factual é obrigatória
+        if (request.IsJindungo == true && string.IsNullOrWhiteSpace(request.ReferenciaFactual))
+            return BadRequest(new { message = "Conteúdo Jindungo requer referência factual." });
 
-        _dbContext.Conteudos.Update(conteudo);
+        if (!string.IsNullOrWhiteSpace(request.Titulo))
+            conteudo.Titulo = request.Titulo;
+        if (request.Resumo is not null)
+            conteudo.Resumo = request.Resumo;
+        if (request.CorpoTexto is not null)
+            conteudo.CorpoTexto = request.CorpoTexto;
+        if (request.VideoUrl is not null)
+            conteudo.VideoUrl = request.VideoUrl;
+        if (request.AudioUrl is not null)
+            conteudo.AudioUrl = request.AudioUrl;
+        if (request.ThumbnailUrl is not null)
+            conteudo.ThumbnailUrl = request.ThumbnailUrl;
+        if (request.Tema is not null)
+            conteudo.Tema = request.Tema;
+        if (request.Nivel.HasValue)
+            conteudo.Nivel = request.Nivel.Value;
+        if (request.Regiao is not null)
+            conteudo.Regiao = request.Regiao;
+        if (request.Tipo.HasValue)
+            conteudo.Tipo = request.Tipo.Value;
+        if (request.IsJindungo.HasValue)
+        {
+            conteudo.IsJindungo = request.IsJindungo.Value;
+            // Se desactivar Jindungo, limpa a referência
+            if (!request.IsJindungo.Value)
+                conteudo.ReferenciaFactual = null;
+        }
+        if (request.ReferenciaFactual is not null)
+            conteudo.ReferenciaFactual = request.ReferenciaFactual;
+
+        conteudo.AtualizadoEm = DateTime.UtcNow;
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var response = MapToResponseDto(conteudo, false);
-        return Ok(response);
+        var isFavorito = await _dbContext.Favoritos
+            .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
+
+        return Ok(MapToResponseDto(conteudo, isFavorito));
     }
 
     /// <summary>
@@ -232,7 +253,7 @@ public class ConteudosController : ControllerBase
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
         var isAdmin = roleClaim == "Admin";
-        var isAuthor = conteudo.AutorId == userId;
+        var isAuthor = conteudo.EditorId == userId;
 
         if (!isAuthor && !isAdmin)
             return Forbid();
@@ -272,7 +293,7 @@ public class ConteudosController : ControllerBase
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
         var isAdmin = roleClaim == "Admin";
-        var isAuthor = conteudo.AutorId == userId;
+        var isAuthor = conteudo.EditorId == userId;
 
         if (!isAuthor && !isAdmin)
             return Forbid();
@@ -280,11 +301,12 @@ public class ConteudosController : ControllerBase
         try
         {
             // Delete old image if exists
-            if (!string.IsNullOrEmpty(conteudo.ImagemCapa))
-                await _fileStorageService.DeleteFileAsync(conteudo.ImagemCapa);
+            if (!string.IsNullOrEmpty(conteudo.ThumbnailUrl))
+                await _fileStorageService.DeleteFileAsync(conteudo.ThumbnailUrl);
 
             // Upload new image
-            conteudo.ImagemCapa = await _fileStorageService.UploadFileAsync(imagem, "uploads/conteudos");
+            conteudo.ThumbnailUrl = await _fileStorageService
+                .UploadFileAsync(imagem.OpenReadStream(), imagem.FileName, "uploads/conteudos");
 
             _dbContext.Conteudos.Update(conteudo);
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -320,7 +342,7 @@ public class ConteudosController : ControllerBase
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         // Check if already viewed
-        var existingView = await _dbContext.VisualizacoesConteudo
+        var existingView = await _dbContext.Visualizacoes
             .FirstOrDefaultAsync(v => v.ConteudoId == id && v.UtilizadorId == userId, cancellationToken);
 
         if (existingView is null)
@@ -329,10 +351,10 @@ public class ConteudosController : ControllerBase
             {
                 ConteudoId = id,
                 UtilizadorId = userId,
-                DataVisualizacao = DateTime.UtcNow
+                DataHora = DateTime.UtcNow
             };
 
-            _dbContext.VisualizacoesConteudo.Add(visualizacao);
+            _dbContext.Visualizacoes.Add(visualizacao);
             conteudo.Visualizacoes++;
             _dbContext.Conteudos.Update(conteudo);
         }
@@ -362,12 +384,12 @@ public class ConteudosController : ControllerBase
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
-        var favorito = await _dbContext.ConteudosFavoritos
+        var favorito = await _dbContext.Favoritos
             .FirstOrDefaultAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
         if (favorito is not null)
         {
-            _dbContext.ConteudosFavoritos.Remove(favorito);
+            _dbContext.Favoritos.Remove(favorito);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return Ok(new { adicionado = false, message = "Removido de favoritos" });
         }
@@ -380,29 +402,33 @@ public class ConteudosController : ControllerBase
                 DataAdicionado = DateTime.UtcNow
             };
 
-            _dbContext.ConteudosFavoritos.Add(novoFavorito);
+            _dbContext.Favoritos.Add(novoFavorito);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return Ok(new { adicionado = true, message = "Adicionado a favoritos" });
         }
     }
 
-    private ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito)
+    private static ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito)
     {
         return new ConteudoResponseDto(
             conteudo.Id,
             conteudo.Titulo,
             conteudo.Resumo,
-            conteudo.Texto,
-            conteudo.DataPublicacao,
-            conteudo.AutorId,
-            conteudo.Autor?.Nome,
-            conteudo.Tema,
-            conteudo.Nivel,
-            conteudo.Regiao,
+            conteudo.CorpoTexto,
+            conteudo.VideoUrl,
+            conteudo.AudioUrl,
+            conteudo.ThumbnailUrl,
             conteudo.Tipo,
+            conteudo.Nivel,
+            conteudo.Tema,
+            conteudo.Regiao,
             conteudo.Estado,
-            conteudo.ImagemCapa,
+            conteudo.EditorId,
+            conteudo.Editor?.Nome,
             conteudo.Visualizacoes,
-            ehFavorito);
+            ehFavorito,
+            conteudo.IsJindungo,
+            conteudo.ReferenciaFactual,
+            conteudo.DataPublicacao);
     }
 }

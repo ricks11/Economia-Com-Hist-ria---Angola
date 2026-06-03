@@ -1,10 +1,9 @@
-using EconomiaComHistoria.API.DTOs;
+using ECHA.API.DTOs;
 using EconomiaComHistoria.API.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace EconomiaComHistoria.API.Controllers;
 
@@ -126,14 +125,14 @@ public class PerfilController : ControllerBase
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
-        var totalCount = await _dbContext.ConteudosFavoritos
+        var totalCount = await _dbContext.Favoritos
             .Where(f => f.UtilizadorId == userId)
             .CountAsync(cancellationToken);
 
-        var favoritos = await _dbContext.ConteudosFavoritos
+        var favoritos = await _dbContext.Favoritos
             .Where(f => f.UtilizadorId == userId)
             .Include(f => f.Conteudo)
-            .ThenInclude(c => c.Autor)
+            .ThenInclude(c => c.Editor)
             .OrderByDescending(f => f.DataAdicionado)
             .Skip((pagina - 1) * tamanho)
             .Take(tamanho)
@@ -145,18 +144,22 @@ public class PerfilController : ControllerBase
             c.Id,
             c.Titulo,
             c.Resumo,
-            c.Texto,
-            c.DataPublicacao,
-            c.AutorId,
-            c.Autor?.Nome,
-            c.Tema,
-            c.Nivel,
-            c.Regiao,
+            c.CorpoTexto,
+            c.VideoUrl,
+            c.AudioUrl,
+            c.ThumbnailUrl,
             c.Tipo,
+            c.Nivel,
+            c.Tema,
+            c.Regiao,
             c.Estado,
-            c.ImagemCapa,
+            c.EditorId,
+            c.Editor?.Nome,
             c.Visualizacoes,
-            true)).ToList();
+            true,
+            c.IsJindungo,
+            c.ReferenciaFactual,
+            c.DataPublicacao)).ToList();
 
         var pagedResult = PagedResult<ConteudoResponseDto>.Create(response, totalCount, pagina, tamanho);
 
