@@ -149,3 +149,79 @@ type ApiClient(httpClient: HttpClient) =
             let! response = httpClient.DeleteAsync($"/api/quizzes/{id}")
             return response.IsSuccessStatusCode
         }
+
+    // Moderation Methods
+    member this.GetPendentesAsync(token: string) : Task<ModeracaoPendentesResponse option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/moderacao/pendentes")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<ModeracaoPendentesResponse>()
+                return Some result
+            else
+                return None
+        }
+
+    member this.GetDenunciasAsync(token: string) : Task<DenunciaSummaryDto list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/moderacao/denuncias")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<DenunciaSummaryDto list>()
+                return result
+            else
+                return []
+        }
+
+    member this.ListUtilizadoresAsync(token: string) : Task<UtilizadorModeracaoDto list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/moderacao/utilizadores")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<UtilizadorModeracaoDto list>()
+                return result
+            else
+                return []
+        }
+
+    member this.AprovarTopicoAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsync($"/api/moderacao/topicos/{id}/aprovar", null)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.RejeitarTopicoAsync(id: int, request: RejeitarTopicoDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/moderacao/topicos/{id}/rejeitar", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.AprovarRespostaAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsync($"/api/moderacao/respostas/{id}/aprovar", null)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.RejeitarRespostaAsync(id: int, request: RejeitarTopicoDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/moderacao/respostas/{id}/rejeitar", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.SuspenderUtilizadorAsync(id: int, request: SuspenderUtilizadorDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/moderacao/utilizadores/{id}/suspender", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.ReativarUtilizadorAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsync($"/api/moderacao/utilizadores/{id}/reativar", null)
+            return response.IsSuccessStatusCode
+        }

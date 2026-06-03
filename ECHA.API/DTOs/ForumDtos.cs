@@ -48,7 +48,3 @@ public record RespostaForumDto(
 public record CriarReacaoDto(int? TopicoId, int? RespostaId, TipoReacao TipoReacao);
 
 public record CriarDenunciaDto(int? TopicoId, int? RespostaId, string Motivo);
-
-public record RejeitarTopicoDto(string MotivoRejeicao);
-
-public record SuspenderUtilizadorDto(int? DiasSuspensao);

@@ -1,0 +1,89 @@
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto>
+@{
+    ViewData["Title"] = "Gestão de Utilizadores";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<div class="table-responsive">
+    <table class="table table-hover border">
+        <thead class="bg-light">
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.Email</td>
+                    <td>@item.Tipo</td>
+                    <td>
+                        @if (item.SuspensaoPermanente)
+                        {
+                            <span class="badge badge-danger">Suspenso Permanente</span>
+                        }
+                        else if (item.Suspenso)
+                        {
+                            <span class="badge badge-warning">Suspenso até @item.SuspensoAte?.ToString("dd/MM/yyyy")</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-success">Ativo</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Suspenso || item.SuspensaoPermanente)
+                        {
+                            <form asp-action="ReativarUtilizador" asp-route-id="@item.Id" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-success">Reativar</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="suspenderUtilizador(@item.Id)">Suspender</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para Suspensão -->
+<div class="modal fade" id="suspenderModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="suspenderForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Suspender Utilizador</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Dias de Suspensão (vazio para permanente)</label>
+                        <input type="number" name="dias" class="form-control" min="1" placeholder="Ex: 7, 30" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Confirmar Suspensão</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function suspenderUtilizador(id) {
+            document.getElementById('suspenderForm').action = '/Moderacao/SuspenderUtilizador/' + id;
+            $('#suspenderModal').modal('show');
+        }
+    </script>
+}

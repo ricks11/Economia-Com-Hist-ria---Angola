@@ -1,0 +1,132 @@
+@model EconomiaComHistoria.Core.DTOs.ModeracaoPendentesResponse
+@{
+    ViewData["Title"] = "Fila de Moderação";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<ul class="nav nav-tabs mb-4" id="moderationTabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="topicos-tab" data-toggle="tab" href="#topicos" role="tab">Tópicos (@Model.Topicos.Count)</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="respostas-tab" data-toggle="tab" href="#respostas" role="tab">Respostas (@Model.Respostas.Count)</a>
+    </li>
+</ul>
+
+<div class="tab-content" id="moderationTabContent">
+    <div class="tab-pane fade show active" id="topicos" role="tabpanel">
+        @if (!Model.Topicos.Any())
+        {
+            <div class="alert alert-info">Nenhum tópico pendente.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover border">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Categoria</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Topicos)
+                        {
+                            <tr>
+                                <td>@item.TituloOuConteudo</td>
+                                <td>@item.AutorNome</td>
+                                <td>@item.CategoriaNome</td>
+                                <td>@item.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <form asp-action="AprovarTopico" asp-route-id="@item.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-success">Aprovar</button>
+                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="rejeitarTopico(@item.Id)">Rejeitar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div class="tab-pane fade" id="respostas" role="tabpanel">
+        @if (!Model.Respostas.Any())
+        {
+            <div class="alert alert-info">Nenhuma resposta pendente.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover border">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Conteúdo</th>
+                            <th>Autor</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Respostas)
+                        {
+                            <tr>
+                                <td class="text-truncate" style="max-width: 300px;">@item.TituloOuConteudo</td>
+                                <td>@item.AutorNome</td>
+                                <td>@item.DataCriacao.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <form asp-action="AprovarResposta" asp-route-id="@item.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-success">Aprovar</button>
+                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="rejeitarResposta(@item.Id)">Rejeitar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal para Rejeição -->
+<div class="modal fade" id="rejeitarModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="rejeitarForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rejeitar Conteúdo</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Motivo da Rejeição</label>
+                        <textarea name="motivo" class="form-control" required rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Confirmar Rejeição</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function rejeitarTopico(id) {
+            document.getElementById('rejeitarForm').action = '/Moderacao/RejeitarTopico/' + id;
+            $('#rejeitarModal').modal('show');
+        }
+        function rejeitarResposta(id) {
+            document.getElementById('rejeitarForm').action = '/Moderacao/RejeitarResposta/' + id;
+            $('#rejeitarModal').modal('show');
+        }
+    </script>
+}
