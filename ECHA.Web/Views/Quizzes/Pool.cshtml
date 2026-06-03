@@ -1,0 +1,29 @@
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.PerguntaStartDto>
+@{
+    ViewData["Title"] = "Pool de Perguntas";
+}
+
+<div class="mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <p class="text-muted">Lista de todas as perguntas organizadas por tema e nível (filtros podem ser aplicados via URL)</p>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>
+
+<div class="list-group">
+    @foreach (var p in Model)
+    {
+        <div class="list-group-item">
+            <h5 class="mb-2">@p.Texto</h5>
+            <div class="row">
+                @foreach (var o in p.Opcoes)
+                {
+                    <div class="col-md-6 mb-1">
+                        <div class="p-2 border rounded bg-light">
+                            @o.Texto
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

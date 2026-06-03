@@ -16,6 +16,7 @@ public interface IQuizRepository
     Task CreateAttemptAsync(TentativaQuiz tentativa);
     Task<TentativaQuiz?> GetAttemptByIdAsync(int id);
     Task AddRespostasAsync(List<RespostaPergunta> respostas);
+    Task<List<RespostaPergunta>> GetRespostasByQuizAsync(int quizId);
 }
 
 public class QuizRepository : IQuizRepository
@@ -25,6 +26,14 @@ public class QuizRepository : IQuizRepository
     public QuizRepository(AppDbContext context)
     {
         _context = context;
+    }
+
+    public async Task<List<RespostaPergunta>> GetRespostasByQuizAsync(int quizId)
+    {
+        return await _context.RespostasPerguntas
+            .Include(r => r.Pergunta)
+            .Where(r => r.Pergunta.QuizId == quizId)
+            .ToListAsync();
     }
 
     public async Task<Quiz?> GetByIdAsync(int id)

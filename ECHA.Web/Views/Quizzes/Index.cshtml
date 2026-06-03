@@ -1,0 +1,45 @@
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.QuizResponseDto>
+@{
+    ViewData["Title"] = "Gestão de Quizzes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <div>
+        <a asp-action="Pool" class="btn btn-info">Pool de Perguntas</a>
+        <a asp-action="Create" class="btn btn-success">Novo Quiz</a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Tema</th>
+                <th>Nível</th>
+                <th>Perguntas</th>
+                <th>Tempo/Pergunta</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Tema</td>
+                    <td>@item.NivelDificuldade</td>
+                    <td>@item.NumeroPerguntas</td>
+                    <td>@item.TempoPorPerguntaSegundos s</td>
+                    <td>
+                        <a asp-action="Stats" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Estatísticas</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Tem a certeza?')">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

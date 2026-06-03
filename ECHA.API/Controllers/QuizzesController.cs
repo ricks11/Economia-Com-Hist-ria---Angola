@@ -1,4 +1,4 @@
-using EconomiaComHistoria.API.DTOs;
+using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
@@ -79,6 +79,55 @@ public class QuizzesController : ControllerBase
             )).ToList();
 
         return Ok(new QuizStartResponseDto(tentativa.Id, randomQuestions));
+    }
+
+    [HttpGet("{id}/stats")]
+    [Authorize(Roles = "Admin,Editor")]
+    public async Task<ActionResult<QuizStatsDto>> GetQuizStats(int id)
+    {
+        var quiz = await _quizRepository.GetByIdAsync(id);
+        if (quiz == null) return NotFound();
+
+        var respostas = await _quizRepository.GetRespostasByQuizAsync(id);
+        
+        var totalTentativas = await _dbContext.TentativasQuiz.CountAsync(t => t.QuizId == id && t.Completa);
+
+        var statsPerguntas = quiz.Perguntas.Select(p => {
+            var respostasPergunta = respostas.Where(r => r.PerguntaId == p.Id).ToList();
+            var totalRespostas = respostasPergunta.Count;
+            var taxaAcerto = totalRespostas > 0 ? (double)respostasPergunta.Count(r => r.IsCorrecta) / totalRespostas * 100 : 0;
+            var tempoMedio = totalRespostas > 0 ? respostasPergunta.Average(r => r.TempoRespostaMs) : 0;
+
+            return new QuestionStatsDto(p.Id, p.Texto, totalRespostas, taxaAcerto, tempoMedio);
+        }).ToList();
+
+        return Ok(new QuizStatsDto(quiz.Id, quiz.Titulo, totalTentativas, statsPerguntas));
+    }
+
+    [HttpGet("pool")]
+    [Authorize(Roles = "Admin,Editor")]
+    public async Task<ActionResult<List<PerguntaStartDto>>> GetQuestionPool([FromQuery] string? tema, [FromQuery] int? nivel)
+    {
+        var query = _dbContext.Perguntas
+            .Include(p => p.Opcoes)
+            .Include(p => p.Quiz)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(tema))
+            query = query.Where(p => p.Quiz.Tema == tema);
+        
+        if (nivel.HasValue)
+            query = query.Where(p => p.Quiz.NivelDificuldade == nivel.Value);
+
+        var perguntas = await query.ToListAsync();
+        
+        var response = perguntas.Select(p => new PerguntaStartDto(
+            p.Id,
+            p.Texto,
+            p.Opcoes.Select(o => new OpcaoStartDto(o.Id, o.Texto)).ToList()
+        )).ToList();
+
+        return Ok(response);
     }
 
     [HttpPost]

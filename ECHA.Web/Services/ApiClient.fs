@@ -87,3 +87,65 @@ type ApiClient(httpClient: HttpClient) =
             else
                 return None
         }
+
+    // Quiz Methods
+    member this.ListQuizzesAsync(?nivel, ?tema) : Task<QuizResponseDto list> =
+        task {
+            let mutable url = "/api/quizzes?"
+            nivel |> Option.iter (fun v -> url <- url + "nivel=" + v + "&")
+            tema |> Option.iter (fun v -> url <- url + "tema=" + v + "&")
+
+            let! response = httpClient.GetAsync(url)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<QuizResponseDto list>()
+                return result
+            else
+                return []
+        }
+
+    member this.GetQuizStatsAsync(id: int, token: string) : Task<QuizStatsDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/quizzes/{id}/stats")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<QuizStatsDto>()
+                return Some result
+            else
+                return None
+        }
+
+    member this.GetQuestionPoolAsync(?tema, ?nivel, ?token) : Task<PerguntaStartDto list> =
+        task {
+            token |> Option.iter (fun t -> httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", t))
+            let mutable url = "/api/quizzes/pool?"
+            tema |> Option.iter (fun v -> url <- url + "tema=" + v + "&")
+            nivel |> Option.iter (fun v -> url <- url + "nivel=" + (string v) + "&")
+
+            let! response = httpClient.GetAsync(url)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<PerguntaStartDto list>()
+                return result
+            else
+                return []
+        }
+
+    member this.CreateQuizAsync(request: CreateQuizDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/quizzes", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.UpdateQuizAsync(id: int, request: UpdateQuizDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/quizzes/{id}", request)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.DeleteQuizAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.DeleteAsync($"/api/quizzes/{id}")
+            return response.IsSuccessStatusCode
+        }

@@ -1,4 +1,4 @@
-namespace EconomiaComHistoria.API.DTOs;
+namespace EconomiaComHistoria.Core.DTOs;
 
 public record CreateQuizDto(
     string Titulo,
