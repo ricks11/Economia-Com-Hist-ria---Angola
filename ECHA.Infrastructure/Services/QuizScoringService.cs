@@ -1,5 +1,6 @@
-using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Interfaces;
+using EconomiaComHistoria.Core.Enums;
+using EconomiaComHistoria.Core.Entities;
 
 namespace EconomiaComHistoria.Infrastructure.Services;
 
@@ -13,18 +14,18 @@ public class QuizScoringService : IQuizScoringService
         }
 
         double totalScore = 0;
-        int basePoints = 100 * (tentativa.Quiz.NivelDificuldade + 1);
+        int basePoints = 100 * ((int)tentativa.Quiz.Nivel + 1);
 
         foreach (var resposta in respostas)
         {
-            if (resposta.IsCorrecta && resposta.Pergunta != null)
+            if (resposta.Correta)
             {
-                int tempoLimiteMs = resposta.Pergunta.TempoLimiteSegundos * 1000;
+                int tempoLimiteMs = tentativa.Quiz.TempoLimiteSeg * 1000;
                 double bonusVelocidade = 0;
 
                 if (tempoLimiteMs > 0)
                 {
-                    bonusVelocidade = Math.Max(0, ((double)(tempoLimiteMs - resposta.TempoRespostaMs) / tempoLimiteMs) * 50);
+                    bonusVelocidade = Math.Max(0, ((double)(tempoLimiteMs - resposta.TempoRespostaSeg * 1000) / tempoLimiteMs) * 50);
                 }
 
                 totalScore += basePoints + bonusVelocidade;

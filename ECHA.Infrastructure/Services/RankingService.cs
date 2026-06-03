@@ -21,15 +21,16 @@ public class RankingService : IRankingService
     public async Task GerarSnapshotSemanalAsync()
     {
         var now = DateTime.UtcNow;
-        var startOfWeek = now.AddDays(-(int)now.DayOfWeek).Date; // Sunday 00:00
+        var startOfWeek = now.AddDays(-(int)now.DayOfWeek).Date;
 
         var weeklyScores = await _context.TentativasQuiz
-            .Where(t => t.Completa && t.DataInicio >= startOfWeek)
+            .Where(t => t.Completada && t.DataHora >= startOfWeek)
             .GroupBy(t => t.UtilizadorId)
             .Select(g => new
             {
                 UtilizadorId = g.Key,
-                TotalScore = g.Sum(t => t.Pontuacao)
+                TotalScore = g.Sum(t => t.Pontuacao),
+                QuizzesCompletados = g.Count()
             })
             .ToListAsync();
 
@@ -37,48 +38,71 @@ public class RankingService : IRankingService
             .Select(u => new { u.Id, u.EscolaId, u.Provincia })
             .ToListAsync();
 
-        var rankings = new List<Ranking>();
-        foreach (var score in weeklyScores)
+        var ranking = new Ranking
+        {
+            Tipo = TipoRanking.Nacional,
+            Periodo = PeriodoRanking.Semanal,
+            DataCalculo = now
+        };
+
+        var entradas = new List<EntradaRanking>();
+        int posicao = 1;
+        foreach (var score in weeklyScores.OrderByDescending(s => s.TotalScore))
         {
             var user = users.FirstOrDefault(u => u.Id == score.UtilizadorId);
-            rankings.Add(new Ranking
+            entradas.Add(new EntradaRanking
             {
+                Posicao = posicao++,
+                Pontos = score.TotalScore,
+                QuizzesCompletados = score.QuizzesCompletados,
                 UtilizadorId = score.UtilizadorId,
-                Pontuacao = score.TotalScore,
-                Periodo = PeriodoRanking.Semanal,
                 EscolaId = user?.EscolaId,
-                Provincia = user?.Provincia,
-                DataSnapshot = now
+                Ranking = ranking
             });
         }
 
-        await _context.Rankings.AddRangeAsync(rankings);
+        ranking.Entradas = entradas;
+        await _context.Rankings.AddAsync(ranking);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<Ranking>> GetRankingAsync(string tipo, PeriodoRanking periodo, int? escolaId = null, string? provincia = null)
+    public async Task<List<EntradaRanking>> GetRankingAsync(TipoRanking tipo, PeriodoRanking periodo, int? escolaId = null, string? provincia = null)
     {
         string cacheKey = $"ranking_{tipo}_{periodo}_{escolaId}_{provincia}";
 
-        if (_cache.TryGetValue(cacheKey, out List<Ranking>? cachedRankings))
+        if (_cache.TryGetValue(cacheKey, out List<EntradaRanking>? cachedRankings))
         {
             return cachedRankings!;
         }
 
-        var query = _context.Rankings
+        var rankingQuery = _context.Rankings
+            .Include(r => r.Entradas)
+            .ThenInclude(e => e.Utilizador)
             .Where(r => r.Periodo == periodo);
 
-        if (tipo == "escola" && escolaId.HasValue)
+        // Find the most recent ranking for this period
+        var latestRanking = await rankingQuery
+            .OrderByDescending(r => r.DataCalculo)
+            .FirstOrDefaultAsync();
+
+        if (latestRanking == null)
         {
-            query = query.Where(r => r.EscolaId == escolaId.Value);
+            return new List<EntradaRanking>();
         }
-        else if (tipo == "provincia" && !string.IsNullOrEmpty(provincia))
+
+        IQueryable<EntradaRanking> query = latestRanking.Entradas.AsQueryable();
+
+        if (tipo == TipoRanking.Escola && escolaId.HasValue)
         {
-            query = query.Where(r => r.Provincia == provincia);
+            query = query.Where(e => e.EscolaId == escolaId.Value);
+        }
+        else if (tipo == TipoRanking.Provincia && !string.IsNullOrEmpty(provincia))
+        {
+            query = query.Where(e => e.Utilizador != null && e.Utilizador.Provincia == provincia);
         }
 
         var result = await query
-            .OrderByDescending(r => r.Pontuacao)
+            .OrderBy(e => e.Posicao)
             .Take(100)
             .ToListAsync();
 
