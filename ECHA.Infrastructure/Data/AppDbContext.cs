@@ -37,6 +37,7 @@ public class AppDbContext : DbContext
     public DbSet<SessaoEstudo> SessoesEstudo => Set<SessaoEstudo>();
     public DbSet<PlanoEstudo> PlanosEstudo => Set<PlanoEstudo>();
     public DbSet<RelatorioProgresso> RelatoriosProgresso => Set<RelatorioProgresso>();
+    public DbSet<HistoricoActividade> HistoricoActividade => Set<HistoricoActividade>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

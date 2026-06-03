@@ -1,0 +1,80 @@
+@model IEnumerable<EconomiaComHistoria.Core.Entities.Badge>
+@{
+    ViewData["Title"] = "Dashboard de Gamificação";
+    var metricas = ViewBag.Metricas as System.Text.Json.JsonElement?;
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row mb-5">
+        <!-- Métricas de Engajamento -->
+        <div class="col-md-4">
+            <div class="card bg-info text-white shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Média de Streak</h5>
+                    @if (metricas.HasValue) {
+                        <h2 class="display-4">@metricas.Value.GetProperty("mediaStreak").GetDouble().ToString("F1")</h2>
+                    } else {
+                        <h2>N/A</h2>
+                    }
+                    <p class="mb-0">dias consecutivos</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">Popularidade dos Badges (% utilizadores)</div>
+                <div class="card-body">
+                    <div class="row">
+                        @if (metricas.HasValue) {
+                            foreach (var b in metricas.Value.GetProperty("badgesPorUtilizador").EnumerateArray()) {
+                                <div class="col-md-6 mb-2">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>@b.GetProperty("nome").GetString()</span>
+                                        <span>@b.GetProperty("percentagem").GetDouble().ToString("F1")%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: @b.GetProperty("percentagem").GetDouble()%"></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Badges e Critérios -->
+    <h3 class="mb-3">Badges Disponíveis e Critérios</h3>
+    <div class="table-responsive">
+        <table class="table table-hover border bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th>Icone</th>
+                    <th>Nome</th>
+                    <th>Critério de Desbloqueio</th>
+                    <th>Valor Necessário</th>
+                    <th>Total Conquistados</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var badge in Model)
+                {
+                    <tr>
+                        <td><i class="bi @badge.Icone" style="font-size: 1.5rem;"></i></td>
+                        <td>
+                            <strong>@badge.Nome</strong><br />
+                            <small class="text-muted">@badge.Descricao</small>
+                        </td>
+                        <td>@badge.Criterio</td>
+                        <td>@badge.ValorCriterio</td>
+                        <td>@badge.BadgesConquistados?.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

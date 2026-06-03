@@ -39,6 +39,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Gamificacao" asp-action="MeuProgresso">Meu Progresso</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
@@ -48,12 +51,14 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownModeracao" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Moderação
+                                    Gestão
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownModeracao">
                                     <a class="dropdown-item" asp-controller="Moderacao" asp-action="Fila">Fila de Espera</a>
                                     <a class="dropdown-item" asp-controller="Moderacao" asp-action="Denuncias">Denúncias</a>
                                     <a class="dropdown-item" asp-controller="Moderacao" asp-action="Utilizadores">Utilizadores</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-controller="Gamificacao" asp-action="DashboardAdmin">Dashboard Gamificação</a>
                                 </div>
                             </li>
                         }

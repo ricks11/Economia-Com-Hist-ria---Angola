@@ -87,6 +87,9 @@ builder.Services.AddScoped<IQuizScoringService, QuizScoringService>();
 builder.Services.AddScoped<IRankingService, RankingService>();
 builder.Services.AddScoped<IModeracaoService, ModeracaoService>();
 builder.Services.AddScoped<INotificacaoService, FirebaseNotificacaoService>();
+builder.Services.AddScoped<IGamificacaoService, GamificacaoService>();
+builder.Services.AddScoped<IStreakService, StreakService>();
+builder.Services.AddScoped<IPlanoEstudoService, PlanoEstudoService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<WeeklyRankingJob>();
 

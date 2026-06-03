@@ -192,4 +192,22 @@ public class ModeracaoController : ControllerBase
         await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
+
+    [HttpGet("badges")]
+    public async Task<ActionResult<IEnumerable<Badge>>> GetBadges(
+        [FromServices] IGamificacaoService gamificacaoService,
+        CancellationToken ct)
+    {
+        var badges = await gamificacaoService.GetBadgesDisponiveisAsync(ct);
+        return Ok(badges);
+    }
+
+    [HttpGet("metricas-engajamento")]
+    public async Task<ActionResult<object>> GetMetricasEngajamento(
+        [FromServices] IGamificacaoService gamificacaoService,
+        CancellationToken ct)
+    {
+        var metricas = await gamificacaoService.GetMetricasEngajamentoAsync(ct);
+        return Ok(metricas);
+    }
 }

@@ -13,6 +13,7 @@ public class Utilizador
     public DateTime DataRegisto { get; set; }
     public int PontosTotais { get; set; }
     public int StreakAtual { get; set; }
+    public DateTime? UltimoAcesso { get; set; }
     public DateTime? SuspensoAte { get; set; }
     public bool SuspensaoPermanente { get; set; }
     public string? Provincia { get; set; }

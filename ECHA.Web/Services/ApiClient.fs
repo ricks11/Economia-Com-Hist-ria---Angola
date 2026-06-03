@@ -225,3 +225,44 @@ type ApiClient(httpClient: HttpClient) =
             let! response = httpClient.PutAsync($"/api/moderacao/utilizadores/{id}/reativar", null)
             return response.IsSuccessStatusCode
         }
+
+    // Gamification & Study Plan Methods
+    member this.GetProgressoAsync(token: string) : Task<ProgressoUtilizadorDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/perfil/progresso")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<ProgressoUtilizadorDto>()
+                return Some result
+            else
+                return None
+        }
+
+    member this.GerarPlanoEstudoAsync(token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsync("/api/plano-estudo/gerar", null)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.GetBadgesAsync(token: string) : Task<Badge list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/moderacao/badges") // Supondo que Admin veja todos aqui
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<Badge list>()
+                return result
+            else
+                return []
+        }
+
+    member this.GetMetricasEngajamentoAsync(token: string) : Task<System.Text.Json.JsonElement option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync("/api/moderacao/metricas-engajamento")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>()
+                return Some result
+            else
+                return None
+        }

@@ -12,6 +12,7 @@
     <Compile Include="Controllers/ConteudosController.fs" />
     <Compile Include="Controllers/QuizzesController.fs" />
     <Compile Include="Controllers/ModeracaoController.fs" />
+    <Compile Include="Controllers/GamificacaoController.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
