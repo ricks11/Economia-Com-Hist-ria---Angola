@@ -7,4 +7,5 @@ public record CreateConteudoDto(
     string? Tema,
     string? Nivel,
     string? Regiao,
-    string? Tipo);
+    string? Tipo,
+    string? UrlMedia);

@@ -56,6 +56,7 @@ public class ConteudosController : ControllerBase
             Nivel = request.Nivel,
             Regiao = request.Regiao,
             Tipo = request.Tipo,
+            UrlMedia = request.UrlMedia,
             AutorId = userId,
             DataPublicacao = DateTime.UtcNow,
             Estado = EstadoConteudo.Ativo
@@ -199,6 +200,8 @@ public class ConteudosController : ControllerBase
             conteudo.Regiao = request.Regiao;
         if (request.Tipo != null)
             conteudo.Tipo = request.Tipo;
+        if (request.UrlMedia != null)
+            conteudo.UrlMedia = request.UrlMedia;
 
         _dbContext.Conteudos.Update(conteudo);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -402,6 +405,7 @@ public class ConteudosController : ControllerBase
             conteudo.Tipo,
             conteudo.Estado,
             conteudo.ImagemCapa,
+            conteudo.UrlMedia,
             conteudo.Visualizacoes,
             ehFavorito);
     }

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquivos – Economia com História | Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>/* mesma configuração tailwind do exemplo anterior */</script>
+  <style>body { font-family: 'Public Sans', sans-serif; background-color: #f9f9f9; } .font-headline { font-family: 'Manrope', sans-serif; }</style>
+</head>
+<body class="bg-surface text-on-surface">
+  <!-- Header idêntico ao da Cronologia (mude apenas o active link) -->
+  <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline tracking-tight">Economia com História – Angola</div>
+      <nav class="hidden md:flex gap-8 items-center font-headline font-bold">
+        <a href="#" class="text-stone-500 hover:text-red-800">Início</a>
+        <a href="#" class="text-stone-500 hover:text-red-800">Cronologia</a>
+        <a href="#" class="text-red-900 border-b-2 border-red-900 pb-1">Arquivos</a>
+        <a href="#" class="text-stone-500 hover:text-red-800">Estatísticas</a>
+        <button class="material-symbols-outlined text-stone-600">account_circle</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-28 pb-20 px-6 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <h1 class="text-5xl font-headline font-extrabold text-primary tracking-tight">Arquivos</h1>
+        <p class="text-on-surface-variant text-lg max-w-2xl mt-2">Documentos históricos, actas, mapas e publicações académicas digitalizadas.</p>
+      </div>
+      <div class="relative max-w-md w-full">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
+        <input type="text" placeholder="Pesquisar por título, autor ou período..." class="w-full pl-12 pr-4 py-3 bg-surface-container-low rounded-full focus:ring-2 focus:ring-primary/20">
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="flex flex-wrap gap-3 mb-12">
+      <button class="px-6 py-2.5 rounded-full bg-primary text-white font-semibold">Todos</button>
+      <button class="px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium">Documentos oficiais</button>
+      <button class="px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium">Artigos académicos</button>
+      <button class="px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium">Mapas e fotografias</button>
+      <button class="px-6 py-2.5 rounded-full bg-tertiary-container text-on-tertiary-container font-semibold">Periódicos históricos</button>
+    </div>
+
+    <!-- Grid de documentos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-surface-container-lowest rounded-[2rem] overflow-hidden hover:shadow-sm transition-all group">
+        <div class="h-40 bg-surface-container-high relative flex items-center justify-center">
+          <span class="material-symbols-outlined text-5xl text-primary/30">description</span>
+          <span class="absolute top-4 right-4 bg-white/80 text-xs font-bold px-2 py-1 rounded-full">PDF</span>
+        </div>
+        <div class="p-6">
+          <div class="text-tertiary text-xs font-bold uppercase tracking-wider mb-2">1957</div>
+          <h3 class="text-xl font-headline font-bold text-primary mb-2">Plano de Fomento Agrário do Ultramar</h3>
+          <p class="text-secondary text-sm line-clamp-2">Relatório detalhado sobre investimentos em café e sisal no norte de Angola.</p>
+          <div class="mt-6 flex justify-between items-center">
+            <span class="text-xs text-stone-500">352 páginas</span>
+            <button class="text-primary font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Abrir <span class="material-symbols-outlined text-sm">open_in_new</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-surface-container-lowest rounded-[2rem] overflow-hidden hover:shadow-sm transition-all group">
+        <div class="h-40 bg-surface-container-high relative flex items-center justify-center">
+          <span class="material-symbols-outlined text-5xl text-primary/30">photo_camera</span>
+        </div>
+        <div class="p-6">
+          <div class="text-tertiary text-xs font-bold uppercase tracking-wider mb-2">1972</div>
+          <h3 class="text-xl font-headline font-bold text-primary mb-2">Porto de Luanda – vista aérea</h3>
+          <p class="text-secondary text-sm line-clamp-2">Fotografia histórica da movimentação de mercadorias antes da independência.</p>
+          <div class="mt-6 flex justify-between items-center">
+            <span class="text-xs text-stone-500">1 imagem, alta resolução</span>
+            <button class="text-primary font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Visualizar <span class="material-symbols-outlined text-sm">visibility</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-surface-container-lowest rounded-[2rem] overflow-hidden hover:shadow-sm transition-all group">
+        <div class="h-40 bg-surface-container-high relative flex items-center justify-center">
+          <span class="material-symbols-outlined text-5xl text-primary/30">analytics</span>
+        </div>
+        <div class="p-6">
+          <div class="text-tertiary text-xs font-bold uppercase tracking-wider mb-2">1995</div>
+          <h3 class="text-xl font-headline font-bold text-primary mb-2">Inflação e desvalorização cambial (1991‑1995)</h3>
+          <p class="text-secondary text-sm line-clamp-2">Estudo do Centro de Estudos Económicos sobre a hiperinflação pós‑guerra.</p>
+          <div class="mt-6 flex justify-between items-center">
+            <span class="text-xs text-stone-500">22 páginas</span>
+            <button class="text-primary font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Ler <span class="material-symbols-outlined text-sm">menu_book</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50">
+    <!-- mesmo footer da cronologia -->
+  </footer>
+</body>
+</html>

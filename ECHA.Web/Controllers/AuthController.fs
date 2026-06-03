@@ -18,10 +18,14 @@ type AuthController (apiClient: ECHA.Web.Services.ApiClient) =
     [<HttpPost>]
     member this.Login (request: LoginRequestDto) =
         task {
-            let! token = apiClient.LoginAsync(request)
-            match token with
-            | Some jwtToken ->
-                let claims = [| Claim(ClaimTypes.Name, request.Email) |]
+            let! authResponse = apiClient.LoginAsync(request)
+            match authResponse with
+            | Some response ->
+                let claims = [| 
+                    Claim(ClaimTypes.Name, response.Email)
+                    Claim(ClaimTypes.Role, response.Tipo)
+                    Claim("AccessToken", response.AccessToken)
+                |]
                 let claimsIdentity = ClaimsIdentity(claims, "CookieAuthentication")
                 let claimsPrincipal = ClaimsPrincipal(claimsIdentity)
                 

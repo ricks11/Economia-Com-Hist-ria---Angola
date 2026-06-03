@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Não Encontrada – Economia com História – Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { "primary": "#4d070b", "surface": "#f9f9f9" },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface font-body flex flex-col items-center justify-center min-h-screen text-center px-6">
+  <div class="max-w-xl">
+    <div class="relative mb-12">
+      <span class="text-[12rem] font-headline font-black text-stone-200 leading-none">404</span>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <span class="material-symbols-outlined text-[6rem] text-primary" data-icon="search_off">search_off</span>
+      </div>
+    </div>
+    
+    <h1 class="font-headline font-extrabold text-4xl text-primary mb-6">Página Perdida no Tempo.</h1>
+    <p class="text-lg text-secondary mb-12 leading-relaxed">
+      Lamentamos, mas o documento ou seção que procura não foi encontrado no nosso arquivo digital. Pode ter sido movido ou nunca existiu.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#" class="px-10 py-4 bg-primary text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform">
+        Voltar ao Portal
+      </a>
+      <a href="#" class="px-10 py-4 bg-white border border-stone-200 rounded-full font-bold hover:bg-stone-50 transition-colors">
+        Reportar Erro
+      </a>
+    </div>
+
+    <div class="mt-20">
+      <p class="text-xs uppercase tracking-widest text-stone-400 font-bold mb-4">Talvez queira explorar:</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#" class="text-sm font-bold text-primary hover:underline">Cronologia</a>
+        <span class="text-stone-300">•</span>
+        <a href="#" class="text-sm font-bold text-primary hover:underline">Arquivos</a>
+        <span class="text-stone-300">•</span>
+        <a href="#" class="text-sm font-bold text-primary hover:underline">Estatísticas</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

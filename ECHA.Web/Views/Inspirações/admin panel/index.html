@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Editor – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-surface": "#2f3131", "on-error": "#ffffff", "on-surface-variant": "#554241",
+            "surface-variant": "#e2e2e2", "on-tertiary-container": "#4f3e00", "tertiary": "#735c00",
+            "secondary-fixed": "#e4e2e1", "on-secondary": "#ffffff", "secondary": "#5f5e5e",
+            "surface-container": "#eeeeee", "on-background": "#1a1c1c", "surface": "#f9f9f9",
+            "on-primary-container": "#f0847f", "inverse-primary": "#ffb3ae", "tertiary-fixed-dim": "#e9c349",
+            "on-surface": "#1a1c1c", "background": "#f9f9f9", "on-secondary-container": "#656464",
+            "inverse-on-surface": "#f1f1f1", "secondary-container": "#e4e2e1", "surface-tint": "#9b423f",
+            "primary-fixed": "#ffdad7", "on-primary": "#ffffff", "on-secondary-fixed": "#1b1c1c",
+            "primary-container": "#6b1e1e", "on-secondary-fixed-variant": "#474747", "tertiary-container": "#cca830",
+            "surface-container-high": "#e8e8e8", "surface-container-low": "#f3f3f3", "error": "#ba1a1a",
+            "on-primary-fixed": "#410005", "surface-container-lowest": "#ffffff", "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#7d2b2a", "primary": "#4d070b", "surface-bright": "#f9f9f9",
+            "secondary-fixed-dim": "#c8c6c5", "outline-variant": "#dbc0be", "surface-dim": "#dadada",
+            "outline": "#887270", "primary-fixed-dim": "#ffb3ae", "tertiary-fixed": "#ffe088",
+            "on-tertiary-fixed-variant": "#574500", "on-tertiary-fixed": "#241a00", "surface-container-highest": "#e2e2e2",
+            "error-container": "#ffdad6", "on-error-container": "#93000a"
+          },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"], label: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Public Sans', sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="bg-surface">
+  <!-- Header administrativo (simplificado, mas com glass) -->
+  <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline tracking-tight">Gestão Editorial</div>
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-stone-600">Olá, Dr. Adriano</span>
+        <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center"><span class="material-symbols-outlined text-primary">admin_panel_settings</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-12 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <!-- Sidebar Admin -->
+      <aside class="md:col-span-3 bg-surface-container-lowest rounded-3xl p-6 h-fit sticky top-24">
+        <nav class="space-y-2">
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold"><span class="material-symbols-outlined">dashboard</span> Dashboard</a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition"><span class="material-symbols-outlined">article</span> Conteúdos</a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition"><span class="material-symbols-outlined">rate_review</span> Comentários</a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition"><span class="material-symbols-outlined">school</span> Escolas</a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition"><span class="material-symbols-outlined">bar_chart</span> Relatórios</a>
+        </nav>
+      </aside>
+
+      <!-- Conteúdo principal do dashboard -->
+      <div class="md:col-span-9 space-y-8">
+        <!-- KPI cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-surface-container-lowest rounded-2xl p-6">
+            <div class="flex justify-between items-start"><span class="material-symbols-outlined text-primary/60">visibility</span><span class="text-2xl font-headline font-bold">1,284</span></div>
+            <p class="text-secondary text-sm mt-2">Visualizações (semana)</p>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl p-6">
+            <div class="flex justify-between items-start"><span class="material-symbols-outlined text-primary/60">forum</span><span class="text-2xl font-headline font-bold">47</span></div>
+            <p class="text-secondary text-sm mt-2">Comentários pendentes</p>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl p-6">
+            <div class="flex justify-between items-start"><span class="material-symbols-outlined text-primary/60">edit_note</span><span class="text-2xl font-headline font-bold">12</span></div>
+            <p class="text-secondary text-sm mt-2">Rascunhos</p>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl p-6">
+            <div class="flex justify-between items-start"><span class="material-symbols-outlined text-primary/60">school</span><span class="text-2xl font-headline font-bold">8</span></div>
+            <p class="text-secondary text-sm mt-2">Instituições registadas</p>
+          </div>
+        </div>
+
+        <!-- Últimos conteúdos editáveis -->
+        <div class="bg-surface-container-lowest rounded-3xl p-6">
+          <h2 class="text-xl font-headline font-bold text-primary mb-4">Conteúdos recentes</h2>
+          <div class="divide-y divide-outline-variant/20">
+            <div class="py-4 flex flex-wrap justify-between items-center gap-3">
+              <div><span class="text-sm font-bold">Inflação em Angola</span><span class="text-xs text-stone-400 ml-3">Publicado 12/05/2024</span></div>
+              <div class="flex gap-2"><button class="px-4 py-2 rounded-full bg-secondary-container text-sm font-medium">Editar</button><button class="px-4 py-2 rounded-full bg-tertiary-container/20 text-sm font-medium">Arquivar</button></div>
+            </div>
+            <div class="py-4 flex flex-wrap justify-between items-center gap-3">
+              <div><span class="text-sm font-bold">Mulheres nos negócios (Podcast)</span><span class="text-xs text-stone-400 ml-3">Rascunho</span></div>
+              <div class="flex gap-2"><button class="px-4 py-2 rounded-full bg-secondary-container text-sm font-medium">Continuar</button><button class="px-4 py-2 rounded-full bg-error-container/20 text-sm font-medium">Excluir</button></div>
+            </div>
+          </div>
+          <button class="mt-6 w-full py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">add</span> Criar novo conteúdo</button>
+        </div>
+
+        <!-- Utilizadores recentes -->
+        <div class="bg-surface-container-lowest rounded-3xl p-6">
+          <h2 class="text-xl font-headline font-bold text-primary mb-4">Novos investigadores</h2>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center"><span><span class="font-medium">Drª. Esperança Costa</span> <span class="text-xs text-stone-400">(UAN)</span></span><button class="text-xs bg-tertiary-container text-white px-3 py-1 rounded-full">Aprovar perfil</button></div>
+            <div class="flex justify-between items-center"><span><span class="font-medium">Mário Neto</span> <span class="text-xs text-stone-400">(UCAN)</span></span><button class="text-xs bg-tertiary-container text-white px-3 py-1 rounded-full">Aprovar perfil</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

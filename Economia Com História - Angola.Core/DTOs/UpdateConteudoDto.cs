@@ -7,4 +7,5 @@ public record UpdateConteudoDto(
     string? Tema,
     string? Nivel,
     string? Regiao,
-    string? Tipo);
+    string? Tipo,
+    string? UrlMedia);

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- mesmo head e configuração tailwind do admin panel -->
+  <title>Moderação – Economia com História</title>
+</head>
+<body class="bg-surface">
+  <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline tracking-tight">Fila de Moderação</div>
+      <div class="flex items-center gap-4"><span class="text-sm font-medium text-stone-600">Moderador: J. Kiala</span><div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center"><span class="material-symbols-outlined text-primary">gavel</span></div></div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-12 px-6 max-w-5xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Moderação de Conteúdo</h1>
+      <p class="text-on-surface-variant">Analise e aprove comentários, tópicos do fórum e submissões de arquivo.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-surface-container-lowest rounded-2xl p-5 text-center"><span class="text-3xl font-headline font-bold text-primary">24</span><p class="text-secondary text-sm">Comentários pendentes</p></div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 text-center"><span class="text-3xl font-headline font-bold text-primary">7</span><p class="text-secondary text-sm">Tópicos do fórum</p></div>
+      <div class="bg-surface-container-lowest rounded-2xl p-5 text-center"><span class="text-3xl font-headline font-bold text-primary">3</span><p class="text-secondary text-sm">Submissões de arquivo</p></div>
+    </div>
+
+    <!-- Lista de comentários pendentes -->
+    <div class="space-y-5">
+      <h2 class="text-xl font-headline font-bold text-primary">Comentários a moderar</h2>
+      <div class="bg-surface-container-lowest rounded-2xl p-6">
+        <div class="flex justify-between items-start mb-2"><span class="font-bold">Ana Silva</span><span class="text-xs text-stone-400">Há 1 hora</span></div>
+        <p class="text-on-surface mb-4">"Gostei do vídeo sobre inflação, mas gostaria de ver mais dados sobre 2020-2022."</p>
+        <div class="flex gap-3"><button class="px-5 py-2 rounded-full bg-primary text-white text-sm font-bold">Aprovar</button><button class="px-5 py-2 rounded-full bg-error-container/20 text-error text-sm font-bold">Rejeitar</button><button class="px-5 py-2 rounded-full bg-secondary-container text-sm">Editar</button></div>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-2xl p-6">
+        <div class="flex justify-between items-start mb-2"><span class="font-bold">João de Almeida</span><span class="text-xs text-stone-400">Ontem</span></div>
+        <p class="text-on-surface mb-4">"Excelente plataforma! Sugiro adicionarem uma linha do tempo interativa."</p>
+        <div class="flex gap-3"><button class="px-5 py-2 rounded-full bg-primary text-white text-sm font-bold">Aprovar</button><button class="px-5 py-2 rounded-full bg-error-container/20 text-error text-sm font-bold">Rejeitar</button></div>
+      </div>
+    </div>
+
+    <!-- Tópicos do fórum pendentes -->
+    <div class="mt-12 space-y-5">
+      <h2 class="text-xl font-headline font-bold text-primary">Tópicos do fórum</h2>
+      <div class="bg-surface-container-lowest rounded-2xl p-6">
+        <div class="mb-2"><span class="bg-secondary-container text-xs font-bold px-3 py-1 rounded-full">Macroeconomia</span></div>
+        <h3 class="font-headline font-bold text-lg">Impacto da dívida externa na educação</h3>
+        <p class="text-secondary text-sm mb-3">por Carlos Pereira – 2 respostas</p>
+        <div class="flex gap-3"><button class="px-5 py-2 rounded-full bg-primary text-white text-sm font-bold">Publicar</button><button class="px-5 py-2 rounded-full bg-error-container/20 text-error text-sm font-bold">Arquivar</button></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -14,7 +14,8 @@ public record ConteudoResponseDto(
     string? Nivel,
     string? Regiao,
     string? Tipo,
-    EstadoConteudo Estado,
+    EconomiaComHistoria.Core.Enums.EstadoConteudo Estado,
     string? ImagemCapa,
+    string? UrlMedia,
     int Visualizacoes,
     bool EhFavorito);

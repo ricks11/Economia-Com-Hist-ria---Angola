@@ -1,0 +1,48 @@
+<!-- apenas a secção principal, dentro do mesmo layout -->
+<main class="pt-28 pb-20 px-6 max-w-7xl mx-auto">
+  <h1 class="text-5xl font-headline font-extrabold text-primary tracking-tight mb-2">Indicadores Macroeconómicos</h1>
+  <p class="text-on-surface-variant text-lg mb-12">Evolução do PIB, inflação, produção petrolífera e dívida pública (dados históricos e projecções).</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <div class="bg-surface-container-lowest p-6 rounded-2xl">
+      <span class="material-symbols-outlined text-primary/60">monetization_on</span>
+      <p class="text-3xl font-headline font-bold text-primary mt-3">USD 93.8 Bn</p>
+      <p class="text-secondary text-sm">PIB nominal (2023)</p>
+      <span class="text-xs text-tertiary">+1.2% vs 2022</span>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-2xl">
+      <span class="material-symbols-outlined text-primary/60">trending_up</span>
+      <p class="text-3xl font-headline font-bold text-primary mt-3">13.6%</p>
+      <p class="text-secondary text-sm">Inflação anual (2024)</p>
+      <span class="text-xs text-tertiary">em desaceleração</span>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-2xl">
+      <span class="material-symbols-outlined text-primary/60">oil_barrel</span>
+      <p class="text-3xl font-headline font-bold text-primary mt-3">1.14 Mb/d</p>
+      <p class="text-secondary text-sm">Produção de petróleo</p>
+      <span class="text-xs text-tertiary">OPEC quota mantida</span>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-2xl">
+      <span class="material-symbols-outlined text-primary/60">account_balance</span>
+      <p class="text-3xl font-headline font-bold text-primary mt-3">86.2%</p>
+      <p class="text-secondary text-sm">Dívida pública / PIB</p>
+      <span class="text-xs text-tertiary">tendência de redução</span>
+    </div>
+  </div>
+
+  <!-- Gráfico simulado (pode ser substituído por Chart.js) -->
+  <div class="bg-surface-container-lowest p-8 rounded-3xl">
+    <h2 class="text-2xl font-headline font-bold text-primary mb-6">Evolução do PIB real (2010‑2025)</h2>
+    <div class="h-80 flex items-end gap-2">
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/30 w-full rounded-t-lg" style="height: 120px"></div><span class="text-xs">2010</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/40 w-full rounded-t-lg" style="height: 138px"></div><span class="text-xs">2012</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/50 w-full rounded-t-lg" style="height: 152px"></div><span class="text-xs">2014</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/25 w-full rounded-t-lg" style="height: 90px"></div><span class="text-xs">2016</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/20 w-full rounded-t-lg" style="height: 84px"></div><span class="text-xs">2018</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/35 w-full rounded-t-lg" style="height: 100px"></div><span class="text-xs">2020</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-primary/55 w-full rounded-t-lg" style="height: 160px"></div><span class="text-xs">2023</span></div>
+      <div class="flex-1 flex flex-col items-center gap-2"><div class="bg-tertiary/60 w-full rounded-t-lg" style="height: 168px"></div><span class="text-xs">2025*</span></div>
+    </div>
+    <p class="text-center text-stone-400 text-xs mt-6">*projecção FMI</p>
+  </div>
+</main>

@@ -6,4 +6,5 @@ public record AuthResponseDto(
     string Nome,
     string AccessToken,
     string RefreshToken,
-    DateTime ExpiresIn);
+    DateTime ExpiresIn,
+    string Tipo);

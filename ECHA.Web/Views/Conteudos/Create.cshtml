@@ -1,0 +1,107 @@
+@model ECHA.Core.DTOs.CreateConteudoDto
+@{
+    ViewData["Title"] = "Criar Conteúdo";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Titulo" class="control-label">Título</label>
+                <input asp-for="Titulo" class="form-control" required />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Resumo" class="control-label">Resumo</label>
+                <textarea asp-for="Resumo" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Resumo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Texto" class="control-label">Texto</label>
+                <textarea asp-for="Texto" class="form-control" id="TextoEditor"></textarea>
+                <span asp-validation-for="Texto" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Tema" class="control-label">Tema</label>
+                        <input asp-for="Tema" class="form-control" required />
+                        <span asp-validation-for="Tema" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Nivel" class="control-label">Nível</label>
+                        <select asp-for="Nivel" class="form-control" required>
+                            <option value="">Selecione...</option>
+                            <option value="Primário">Primário</option>
+                            <option value="Secundário">Secundário</option>
+                            <option value="Superior">Superior</option>
+                            <option value="Geral">Geral</option>
+                        </select>
+                        <span asp-validation-for="Nivel" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Regiao" class="control-label">Região</label>
+                        <input asp-for="Regiao" class="form-control" required />
+                        <span asp-validation-for="Regiao" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Tipo" class="control-label">Tipo</label>
+                        <select asp-for="Tipo" class="form-control" required>
+                            <option value="">Selecione...</option>
+                            <option value="Artigo">Artigo</option>
+                            <option value="Video">Vídeo</option>
+                            <option value="Audio">Áudio</option>
+                            <option value="Documento">Documento</option>
+                        </select>
+                        <span asp-validation-for="Tipo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="UrlMedia" class="control-label">URL de Media (Vídeo/Áudio Embed)</label>
+                <input asp-for="UrlMedia" class="form-control" placeholder="https://youtube.com/embed/..." />
+                <span asp-validation-for="UrlMedia" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label name="imagemCapa" class="control-label">Imagem de Capa</label>
+                <input type="file" name="imagemCapa" class="form-control" accept="image/*" />
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#TextoEditor',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            height: 400
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

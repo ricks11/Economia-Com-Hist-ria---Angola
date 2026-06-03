@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notificações – Economia com História – Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4d070b",
+            "primary-container": "#6b1e1e",
+            "on-primary": "#ffffff",
+            "secondary": "#5f5e5e",
+            "surface": "#f9f9f9",
+            "on-surface": "#1a1c1c",
+            "surface-container-low": "#f3f3f3",
+            "tertiary": "#735c00"
+          },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen">
+  <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-stone-100">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline">Economia com História</div>
+      <button class="material-symbols-outlined text-stone-600" data-icon="close">close</button>
+    </div>
+  </nav>
+
+  <main class="flex-grow pt-24 pb-12 px-6 max-w-3xl mx-auto w-full">
+    <header class="mb-8 flex justify-between items-center">
+      <h1 class="font-headline font-extrabold text-3xl text-primary">Notificações</h1>
+      <button class="text-sm font-bold text-tertiary hover:underline">Marcar todas como lidas</button>
+    </header>
+
+    <div class="space-y-4">
+      <!-- Section: New -->
+      <h2 class="text-xs font-bold uppercase tracking-widest text-secondary mb-4">Novas</h2>
+      
+      <!-- Notification 1 -->
+      <div class="bg-white p-4 rounded-xl border-l-4 border-primary shadow-sm flex gap-4">
+        <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center shrink-0 text-primary">
+          <span class="material-symbols-outlined" data-icon="forum">forum</span>
+        </div>
+        <div class="flex-grow">
+          <p class="text-sm"><span class="font-bold">Ana Paula</span> respondeu ao seu tópico no fórum: <span class="italic">"O impacto da moeda no período colonial"</span>.</p>
+          <span class="text-xs text-secondary mt-1 block">Há 5 minutos</span>
+        </div>
+        <div class="w-2 h-2 rounded-full bg-primary mt-2"></div>
+      </div>
+
+      <!-- Notification 2 -->
+      <div class="bg-white p-4 rounded-xl border-l-4 border-tertiary shadow-sm flex gap-4">
+        <div class="w-10 h-10 rounded-full bg-tertiary/5 flex items-center justify-center shrink-0 text-tertiary">
+          <span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+        </div>
+        <div class="flex-grow">
+          <p class="text-sm">Um novo documento foi adicionado aos Arquivos: <span class="font-bold">Estatísticas do Comércio Externo 1960</span>.</p>
+          <span class="text-xs text-secondary mt-1 block">Há 2 horas</span>
+        </div>
+        <div class="w-2 h-2 rounded-full bg-tertiary mt-2"></div>
+      </div>
+
+      <!-- Section: Earlier -->
+      <h2 class="text-xs font-bold uppercase tracking-widest text-secondary mt-10 mb-4">Anteriores</h2>
+
+      <!-- Notification 3 -->
+      <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 flex gap-4 opacity-75">
+        <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center shrink-0 text-secondary">
+          <span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+        </div>
+        <div class="flex-grow">
+          <p class="text-sm">Parabéns! Concluiu o Quiz de <span class="font-bold">Macroeconomia de Angola</span> com 90% de sucesso.</p>
+          <span class="text-xs text-secondary mt-1 block">Ontem às 14:30</span>
+        </div>
+      </div>
+
+      <!-- Notification 4 -->
+      <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 flex gap-4 opacity-75">
+        <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center shrink-0 text-secondary">
+          <span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+        </div>
+        <div class="flex-grow">
+          <p class="text-sm">A sua conta académica foi verificada com sucesso pela instituição <span class="font-bold">Universidade Agostinho Neto</span>.</p>
+          <span class="text-xs text-secondary mt-1 block">2 dias atrás</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <button class="text-sm font-bold text-primary hover:bg-primary/5 px-6 py-2 rounded-full transition-colors">Ver histórico completo</button>
+    </div>
+  </main>
+</body>
+</html>
