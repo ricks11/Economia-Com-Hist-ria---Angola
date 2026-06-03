@@ -1,3 +1,0 @@
-namespace EconomiaComHistoria.Core.DTOs;
-
-public record LoginRequestDto(string Email, string Password);
