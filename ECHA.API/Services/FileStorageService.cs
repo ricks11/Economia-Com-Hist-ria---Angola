@@ -12,29 +12,27 @@ public class FileStorageService : IFileStorageService
         _environment = environment;
     }
 
-    public async Task<string> UploadFileAsync(IFormFile file, string folder = "uploads")
+    public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string folder = "uploads")
     {
-        if (file == null || file.Length == 0)
+        if (fileStream == null || fileStream.Length == 0)
             throw new ArgumentException("Ficheiro vazio");
 
-        if (file.Length > MaxFileSize)
+        if (fileStream.Length > MaxFileSize)
             throw new ArgumentException("Ficheiro excede o tamanho máximo de 5MB");
 
         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
-        if (!IsAllowedExtension(file.FileName, allowedExtensions))
-            throw new ArgumentException("Extensão de ficheiro não permitida. Extensões aceites: jpg, jpeg, png, webp");
+        if (!IsAllowedExtension(fileName, allowedExtensions))
+            throw new ArgumentException("Extensão não permitida. Aceites: jpg, jpeg, png, webp");
 
         var uploadsFolder = Path.Combine(_environment.WebRootPath, folder);
         if (!Directory.Exists(uploadsFolder))
             Directory.CreateDirectory(uploadsFolder);
 
-        var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
+        var uniqueFileName = $"{Guid.NewGuid()}_{fileName}";
         var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        {
-            await file.CopyToAsync(fileStream);
-        }
+        using var fs = new FileStream(filePath, FileMode.Create);
+        await fileStream.CopyToAsync(fs);
 
         return Path.Combine(folder, uniqueFileName).Replace("\\", "/");
     }
