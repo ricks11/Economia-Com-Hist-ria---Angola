@@ -8,4 +8,6 @@ public record UpdateConteudoDto(
     string? Nivel,
     string? Regiao,
     string? Tipo,
-    string? UrlMedia);
+    string? UrlMedia,
+    bool? IsJindungo,
+    string? ReferenciaFactual);

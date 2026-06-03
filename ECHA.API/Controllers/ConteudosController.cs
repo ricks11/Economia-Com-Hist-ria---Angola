@@ -46,21 +46,42 @@ public class ConteudosController : ControllerBase
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
+        if (request.IsJindungo && string.IsNullOrEmpty(request.ReferenciaFactual))
+            return BadRequest(new { message = "Referência factual é obrigatória para conteúdo Jindungo" });
+
         // Create content
-        var conteudo = new Conteudo
-        {
-            Titulo = request.Titulo,
-            Resumo = request.Resumo,
-            Texto = request.Texto,
-            Tema = request.Tema,
-            Nivel = request.Nivel,
-            Regiao = request.Regiao,
-            Tipo = request.Tipo,
-            UrlMedia = request.UrlMedia,
-            AutorId = userId,
-            DataPublicacao = DateTime.UtcNow,
-            Estado = EstadoConteudo.Ativo
-        };
+        Conteudo conteudo = request.IsJindungo 
+            ? new ConteudoJindungo 
+            { 
+                Titulo = request.Titulo,
+                Resumo = request.Resumo,
+                Texto = request.Texto,
+                Tema = request.Tema,
+                Nivel = request.Nivel,
+                Regiao = request.Regiao,
+                Tipo = request.Tipo,
+                UrlMedia = request.UrlMedia,
+                IsJindungo = true,
+                ReferenciaFactual = request.ReferenciaFactual ?? string.Empty,
+                AutorId = userId,
+                DataPublicacao = DateTime.UtcNow,
+                Estado = EstadoConteudo.Ativo
+            }
+            : new Conteudo
+            {
+                Titulo = request.Titulo,
+                Resumo = request.Resumo,
+                Texto = request.Texto,
+                Tema = request.Tema,
+                Nivel = request.Nivel,
+                Regiao = request.Regiao,
+                Tipo = request.Tipo,
+                UrlMedia = request.UrlMedia,
+                IsJindungo = false,
+                AutorId = userId,
+                DataPublicacao = DateTime.UtcNow,
+                Estado = EstadoConteudo.Ativo
+            };
 
         _dbContext.Conteudos.Add(conteudo);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -149,13 +170,45 @@ public class ConteudosController : ControllerBase
         var isFavorito = userId > 0 && await _dbContext.ConteudosFavoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
-        var response = MapToResponseDto(conteudo, isFavorito);
+        var response = MapToResponseDto(conteudo, false);
         return Ok(response);
-    }
+        }
 
-    /// <summary>
-    /// Updates a content item (Author or Admin only)
-    /// </summary>
+        [HttpPost("{id:int}/traducoes")]
+        [Authorize(Roles = "Admin,Editor")]
+        public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
+        {
+        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
+        if (conteudo is null) return NotFound();
+
+        var traducao = new ConteudoTraducao
+        {
+            ConteudoId = id,
+            Lingua = request.Lingua,
+            Texto = request.Texto,
+            AudioUrl = request.AudioUrl
+        };
+
+        _dbContext.ConteudoTraducoes.Add(traducao);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(new TraducaoResponseDto(traducao.Id, traducao.Lingua, traducao.Texto, traducao.AudioUrl));
+        }
+
+        [HttpGet("{id:int}/traducoes")]
+        public async Task<ActionResult<IEnumerable<TraducaoResponseDto>>> GetTraducoes(int id, CancellationToken cancellationToken)
+        {
+        var traducoes = await _dbContext.ConteudoTraducoes
+            .Where(t => t.ConteudoId == id)
+            .Select(t => new TraducaoResponseDto(t.Id, t.Lingua, t.Texto, t.AudioUrl))
+            .ToListAsync(cancellationToken);
+
+        return Ok(traducoes);
+        }
+
+        /// <summary>
+        /// Soft delete a content item (Author or Admin only)
+        /// </summary>
     [HttpPut("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -202,12 +255,48 @@ public class ConteudosController : ControllerBase
             conteudo.Tipo = request.Tipo;
         if (request.UrlMedia != null)
             conteudo.UrlMedia = request.UrlMedia;
+        if (request.IsJindungo.HasValue)
+            conteudo.IsJindungo = request.IsJindungo.Value;
+        if (request.ReferenciaFactual != null && conteudo is ConteudoJindungo cj)
+            cj.ReferenciaFactual = request.ReferenciaFactual;
 
         _dbContext.Conteudos.Update(conteudo);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var response = MapToResponseDto(conteudo, false);
         return Ok(response);
+    }
+
+    [HttpPost("{id:int}/traducoes")]
+    [Authorize(Roles = "Admin,Editor")]
+    public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
+    {
+        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
+        if (conteudo is null) return NotFound();
+
+        var traducao = new ConteudoTraducao
+        {
+            ConteudoId = id,
+            Lingua = request.Lingua,
+            Texto = request.Texto,
+            AudioUrl = request.AudioUrl
+        };
+
+        _dbContext.ConteudoTraducoes.Add(traducao);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(new TraducaoResponseDto(traducao.Id, traducao.Lingua, traducao.Texto, traducao.AudioUrl));
+    }
+
+    [HttpGet("{id:int}/traducoes")]
+    public async Task<ActionResult<IEnumerable<TraducaoResponseDto>>> GetTraducoes(int id, CancellationToken cancellationToken)
+    {
+        var traducoes = await _dbContext.ConteudoTraducoes
+            .Where(t => t.ConteudoId == id)
+            .Select(t => new TraducaoResponseDto(t.Id, t.Lingua, t.Texto, t.AudioUrl))
+            .ToListAsync(cancellationToken);
+
+        return Ok(traducoes);
     }
 
     /// <summary>

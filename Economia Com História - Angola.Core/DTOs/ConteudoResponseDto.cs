@@ -17,5 +17,7 @@ public record ConteudoResponseDto(
     EconomiaComHistoria.Core.Enums.EstadoConteudo Estado,
     string? ImagemCapa,
     string? UrlMedia,
+    bool IsJindungo,
+    string? ReferenciaFactual,
     int Visualizacoes,
     bool EhFavorito);

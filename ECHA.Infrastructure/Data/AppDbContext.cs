@@ -125,6 +125,17 @@ public class AppDbContext : DbContext
             entity.HasIndex(x => new { x.ConteudoId, x.UtilizadorId }).IsUnique();
         });
 
+        modelBuilder.Entity<ConteudoTraducao>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Lingua).HasMaxLength(50).IsRequired();
+            entity.Property(x => x.Texto).HasColumnType("longtext");
+            entity.Property(x => x.AudioUrl).HasMaxLength(500);
+            entity.HasOne(x => x.Conteudo)
+                .WithMany(x => x.Traducoes)
+                .HasForeignKey(x => x.ConteudoId);
+        });
+
         modelBuilder.Entity<ConteudoJindungo>(entity =>
         {
             entity.Property(x => x.Origem).HasMaxLength(200);
