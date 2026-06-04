@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto – Economia com História – Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4d070b",
+            "secondary": "#5f5e5e",
+            "surface": "#f9f9f9",
+            "on-surface": "#1a1c1c",
+            "outline-variant": "#dbc0be"
+          },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col">
+  <nav class="p-6">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="text-xl font-black text-red-900 font-headline">Economia com História</div>
+      <a href="#" class="material-symbols-outlined text-stone-600 p-2 hover:bg-stone-100 rounded-full">arrow_back</a>
+    </div>
+  </nav>
+
+  <main class="flex-grow flex items-center justify-center px-6 py-12">
+    <div class="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <!-- Contact Info -->
+      <div class="space-y-12">
+        <div>
+          <h1 class="font-headline font-extrabold text-5xl text-primary mb-6">Vamos conversar.</h1>
+          <p class="text-lg text-secondary leading-relaxed">Seja para parcerias institucionais, sugestões de conteúdo ou questões técnicas, a nossa equipa está pronta para ouvir.</p>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center shrink-0 text-primary">
+              <span class="material-symbols-outlined">mail</span>
+            </div>
+            <div>
+              <h4 class="font-bold">E-mail</h4>
+              <p class="text-secondary text-sm">geral@economiahistoria.ao</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center shrink-0 text-primary">
+              <span class="material-symbols-outlined">location_on</span>
+            </div>
+            <div>
+              <h4 class="font-bold">Escritório</h4>
+              <p class="text-secondary text-sm">Avenida 4 de Fevereiro, Luanda, Angola</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <button class="w-10 h-10 bg-stone-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+            <span class="material-symbols-outlined text-lg">share</span>
+          </button>
+          <button class="w-10 h-10 bg-stone-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+            <span class="material-symbols-outlined text-lg">public</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-[0_24px_48px_-12px_rgba(26,28,28,0.08)] border border-stone-100">
+        <form class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-secondary">Nome Completo</label>
+              <input type="text" placeholder="Ex: Adão Manuel" class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-secondary">E-mail</label>
+              <input type="email" placeholder="adao@exemplo.ao" class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-widest text-secondary">Assunto</label>
+            <select class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+              <option>Dúvida Académica</option>
+              <option>Sugestão de Documento</option>
+              <option>Problema Técnico</option>
+              <option>Parceria Institucional</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-widest text-secondary">Mensagem</label>
+            <textarea rows="4" placeholder="Como podemos ajudar?" class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none resize-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-4 bg-primary text-on-primary rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20">Enviar Mensagem</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

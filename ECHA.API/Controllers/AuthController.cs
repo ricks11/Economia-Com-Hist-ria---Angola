@@ -74,7 +74,8 @@ public class AuthController : ControllerBase
             newUser.Nome,
             accessToken,
             refreshToken,
-            _authService.GetAccessTokenExpiration());
+            _authService.GetAccessTokenExpiration(),
+            newUser.Tipo.ToString());
 
         return CreatedAtAction(nameof(Register), response);
     }
@@ -110,7 +111,8 @@ public class AuthController : ControllerBase
             user.Nome,
             accessToken,
             refreshToken,
-            _authService.GetAccessTokenExpiration());
+            _authService.GetAccessTokenExpiration(),
+            user.Tipo.ToString());
 
         return Ok(response);
     }
@@ -147,7 +149,8 @@ public class AuthController : ControllerBase
             user.Nome,
             newAccessToken,
             newRefreshToken,
-            _authService.GetAccessTokenExpiration());
+            _authService.GetAccessTokenExpiration(),
+            user.Tipo.ToString());
 
         return Ok(response);
     }

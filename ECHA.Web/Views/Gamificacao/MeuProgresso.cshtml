@@ -1,0 +1,83 @@
+@model EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto
+@{
+    ViewData["Title"] = "Meu Progresso";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Barra de Progresso e Nível -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm border-0 bg-light">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h2 class="mb-0">Nível @Model.Nivel</h2>
+                            <p class="text-muted">@Model.PontosTotais pontos totais</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-warning text-dark p-2">
+                                <i class="bi bi-fire"></i> @Model.StreakAtual Dias de Streak
+                            </span>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                             role="progressbar" 
+                             style="width: @Model.PercentagemNivel.ToString("F0")%" 
+                             aria-valuenow="@Model.PercentagemNivel" aria-valuemin="0" aria-valuemax="100">
+                            @Model.PercentagemNivel.ToString("F0")%
+                        </div>
+                    </div>
+                    <p class="mt-2 text-center small text-muted">Faltam @Model.PontosParaProximoNivel pontos para o nível @(Model.Nivel + 1)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges Conquistados -->
+        <div class="col-md-8">
+            <h3 class="mb-3">Minhas Conquistas</h3>
+            <div class="row">
+                @if (!Model.Badges.Any())
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info">Ainda não conquistaste nenhum badge. Continua a explorar!</div>
+                    </div>
+                }
+                @foreach (var badge in Model.Badges)
+                {
+                    <div class="col-md-4 mb-3 text-center">
+                        <div class="card h-100 border-0 shadow-sm pt-3">
+                            <div class="badge-icon mb-2">
+                                @if (!string.IsNullOrEmpty(badge.Icone)) {
+                                    <i class="bi @badge.Icone" style="font-size: 3rem; color: #ffc107;"></i>
+                                } else {
+                                    <i class="bi bi-award" style="font-size: 3rem; color: #ffc107;"></i>
+                                }
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@badge.Nome</h5>
+                                <p class="card-text small text-muted">@badge.Descricao</p>
+                                <hr />
+                                <p class="small mb-0">Conquistado em: @badge.DataConquista.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Plano de Estudo -->
+        <div class="col-md-4">
+            <div class="card border-primary mb-3">
+                <div class="card-header bg-primary text-white">Plano de Estudo</div>
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Melhore seu desempenho!</h5>
+                    <p class="card-text">Nosso algoritmo analisa seus acertos nos quizzes e sugere conteúdos específicos para você reforçar seus conhecimentos.</p>
+                    <form asp-action="GerarPlanoEstudo" method="post">
+                        <button type="submit" class="btn btn-outline-primary w-100">Gerar Novo Plano</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

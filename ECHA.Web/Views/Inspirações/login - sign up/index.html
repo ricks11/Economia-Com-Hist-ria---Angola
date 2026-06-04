@@ -1,0 +1,53 @@
+<main class="min-h-screen flex items-center justify-center pt-28 pb-20 px-6">
+  <div class="max-w-md w-full bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+    <div class="flex justify-center gap-6 mb-8 border-b border-outline-variant/30 pb-2">
+      <button id="loginTab" class="text-xl font-headline font-bold text-primary border-b-2 border-primary pb-2">Entrar</button>
+      <button id="registerTab" class="text-xl font-headline font-bold text-stone-400 pb-2">Criar conta</button>
+    </div>
+
+    <!-- Formulário de login -->
+    <form id="loginForm" class="space-y-5">
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Email académico</label>
+        <input type="email" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1 focus:ring-2 focus:ring-primary/20" placeholder="nome@universidade.ao">
+      </div>
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Palavra‑passe</label>
+        <input type="password" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1" placeholder="••••••••">
+      </div>
+      <button class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-md hover:-translate-y-0.5 transition">Aceder ao Arquivo</button>
+      <p class="text-center text-sm text-stone-400"><a href="#" class="text-tertiary hover:underline">Esqueceu a palavra‑passe?</a></p>
+    </form>
+
+    <!-- Formulário de registo (escondido inicialmente) -->
+    <form id="registerForm" class="space-y-5 hidden">
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Nome completo</label>
+        <input type="text" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1" placeholder="Maria da Silva">
+      </div>
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Email</label>
+        <input type="email" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1" placeholder="m.silva@academia.ao">
+      </div>
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Filiação institucional</label>
+        <select class="w-full bg-surface-container-low rounded-2xl p-4 mt-1">
+          <option>Universidade Agostinho Neto</option>
+          <option>Universidade Católica de Angola</option>
+          <option>Instituto Superior de Ciências Económicas</option>
+        </select>
+      </div>
+      <button class="w-full bg-tertiary-container text-white font-bold py-4 rounded-full shadow-md hover:-translate-y-0.5 transition">Registar como Investigador</button>
+    </form>
+  </div>
+</main>
+
+<script>
+  // toggle simples
+  const loginTab = document.getElementById('loginTab');
+  const registerTab = document.getElementById('registerTab');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  loginTab.onclick = () => { loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); loginTab.classList.add('border-primary', 'text-primary', 'border-b-2'); loginTab.classList.remove('text-stone-400'); registerTab.classList.remove('border-primary', 'text-primary'); registerTab.classList.add('text-stone-400'); registerTab.classList.remove('border-b-2'); };
+  registerTab.onclick = () => { registerForm.classList.remove('hidden'); loginForm.classList.add('hidden'); registerTab.classList.add('border-primary', 'text-primary', 'border-b-2'); registerTab.classList.remove('text-stone-400'); loginTab.classList.remove('border-primary', 'text-primary'); loginTab.classList.add('text-stone-400'); loginTab.classList.remove('border-b-2'); };
+</script>

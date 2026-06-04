@@ -1,0 +1,35 @@
+@model EconomiaComHistoria.Core.DTOs.CreateEscolaDto
+@{
+    ViewData["Title"] = "Registar Nova Escola";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" class="card shadow-sm p-4">
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label">Nome da Instituição</label>
+                <input asp-for="Nome" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label asp-for="CodigoMEC" class="form-label">Código MEC (Opcional)</label>
+                <input asp-for="CodigoMEC" class="form-control" />
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Provincia" class="form-label">Província</label>
+                    <input asp-for="Provincia" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Localizacao" class="form-label">Município/Localidade</label>
+                    <input asp-for="Localizacao" class="form-control" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Criar Escola</button>
+                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>

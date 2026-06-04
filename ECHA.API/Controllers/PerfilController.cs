@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EconomiaComHistoria.API.Controllers;
+namespace ECHA.API.Controllers;
 
 [ApiController]
 [Route("api/perfil")]
@@ -19,7 +19,45 @@ public class PerfilController : ControllerBase
         _dbContext = dbContext;
     }
 
-    /// <summary>
+    [HttpGet("progresso")]
+    public async Task<ActionResult<ProgressoUtilizadorDto>> GetProgresso(CancellationToken ct)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
+
+        var user = await _dbContext.Utilizadores
+            .Include(u => u.BadgesConquistados)
+            .ThenInclude(bc => bc.Badge)
+            .FirstOrDefaultAsync(u => u.Id == userId, ct);
+
+        if (user == null) return NotFound();
+
+        // Lógica simples de nível: cada 1000 pontos = 1 nível
+        int nivel = (user.PontosTotais / 1000) + 1;
+        int pontosNoNivelAtual = user.PontosTotais % 1000;
+        double percentagemNivel = (double)pontosNoNivelAtual / 1000 * 100;
+
+        var badges = user.BadgesConquistados.Select(bc => new BadgeConquistadoDto(
+            bc.BadgeId,
+            bc.Badge?.Nome ?? "Badge",
+            bc.Badge?.Descricao,
+            bc.Badge?.Icone,
+            bc.DataConquista
+        )).ToList();
+
+        var response = new ProgressoUtilizadorDto(
+            user.PontosTotais,
+            nivel,
+            1000 - pontosNoNivelAtual,
+            percentagemNivel,
+            user.StreakAtual,
+            badges
+        );
+
+        return Ok(response);
+    }
+
+    [HttpGet]
     /// Gets the current authenticated user's profile
     /// </summary>
     [HttpGet]

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronologia – Economia com História | Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-surface": "#2f3131", "on-error": "#ffffff", "on-surface-variant": "#554241",
+            "surface-variant": "#e2e2e2", "on-tertiary-container": "#4f3e00", "tertiary": "#735c00",
+            "secondary-fixed": "#e4e2e1", "on-secondary": "#ffffff", "secondary": "#5f5e5e",
+            "surface-container": "#eeeeee", "on-background": "#1a1c1c", "surface": "#f9f9f9",
+            "on-primary-container": "#f0847f", "inverse-primary": "#ffb3ae", "tertiary-fixed-dim": "#e9c349",
+            "on-surface": "#1a1c1c", "background": "#f9f9f9", "on-secondary-container": "#656464",
+            "inverse-on-surface": "#f1f1f1", "secondary-container": "#e4e2e1", "surface-tint": "#9b423f",
+            "primary-fixed": "#ffdad7", "on-primary": "#ffffff", "on-secondary-fixed": "#1b1c1c",
+            "primary-container": "#6b1e1e", "on-secondary-fixed-variant": "#474747", "tertiary-container": "#cca830",
+            "surface-container-high": "#e8e8e8", "surface-container-low": "#f3f3f3", "error": "#ba1a1a",
+            "on-primary-fixed": "#410005", "surface-container-lowest": "#ffffff", "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#7d2b2a", "primary": "#4d070b", "surface-bright": "#f9f9f9",
+            "secondary-fixed-dim": "#c8c6c5", "outline-variant": "#dbc0be", "surface-dim": "#dadada",
+            "outline": "#887270", "primary-fixed-dim": "#ffb3ae", "tertiary-fixed": "#ffe088",
+            "on-tertiary-fixed-variant": "#574500", "on-tertiary-fixed": "#241a00", "surface-container-highest": "#e2e2e2",
+            "error-container": "#ffdad6", "on-error-container": "#93000a"
+          },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"], label: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Public Sans', sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .timeline-line { left: 2rem; }
+    @media (min-width: 768px) { .timeline-line { left: 50%; transform: translateX(-50%); } }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+  <!-- TopAppBar (consistente) -->
+  <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline tracking-tight">Economia com História – Angola</div>
+      <nav class="hidden md:flex gap-8 items-center font-headline font-bold">
+        <a href="#" class="text-stone-500 hover:text-red-800 transition">Início</a>
+        <a href="#" class="text-red-900 border-b-2 border-red-900 pb-1">Cronologia</a>
+        <a href="#" class="text-stone-500 hover:text-red-800 transition">Arquivos</a>
+        <a href="#" class="text-stone-500 hover:text-red-800 transition">Estatísticas</a>
+        <button class="material-symbols-outlined text-stone-600">account_circle</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-28 pb-20 px-6 max-w-5xl mx-auto">
+    <div class="text-center mb-16">
+      <h1 class="text-5xl md:text-6xl font-headline font-extrabold text-primary tracking-tight">Cronologia Histórica</h1>
+      <p class="text-on-surface-variant text-lg max-w-2xl mx-auto mt-4">Os marcos que definiram a economia angolana – do período pré‑colonial aos dias de hoje.</p>
+    </div>
+
+    <!-- Linha do tempo vertical (mobile) e alternada (desktop) -->
+    <div class="relative">
+      <!-- linha vertical -->
+      <div class="timeline-line absolute top-0 bottom-0 w-0.5 bg-outline-variant/40 z-0"></div>
+
+      <div class="relative space-y-12">
+        <!-- Evento 1 -->
+        <div class="relative flex flex-col md:flex-row gap-8 md:items-center group">
+          <div class="md:w-1/2 md:text-right md:pr-12">
+            <span class="text-tertiary font-bold text-sm uppercase tracking-wider">c. 1500 – 1850</span>
+            <h3 class="text-2xl font-headline font-bold text-primary mt-1">Comércio de escravizados e recursos</h3>
+            <p class="text-on-surface-variant mt-3 leading-relaxed">Base da economia colonial, com fluxos de marfim, cobre e escravizados para o Brasil. Início da dependência extrativista.</p>
+          </div>
+          <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-primary-container border-4 border-surface z-10 -translate-x-1/2 md:translate-x-0 md:-translate-x-1/2 flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-sm">history</span>
+          </div>
+          <div class="md:w-1/2 md:pl-12"></div>
+        </div>
+
+        <!-- Evento 2 -->
+        <div class="relative flex flex-col md:flex-row gap-8 md:items-center group">
+          <div class="md:w-1/2 md:pr-12"></div>
+          <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-primary-container border-4 border-surface z-10 -translate-x-1/2 flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-sm">agriculture</span>
+          </div>
+          <div class="md:w-1/2 md:pl-12">
+            <span class="text-tertiary font-bold text-sm uppercase tracking-wider">1870 – 1910</span>
+            <h3 class="text-2xl font-headline font-bold text-primary mt-1">Ciclo do café e borracha</h3>
+            <p class="text-on-surface-variant mt-3 leading-relaxed">Expansão das plantações no norte de Angola. Infraestruturas ferroviárias (CFB, CFL) para escoamento da produção.</p>
+          </div>
+        </div>
+
+        <!-- Evento 3 -->
+        <div class="relative flex flex-col md:flex-row gap-8 md:items-center group">
+          <div class="md:w-1/2 md:text-right md:pr-12">
+            <span class="text-tertiary font-bold text-sm uppercase tracking-wider">1975 – 2002</span>
+            <h3 class="text-2xl font-headline font-bold text-primary mt-1">Guerra Civil e petróleo</h3>
+            <p class="text-on-surface-variant mt-3 leading-relaxed">A independência seguida de conflito armado. O petróleo torna‑se o principal motor das contas públicas, gerando a “maldição dos recursos”.</p>
+          </div>
+          <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-primary-container border-4 border-surface z-10 -translate-x-1/2 flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-sm">oil_barrel</span>
+          </div>
+          <div class="md:w-1/2 md:pl-12"></div>
+        </div>
+
+        <!-- Evento 4 -->
+        <div class="relative flex flex-col md:flex-row gap-8 md:items-center group">
+          <div class="md:w-1/2 md:pr-12"></div>
+          <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-primary-container border-4 border-surface z-10 -translate-x-1/2 flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-sm">trending_up</span>
+          </div>
+          <div class="md:w-1/2 md:pl-12">
+            <span class="text-tertiary font-bold text-sm uppercase tracking-wider">2014 – 2020</span>
+            <h3 class="text-2xl font-headline font-bold text-primary mt-1">Crise petrolífera e diversificação</h3>
+            <p class="text-on-surface-variant mt-3 leading-relaxed">Queda do preço do crude leva a ajustes estruturais. Impulso ao Programa de Reconversão da Economia (PRE) e ao crédito agrícola.</p>
+          </div>
+        </div>
+
+        <!-- Evento 5 -->
+        <div class="relative flex flex-col md:flex-row gap-8 md:items-center group">
+          <div class="md:w-1/2 md:text-right md:pr-12">
+            <span class="text-tertiary font-bold text-sm uppercase tracking-wider">2023 – presente</span>
+            <h3 class="text-2xl font-headline font-bold text-primary mt-1">Transição energética e digital</h3>
+            <p class="text-on-surface-variant mt-3 leading-relaxed">Investimento em energias renováveis, programa de privatizações (PROPRIV) e crescimento do ecossistema de startups em Luanda e Benguela.</p>
+          </div>
+          <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-primary-container border-4 border-surface z-10 -translate-x-1/2 flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-primary text-sm">bolt</span>
+          </div>
+          <div class="md:w-1/2 md:pl-12"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50">
+    <div class="flex flex-wrap justify-center gap-8 text-stone-500 text-sm tracking-wide">
+      <a href="#" class="hover:text-red-800 underline">Termos</a>
+      <a href="#" class="hover:text-red-800 underline">Privacidade</a>
+      <a href="#" class="hover:text-red-800 underline">Contacto</a>
+      <a href="#" class="hover:text-red-800 underline">Sobre o Projecto</a>
+    </div>
+    <p class="text-stone-400 text-xs">© 2024 <span class="text-red-900 font-headline font-bold">Economia com História – Angola</span>. Preservando a narrativa económica.</p>
+  </footer>
+</body>
+</html>

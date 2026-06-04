@@ -1,4 +1,4 @@
-using EconomiaComHistoria.API.DTOs;
+using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
@@ -23,7 +23,7 @@ public class ModeracaoController : ControllerBase
     }
 
     [HttpGet("pendentes")]
-    public async Task<ActionResult<object>> GetPendentes(CancellationToken cancellationToken)
+    public async Task<ActionResult<ModeracaoPendentesResponse>> GetPendentes(CancellationToken cancellationToken)
     {
         var topicos = await _dbContext.TopicosForum
             .Include(x => x.Autor)
@@ -33,6 +33,7 @@ public class ModeracaoController : ControllerBase
             .Select(x => new
             {
                 x.Id,
+                "Topico",
                 x.Titulo,
                 x.AutorId,
                 AutorNome = x.Autor == null ? null : x.Autor.Nome,
@@ -40,17 +41,41 @@ public class ModeracaoController : ControllerBase
                 CategoriaNome = x.Categoria == null ? null : x.Categoria.Nome,
                 x.Descricao,
                 x.CriadoEm
-            })
+            ))
             .ToListAsync(cancellationToken);
 
         var respostas = await _dbContext.RespostasForum
             .Include(x => x.Autor)
             .Where(x => x.EstadoResposta == EstadoComentario.Pendente)
             .OrderBy(x => x.DataCriacao)
-            .Select(x => new
-            {
+            .Select(x => new ModeracaoPendenteDto(
                 x.Id,
+                "Resposta",
+                x.Conteudo,
+                x.AutorId,
+                x.Autor == null ? null : x.Autor.Nome,
+                x.DataCriacao,
+                null,
+                null,
                 x.TopicoId,
+                0 // Respostas no forum nao tem contador de denuncias direto no modelo atual
+            ))
+            .ToListAsync(cancellationToken);
+
+        return Ok(new ModeracaoPendentesResponse(topicos, respostas));
+    }
+
+    [HttpGet("denuncias")]
+    public async Task<ActionResult<IEnumerable<DenunciaSummaryDto>>> GetDenuncias(CancellationToken cancellationToken)
+    {
+        var topicos = await _dbContext.TopicosForum
+            .Include(x => x.Autor)
+            .Where(x => x.TotalDenuncias > 0)
+            .OrderByDescending(x => x.TotalDenuncias)
+            .Select(x => new DenunciaSummaryDto(
+                x.Id,
+                "Topico",
+                x.Titulo,
                 x.AutorId,
                 AutorNome = x.Autor == null ? null : x.Autor.Nome,
                 x.RespostaPaiId,
@@ -59,7 +84,7 @@ public class ModeracaoController : ControllerBase
             })
             .ToListAsync(cancellationToken);
 
-        return Ok(new { topicos, respostas });
+        return Ok(utilizadores);
     }
 
     [HttpPut("topicos/{id:int}/aprovar")]
@@ -73,6 +98,20 @@ public class ModeracaoController : ControllerBase
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         await _notificacaoService.EnviarPushAsync(topico.AutorId, "Topico aprovado", $"O topico \"{topico.Titulo}\" foi aprovado.", cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut("respostas/{id:int}/aprovar")]
+    public async Task<IActionResult> AprovarResposta(int id, CancellationToken cancellationToken)
+    {
+        var resposta = await _dbContext.RespostasForum.FindAsync(new object[] { id }, cancellationToken);
+        if (resposta is null)
+            return NotFound(new { message = "Resposta nao encontrada" });
+
+        resposta.EstadoResposta = EstadoResposta.Aprovada;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _notificacaoService.EnviarPushAsync(resposta.AutorId, "Resposta aprovada", "A sua resposta foi aprovada.", cancellationToken);
         return NoContent();
     }
 
@@ -90,8 +129,8 @@ public class ModeracaoController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("denuncias")]
-    public async Task<ActionResult<IEnumerable<object>>> GetDenuncias(CancellationToken cancellationToken)
+    [HttpPut("respostas/{id:int}/rejeitar")]
+    public async Task<IActionResult> RejeitarResposta(int id, RejeitarTopicoDto request, CancellationToken cancellationToken)
     {
         var denuncias = await _dbContext.Denuncias
             .Include(x => x.TopicoForum)
@@ -136,6 +175,20 @@ public class ModeracaoController : ControllerBase
         utilizador.SuspensoAte = request.DiasSuspensao.HasValue
             ? DateTime.UtcNow.AddDays(request.DiasSuspensao.Value)
             : DateTime.UtcNow.AddYears(100);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut("utilizadores/{id:int}/reativar")]
+    public async Task<IActionResult> ReativarUtilizador(int id, CancellationToken cancellationToken)
+    {
+        var utilizador = await _dbContext.Utilizadores.FindAsync(new object[] { id }, cancellationToken);
+        if (utilizador is null)
+            return NotFound(new { message = "Utilizador nao encontrado" });
+
+        utilizador.SuspensaoPermanente = false;
+        utilizador.SuspensoAte = null;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();

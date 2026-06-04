@@ -1,0 +1,129 @@
+@model ECHA.Core.DTOs.ConteudoResponseDto
+@{
+    ViewData["Title"] = Model.Titulo;
+}
+
+<article class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            @if (Model.IsJindungo)
+            {
+                <div class="alert alert-warning border-warning shadow-sm d-flex align-items-center mb-4">
+                    <i class="bi bi-exclamation-triangle-fill fs-3 me-3"></i>
+                    <div>
+                        <strong>Conteúdo de Opinião (Jindungo)</strong><br />
+                        As opiniões expressas neste artigo são de cariz crítico e não representam necessariamente factos históricos absolutos.
+                        <br /><small>Referência Factual: @Model.ReferenciaFactual</small>
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.ImagemCapa))
+            {
+                <img src="@Model.ImagemCapa" class="img-fluid rounded mb-4 w-100" alt="@Model.Titulo" style="max-height: 500px; object-fit: cover;">
+            }
+
+            <header class="mb-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h1 class="fw-bold mb-3">@Model.Titulo</h1>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="langDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bi bi-translate"></i> Tradução
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="langDropdown" id="traducoesList">
+                            <a class="dropdown-item active" href="#" onclick="mudarLingua('Original')">Português (Original)</a>
+                            <!-- Traduções serão carregadas aqui via JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center text-muted mb-3">
+                    <span class="me-3"><i class="bi bi-person"></i> @Model.AutorNome</span>
+                    <span class="me-3"><i class="bi bi-calendar"></i> @Model.DataPublicacao.ToString("dd/MM/yyyy")</span>
+                    <span><i class="bi bi-eye"></i> @Model.Visualizacoes visualizações</span>
+                </div>
+                <div class="mb-3">
+                    <span class="badge bg-secondary">@Model.Tema</span>
+                    <span class="badge bg-info text-dark">@Model.Nivel</span>
+                    <span class="badge bg-dark">@Model.Regiao</span>
+                    <span class="badge bg-primary">@Model.Tipo</span>
+                </div>
+            </header>
+
+            @if (!string.IsNullOrEmpty(Model.UrlMedia))
+            {
+                <div class="ratio ratio-16x9 mb-4">
+                    <iframe src="@Model.UrlMedia" title="Media content" allowfullscreen></iframe>
+                </div>
+            }
+
+            <div class="content-text lead mb-5">
+                @Html.Raw(Model.Texto)
+            </div>
+
+            @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
+            {
+                <div class="border-top pt-4">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+                    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+                </div>
+            }
+            else
+            {
+                <div class="border-top pt-4">
+                    <a asp-action="Index" class="btn btn-secondary">Voltar à lista</a>
+                </div>
+            }
+        </div>
+    </div>
+</article>
+
+@section Scripts {
+    <script>
+        const originalTexto = `@Html.Raw(Model.Texto)`;
+        let traducoes = [];
+
+        async function carregarTraducoes() {
+            try {
+                const response = await fetch(`/api/conteudos/@Model.Id/traducoes`);
+                if (response.ok) {
+                    traducoes = await response.json();
+                    const list = document.getElementById('traducoesList');
+                    traducoes.forEach(t => {
+                        const item = document.createElement('a');
+                        item.className = 'dropdown-item';
+                        item.href = '#';
+                        item.innerText = t.lingua;
+                        item.onclick = (e) => {
+                            e.preventDefault();
+                            mudarLingua(t.lingua);
+                        };
+                        list.appendChild(item);
+                    });
+                }
+            } catch (e) { console.error("Erro ao carregar traduções", e); }
+        }
+
+        function mudarLingua(lingua) {
+            const container = document.querySelector('.content-text');
+            if (lingua === 'Original') {
+                container.innerHTML = originalTexto;
+            } else {
+                const trad = traducoes.find(t => t.lingua === lingua);
+                if (trad) {
+                    let html = trad.texto;
+                    if (trad.audioUrl) {
+                        html = `<div class="mb-3 border p-2 bg-light rounded"><p class="small text-muted mb-1"><i class="bi bi-volume-up"></i> Versão Áudio (${lingua})</p><audio controls src="${trad.audioUrl}" class="w-100"></audio></div>` + html;
+                    }
+                    container.innerHTML = html;
+                }
+            }
+            
+            // Update active state
+            document.querySelectorAll('#traducoesList .dropdown-item').forEach(el => {
+                el.classList.toggle('active', el.innerText.includes(lingua) || (lingua === 'Original' && el.innerText.includes('Original')));
+            });
+        }
+
+        carregarTraducoes();
+    </script>
+}

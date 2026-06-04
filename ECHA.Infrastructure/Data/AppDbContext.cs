@@ -41,6 +41,7 @@ public class AppDbContext : DbContext
     public DbSet<RelatorioProgresso> Relatorios => Set<RelatorioProgresso>();
     public DbSet<AuditoriaLog> AuditoriaLogs => Set<AuditoriaLog>();
     public DbSet<MetricaDashboard> MetricasDashboard => Set<MetricaDashboard>();
+    public DbSet<HistoricoActividade> HistoricoActividade => Set<HistoricoActividade>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

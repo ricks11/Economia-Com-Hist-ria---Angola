@@ -1,0 +1,37 @@
+@model EconomiaComHistoria.Core.DTOs.QuizStatsDto
+@{
+    ViewData["Title"] = $"Estatísticas: {Model.Titulo}";
+}
+
+<div class="mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <p class="lead">Total de tentativas completas: <strong>@Model.TotalTentativas</strong></p>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>
+
+<div class="row">
+    @foreach (var p in Model.Perguntas)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@p.Texto</h5>
+                    <hr />
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h6>Taxa de Acerto</h6>
+                            <h3 class="@(p.TaxaAcerto >= 70 ? "text-success" : p.TaxaAcerto >= 40 ? "text-warning" : "text-danger")">
+                                @p.TaxaAcerto.ToString("F1")%
+                            </h3>
+                        </div>
+                        <div class="col-6">
+                            <h6>Tempo Médio</h6>
+                            <h3>@((p.TempoMedioMs / 1000.0).ToString("F1"))s</h3>
+                        </div>
+                    </div>
+                    <p class="text-muted text-center mt-2 small">Baseado em @p.TotalTentativas respostas</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

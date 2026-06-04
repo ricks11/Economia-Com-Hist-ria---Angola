@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- mesmo head padrão -->
+  <title>Exportação de Relatórios – Economia com História</title>
+</head>
+<body class="bg-surface">
+  <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline tracking-tight">Exportar Dados</div>
+      <div class="flex items-center gap-2"><span class="material-symbols-outlined">download</span> <span class="text-sm">Administrador</span></div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-12 px-6 max-w-4xl mx-auto">
+    <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight mb-2">Relatórios e Exportações</h1>
+    <p class="text-on-surface-variant mb-10">Gere ficheiros CSV/PDF com dados de utilizadores, comentários, conteúdos e estatísticas de acesso.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Card Relatório de Utilizadores -->
+      <div class="bg-surface-container-lowest rounded-3xl p-8">
+        <div class="flex items-center gap-3 mb-5"><span class="material-symbols-outlined text-primary text-3xl">group</span><h2 class="text-2xl font-headline font-bold text-primary">Utilizadores</h2></div>
+        <p class="text-secondary text-sm mb-6">Exportar lista completa de investigadores, alunos e moderadores com metadados de registo.</p>
+        <div class="flex gap-3"><button class="flex-1 py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">file_download</span> CSV</button><button class="flex-1 py-3 rounded-full bg-secondary-container font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">picture_as_pdf</span> PDF</button></div>
+      </div>
+
+      <!-- Card Relatório de Comentários -->
+      <div class="bg-surface-container-lowest rounded-3xl p-8">
+        <div class="flex items-center gap-3 mb-5"><span class="material-symbols-outlined text-primary text-3xl">forum</span><h2 class="text-2xl font-headline font-bold text-primary">Comentários</h2></div>
+        <p class="text-secondary text-sm mb-6">Todos os comentários publicados, incluindo data, autor, conteúdo e estado de moderação.</p>
+        <div class="flex gap-3"><button class="flex-1 py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">file_download</span> CSV</button><button class="flex-1 py-3 rounded-full bg-secondary-container font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">picture_as_pdf</span> PDF</button></div>
+      </div>
+
+      <!-- Card Estatísticas de Acesso -->
+      <div class="bg-surface-container-lowest rounded-3xl p-8">
+        <div class="flex items-center gap-3 mb-5"><span class="material-symbols-outlined text-primary text-3xl">trending_up</span><h2 class="text-2xl font-headline font-bold text-primary">Acessos</h2></div>
+        <p class="text-secondary text-sm mb-6">Visualizações por conteúdo, tempo médio de sessão, origem geográfica (agregado).</p>
+        <div class="flex gap-3"><button class="flex-1 py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">file_download</span> CSV</button><button class="flex-1 py-3 rounded-full bg-secondary-container font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">picture_as_pdf</span> PDF</button></div>
+      </div>
+
+      <!-- Card Escolas Parceiras -->
+      <div class="bg-surface-container-lowest rounded-3xl p-8">
+        <div class="flex items-center gap-3 mb-5"><span class="material-symbols-outlined text-primary text-3xl">school</span><h2 class="text-2xl font-headline font-bold text-primary">Escolas</h2></div>
+        <p class="text-secondary text-sm mb-6">Relação de instituições, número de turmas, alunos activos e data de adesão.</p>
+        <div class="flex gap-3"><button class="flex-1 py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">file_download</span> CSV</button><button class="flex-1 py-3 rounded-full bg-secondary-container font-bold flex items-center justify-center gap-2"><span class="material-symbols-outlined">picture_as_pdf</span> PDF</button></div>
+      </div>
+    </div>
+
+    <!-- Exportação programada -->
+    <div class="mt-12 bg-surface-container-low rounded-3xl p-8">
+      <h2 class="text-xl font-headline font-bold text-primary mb-4">Exportação agendada</h2>
+      <div class="flex flex-wrap gap-4 items-end">
+        <div><label class="text-xs font-bold text-stone-500">Frequência</label><select class="block bg-white rounded-full px-5 py-3 mt-1"><option>Diária</option><option>Semanal</option><option>Mensal</option></select></div>
+        <div><label class="text-xs font-bold text-stone-500">Formato</label><select class="block bg-white rounded-full px-5 py-3 mt-1"><option>CSV</option><option>PDF</option></select></div>
+        <div><label class="text-xs font-bold text-stone-500">Email de destino</label><input type="email" class="bg-white rounded-full px-5 py-3 mt-1 w-64" placeholder="admin@economiahistoria.ao"></div>
+        <button class="bg-tertiary-container text-white px-8 py-3 rounded-full font-bold mt-1">Agendar relatório</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

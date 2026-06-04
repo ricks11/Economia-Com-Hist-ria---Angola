@@ -1,0 +1,42 @@
+@model EconomiaComHistoria.Core.DTOs.TurmaDetalheDto
+@{
+    ViewData["Title"] = $"Detalhes da Turma: {Model.Nome}";
+}
+
+<div class="mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <p class="lead text-muted">@Model.EscolaNome - Professor: @(Model.ProfessorNome ?? "Não atribuído")</p>
+    <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="btn btn-secondary btn-sm">Voltar</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">Lista de Alunos e Desempenho</div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th class="text-center">Pontos Totais</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var aluno in Model.Alunos)
+                {
+                    <tr>
+                        <td>@aluno.Nome</td>
+                        <td>@aluno.Email</td>
+                        <td class="text-center"><strong>@aluno.PontosTotais</strong></td>
+                        <td><span class="badge bg-success">Ativo</span></td>
+                    </tr>
+                }
+                @if (!Model.Alunos.Any()) {
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">Nenhum aluno associado a esta turma.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações da Conta – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { "primary": "#4d070b", "secondary": "#5f5e5e", "surface": "#f9f9f9", "error": "#ba1a1a" },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen">
+  <nav class="p-6 border-b border-stone-100 bg-white">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <h1 class="font-headline font-black text-primary text-xl">Configurações</h1>
+      <a href="#" class="text-sm font-bold text-secondary flex items-center gap-1 hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-sm">logout</span> Sair da Conta
+      </a>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+      <!-- Sidebar Tabs -->
+      <aside class="space-y-2">
+        <button class="w-full text-left px-4 py-3 rounded-xl bg-primary text-white font-bold flex items-center gap-3">
+          <span class="material-symbols-outlined">person</span> Perfil
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-xl text-secondary hover:bg-stone-100 transition-colors font-bold flex items-center gap-3">
+          <span class="material-symbols-outlined">lock</span> Segurança
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-xl text-secondary hover:bg-stone-100 transition-colors font-bold flex items-center gap-3">
+          <span class="material-symbols-outlined">notifications</span> Notificações
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-xl text-secondary hover:bg-stone-100 transition-colors font-bold flex items-center gap-3">
+          <span class="material-symbols-outlined">visibility</span> Privacidade
+        </button>
+      </aside>
+
+      <!-- Content Area -->
+      <div class="lg:col-span-3 space-y-12">
+        <!-- Profile Section -->
+        <section class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100">
+          <h2 class="font-headline font-bold text-2xl text-primary mb-8">Informações Pessoais</h2>
+          <form class="space-y-6">
+            <div class="flex items-center gap-6 mb-10">
+              <div class="w-24 h-24 bg-stone-100 rounded-full flex items-center justify-center relative group cursor-pointer">
+                <span class="material-symbols-outlined text-4xl text-stone-400">add_a_photo</span>
+                <div class="absolute inset-0 bg-black/20 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <span class="text-white text-[10px] font-bold uppercase">Mudar Foto</span>
+                </div>
+              </div>
+              <div>
+                <h4 class="font-bold text-primary">Avatar do Utilizador</h4>
+                <p class="text-xs text-secondary mt-1">Recomendado: 400x400px, JPG ou PNG.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-widest text-secondary">Nome Público</label>
+                <input type="text" value="Afonso Dala" class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-widest text-secondary">E-mail Académico</label>
+                <input type="email" value="afonso.dala@uan.ao" class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+              </div>
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-secondary">Biografia Curta</label>
+              <textarea rows="3" class="w-full bg-stone-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none resize-none">Investigador de História Económica na Universidade Agostinho Neto.</textarea>
+            </div>
+
+            <div class="pt-4 flex justify-end">
+              <button class="px-8 py-3 bg-primary text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform">Guardar Alterações</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Security Section (Partial) -->
+        <section class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100">
+          <h2 class="font-headline font-bold text-2xl text-primary mb-8">Segurança</h2>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center p-4 bg-stone-50 rounded-2xl">
+              <div>
+                <p class="font-bold text-primary text-sm">Palavra-passe</p>
+                <p class="text-xs text-secondary">Última alteração há 3 meses.</p>
+              </div>
+              <button class="px-4 py-2 border border-stone-200 rounded-lg text-xs font-bold hover:bg-white transition-colors">Alterar</button>
+            </div>
+            <div class="flex justify-between items-center p-4 bg-stone-50 rounded-2xl">
+              <div>
+                <p class="font-bold text-primary text-sm">Autenticação de Dois Factores</p>
+                <p class="text-xs text-secondary">Adicione uma camada extra de segurança.</p>
+              </div>
+              <button class="px-4 py-2 bg-tertiary text-white rounded-lg text-xs font-bold">Activar</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Danger Zone -->
+        <section class="pt-8 border-t border-stone-100">
+          <h3 class="text-error font-bold text-sm uppercase tracking-widest mb-4">Zona de Perigo</h3>
+          <p class="text-secondary text-sm mb-6">Ao apagar a sua conta, todos os seus contributos no fórum e histórico de quizes serão permanentemente removidos.</p>
+          <button class="px-6 py-2 border border-error text-error rounded-lg text-xs font-bold hover:bg-error hover:text-white transition-all">Eliminar Conta Definitivamente</button>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

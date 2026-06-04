@@ -1,0 +1,152 @@
+@model EconomiaComHistoria.Core.DTOs.CreateQuizDto
+@{
+    ViewData["Title"] = "Criar Novo Quiz";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" id="quizForm">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Configurações Gerais</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Titulo" class="form-label">Título do Quiz</label>
+                    <input asp-for="Titulo" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Tema" class="form-label">Tema</label>
+                    <input asp-for="Tema" class="form-control" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NivelDificuldade" class="form-label">Nível de Dificuldade (1-5)</label>
+                    <input asp-for="NivelDificuldade" type="number" min="1" max="5" class="form-control" required />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="NumeroPerguntas" class="form-label">Nº de Perguntas (Exibidas)</label>
+                    <input asp-for="NumeroPerguntas" type="number" min="1" class="form-control" required />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TempoPorPerguntaSegundos" class="form-label">Tempo por Pergunta (seg)</label>
+                    <input asp-for="TempoPorPerguntaSegundos" type="number" min="5" class="form-control" required />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Descricao" class="form-label">Descrição (Opcional)</label>
+                <textarea asp-for="Descricao" class="form-control" rows="2"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div id="perguntasContainer">
+        <!-- Perguntas serão adicionadas aqui -->
+    </div>
+
+    <div class="mb-4">
+        <button type="button" class="btn btn-outline-primary" onclick="addPergunta()">Adicionar Pergunta</button>
+    </div>
+
+    <div class="form-group mt-4 mb-5">
+        <button type="submit" class="btn btn-success btn-lg">Guardar Quiz</button>
+        <a asp-action="Index" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>
+
+<template id="perguntaTemplate">
+    <div class="card mb-4 pergunta-card shadow-sm border-info" data-index="{pIdx}">
+        <div class="card-header d-flex justify-content-between align-items-center bg-info text-white">
+            <h5 class="mb-0">Pergunta #{displayIdx}</h5>
+            <button type="button" class="btn btn-sm btn-danger" onclick="removePergunta(this)">Remover</button>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Texto da Pergunta</label>
+                <input name="Perguntas[{pIdx}].Texto" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tempo Limite (seg)</label>
+                <input name="Perguntas[{pIdx}].TempoLimiteSegundos" type="number" class="form-control" value="30" required />
+            </div>
+            
+            <h6 class="mt-4">Opções (Exatamente 4, selecione a correta)</h6>
+            <div class="row">
+                @for (int i = 0; i < 4; i++)
+                {
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="radio" name="Perguntas[{pIdx}].CorrectOption" value="@i" required>
+                                <input type="hidden" name="Perguntas[{pIdx}].Opcoes[@i].IsCorrecta" value="false">
+                            </div>
+                            <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="form-control" placeholder="Opção @(i + 1)" required />
+                        </div>
+                        <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="form-control mt-1 form-control-sm" placeholder="Explicação (opcional)" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        let perguntaCount = 0;
+
+        function addPergunta() {
+            const container = document.getElementById('perguntasContainer');
+            const template = document.getElementById('perguntaTemplate').innerHTML;
+            
+            const html = template
+                .replace(/{pIdx}/g, perguntaCount)
+                .replace(/{displayIdx}/g, perguntaCount + 1);
+            
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            container.appendChild(div.firstElementChild);
+            perguntaCount++;
+        }
+
+        function removePergunta(btn) {
+            btn.closest('.pergunta-card').remove();
+            reorderPerguntas();
+        }
+
+        function reorderPerguntas() {
+            const cards = document.querySelectorAll('.pergunta-card');
+            perguntaCount = 0;
+            cards.forEach((card, idx) => {
+                const display = card.querySelector('h5');
+                display.innerText = `Pergunta #${idx + 1}`;
+                
+                // Update names
+                const inputs = card.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    if (input.name) {
+                        input.name = input.name.replace(/Perguntas\[\d+\]/, `Perguntas[${idx}]`);
+                    }
+                });
+                perguntaCount = idx + 1;
+            });
+        }
+
+        // Before submit, ensure radio buttons set the hidden IsCorrecta field
+        document.getElementById('quizForm').onsubmit = function() {
+            const cards = document.querySelectorAll('.pergunta-card');
+            cards.forEach((card, pIdx) => {
+                const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
+                if (radio) {
+                    const correctIdx = radio.value;
+                    card.querySelector(`input[name="Perguntas[${pIdx}].Opcoes[${correctIdx}].IsCorrecta"]`).value = "true";
+                }
+            });
+            return true;
+        };
+
+        // Add first question automatically
+        addPergunta();
+    </script>
+}

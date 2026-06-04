@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Ajuda & FAQ – Economia com História – Angola</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4d070b",
+            "secondary": "#5f5e5e",
+            "surface": "#f9f9f9",
+            "surface-container-lowest": "#ffffff"
+          },
+          fontFamily: { headline: ["Manrope"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen">
+  <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
+      <div class="text-xl font-black text-red-900 font-headline">Economia com História</div>
+      <a href="#" class="text-sm font-bold text-primary">Voltar ao Portal</a>
+    </div>
+  </nav>
+
+  <main class="flex-grow pt-24 pb-20 px-6 max-w-4xl mx-auto w-full">
+    <div class="text-center mb-16">
+      <h1 class="font-headline font-extrabold text-4xl md:text-5xl text-primary mb-4">Como podemos ajudar?</h1>
+      <div class="relative max-w-xl mx-auto mt-8">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-secondary">search</span>
+        <input type="text" placeholder="Pesquisar por tópicos, funcionalidades ou ajuda..." class="w-full pl-12 pr-6 py-4 bg-white border border-stone-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-primary outline-none text-lg">
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div class="bg-white p-6 rounded-2xl shadow-sm text-center hover:-translate-y-1 transition-transform cursor-pointer">
+        <span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="account_circle">account_circle</span>
+        <h3 class="font-bold mb-2">Conta e Acesso</h3>
+        <p class="text-sm text-secondary">Recuperação de senha e gestão de perfil académico.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm text-center hover:-translate-y-1 transition-transform cursor-pointer">
+        <span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="library_books">library_books</span>
+        <h3 class="font-bold mb-2">Uso dos Arquivos</h3>
+        <p class="text-sm text-secondary">Como citar documentos e fazer downloads em massa.</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm text-center hover:-translate-y-1 transition-transform cursor-pointer">
+        <span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="school">school</span>
+        <h3 class="font-bold mb-2">Instituições</h3>
+        <p class="text-sm text-secondary">Acesso para professores e gestão de turmas.</p>
+      </div>
+    </div>
+
+    <section>
+      <h2 class="font-headline font-bold text-2xl text-primary mb-8 text-center">Perguntas Frequentes</h2>
+      <div class="space-y-4">
+        <!-- FAQ Item 1 -->
+        <details class="group bg-white rounded-xl border border-stone-100 overflow-hidden shadow-sm" open>
+          <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+            <span class="font-bold text-lg">Os documentos do portal podem ser usados em teses académicas?</span>
+            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="px-6 pb-6 text-secondary leading-relaxed border-t border-stone-50 pt-4">
+            Sim, todos os documentos disponíveis no portal são de acesso público ou cedidos por parceiros para fins de investigação. Recomendamos que utilize a norma de citação APA ou NP 405 (norma portuguesa/angolana) disponível na lateral de cada documento.
+          </div>
+        </details>
+
+        <!-- FAQ Item 2 -->
+        <details class="group bg-white rounded-xl border border-stone-100 overflow-hidden shadow-sm">
+          <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+            <span class="font-bold text-lg">Como posso sugerir um novo conteúdo ou artigo?</span>
+            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="px-6 pb-6 text-secondary leading-relaxed border-t border-stone-50 pt-4">
+            Poderá utilizar a página de "Contacto" ou, se for um utilizador com perfil "Investigador", poderá submeter directamente no painel de gestão para revisão da nossa equipa de curadoria.
+          </div>
+        </details>
+
+        <!-- FAQ Item 3 -->
+        <details class="group bg-white rounded-xl border border-stone-100 overflow-hidden shadow-sm">
+          <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+            <span class="font-bold text-lg">O portal funciona sem ligação à internet?</span>
+            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="px-6 pb-6 text-secondary leading-relaxed border-t border-stone-50 pt-4">
+            Actualmente o portal requer ligação à internet. No entanto, poderá descarregar os PDFs e conteúdos multimédia para consulta offline no seu dispositivo.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <div class="mt-20 p-10 bg-primary-container text-on-primary rounded-[2rem] text-center">
+      <h2 class="font-headline font-bold text-2xl mb-4">Ainda tem dúvidas?</h2>
+      <p class="opacity-80 mb-8">A nossa equipa de suporte está disponível para o ajudar de segunda a sexta, das 08:00 às 17:00.</p>
+      <button class="bg-white text-primary px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform">Falar com o Suporte</button>
+    </div>
+  </main>
+
+  <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50">
+    <p class="text-stone-500 text-sm">© 2024 Economia com História – Angola.</p>
+  </footer>
+</body>
+</html>

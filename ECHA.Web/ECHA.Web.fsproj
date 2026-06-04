@@ -6,18 +6,65 @@
 
   <ItemGroup>
     <Compile Include="Models/ErrorViewModel.fs" />
+    <Compile Include="Services/ApiClient.fs" />
     <Compile Include="Controllers/HomeController.fs" />
     <Compile Include="Controllers/AuthController.fs" />
-    <Compile Include="Services/ApiClient.fs" />
+    <Compile Include="Controllers/ConteudosController.fs" />
+    <Compile Include="Controllers/QuizzesController.fs" />
+    <Compile Include="Controllers/ModeracaoController.fs" />
+    <Compile Include="Controllers/GamificacaoController.fs" />
+    <Compile Include="Controllers/EscolasController.fs" />
+    <Compile Include="Controllers/TurmasController.fs" />
+    <Compile Include="Controllers/RelatoriosController.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Views\Inspirações\about\indexx.html" />
+    <Content Include="Views\Inspirações\admin panel\index.html" />
+    <Content Include="Views\Inspirações\arquivos\index.html" />
+    <Content Include="Views\Inspirações\centro_de_ajuda_faq\code.html" />
+    <Content Include="Views\Inspirações\coment_rios_e_participa_o\code.html" />
+    <Content Include="Views\Inspirações\coment_rios_e_participa_o\screen.png" />
+    <Content Include="Views\Inspirações\configura_es_da_conta\code.html" />
+    <Content Include="Views\Inspirações\content details\indexx.html" />
+    <Content Include="Views\Inspirações\cronologia\index.html" />
+    <Content Include="Views\Inspirações\detalhe_de_conte_do_acad_mico\code.html" />
+    <Content Include="Views\Inspirações\erro_404_personalizado\code.html" />
+    <Content Include="Views\Inspirações\explorar_conte_dos\code.html" />
+    <Content Include="Views\Inspirações\explorar_conte_dos\screen.png" />
+    <Content Include="Views\Inspirações\fila de moderação\index.html" />
+    <Content Include="Views\Inspirações\f_rum_de_discuss_o\code.html" />
+    <Content Include="Views\Inspirações\f_rum_de_discuss_o\screen.png" />
+    <Content Include="Views\Inspirações\gestão de ecolas\index.html" />
+    <Content Include="Views\Inspirações\login - sign up\index.html" />
+    <Content Include="Views\Inspirações\menu_principal\code.html" />
+    <Content Include="Views\Inspirações\menu_principal\screen.png" />
+    <Content Include="Views\Inspirações\notifica_es_e_alertas\code.html" />
+    <Content Include="Views\Inspirações\pesquisa_e_resultados\code.html" />
+    <Content Include="Views\Inspirações\p_gina_de_contacto\code.html" />
+    <Content Include="Views\Inspirações\quiz_interactivo\code.html" />
+    <Content Include="Views\Inspirações\quiz_interactivo\screen.png" />
+    <Content Include="Views\Inspirações\report expot\index.html" />
+    <Content Include="Views\Inspirações\stats\index.html" />
+    <Content Include="Views\Inspirações\subscri_o_e_perfil\code.html" />
+    <Content Include="Views\Inspirações\subscri_o_e_perfil\screen.png" />
+    <Content Include="Views\Inspirações\tela_de_abertura\code.html" />
+    <Content Include="Views\Inspirações\tela_de_abertura\screen.png" />
+    <Content Include="Views\Inspirações\termos_e_privacidade\code.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.15" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Economia Com História - Angola.Core\ECHA.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Inspirações\patrim_nio_progresso\DESIGN.md" />
   </ItemGroup>
 
 </Project>

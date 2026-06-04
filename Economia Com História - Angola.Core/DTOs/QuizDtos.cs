@@ -1,6 +1,10 @@
+<<<<<<< HEAD:ECHA.API/DTOs/QuizDtos.cs
 using EconomiaComHistoria.Core.Enums;
 
 namespace EconomiaComHistoria.API.DTOs;
+=======
+namespace EconomiaComHistoria.Core.DTOs;
+>>>>>>> bf5cb78049d1523ade7a1874ec29022b711a5813:Economia Com História - Angola.Core/DTOs/QuizDtos.cs
 
 public record CreateQuizDto(
     string Titulo,
