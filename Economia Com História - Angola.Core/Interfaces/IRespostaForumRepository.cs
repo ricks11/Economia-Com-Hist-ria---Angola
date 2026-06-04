@@ -7,5 +7,5 @@ public interface IRespostaForumRepository
 {
     Task<IEnumerable<RespostaForum>> GetByTopicoAsync(int topicoId, CancellationToken cancellationToken = default);
     Task<RespostaForum> AddAsync(RespostaForum resposta, CancellationToken cancellationToken = default);
-    Task UpdateEstadoAsync(int id, EstadoResposta estado, CancellationToken cancellationToken = default);
+    Task UpdateEstadoAsync(int id, EstadoComentario estado, CancellationToken cancellationToken = default);
 }

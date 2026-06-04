@@ -1,44 +1,48 @@
+<<<<<<< HEAD:ECHA.API/DTOs/QuizDtos.cs
+using EconomiaComHistoria.Core.Enums;
+
+namespace EconomiaComHistoria.API.DTOs;
+=======
 namespace EconomiaComHistoria.Core.DTOs;
+>>>>>>> bf5cb78049d1523ade7a1874ec29022b711a5813:Economia Com História - Angola.Core/DTOs/QuizDtos.cs
 
 public record CreateQuizDto(
     string Titulo,
-    string? Descricao,
-    int NivelDificuldade,
     string Tema,
-    int NumeroPerguntas,
-    int TempoPorPerguntaSegundos,
+    NivelDificuldade Nivel,
+    int TotalPerguntas,
+    int TempoLimiteSeg,
     List<CreatePerguntaDto> Perguntas
 );
 
 public record CreatePerguntaDto(
-    string Texto,
-    int TempoLimiteSegundos,
-    List<CreateOpcaoDto> Opcoes
-);
+    string Enunciado,
+    string Tema,
+    NivelDificuldade Dificuldade,
+    List<CreateOpcaoRespostaDto> Opcoes,
+    string Explicacao);
 
-public record CreateOpcaoDto(
+public record CreateOpcaoRespostaDto(
     string Texto,
     bool IsCorrecta,
-    string? Explicacao
-);
+    string? Explicacao);
 
 public record UpdateQuizDto(
     string Titulo,
-    string? Descricao,
-    int NivelDificuldade,
     string Tema,
-    int NumeroPerguntas,
-    int TempoPorPerguntaSegundos
+    NivelDificuldade Nivel,
+    int TotalPerguntas,
+    int TempoLimiteSeg
 );
 
 public record QuizResponseDto(
     int Id,
     string Titulo,
-    string? Descricao,
-    int NivelDificuldade,
     string Tema,
-    int NumeroPerguntas,
-    int TempoPorPerguntaSegundos
+    NivelDificuldade Nivel,
+    int TotalPerguntas,
+    int TempoLimiteSeg,
+    bool Ativo
 );
 
 public record QuizStartResponseDto(
@@ -48,25 +52,17 @@ public record QuizStartResponseDto(
 
 public record PerguntaStartDto(
     int Id,
-    string Texto,
-    List<OpcaoStartDto> Opcoes
-);
+    string Enunciado,
+    List<OpcaoRespostaStartDto> Opcoes);
 
-public record OpcaoStartDto(
-    int Id,
-    string Texto
-);
+public record OpcaoRespostaStartDto(int Id, string Texto);
 
 public record SubmitTentativaDto(
     int TentativaId,
     List<RespostaPerguntaDto> Respostas
 );
 
-public record RespostaPerguntaDto(
-    int PerguntaId,
-    int OpcaoId,
-    int TempoMs
-);
+public record RespostaPerguntaDto(int PerguntaId, int OpcaoRespostaId, int TempoRespostaSeg);
 
 public record QuizSubmissionResponseDto(
     int Pontuacao,
@@ -76,9 +72,20 @@ public record QuizSubmissionResponseDto(
 
 public record RespostaDetalhadaDto(
     int PerguntaId,
-    string TextoPergunta,
-    int OpcaoSelecionadaId,
-    string TextoOpcaoSelecionada,
-    bool IsCorrecta,
-    string? Explicacao
+    string Enunciado,
+    int OpcaoEscolhida,
+    string TextoOpcaoEscolhida,
+    bool Correta,
+    string Explicacao
 );
+
+public record QuizResultDto(
+    int QuizId,
+    int UtilizadorId,
+    int Pontuacao,
+    int BonusVelocidade,
+    int TempoGastoSeg,
+    float PercentagemAcerto,
+    int TotalPerguntas,
+    int TotalCorretas,
+    bool ElegivelParaRanking);

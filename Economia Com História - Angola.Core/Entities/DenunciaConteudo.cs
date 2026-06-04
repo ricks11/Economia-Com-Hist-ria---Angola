@@ -1,19 +1,27 @@
+using EconomiaComHistoria.Core.Enums;
+using System.ComponentModel.DataAnnotations;
+
 namespace EconomiaComHistoria.Core.Entities;
 
 public class DenunciaConteudo
 {
-    public int Id { get; set; }
-    public int DenuncianteId { get; set; }
-    public Utilizador? Denunciante { get; set; }
-    public int? TopicoId { get; set; }
-    public TopicoForum? Topico { get; set; }
-    public int? RespostaId { get; set; }
-    public RespostaForum? Resposta { get; set; }
-    public string Motivo { get; set; } = string.Empty;
-    public DateTime DataDenuncia { get; set; }
-    public DateTime DataCriacao { get; set; }
-    public int? ConteudoId { get; set; }
-    public Conteudo? Conteudo { get; set; }
-    public int? ComentarioId { get; set; }
-    public Comentario? Comentario { get; set; }
+    [Key] public int Id { get; set; }
+    public MotivoDenuncia Motivo { get; set; }
+    public string? Descricao { get; set; }
+    public EstadoDenuncia Estado { get; set; } = EstadoDenuncia.Pendente;
+    public DateTime DataDenuncia { get; set; } = DateTime.UtcNow;
+    public TipoAlvoModeracao TipoAlvo { get; set; }
+    public int IdAlvo { get; set; }             // id do tópico ou comentário
+
+    public int UtilizadorId { get; set; }
+    public Utilizador Utilizador { get; set; } = null!;
+
+    public int? TopicoForumId { get; set; }
+    public TopicoForum? TopicoForum { get; set; }
+    public int? RespostaForumId { get; set; }        // era ComentarioId
+    public RespostaForum? RespostaForum { get; set; } // era Comentario
+
+    // Moderação gerada a partir desta denúncia
+    public int? ModeracaoId { get; set; }
+    public Moderacao? Moderacao { get; set; }
 }

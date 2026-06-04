@@ -1,14 +1,16 @@
 using EconomiaComHistoria.Core.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace EconomiaComHistoria.Core.Entities;
 
 public class EventoGamificacao
 {
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
     public TipoEventoGamificacao Tipo { get; set; }
-    public string Descricao { get; set; } = string.Empty;
-    public int PontosGanhos { get; set; }
-    public DateTime DataEvento { get; set; }
+    public int PontosAtribuidos { get; set; }
+    public float Multiplicador { get; set; } = 1f;
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+
     public int UtilizadorId { get; set; }
-    public Utilizador? Utilizador { get; set; }
+    public Utilizador Utilizador { get; set; } = null!;
 }

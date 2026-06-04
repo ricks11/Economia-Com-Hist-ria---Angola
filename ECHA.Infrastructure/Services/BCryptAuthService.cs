@@ -3,8 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using EconomiaComHistoria.Core.Interfaces;
+using Microsoft.Extensions.Configuration;
 
-namespace EconomiaComHistoria.API.Services;
+namespace EconomiaComHistoria.Infrastructure.Services;
 
 public class BCryptAuthService : IAuthService
 {

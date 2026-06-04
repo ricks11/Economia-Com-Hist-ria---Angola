@@ -25,27 +25,50 @@ public class ModeracaoService : IModeracaoService
         return totalTopicos + totalRespostas < 5;
     }
 
-    public async Task<bool> ProcessarDenunciaAsync(DenunciaConteudo denuncia, CancellationToken cancellationToken = default)
+    public async Task<bool> ProcessarDenunciaAsync(
+    DenunciaConteudo denuncia,
+    CancellationToken cancellationToken = default)
     {
-        if (denuncia.TopicoId is null)
-            return false;
-
-        var topico = await _dbContext.TopicosForum
-            .FirstOrDefaultAsync(x => x.Id == denuncia.TopicoId.Value, cancellationToken);
-        if (topico is null)
-            return false;
-
-        topico.TotalDenuncias = await _dbContext.DenunciasConteudo
-            .CountAsync(x => x.TopicoId == topico.Id, cancellationToken);
-
-        if (topico.TotalDenuncias >= 3)
+        // Caso 1: denúncia num tópico
+        if (denuncia.TopicoForumId is not null)
         {
-            topico.EstadoTopico = EstadoTopico.Suspenso;
-            await _dbContext.SaveChangesAsync(cancellationToken);
-            return true;
+            var topico = await _dbContext.TopicosForum
+                .FirstOrDefaultAsync(x => x.Id == denuncia.TopicoForumId.Value, cancellationToken);
+            if (topico is null) return false;
+
+            var totalDenuncias = await _dbContext.Denuncias
+                .CountAsync(x => x.TopicoForumId == topico.Id, cancellationToken);
+
+            if (totalDenuncias >= 3)
+            {
+                topico.Estado = EstadoTopicoForum.Suspenso;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+                return true;
+            }
+
+            return false;
         }
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        // Caso 2: denúncia numa resposta
+        if (denuncia.RespostaForumId is not null)
+        {
+            var resposta = await _dbContext.RespostasForum
+                .FirstOrDefaultAsync(x => x.Id == denuncia.RespostaForumId.Value, cancellationToken);
+            if (resposta is null) return false;
+
+            var totalDenuncias = await _dbContext.Denuncias
+                .CountAsync(x => x.RespostaForumId == resposta.Id, cancellationToken);
+
+            if (totalDenuncias >= 3)
+            {
+                resposta.EstadoResposta = EstadoComentario.Removido;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+                return true;
+            }
+
+            return false;
+        }
+
         return false;
     }
 }

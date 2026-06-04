@@ -1,4 +1,5 @@
 using EconomiaComHistoria.Core.Entities;
+using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -17,35 +18,35 @@ public class ConteudoRepository : IConteudoRepository
     public async Task<Conteudo?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Conteudos
-            .Include(c => c.Autor)
+            .Include(c => c.Editor)
             .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<Conteudo>> GetAllWithFiltersAsync(
         string? tema = null,
-        string? nivel = null,
+        NivelDificuldade? nivel = null,
         string? regiao = null,
-        string? tipo = null,
+        TipoConteudo? tipo = null,
         int? pageNumber = null,
         int? pageSize = null,
         CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Conteudos
-            .Include(c => c.Autor)
+            .Include(c => c.Editor)
             .AsNoTracking();
 
         // Apply filters
         if (!string.IsNullOrEmpty(tema))
             query = query.Where(c => c.Tema == tema);
 
-        if (!string.IsNullOrEmpty(nivel))
-            query = query.Where(c => c.Nivel == nivel);
+        if (nivel.HasValue)
+            query = query.Where(c => c.Nivel == nivel.Value);
 
         if (!string.IsNullOrEmpty(regiao))
             query = query.Where(c => c.Regiao == regiao);
 
-        if (!string.IsNullOrEmpty(tipo))
-            query = query.Where(c => c.Tipo == tipo);
+        if (tipo.HasValue)
+            query = query.Where(c => c.Tipo == tipo.Value);
 
         // Apply pagination
         if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
@@ -65,9 +66,9 @@ public class ConteudoRepository : IConteudoRepository
 
     public async Task<int> GetCountWithFiltersAsync(
         string? tema = null,
-        string? nivel = null,
+        NivelDificuldade? nivel = null,
         string? regiao = null,
-        string? tipo = null,
+        TipoConteudo? tipo = null,
         CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Conteudos.AsQueryable();
@@ -76,14 +77,14 @@ public class ConteudoRepository : IConteudoRepository
         if (!string.IsNullOrEmpty(tema))
             query = query.Where(c => c.Tema == tema);
 
-        if (!string.IsNullOrEmpty(nivel))
-            query = query.Where(c => c.Nivel == nivel);
+        if (nivel.HasValue)
+            query = query.Where(c => c.Nivel == nivel.Value);
 
         if (!string.IsNullOrEmpty(regiao))
             query = query.Where(c => c.Regiao == regiao);
 
-        if (!string.IsNullOrEmpty(tipo))
-            query = query.Where(c => c.Tipo == tipo);
+        if (tipo.HasValue)
+            query = query.Where(c => c.Tipo == tipo.Value);
 
         return await query.CountAsync(cancellationToken);
     }

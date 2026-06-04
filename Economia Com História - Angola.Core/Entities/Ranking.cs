@@ -1,15 +1,15 @@
 using EconomiaComHistoria.Core.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace EconomiaComHistoria.Core.Entities;
 
 public class Ranking
 {
-    public int Id { get; set; }
-    public int UtilizadorId { get; set; }
-    public Utilizador? Utilizador { get; set; }
-    public int Pontuacao { get; set; }
+    [Key] public int Id { get; set; }
+    public TipoRanking Tipo { get; set; }
     public PeriodoRanking Periodo { get; set; }
-    public int? EscolaId { get; set; }
-    public string? Provincia { get; set; }
-    public DateTime DataSnapshot { get; set; }
+    public DateTime DataCalculo { get; set; } = DateTime.UtcNow;
+    public string? FiltroId { get; set; }   // id da escola/município/província se aplicável
+
+    public ICollection<EntradaRanking> Entradas { get; set; } = new List<EntradaRanking>();
 }

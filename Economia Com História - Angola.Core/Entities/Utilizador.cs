@@ -1,35 +1,47 @@
+using System.ComponentModel.DataAnnotations;
 using EconomiaComHistoria.Core.Enums;
 
 namespace EconomiaComHistoria.Core.Entities;
 
 public class Utilizador
 {
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string? Telemovel { get; set; }
     public string PasswordHash { get; set; } = string.Empty;
-    public TipoUtilizador Tipo { get; set; }
-    public DateTime DataRegisto { get; set; }
+    public TipoUtilizador Tipo { get; set; } = TipoUtilizador.Visitante;
+    public DateTime DataRegisto { get; set; } = DateTime.UtcNow;
+    public DateTime? UltimoAcesso { get; set; }
     public int PontosTotais { get; set; }
     public int StreakAtual { get; set; }
-    public DateTime? UltimoAcesso { get; set; }
-    public DateTime? SuspensoAte { get; set; }
-    public bool SuspensaoPermanente { get; set; }
+    public int StreakRecorde { get; set; }
+    public int TempoEstudoMinutos { get; set; }
+    public string? AvatarConfig { get; set; }
     public string? Provincia { get; set; }
+    public string? Municipio { get; set; }
+    public bool Ativo { get; set; } = true;
+    public bool TwoFactorAtivo { get; set; }
+    public string? TwoFactorSegredo { get; set; }
+    public string? IpUltimoLogin { get; set; }
+    public int NumeroPublicacoes { get; set; }     // controlo moderação prévia (<5)
+    public DateTime? SuspensoAte { get; set; }      // null = não suspenso
+
+    // Navigation properties
     public int? EscolaId { get; set; }
     public Escola? Escola { get; set; }
     public int? TurmaId { get; set; }
     public Turma? Turma { get; set; }
+
     public ICollection<TentativaQuiz> TentativasQuiz { get; set; } = new List<TentativaQuiz>();
-    public ICollection<TopicoForum> Topicos { get; set; } = new List<TopicoForum>();
-    public ICollection<RespostaForum> RespostasForum { get; set; } = new List<RespostaForum>();
-    public ICollection<Conteudo> Conteudos { get; set; } = new List<Conteudo>();
+    public ICollection<TopicoForum> TopicosForum { get; set; } = new List<TopicoForum>();
+    public ICollection<RespostaForum> RespostaForums { get; set; } = new List<RespostaForum>();
     public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
-    public ICollection<Reacao> Reacoes { get; set; } = new List<Reacao>();
     public ICollection<BadgeConquistado> BadgesConquistados { get; set; } = new List<BadgeConquistado>();
-    public ICollection<EventoGamificacao> EventosGamificacao { get; set; } = new List<EventoGamificacao>();
     public ICollection<SessaoEstudo> SessoesEstudo { get; set; } = new List<SessaoEstudo>();
-    public ICollection<PlanoEstudo> PlanosEstudo { get; set; } = new List<PlanoEstudo>();
-    public ICollection<RelatorioProgresso> RelatoriosProgresso { get; set; } = new List<RelatorioProgresso>();
+    public ICollection<EventoGamificacao> EventosGamificacao { get; set; } = new List<EventoGamificacao>();
+    public ICollection<VisualizacaoConteudo> Visualizacoes { get; set; } = new List<VisualizacaoConteudo>();
+    public ICollection<ConteudoFavorito> Favoritos { get; set; } = new List<ConteudoFavorito>();
+    public PlanoEstudo? PlanoEstudo { get; set; }
+    public ICollection<ModuloProgresso> ProgressoModulos { get; set; } = new List<ModuloProgresso>();
 }

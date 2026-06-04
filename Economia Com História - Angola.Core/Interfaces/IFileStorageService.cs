@@ -1,4 +1,4 @@
-namespace EconomiaComHistoria.API.Services;
+namespace EconomiaComHistoria.Core.Interfaces;
 
 public interface IFileStorageService
 {
@@ -8,7 +8,7 @@ public interface IFileStorageService
     /// <param name="file">The file to upload</param>
     /// <param name="folder">Folder path within storage</param>
     /// <returns>The file path/URL</returns>
-    Task<string> UploadFileAsync(IFormFile file, string folder = "uploads");
+    Task<string> UploadFileAsync(Stream fileStream, string fileName, string folder = "uploads");
 
     /// <summary>
     /// Deletes a file from storage.
