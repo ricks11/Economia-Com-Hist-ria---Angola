@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.MapPage"
+             x:DataType="pageModels:MapPageModel"
+             Title="Mapa de Angola">
+
+    <CollectionView ItemsSource="{Binding Progresso}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <HorizontalStackLayout Padding="10">
+                    <Label Text="{Binding NomeProvincia}" WidthRequest="150" />
+                    <ProgressBar Progress="{Binding PercentualExplorado}" WidthRequest="200" />
+                </HorizontalStackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

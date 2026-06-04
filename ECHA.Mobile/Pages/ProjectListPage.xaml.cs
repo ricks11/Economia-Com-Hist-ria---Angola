@@ -1,11 +1,2 @@
-namespace ECHA.Mobile.Pages
-{
-    public partial class ProjectListPage : ContentPage
-    {
-        public ProjectListPage(ProjectListPageModel model)
-        {
-            BindingContext = model;
-            InitializeComponent();
-        }
-    }
-}
+using ECHA.Mobile.Data;
+namespace ECHA.Mobile.Pages {     public partial class ProjectListPage : ContentPage     {         public ProjectListPage(ProjectListPageModel model)         {             BindingContext = model;             InitializeComponent();         }     } }

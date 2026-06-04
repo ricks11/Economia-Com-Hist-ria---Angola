@@ -18,10 +18,20 @@ public partial class ProfilePageModel : ObservableObject
     [ObservableProperty]
     private string _provincia = string.Empty;
 
+    [ObservableProperty]
+    private UserStatsDto? _stats;
+
     public ProfilePageModel(IApiService apiService)
     {
         _apiService = apiService;
         LoadProfile();
+        LoadStatsCommand.Execute(null);
+    }
+
+    [RelayCommand]
+    private async Task LoadStatsAsync()
+    {
+        Stats = await _apiService.GetAsync<UserStatsDto>("api/perfil/stats");
     }
 
     private void LoadProfile()
@@ -31,24 +41,20 @@ public partial class ProfilePageModel : ObservableObject
         Provincia = Preferences.Default.Get("provincia", string.Empty);
     }
 
-    [RelayCommand]
-    private async Task SaveProfileAsync()
-    {
-        var perfil = new PerfilDto(Nome, Escola, Provincia);
+    [ObservableProperty]
+    private string _codigoConvite = string.Empty;
 
+    [RelayCommand]
+    private async Task AssociarEscolaAsync()
+    {
         try
         {
-            await _apiService.PostAsync<PerfilDto, object>("api/perfil/atualizar", perfil);
-            
-            Preferences.Default.Set("nome", Nome);
-            Preferences.Default.Set("escola", Escola);
-            Preferences.Default.Set("provincia", Provincia);
-            
-            await Shell.Current.DisplayAlert("Sucesso", "Perfil atualizado!", "OK");
+            await _apiService.PostAsync<AssociacaoDto, object>("api/institucional/associar", new AssociacaoDto(CodigoConvite));
+            await Shell.Current.DisplayAlert("Sucesso", "Associação concluída!", "OK");
         }
         catch
         {
-            await Shell.Current.DisplayAlert("Erro", "Falha ao atualizar perfil.", "OK");
+            await Shell.Current.DisplayAlert("Erro", "Falha na associação.", "OK");
         }
     }
 }

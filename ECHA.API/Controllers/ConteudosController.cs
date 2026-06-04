@@ -25,6 +25,29 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
+    /// Gets content optimized for offline download
+    /// </summary>
+    [HttpGet("download")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<object>>> DownloadConteudosCompacto(CancellationToken cancellationToken)
+    {
+        var conteudos = await _dbContext.Conteudos
+            .Where(c => c.Estado == EstadoConteudo.Ativo)
+            .Select(c => new {
+                c.Id,
+                c.Titulo,
+                c.Resumo,
+                c.Texto,
+                c.UrlMedia,
+                c.Tipo
+            })
+            .ToListAsync(cancellationToken);
+
+        return Ok(conteudos);
+    }
+
+    /// <summary>
     /// Creates a new content item (Editor/Admin only)
     /// </summary>
     [HttpPost]

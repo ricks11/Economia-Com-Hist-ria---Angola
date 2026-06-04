@@ -1,0 +1,2 @@
+using ECHA.Mobile.Data;
+using ECHA.Mobile.PageModels;  namespace ECHA.Mobile.Pages;  public partial class TurmaRankingPage : ContentPage {     public TurmaRankingPage(TurmaRankingPageModel viewModel)     {         InitializeComponent();         BindingContext = viewModel;     } }  public partial class TeacherDashboardPage : ContentPage {     public TeacherDashboardPage(TeacherDashboardPageModel viewModel)     {         InitializeComponent();         BindingContext = viewModel;     } }

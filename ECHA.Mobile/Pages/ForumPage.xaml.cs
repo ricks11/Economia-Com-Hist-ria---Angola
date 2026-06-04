@@ -1,20 +1,2 @@
-using ECHA.Mobile.PageModels;
-
-namespace ECHA.Mobile.Pages;
-
-public partial class ForumPage : ContentPage
-{
-    private readonly ForumPageModel _viewModel;
-
-    public ForumPage(ForumPageModel viewModel)
-    {
-        InitializeComponent();
-        BindingContext = _viewModel = viewModel;
-    }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-        await _viewModel.LoadTopicosCommand.ExecuteAsync(null);
-    }
-}
+using ECHA.Mobile.Data;
+using ECHA.Mobile.PageModels;  namespace ECHA.Mobile.Pages;  public partial class ForumPage : ContentPage {     private readonly ForumPageModel _viewModel;      public ForumPage(ForumPageModel viewModel)     {         InitializeComponent();         BindingContext = _viewModel = viewModel;     }      protected override async void OnAppearing()     {         base.OnAppearing();         await _viewModel.LoadTopicosCommand.ExecuteAsync(null);     } }

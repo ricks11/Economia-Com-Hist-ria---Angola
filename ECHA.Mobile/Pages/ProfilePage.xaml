@@ -2,14 +2,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:converters="clr-namespace:ECHA.Mobile.Converters"
              x:Class="ECHA.Mobile.Pages.ProfilePage"
              x:DataType="pageModels:ProfilePageModel"
              Title="Perfil">
 
+    <ContentPage.Resources>
+        <converters:XPToProgressConverter x:Key="XPToProgressConverter" />
+    </ContentPage.Resources>
+
     <StackLayout Padding="20" Spacing="10">
+        <Label Text="{Binding Stats.Nivel, StringFormat='Nível: {0}'}" FontSize="18" FontAttributes="Bold" />
+        <ProgressBar Progress="{Binding Stats.XPAtual, Converter={StaticResource XPToProgressConverter}}" />
+        <Label Text="{Binding Stats.StreakDias, StringFormat='Streak: {0} dias'}" />
+        
         <Entry Text="{Binding Nome}" Placeholder="Nome" />
         <Entry Text="{Binding Escola}" Placeholder="Escola" />
         <Entry Text="{Binding Provincia}" Placeholder="Província" />
         <Button Text="Salvar" Command="{Binding SaveProfileCommand}" />
+        
+        <Label Text="Associação Institucional" FontAttributes="Bold" Margin="0,20,0,0" />
+        <Entry Text="{Binding CodigoConvite}" Placeholder="Código de Convite" />
+        <Button Text="Associar à Escola" Command="{Binding AssociarEscolaCommand}" />
     </StackLayout>
 </ContentPage>

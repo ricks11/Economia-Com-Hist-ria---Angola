@@ -20,6 +20,11 @@
             
             <Label Text="{Binding Conteudo.Descricao}" />
             
+            <Picker Title="Selecionar Língua" 
+                    ItemsSource="{Binding Conteudo.Traducoes}"
+                    ItemDisplayBinding="{Binding Lingua}"
+                    SelectedIndexChanged="OnLanguageChanged" />
+            
             <Button Text="{Binding Conteudo.IsFavorito, Converter={StaticResource BoolToFavoritoConverter}}"
                     Command="{Binding ToggleFavoritoCommand}" />
         </StackLayout>

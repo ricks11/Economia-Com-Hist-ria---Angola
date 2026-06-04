@@ -1,5 +1,7 @@
 namespace ECHA.Mobile.Models;
 
+public record TraducaoDto(string Lingua, string Texto);
+
 public record ConteudoDto(
     Guid Id,
     string Titulo,
@@ -8,5 +10,8 @@ public record ConteudoDto(
     string ThumbnailUrl,
     int DuracaoMinutos,
     string ConteudoUrl,
-    bool IsFavorito
+    bool IsFavorito,
+    bool IsJindungo,
+    string? ReferenciaFactual,
+    List<TraducaoDto> Traducoes
 );

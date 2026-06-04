@@ -51,12 +51,21 @@ namespace ECHA.Mobile
             builder.Services.AddTransient<TopicDetailPage>();
             builder.Services.AddSingleton<CreateTopicPageModel>();
             builder.Services.AddTransient<CreateTopicPage>();
+            builder.Services.AddSingleton<MapPageModel>();
+            builder.Services.AddTransient<MapPage>();
+            builder.Services.AddSingleton<StudyPlanPageModel>();
+            builder.Services.AddTransient<StudyPlanPage>();
+            builder.Services.AddSingleton<TurmaRankingPageModel>();
+            builder.Services.AddTransient<TurmaRankingPage>();
+            builder.Services.AddSingleton<TeacherDashboardPageModel>();
+            builder.Services.AddTransient<TeacherDashboardPage>();
             builder.Services.AddSingleton<ProjectRepository>();
             builder.Services.AddSingleton<TaskRepository>();
             builder.Services.AddSingleton<CategoryRepository>();
             builder.Services.AddSingleton<TagRepository>();
             builder.Services.AddSingleton<SeedDataService>();
             builder.Services.AddSingleton<ApiService>();
+            builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
             {
                 client.BaseAddress = new Uri("http://localhost:5000/"); // Update with production URL later
