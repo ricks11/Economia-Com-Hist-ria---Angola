@@ -45,6 +45,12 @@ namespace ECHA.Mobile
             builder.Services.AddTransient<QuizListPage>();
             builder.Services.AddSingleton<RankingPageModel>();
             builder.Services.AddTransient<RankingPage>();
+            builder.Services.AddSingleton<ForumPageModel>();
+            builder.Services.AddTransient<ForumPage>();
+            builder.Services.AddSingleton<TopicDetailPageModel>();
+            builder.Services.AddTransient<TopicDetailPage>();
+            builder.Services.AddSingleton<CreateTopicPageModel>();
+            builder.Services.AddTransient<CreateTopicPage>();
             builder.Services.AddSingleton<ProjectRepository>();
             builder.Services.AddSingleton<TaskRepository>();
             builder.Services.AddSingleton<CategoryRepository>();
