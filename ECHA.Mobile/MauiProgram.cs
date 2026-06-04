@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+using ECHA.Mobile.Services;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace ECHA.Mobile
 {
@@ -32,15 +35,33 @@ namespace ECHA.Mobile
     		builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
+            builder.Services.AddSingleton<ExplorePageModel>();
+            builder.Services.AddTransient<ExplorePage>();
+            builder.Services.AddSingleton<ContentDetailPageModel>();
+            builder.Services.AddTransient<ContentDetailPage>();
+            builder.Services.AddSingleton<ProfilePageModel>();
+            builder.Services.AddTransient<ProfilePage>();
+            builder.Services.AddSingleton<QuizListPageModel>();
+            builder.Services.AddTransient<QuizListPage>();
+            builder.Services.AddSingleton<RankingPageModel>();
+            builder.Services.AddTransient<RankingPage>();
+            builder.Services.AddSingleton<ForumPageModel>();
+            builder.Services.AddTransient<ForumPage>();
+            builder.Services.AddSingleton<TopicDetailPageModel>();
+            builder.Services.AddTransient<TopicDetailPage>();
+            builder.Services.AddSingleton<CreateTopicPageModel>();
+            builder.Services.AddTransient<CreateTopicPage>();
             builder.Services.AddSingleton<ProjectRepository>();
             builder.Services.AddSingleton<TaskRepository>();
             builder.Services.AddSingleton<CategoryRepository>();
             builder.Services.AddSingleton<TagRepository>();
             builder.Services.AddSingleton<SeedDataService>();
-            builder.Services.AddSingleton<ModalErrorHandler>();
-            builder.Services.AddSingleton<MainPageModel>();
-            builder.Services.AddSingleton<ProjectListPageModel>();
-            builder.Services.AddSingleton<ManageMetaPageModel>();
+            builder.Services.AddSingleton<ApiService>();
+            builder.Services.AddHttpClient<IApiService, ApiService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5000/"); // Update with production URL later
+            })
+            .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
 
             builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
             builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");

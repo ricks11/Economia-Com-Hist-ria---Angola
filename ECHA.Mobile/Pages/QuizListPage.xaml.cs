@@ -1,0 +1,20 @@
+using ECHA.Mobile.PageModels;
+
+namespace ECHA.Mobile.Pages;
+
+public partial class QuizListPage : ContentPage
+{
+    private readonly QuizListPageModel _viewModel;
+
+    public QuizListPage(QuizListPageModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = _viewModel = viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.LoadQuizzesCommand.ExecuteAsync(null);
+    }
+}

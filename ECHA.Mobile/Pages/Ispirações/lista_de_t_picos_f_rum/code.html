@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public_Sans:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .asymmetric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#131d1f",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d9e5e7",
+                    "primary-fixed-dim": "#ffb3b5",
+                    "primary-container": "#800020",
+                    "tertiary-fixed": "#b6ebfb",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f1f1f1",
+                    "surface-container-highest": "#e2e2e2",
+                    "inverse-surface": "#2f3131",
+                    "surface-dim": "#dadada",
+                    "secondary-fixed-dim": "#bdc9cb",
+                    "on-tertiary-fixed": "#001f26",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e8e8e8",
+                    "surface": "#f9f9f9",
+                    "surface-container-low": "#f3f3f3",
+                    "on-primary-container": "#ff828a",
+                    "primary": "#570013",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#eeeeee",
+                    "primary-fixed": "#ffdada",
+                    "background": "#f9f9f9",
+                    "on-secondary-container": "#5b6668",
+                    "tertiary-fixed-dim": "#9acfde",
+                    "tertiary": "#002c36",
+                    "on-background": "#1a1c1c",
+                    "on-primary-fixed-variant": "#8e0f28",
+                    "surface-bright": "#f9f9f9",
+                    "inverse-primary": "#ffb3b5",
+                    "surface-tint": "#af2b3e",
+                    "secondary-container": "#d9e5e7",
+                    "tertiary-container": "#004451",
+                    "on-surface-variant": "#584141",
+                    "outline-variant": "#e0bfbf",
+                    "surface-variant": "#e2e2e2",
+                    "secondary": "#556062",
+                    "on-surface": "#1a1c1c",
+                    "on-tertiary-container": "#7cb0c0",
+                    "on-primary-fixed": "#40000b",
+                    "on-secondary": "#ffffff",
+                    "outline": "#8c7071",
+                    "on-secondary-fixed-variant": "#3e494b",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#114d5b",
+                    "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-red-900 dark:text-red-500">forum</span>
+<h1 class="font-headline font-bold tracking-tight text-lg text-red-950 dark:text-red-400">Fórum de Discussão</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-headline font-bold text-red-900 dark:text-red-500">Kz 0.00</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a person in a minimalist setting with soft side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjnsHAUFmeCD4DFQyg2UDRjDtJwhPPwBZR88nr1Nybt6Ac1eWrnyDYtso7tlwpTqOGSvcx3qMyiKOY-6MMizVZWnMtnn2F5Xhb1vvcIww4SoH7SKvFMqt_WDw2L3yjIj9Tp2sCn2CcxTfGd0UI_Vu6ktjYjFvEMh5d7usN9GFHsh9WpE_K-F8HCGWRC2dB_DHQfYjc1BL8cUbrNbMr5Nh7ZOxxd8e3vYJgpqXOxDHjW9dAK5PDhIlvYxFwKTyD-2v5Ize8ZmanhVG3"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-28 px-6 md:px-8 max-w-5xl mx-auto">
+<!-- Action Section -->
+<div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h2 class="text-3xl font-headline font-extrabold text-primary tracking-tight">Economia com História</h2>
+<p class="text-on-surface-variant font-medium mt-1">Explore e participe dos debates sobre o futuro de Angola.</p>
+</div>
+<button class="bg-[#FFD700] hover:bg-[#F2CC00] active:scale-95 duration-200 text-on-surface font-headline font-bold px-6 py-3 rounded-xl shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined">add_circle</span>
+                Novo Tópico
+            </button>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+<span class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-sm font-medium whitespace-nowrap">Recentes</span>
+<span class="px-4 py-1.5 bg-surface-container-low text-on-surface-variant rounded-full text-sm font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Populares</span>
+<span class="px-4 py-1.5 bg-surface-container-low text-on-surface-variant rounded-full text-sm font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Sem Resposta</span>
+<span class="px-4 py-1.5 bg-[#FF4500] text-white rounded-full text-sm font-bold whitespace-nowrap flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                Jindungo
+            </span>
+</div>
+<!-- Topic Feed: Bento Style -->
+<div class="space-y-6">
+<!-- Jindungo Featured Topic -->
+<div class="group relative overflow-hidden bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(26,28,28,0.04)] border-l-4 border-[#FF4500]">
+<div class="flex flex-col md:flex-row md:items-start gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-0.5 bg-[#FF4500]/10 text-[#FF4500] text-[10px] font-extrabold tracking-widest uppercase rounded">Jindungo</span>
+<span class="text-xs text-on-surface-variant">Postado há 2 horas</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-2 text-on-surface group-hover:text-primary transition-colors leading-tight">O Impacto da Diversificação Económica na Província de Cabinda: Mito ou Realidade?</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-4 leading-relaxed">Recentemente observamos uma mudança nas narrativas sobre Cabinda. Como o historiador económico encara as novas zonas francas?</p>
+<div class="flex flex-wrap items-center gap-4 mt-2">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up profile of a focused woman in an office setting with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpixBOU-narIsoRws2pub4vNOp_uX55fBBqpGhS44DQ5F3SFi_JvNu84e82hBHVcZNn6kNiURRqir07WY6d3UsK7sWIv_hHY0b3CKyTqqhZSJK7JWXlAyxh2bqi7mXLlLiKoNHDZMwaj7Z-tYZv87CMAgoUeLdpiw9xDngaAtJOWioCzFQFL_vp8WZAFxo0G0zFu4xOxSe5E6lYYwEWGOQjoh_Ay6O6q9yEaJsVBQ2eHY1WLyg-iNnSPWg8eJpoM_IVpHE5iQV8Bdg"/>
+</div>
+<span class="text-xs font-semibold text-on-surface">Prof. Manuel dos Santos</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+<span class="text-xs font-medium">42 respostas</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span class="text-xs font-medium">1.2k visualizações</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Standard Topic 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(26,28,28,0.04)] hover:shadow-lg transition-all duration-300">
+<div class="flex flex-col md:flex-row justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase rounded">História Monetária</span>
+<span class="text-xs text-on-surface-variant">Há 5 horas</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2">A evolução do Kwanza: De 1977 aos dias de hoje.</h3>
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-on-surface-variant">por <span class="text-on-surface">Anabela Costa</span></span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+<span class="text-xs">15</span>
+</div>
+</div>
+</div>
+<div class="flex items-center">
+<div class="flex -space-x-2">
+<img class="w-7 h-7 rounded-full ring-2 ring-white" data-alt="profile portrait of a woman with natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYANTMpbMx4nE5qOJ9wqdMtlKVbVd2_M8JF9i8nWYbT9zR-pH_4J8y0S-TAjycVcOet7q5jQOZY1SEGYK3LjFwbtPsa1gnu2DdDjHBelpJrX-N7YrD_gZPQjs6x91otvfxMMrXptKzTwqn0rYSFWlKFs_tiYz1niKoBjatrBWqwCfXXyR_LJchUj4FY0cxQ1lPkdxJ8yPPJ69tvLsb5wMfdaj2rTOC1VaT15QKPomdYccgtDXjkYK9W3DVN3VoVFo0N40Y-QJlKOVr"/>
+<img class="w-7 h-7 rounded-full ring-2 ring-white" data-alt="profile portrait of a man looking professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzDIFLCTbqXFXzwFbLELVwRIIkjL0kwbzaIivBQkJJI_2Sg83Egkj64-pqKfCU33MsQ6LNZ3G0HC8hWiVL06kpCeXNPDf1ivb5LfCEmSnyXiyU1nm6kPVPy_lTBmR8r4BJBm4QbPa9DwNtc6OUGx6eAGrHEoF_2b4zCn72QC0SFXIXlDqqrmJHizjmRQ0IYuX-gaciooSIG8xcpefCSGiWi34lD3JMoZc5zLYh6p8oPOaD0NVaTk_6nI2tqDsyyDz117tB9pG5ZjAQ"/>
+<div class="w-7 h-7 rounded-full ring-2 ring-white bg-surface-container-high flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Standard Topic 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(26,28,28,0.04)] hover:shadow-lg transition-all duration-300">
+<div class="flex flex-col md:flex-row justify-between gap-4">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase rounded">Agricultura</span>
+<span class="text-xs text-on-surface-variant">Há 8 horas</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2">O Renascimento do Algodão em Malanje: Potencial Económico</h3>
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-on-surface-variant">por <span class="text-on-surface">Ricardo Mwene</span></span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+<span class="text-xs">8</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Jindungo Topic 2 -->
+<div class="group relative overflow-hidden bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(26,28,28,0.04)] border-l-4 border-[#FF4500]">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-[#FF4500]/10 text-[#FF4500] text-[10px] font-extrabold uppercase rounded">Jindungo</span>
+<span class="text-xs text-on-surface-variant">Há 1 dia</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2">Privatizações: Estamos a vender o património a preço de banana?</h3>
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-on-surface-variant">por <span class="text-on-surface">Economista_Crítico</span></span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1 text-[#FF4500]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-xs font-bold">Hot Topic (89 respostas)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Standard Topic 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(26,28,28,0.04)] hover:shadow-lg transition-all duration-300">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase rounded">Petróleo</span>
+<span class="text-xs text-on-surface-variant">Há 2 dias</span>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2">A Saída da OPEP: O que muda na prática para o cidadão comum?</h3>
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-on-surface-variant">por <span class="text-on-surface">Sérgio Vunge</span></span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+<span class="text-xs">31</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-[0_-8px_32px_rgba(26,28,28,0.06)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium mt-1">Início</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium mt-1">Aprender</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium mt-1">Jogar</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-red-50 dark:bg-red-900/30 text-red-900 dark:text-red-100 rounded-2xl px-3 py-1 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-['Public_Sans'] text-[11px] font-bold mt-1">Participar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 dark:text-neutral-400 px-3 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Public_Sans'] text-[11px] font-medium mt-1">Perfil</span>
+</a>
+</nav>
+</body></html>

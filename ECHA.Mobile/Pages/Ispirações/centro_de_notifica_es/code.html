@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notificações - Economia com História</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#d9e5e7",
+                      "primary-container": "#800020",
+                      "outline-variant": "#e0bfbf",
+                      "primary-fixed": "#ffdada",
+                      "on-secondary-fixed": "#131d1f",
+                      "surface-container-low": "#f3f3f3",
+                      "surface-tint": "#af2b3e",
+                      "on-tertiary-container": "#7cb0c0",
+                      "on-primary-container": "#ff828a",
+                      "on-error-container": "#93000a",
+                      "secondary": "#556062",
+                      "primary-fixed-dim": "#ffb3b5",
+                      "surface-container-highest": "#e2e2e2",
+                      "secondary-fixed-dim": "#bdc9cb",
+                      "on-tertiary-fixed": "#001f26",
+                      "on-surface-variant": "#584141",
+                      "surface-container": "#eeeeee",
+                      "on-error": "#ffffff",
+                      "background": "#f9f9f9",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f9f9f9",
+                      "surface": "#f9f9f9",
+                      "tertiary-container": "#004451",
+                      "on-primary-fixed-variant": "#8e0f28",
+                      "on-background": "#1a1c1c",
+                      "on-tertiary-fixed-variant": "#114d5b",
+                      "on-secondary-container": "#5b6668",
+                      "inverse-primary": "#ffb3b5",
+                      "inverse-surface": "#2f3131",
+                      "surface-dim": "#dadada",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed-dim": "#9acfde",
+                      "on-primary-fixed": "#40000b",
+                      "tertiary": "#002c36",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#d9e5e7",
+                      "surface-container-high": "#e8e8e8",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#570013",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#e2e2e2",
+                      "outline": "#8c7071",
+                      "on-secondary-fixed-variant": "#3e494b",
+                      "tertiary-fixed": "#b6ebfb",
+                      "on-surface": "#1a1c1c",
+                      "inverse-on-surface": "#f1f1f1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Manrope"
+                      ],
+                      "display": [
+                              "Manrope"
+                      ],
+                      "body": [
+                              "Public Sans"
+                      ],
+                      "label": [
+                              "Public Sans"
+                      ]
+              },
+              "fontSize": {}
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body antialiased pb-24 pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md no-border bg-stone-100 dark:bg-stone-800 shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center justify-between px-6 h-16">
+<button class="text-primary hover:bg-stone-100 transition-colors p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline font-bold tracking-tight text-lg text-primary">Notificações</h1>
+<button class="text-primary hover:bg-stone-100 transition-colors p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<main class="px-6 py-6 md:hidden">
+<!-- Filter Tabs -->
+<div class="flex space-x-2 overflow-x-auto pb-4 hide-scrollbar">
+<button class="bg-primary-container text-on-primary-container font-label font-medium px-4 py-2 rounded-full text-sm shrink-0 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+                Todas
+            </button>
+<button class="bg-surface-container text-on-surface-variant font-label font-medium px-4 py-2 rounded-full text-sm shrink-0">
+                Comunidade
+            </button>
+<button class="bg-surface-container text-on-surface-variant font-label font-medium px-4 py-2 rounded-full text-sm shrink-0">
+                Aprendizagem
+            </button>
+<button class="bg-surface-container text-on-surface-variant font-label font-medium px-4 py-2 rounded-full text-sm shrink-0">
+                Sistema
+            </button>
+</div>
+<!-- Notification List -->
+<div class="flex flex-col space-y-4">
+<!-- Forum Response -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-[0_8px_32px_rgba(26,28,28,0.06)] relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-high p-3 rounded-full shrink-0 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<div class="flex-1">
+<p class="font-body text-sm text-on-surface leading-snug">
+<span class="font-bold">João Santos</span> respondeu ao seu tópico: <span class="italic text-on-surface-variant">"O Impacto do Café..."</span>.
+                        </p>
+<span class="text-xs text-outline font-label mt-1 block">Há 2 horas</span>
+</div>
+</div>
+</div>
+<!-- Forum Invite -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-[0_8px_32px_rgba(26,28,28,0.06)] relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-[#FFD700]"></div>
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-high p-3 rounded-full shrink-0 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div class="flex-1">
+<p class="font-body text-sm text-on-surface leading-snug">
+<span class="font-bold">Dra. Elena Tavares</span> convidou-te para o fórum privado: <span class="italic text-on-surface-variant">"Reformas de 1990"</span>.
+                        </p>
+<span class="text-xs text-outline font-label mt-1 block">Há 5 horas</span>
+<div class="flex gap-2 mt-3">
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-xs font-bold px-4 py-2 rounded-lg flex-1">
+                                Aceitar
+                            </button>
+<button class="bg-surface-container text-on-surface font-label text-xs font-medium px-4 py-2 rounded-lg flex-1">
+                                Recusar
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Article Recommendation -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-low p-3 rounded-full shrink-0 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div class="flex-1">
+<p class="font-body text-sm text-on-surface leading-snug">
+<span class="font-bold text-primary-container">Recomendação:</span> O Ciclo do Ouro Negro - Um novo podcast disponível.
+                        </p>
+<span class="text-xs text-outline font-label mt-1 block">Ontem</span>
+</div>
+</div>
+</div>
+<!-- Editorial Status -->
+<div class="bg-gradient-to-br from-[#800020]/10 to-[#FFD700]/10 rounded-xl p-4 shadow-[0_8px_32px_rgba(26,28,28,0.06)] border border-outline-variant/15">
+<div class="flex items-start gap-4">
+<div class="bg-[#FFD700]/20 p-3 rounded-full shrink-0 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1">
+<p class="font-body text-sm text-on-surface leading-snug">
+                            Seu artigo <span class="font-bold italic">"Economia Informal"</span> foi aprovado e está agora publicado!
+                        </p>
+<span class="text-xs text-outline font-label mt-1 block">Ontem</span>
+</div>
+</div>
+</div>
+<!-- Quiz Reminder -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container-low p-3 rounded-full shrink-0 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">military_tech</span>
+</div>
+<div class="flex-1">
+<p class="font-body text-sm text-on-surface leading-snug">
+                            Não percas o teu streak! Completa o Quiz do dia sobre o <span class="font-bold text-primary-container">Kwanza</span>.
+                        </p>
+<span class="text-xs text-outline font-label mt-1 block">Há 2 dias</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-t border-stone-200/15 dark:border-stone-700/15 shadow-[0_-8px_32px_rgba(26,28,28,0.06)] z-50 rounded-t-none md:hidden">
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-red-800 dark:hover:text-yellow-400 active:scale-90 transition-all">
+<span class="material-symbols-outlined mb-1">account_balance</span>
+<span class="font-['Public_Sans'] text-[10px] font-medium tracking-tighter">Archive</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-red-800 dark:hover:text-yellow-400 active:scale-90 transition-all">
+<span class="material-symbols-outlined mb-1">menu_book</span>
+<span class="font-['Public_Sans'] text-[10px] font-medium tracking-tighter">Library</span>
+</button>
+<button class="flex flex-col items-center justify-center text-red-900 dark:text-yellow-500 bg-red-50/50 dark:bg-red-900/20 rounded-xl px-3 py-1 active:scale-90 transition-all">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-['Public_Sans'] text-[10px] font-medium tracking-tighter">Alerts</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 hover:text-red-800 dark:hover:text-yellow-400 active:scale-90 transition-all">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Public_Sans'] text-[10px] font-medium tracking-tighter">Curator</span>
+</button>
+</nav>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

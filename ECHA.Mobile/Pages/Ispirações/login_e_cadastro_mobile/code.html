@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Sovereign Archive - Login</title>
+<!-- Google Fonts: Manrope (Headlines) & Public Sans (Body) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Design System -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#af2b3e",
+                        "on-tertiary-container": "#7cb0c0",
+                        "on-primary-container": "#ff828a",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d9e5e7",
+                        "primary-container": "#800020",
+                        "outline-variant": "#e0bfbf",
+                        "primary-fixed": "#ffdada",
+                        "on-secondary-fixed": "#131d1f",
+                        "surface-container-low": "#f3f3f3",
+                        "on-error": "#ffffff",
+                        "background": "#f9f9f9",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "surface": "#f9f9f9",
+                        "tertiary-container": "#004451",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "on-secondary-container": "#5b6668",
+                        "secondary": "#556062",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-surface-variant": "#584141",
+                        "surface-container": "#eeeeee",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "on-primary-fixed": "#40000b",
+                        "tertiary": "#002c36",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#d9e5e7",
+                        "inverse-primary": "#ffb3b5",
+                        "inverse-surface": "#2f3131",
+                        "surface-dim": "#dadada",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline": "#8c7071",
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "tertiary-fixed": "#b6ebfb",
+                        "on-surface": "#1a1c1c",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#570013",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Public Sans", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base styles overrides for forms to match DS strictly */
+        [type='text'], [type='email'], [type='password'] {
+            border: none;
+            box-shadow: none !important;
+        }
+        [type='text']:focus, [type='email']:focus, [type='password']:focus {
+            border: none;
+            box-shadow: none !important;
+            outline: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen relative overflow-hidden">
+<!-- Ambient Watermark Map Background -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-20 mix-blend-multiply">
+<img alt="" class="absolute -top-32 -left-32 w-[150%] max-w-none grayscale opacity-30 object-cover rotate-12" data-alt="Abstract subtle topographical lines resembling a minimalist map in light grey tones, premium editorial watermark texture" data-location="Angola" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ1IJabRXZR--EVjBY7lupx0gFYEAgkGHItMoucLN7lPDnqznTnPBphTtQZLvervQ4A0dQBtFMY9IZlDkXoqr_HbLU7XVDEg89JGZ3rAzpIa42c4leheEWe2DY4g3DdntkMc2hf9udFKKz_2rsbfYe8awTjF0aozyc_hIUgk00hQMqJMoKfKfclIZQV7XBs3m-FvNd-CHKeFtJMkuh20vrCiBKeZXMChsHASVNjQxtzge2i8bkGY1ecgx6hEgUnemkt-cBcAazoztY"/>
+</div>
+<!-- Main Content Canvas (Mobile Optimized, Asymmetrical Layout) -->
+<main class="relative z-10 w-full max-w-md mx-auto min-h-screen flex flex-col justify-center pl-6 pr-10 py-12">
+<!-- Header Section -->
+<header class="mb-10">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg mb-6 flex items-center justify-center shadow-[0px_8px_32px_rgba(26,28,28,0.06)]">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<h1 class="font-display font-extrabold text-4xl text-primary tracking-tighter leading-[1.1] mb-3">
+                The Sovereign<br/>Archive
+            </h1>
+<p class="font-body text-lg text-on-surface-variant font-semibold leading-snug pr-4">
+                O curador digital do património económico e histórico angolano.
+            </p>
+</header>
+<!-- Glassmorphism Interactive Card -->
+<div class="bg-surface-container-lowest/90 backdrop-blur-xl rounded-xl p-6 shadow-[0px_8px_32px_rgba(26,28,28,0.06)] ring-1 ring-outline-variant/15 flex flex-col gap-6 relative overflow-hidden">
+<!-- Subtle gradient glow within card -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Context Toggle -->
+<div class="flex gap-6 border-b-2 border-surface-container pb-2">
+<button class="font-headline font-bold text-lg text-primary border-b-2 border-primary -mb-[10px] pb-2 transition-colors">
+                    Acesso
+                </button>
+<button class="font-headline font-bold text-lg text-on-surface-variant/40 hover:text-on-surface-variant transition-colors pb-2">
+                    Registo
+                </button>
+</div>
+<!-- Form Inputs -->
+<div class="flex flex-col gap-4 mt-2">
+<!-- Email Input -->
+<div class="relative bg-surface-container-high rounded-t-lg pt-5 pb-2 px-4 group">
+<label class="absolute top-2 left-4 font-label text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant">
+                        Correio Eletrónico
+                    </label>
+<input class="w-full bg-transparent font-body text-base text-on-surface p-0 placeholder-on-surface-variant/30" placeholder="nome@dominio.ao" type="email"/>
+<!-- Animated Indicator Line -->
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-primary scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 origin-left"></div>
+</div>
+<!-- Password Input -->
+<div class="relative bg-surface-container-high rounded-t-lg pt-5 pb-2 px-4 group">
+<label class="absolute top-2 left-4 font-label text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant">
+                        Palavra-passe
+                    </label>
+<input class="w-full bg-transparent font-body text-base text-on-surface p-0 placeholder-on-surface-variant/30 pr-10" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 hover:text-primary transition-colors focus:outline-none">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+<!-- Animated Indicator Line -->
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-primary scale-x-0 group-focus-within:scale-x-100 transition-transform duration-300 origin-left"></div>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="font-label text-sm text-primary font-semibold hover:text-primary-container transition-colors">
+                    Recuperar acesso?
+                </button>
+</div>
+<!-- Primary Action -->
+<button class="w-full py-4 rounded-lg bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-base tracking-wide flex justify-center items-center gap-2 hover:opacity-95 transition-opacity shadow-md">
+                Entrar no Arquivo
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Secondary Journey (Guest Mode) -->
+<div class="mt-10 flex flex-col items-center gap-6">
+<!-- Ghost Divider -->
+<div class="flex items-center w-full gap-4 px-4">
+<div class="h-[1px] bg-outline-variant/20 flex-1"></div>
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-semibold">Caminho Alternativo</span>
+<div class="h-[1px] bg-outline-variant/20 flex-1"></div>
+</div>
+<!-- Secondary Button -->
+<button class="w-full py-4 rounded-lg bg-surface-container-highest text-on-surface font-headline font-bold text-base tracking-wide flex justify-center items-center gap-3 shadow-[0px_4px_16px_rgba(26,28,28,0.03)] hover:bg-surface-container transition-colors ring-1 ring-outline-variant/10">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">explore</span>
+                Continuar como Convidado
+            </button>
+</div>
+</main>
+</body></html>

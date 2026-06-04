@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:models="clr-namespace:ECHA.Mobile.Models"
+             x:Class="ECHA.Mobile.Pages.TopicDetailPage"
+             x:DataType="pageModels:TopicDetailPageModel"
+             Title="{Binding Topico.Titulo}">
+
+    <StackLayout Padding="20" Spacing="10">
+        <Label Text="{Binding Topico.Titulo}" FontSize="24" FontAttributes="Bold" />
+        <Label Text="{Binding Topico.Descricao}" />
+        
+        <CollectionView ItemsSource="{Binding Respostas}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:RespostaForumDto">
+                    <Frame Margin="0,5" Padding="10">
+                        <StackLayout>
+                            <Label Text="{Binding Conteudo}" />
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Text="Reagir" Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:TopicDetailPageModel}}, Path=ReagirCommand}" CommandParameter="{Binding .}" />
+                                <Button Text="Denunciar" Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:TopicDetailPageModel}}, Path=DenunciarCommand}" CommandParameter="{Binding .}" />
+                            </HorizontalStackLayout>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FFD700",
+            "on-primary": "#000000",
+            "brand-red": "#570013",
+            "surface": "#ffffff",
+            "on-surface": "#1a1c1c",
+            "surface-container-low": "#f9f9f9"
+          },
+          fontFamily: { body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body p-6">
+  <h1 class="text-3xl font-bold mb-8">Contactar Equipa</h1>
+  
+  <div class="space-y-6 mb-10">
+    <p>E-mail: geral@economiahistoria.ao</p>
+    <p>Endereço: Avenida 4 de Fevereiro, Luanda.</p>
+  </div>
+  
+  <form class="space-y-4">
+    <input type="text" placeholder="Nome" class="w-full p-4 rounded-xl bg-surface-container-low border-none">
+    <textarea placeholder="Mensagem" class="w-full p-4 rounded-xl bg-surface-container-low border-none" rows="4"></textarea>
+    <button class="w-full py-4 bg-brand-red text-white rounded-full font-bold">Enviar</button>
+  </form>
+</body>
+</html>

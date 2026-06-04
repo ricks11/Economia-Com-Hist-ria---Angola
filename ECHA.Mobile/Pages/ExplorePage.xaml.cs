@@ -1,0 +1,20 @@
+using ECHA.Mobile.PageModels;
+
+namespace ECHA.Mobile.Pages;
+
+public partial class ExplorePage : ContentPage
+{
+    private readonly ExplorePageModel _viewModel;
+
+    public ExplorePage(ExplorePageModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = _viewModel = viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.LoadConteudosCommand.ExecuteAsync(null);
+    }
+}

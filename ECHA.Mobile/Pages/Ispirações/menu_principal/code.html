@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#3e494b",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#40000b",
+                    "tertiary-fixed-dim": "#9acfde",
+                    "secondary-container": "#d9e5e7",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "tertiary": "#002c36",
+                    "on-surface": "#1a1c1c",
+                    "outline-variant": "#e0bfbf",
+                    "inverse-surface": "#2f3131",
+                    "primary-fixed": "#ffdada",
+                    "on-primary-container": "#ff828a",
+                    "inverse-primary": "#ffb3b5",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-tertiary-fixed-variant": "#114d5b",
+                    "secondary": "#556062",
+                    "on-background": "#1a1c1c",
+                    "primary-container": "#800020",
+                    "tertiary-fixed": "#b6ebfb",
+                    "surface-tint": "#af2b3e",
+                    "surface-dim": "#dadada",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d9e5e7",
+                    "background": "#f9f9f9",
+                    "primary-fixed-dim": "#ffb3b5",
+                    "on-primary-fixed-variant": "#8e0f28",
+                    "on-tertiary-container": "#7cb0c0",
+                    "surface": "#f9f9f9",
+                    "surface-container-low": "#f3f3f3",
+                    "on-surface-variant": "#584141",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#bdc9cb",
+                    "surface-container": "#eeeeee",
+                    "on-surface": "#1a1c1c",
+                    "surface-bright": "#f9f9f9",
+                    "tertiary-container": "#004451",
+                    "surface-container-highest": "#e2e2e2",
+                    "surface-container-high": "#e8e8e8",
+                    "outline": "#8c7071",
+                    "surface-variant": "#e2e2e2",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#131d1f",
+                    "on-tertiary-fixed": "#001f26",
+                    "on-secondary-container": "#5b6668",
+                    "primary": "#570013"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .asymmetric-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .asymmetric-grid > *:nth-child(1) { grid-column: span 2; }
+      .asymmetric-grid > *:nth-child(4) { grid-column: span 2; }
+      
+      .map-watermark {
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="text-xl font-extrabold text-red-900 dark:text-red-500 flex items-center gap-2 font-headline tracking-tight">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+            Economia com História
+        </div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-stone-200/50 transition-all duration-200">
+<span class="material-symbols-outlined text-stone-500" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden">
+<img alt="Perfil" data-alt="close-up portrait of a professional Angolan man with a kind expression, soft office lighting background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDIaofLpZ-tu1GjZnRGTDq65KFZFrSqohRiWmQmyChRj9hsyF6dAnGhnazTJHYBn9u5e0IyVN7XWF1dVOPXKFCNe11bS8nTF-jHaD7Fc6fbbwq_t48HjWCKebmtMjLa7gof9awFzyjAXs9bPV6bStXM6zJwAzBX4dnaOKg9o2JEzA8HKuqF_Kx72yJgj6qaLvZLSA3q2wiqQe09uEzUOQpaZKf9xXw50SDlmBUVLRSBWgQIl6j2-xCMyornIJ1ht-LT5MWZbdHKd1S"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-32 px-6 min-h-screen relative overflow-hidden">
+<!-- Stylized Map Watermark -->
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none flex items-center justify-center map-watermark">
+<img class="w-[120%] h-auto grayscale" data-alt="stylized vector map of Angola with artistic topographical lines and minimalist outline, professional grey tone" data-location="Angola" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWwg3rRKyXgefdUd7cQhX6i6BU66p3sC5n6bnGYihm-P9Qqq-isKjJJ_bfvkEF7HePX1GsQ-IdfKmVZnRoTGPbxUxo3IygFUBrgSyU2I_RmzTeov_EI54rUvUIchsJ31oXSYV4DfnzkA8Yvv4FlIhxdl4VRaZGE15hBmBYop3zaPmFXyTR566MIQEa1OOP6G1yLmuI1ypZxKbp4gooQ_Q-abBfCFSuybTh3KG9rTY-hs9WIlPVsEvamkCX7DaqEWyaNWURJlbTDImP"/>
+</div>
+<!-- Welcome Hero -->
+<section class="relative z-10 mt-8 mb-12">
+<span class="text-primary font-headline font-bold uppercase tracking-widest text-xs mb-2 block">O Arquivo Digital</span>
+<h1 class="text-4xl font-headline font-extrabold text-on-surface leading-tight tracking-tight mb-4">
+                Bem-vindo ao <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary-container">Economia com História</span>
+</h1>
+<p class="text-on-surface-variant font-body text-lg max-w-xs leading-relaxed">
+                Descubra a jornada económica de Angola através de uma curadoria digital exclusiva.
+            </p>
+</section>
+<!-- Bento Grid Modules -->
+<div class="asymmetric-grid relative z-10">
+<!-- Explorar (Active Style) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex flex-col justify-between min-h-[160px] border-l-4 border-primary">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="explore">explore</span>
+<span class="text-xs font-bold text-primary px-2 py-1 bg-primary/10 rounded-full">NOVO</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface">Explorar</h3>
+<p class="text-on-surface-variant text-sm mt-1">Aceda à linha do tempo económica.</p>
+</div>
+</div>
+<!-- Quiz -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between min-h-[140px] hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-stone-500 text-2xl" data-icon="military_tech">military_tech</span>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Quiz</h3>
+<p class="text-on-surface-variant text-xs mt-1">Teste o seu conhecimento.</p>
+</div>
+</div>
+<!-- Fórum -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between min-h-[140px] hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-stone-500 text-2xl" data-icon="forum">forum</span>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Fórum</h3>
+<p class="text-on-surface-variant text-xs mt-1">Debates e insights.</p>
+</div>
+</div>
+<!-- Comentários -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_rgba(26,28,28,0.06)] flex items-center gap-6">
+<div class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-stone-500" data-icon="chat_bubble">chat_bubble</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Comentários</h3>
+<p class="text-on-surface-variant text-sm">Feedback da comunidade académica.</p>
+</div>
+</div>
+<!-- Perfil -->
+<div class="bg-surface-container-low p-5 rounded-xl flex flex-col justify-between min-h-[140px] hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-stone-500 text-2xl" data-icon="person">person</span>
+<div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Perfil</h3>
+<p class="text-on-surface-variant text-xs mt-1">Gira o seu progresso.</p>
+</div>
+</div>
+</div>
+<!-- Featured Section (Asymmetric) -->
+<section class="mt-12 relative z-10 pr-8">
+<div class="bg-tertiary text-on-tertiary p-8 rounded-xl relative overflow-hidden">
+<div class="absolute right-[-20px] top-[-20px] opacity-20">
+<span class="material-symbols-outlined text-[120px]" data-icon="history_edu">history_edu</span>
+</div>
+<h4 class="font-headline font-bold text-xl mb-2">Destaque do Mês</h4>
+<p class="text-on-tertiary-container text-sm leading-relaxed mb-6">
+                    A evolução da moeda Kwanza: do período colonial à estabilização moderna.
+                </p>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2.5 rounded-lg font-bold text-sm shadow-lg">
+                    Ler Documento
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 rounded-t-xl shadow-[0_-8px_32px_rgba(26,28,28,0.06)]">
+<a class="flex flex-col items-center justify-center bg-red-900/10 dark:bg-red-500/10 text-red-900 dark:text-red-400 rounded-2xl px-3 py-1.5 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Explorar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Quiz</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Fórum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Comentários</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 hover:text-red-800 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide mt-1">Perfil</span>
+</a>
+</nav>
+</body></html>

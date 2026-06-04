@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erro 404 – Economia com História</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FFD700",
+            "on-primary": "#000000",
+            "brand-red": "#570013",
+            "surface": "#ffffff",
+            "on-surface": "#1a1c1c",
+            "on-surface-variant": "#584141"
+          },
+          fontFamily: { headline: ["Public Sans"], body: ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body h-screen flex flex-col items-center justify-center p-6 text-center">
+  <span class="text-8xl font-black text-surface-container-high mb-8">404</span>
+  
+  <h1 class="font-headline font-extrabold text-2xl text-on-surface mb-4">Página Perdida no Tempo.</h1>
+  
+  <p class="text-on-surface-variant text-base mb-10 max-w-xs leading-relaxed">
+    Não conseguimos encontrar a página que procura no nosso arquivo digital.
+  </p>
+
+  <a href="#" class="w-full max-w-xs py-4 bg-brand-red text-white rounded-full font-bold shadow-md hover:scale-105 transition-transform">
+    Voltar ao Início
+  </a>
+</body>
+</html>

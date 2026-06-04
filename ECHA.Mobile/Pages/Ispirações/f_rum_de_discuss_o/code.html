@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Public+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3e494b",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#40000b",
+                        "tertiary-fixed-dim": "#9acfde",
+                        "secondary-container": "#d9e5e7",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "tertiary": "#002c36",
+                        "on-surface": "#1a1c1c",
+                        "outline-variant": "#e0bfbf",
+                        "inverse-surface": "#2f3131",
+                        "primary-fixed": "#ffdada",
+                        "on-primary-container": "#ff828a",
+                        "inverse-primary": "#ffb3b5",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-tertiary-fixed-variant": "#114d5b",
+                        "secondary": "#556062",
+                        "on-background": "#1a1c1c",
+                        "primary-container": "#800020",
+                        "tertiary-fixed": "#b6ebfb",
+                        "surface-tint": "#af2b3e",
+                        "surface-dim": "#dadada",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d9e5e7",
+                        "background": "#f9f9f9",
+                        "primary-fixed-dim": "#ffb3b5",
+                        "on-primary-fixed-variant": "#8e0f28",
+                        "on-tertiary-container": "#7cb0c0",
+                        "surface": "#f9f9f9",
+                        "surface-container-low": "#f3f3f3",
+                        "on-surface-variant": "#584141",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "surface-container": "#eeeeee",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "tertiary-container": "#004451",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container-high": "#e8e8e8",
+                        "outline": "#8c7071",
+                        "surface-variant": "#e2e2e2",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#131d1f",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-secondary-container": "#5b6668",
+                        "primary": "#570013"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .asymmetric-shape {
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 shadow-[0_8px_32px_rgba(26,28,28,0.06)]">
+<div class="text-xl font-extrabold text-red-900 dark:text-red-500 flex items-center gap-2 font-headline tracking-tight">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+            Economia com História
+        </div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-stone-200/50 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User Profile" data-alt="profile photo of a young professional in soft focus with neutral lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxIOyX5AcReBuKGui-TSjXJBl6O_Sw7Uk8YYCv4_sFD1DAcgozieQ2xksXRXJEdFW4WoUw4Ft-72whn4KBBe_M4xVL4P1UOz98KIahyFRcMrqRHuvizyJ7aiu8dfCA_nOmFD4zlW-U9MDH0lKJaMOt-ugbE6R13_yp3OwHn1RJObcYU4Qh63kjb_qQfgYKgOTVtjA9DICpj5LNo-H7Fh_j9c4nIB-0SL_Lq3I4BSkzbf3BuNbnVsnnaKhVI5xxwFySG7iM-BNWZ2DP"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-28 px-4 max-w-2xl mx-auto">
+<div class="mb-8">
+<h1 class="text-3xl font-headline font-extrabold text-on-surface tracking-tight mb-2">Fórum</h1>
+<p class="text-on-surface-variant leading-relaxed">Participe nas discussões sobre o legado económico de Angola.</p>
+</div>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar mb-8 pb-2">
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary text-sm font-semibold">Tudo</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant text-sm font-medium">Era Colonial</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant text-sm font-medium">Pós-Independência</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant text-sm font-medium">Petróleo e Diamantes</button>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border-l-4 border-primary transition-all active:scale-[0.98]">
+<div class="flex items-center gap-3 mb-3">
+<img alt="Author" class="h-10 w-10 rounded-full object-cover" data-alt="portrait of an elderly man with glasses, looking scholarly, warm indoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjxjtLcT3wJOKFCCmJlmC5yiihy8VqqNfBo53wyA3nqdC0sEhSBrikTvaPXtBiMGnrFVSeirWRwU-8UTRtbt2r0uFSpmSqV8hljse3-Dy1FFx-nEt8IMsKHW53IhVSyDVgdAaeXSml8aXdEr4NS2Q_2jljPguKI3arlKeTApgIgRxPSnXbfdlDje9Jy7cLe5cB7BKlywNFtX44fEigxUvCjqTBkwZjkN1mclIIzJFnEQOdL5M4dG859M4cbXummKnpxqIzTLF3Ep5u"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Dr. Agostinho Manuel</p>
+<p class="text-[10px] text-stone-400 font-medium">HÁ 2 HORAS</p>
+</div>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2 leading-snug">O impacto do café na era colonial e a formação de infraestruturas</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-4 leading-relaxed">
+                    Como a monocultura do café moldou as rotas ferroviárias de Benguela e o porto de Luanda durante a década de 1950?
+                </p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container-low">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-stone-500">
+<span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-xs font-semibold">42</span>
+</div>
+<div class="flex items-center gap-1.5 text-stone-500">
+<span class="material-symbols-outlined text-lg" data-icon="favorite">favorite</span>
+<span class="text-xs font-semibold">128</span>
+</div>
+</div>
+<button class="text-primary text-xs font-bold flex items-center gap-1">
+                        VER DISCUSSÃO <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border-l-4 border-secondary transition-all active:scale-[0.98]">
+<div class="flex items-center gap-3 mb-3">
+<img alt="Author" class="h-10 w-10 rounded-full object-cover" data-alt="smiling young woman with braided hair, bright natural outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuGlmgXzGKxhKvCyaWxH4x9BiD-bi_Olhq1zL6VMYZWWwFIB-dvKZdBKTKCRrSARVjV0KzwenAmqbPeUbqVVrCBXje6XuKBpJYqZnRh0V3_mX2qOVXkuO9tfjIrY3RIMBBzqQeSF4JqpXdY6NqCYkJdKIfb_afgHc0BN00Mtr_XW9q9Y3k9NuZv_IR0dfv4h-UQQiwz1qFrClJiGCP6Iibdw0CQP62FEC6RTFw2VUBjOcicf6_LYIHDMwFG_7MQy29nxZMnte_7aIw"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Isabel Santos</p>
+<p class="text-[10px] text-stone-400 font-medium">HÁ 5 HORAS</p>
+</div>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2 leading-snug">A transição económica de 1975: Desafios imediatos</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-4 leading-relaxed">
+                    A saída súbita de capital humano e técnico no pós-independência e o início da economia centralizada.
+                </p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container-low">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-stone-500">
+<span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-xs font-semibold">15</span>
+</div>
+<div class="flex items-center gap-1.5 text-stone-500">
+<span class="material-symbols-outlined text-lg" data-icon="favorite">favorite</span>
+<span class="text-xs font-semibold">56</span>
+</div>
+</div>
+<button class="text-primary text-xs font-bold flex items-center gap-1">
+                        VER DISCUSSÃO <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border-l-4 border-primary transition-all active:scale-[0.98]">
+<div class="flex items-center gap-3 mb-3">
+<img alt="Author" class="h-10 w-10 rounded-full object-cover" data-alt="portrait of a man in his 40s wearing a traditional shirt, focused office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC1BKHwg8kPv5aJnYxnKvD5l_K_qgiy4cQUM-mUlSIPiR4EDd5eaVUPo3SeB2PL0B-2p86RBoH3Ibk06S6yZtQuy64CdU98eWssIbV2NqsMeo7-uXe9aPkY-jCt8eQs3GvnCJDKanaEtC2Ctf1Wom3PsSTXvgAlLyXl2pKJePDgv8DQ4PQsWnrBl5mj_qDKb0mhwZ2GF3g4cKs-IHfapxS911_C2sdnGJeRXmi9Nvwk9lV6FLBbBuccNjpYIomF4g5UyYEmR5kL9oY"/>
+<div>
+<p class="text-sm font-bold text-on-surface">João Carlos</p>
+<p class="text-[10px] text-stone-400 font-medium">ONTEM</p>
+</div>
+</div>
+<h3 class="text-lg font-headline font-bold text-on-surface mb-2 leading-snug">O Ciclo da Borracha no Planalto Central</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2 mb-4 leading-relaxed">
+                    Análise sobre como o comércio da borracha no final do séc. XIX transformou as relações de poder locais.
+                </p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-container-low">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 text-stone-500">
+<span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-xs font-semibold">89</span>
+</div>
+<div class="flex items-center gap-1.5 text-stone-500">
+<span class="material-symbols-outlined text-lg" data-icon="favorite">favorite</span>
+<span class="text-xs font-semibold">312</span>
+</div>
+</div>
+<button class="text-primary text-xs font-bold flex items-center gap-1">
+                        VER DISCUSSÃO <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<button class="fixed right-6 bottom-24 h-14 px-6 rounded-2xl bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-[0_8px_32px_rgba(87,0,19,0.25)] flex items-center gap-3 active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="add" style="font-variation-settings: 'FILL' 0;">add</span>
+<span class="font-headline font-bold tracking-tight">Criar Tópico</span>
+</button>
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md z-50 rounded-t-xl shadow-[0_-8px_32px_rgba(26,28,28,0.06)]">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="explore">explore</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Explorar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="military_tech">military_tech</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Quiz</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-red-900/10 dark:bg-red-500/10 text-red-900 dark:text-red-400 rounded-2xl px-3 py-1.5 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="forum" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Fórum</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Comentários</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 px-3 py-1.5 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-0.5" data-icon="person">person</span>
+<span class="font-public-sans text-[10px] font-medium tracking-wide">Perfil</span>
+</a>
+</nav>
+</body></html>
