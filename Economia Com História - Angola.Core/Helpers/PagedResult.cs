@@ -1,4 +1,4 @@
-namespace EconomiaComHistoria.API.Helpers;
+namespace EconomiaComHistoria.Core.Helpers;
 
 public class PagedResult<T>
 {

@@ -1,5 +1,5 @@
-using ECHA.API.DTOs;
-using EconomiaComHistoria.API.Helpers;
+using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.Core.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +57,7 @@ public class PerfilController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet]
+    /// <summary>
     /// Gets the current authenticated user's profile
     /// </summary>
     [HttpGet]

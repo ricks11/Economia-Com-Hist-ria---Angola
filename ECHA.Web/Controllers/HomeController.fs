@@ -1,4 +1,4 @@
-﻿namespace ECHA.Web.Controllers
+namespace ECHA.Web.Controllers
 
 open System
 open System.Collections.Generic

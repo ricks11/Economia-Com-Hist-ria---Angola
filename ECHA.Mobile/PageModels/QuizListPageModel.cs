@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 using System.Collections.ObjectModel;
 
@@ -13,7 +13,7 @@ public partial class QuizListPageModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
-    public ObservableCollection<QuizDto> Quizzes { get; } = new();
+    public ObservableCollection<QuizResponseDto> Quizzes { get; } = new();
 
     public QuizListPageModel(IApiService apiService)
     {
@@ -28,12 +28,16 @@ public partial class QuizListPageModel : ObservableObject
         IsBusy = true;
         try
         {
-            var result = await _apiService.GetAsync<List<QuizDto>>("api/quizzes");
+            var result = await _apiService.GetAsync<List<QuizResponseDto>>("api/quizzes");
             Quizzes.Clear();
             if (result != null)
             {
                 foreach (var q in result) Quizzes.Add(q);
             }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error loading quizzes: {ex.Message}");
         }
         finally
         {

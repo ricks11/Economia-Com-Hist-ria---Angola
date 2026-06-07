@@ -2,7 +2,7 @@ namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open System.Threading.Tasks
-open ECHA.Core.DTOs
+open EconomiaComHistoria.Core.DTOs
 
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Authentication.Cookies

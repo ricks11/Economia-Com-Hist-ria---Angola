@@ -1,7 +1,8 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.Core.Helpers;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -13,7 +14,7 @@ public partial class ExplorePageModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
-    public ObservableCollection<ConteudoDto> Conteudos { get; } = new();
+    public ObservableCollection<ConteudoResponseDto> Conteudos { get; } = new();
 
     public ExplorePageModel(IApiService apiService)
     {
@@ -28,16 +29,21 @@ public partial class ExplorePageModel : ObservableObject
         IsBusy = true;
         try
         {
-            var conteudos = await _apiService.GetAsync<List<ConteudoDto>>("api/conteudos");
+            var pagedResult = await _apiService.GetAsync<PagedResult<ConteudoResponseDto>>("api/conteudos");
             
             Conteudos.Clear();
-            if (conteudos != null)
+            if (pagedResult?.Items != null)
             {
-                foreach (var item in conteudos)
+                foreach (var item in pagedResult.Items)
                 {
                     Conteudos.Add(item);
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            // Log or handle error
+            System.Diagnostics.Debug.WriteLine($"Error loading conteudos: {ex.Message}");
         }
         finally
         {

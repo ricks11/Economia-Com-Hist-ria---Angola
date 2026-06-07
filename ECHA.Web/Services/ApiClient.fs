@@ -3,7 +3,7 @@ namespace ECHA.Web.Services
 open System.Net.Http
 open System.Net.Http.Json
 open System.Threading.Tasks
-open ECHA.Core.DTOs
+open EconomiaComHistoria.Core.DTOs
 
 type ApiClient(httpClient: HttpClient) =
     member this.LoginAsync(request: LoginRequestDto) : Task<AuthResponseDto option> =

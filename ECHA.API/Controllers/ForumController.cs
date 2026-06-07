@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using EconomiaComHistoria.API.DTOs;
+using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;

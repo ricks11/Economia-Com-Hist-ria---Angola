@@ -1,6 +1,6 @@
 using EconomiaComHistoria.Core.Enums;
 
-namespace EconomiaComHistoria.API.DTOs;
+namespace EconomiaComHistoria.Core.DTOs;
 
 public record CriarTopicoForumDto(string Titulo, string Descricao, int CategoriaId);
 
@@ -32,6 +32,7 @@ public record TopicoForumDetalheDto(
     IReadOnlyCollection<RespostaForumDto> Respostas);
 
 public record CriarRespostaForumDto(string Conteudo, int? RespostaPaiId);
+
 public record AtualizarRespostaForumDto(string Conteudo);
 
 public record RespostaForumDto(
@@ -47,6 +48,7 @@ public record RespostaForumDto(
     IReadOnlyCollection<RespostaForumDto> RespostasFilhas);
 
 public record CriarReacaoDto(int? TopicoForumId, int? RespostaForumId, string Emoji);
+
 public record CriarDenunciaDto(int? TopicoForumId, int? RespostaForumId, MotivoDenuncia Motivo, string? Descricao);
 
 public record RejeitarTopicoDto(string MotivoRejeicao);

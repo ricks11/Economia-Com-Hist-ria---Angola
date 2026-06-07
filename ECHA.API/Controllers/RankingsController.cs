@@ -1,4 +1,4 @@
-using EconomiaComHistoria.API.DTOs;
+using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
@@ -59,14 +59,16 @@ public class RankingsController : ControllerBase
         var userPosition = userIndex >= 0 ? userIndex + 1 : 0;
         var userEntry = userIndex >= 0 ? dtos[userIndex] : null;
 
-        return Ok(new
+        var response = new RankingResponseDto
         {
-            Tipo = tipo.ToString(),
-            Periodo = periodo.ToString(),
             Top100 = dtos,
             PosicaoUtilizador = userPosition,
-            PontosUtilizador = userEntry?.Pontos
-        });
+            PontosUtilizador = userEntry?.Pontos,
+            Tipo = tipo.ToString(),
+            Periodo = periodo.ToString()
+        };
+
+        return Ok(response);
     }
 
     [HttpGet("semanal/gerar")]

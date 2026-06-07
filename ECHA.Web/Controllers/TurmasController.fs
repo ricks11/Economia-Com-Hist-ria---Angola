@@ -3,7 +3,7 @@ namespace ECHA.Web.Controllers
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
 open System.Threading.Tasks
-open ECHA.Core.DTOs
+open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
 
 [<Authorize(Roles = "Editor,Admin")>]

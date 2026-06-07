@@ -1,13 +1,13 @@
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.API.Services;
-using EconomiaComHistoria.API.Helpers;
+using EconomiaComHistoria.Core.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using ECHA.API.DTOs;
+using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Interfaces;
 
 namespace EconomiaComHistoria.API.Controllers;

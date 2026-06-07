@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -10,7 +10,7 @@ public partial class ContentDetailPageModel : ObservableObject, IQueryAttributab
     private readonly IApiService _apiService;
 
     [ObservableProperty]
-    private ConteudoDto? _conteudo;
+    private ConteudoResponseDto? _conteudo;
 
     public ContentDetailPageModel(IApiService apiService)
     {
@@ -21,7 +21,7 @@ public partial class ContentDetailPageModel : ObservableObject, IQueryAttributab
     {
         if (query.TryGetValue("Conteudo", out var conteudo))
         {
-            Conteudo = (ConteudoDto)conteudo;
+            Conteudo = (ConteudoResponseDto)conteudo;
         }
     }
 
@@ -46,23 +46,23 @@ public partial class ContentDetailPageModel : ObservableObject, IQueryAttributab
         if (Conteudo == null) return;
 
         // Toggle state locally
-        var novoEstado = !Conteudo.IsFavorito;
+        var novoEstado = !Conteudo.EhFavorito;
         
         // Persist locally
         Preferences.Default.Set($"favorito_{Conteudo.Id}", novoEstado);
         
         // Update local object
-        Conteudo = Conteudo with { IsFavorito = novoEstado };
+        Conteudo = Conteudo with { EhFavorito = novoEstado };
 
         // Sync with API
         try
         {
-            await _apiService.PostAsync<object, object>($"api/conteudos/{Conteudo.Id}/favorito", new { IsFavorito = novoEstado });
+            await _apiService.PostAsync<object, object>($"api/conteudos/{Conteudo.Id}/favorito", new { });
         }
         catch
         {
             // Revert on failure
-            Conteudo = Conteudo with { IsFavorito = !novoEstado };
+            Conteudo = Conteudo with { EhFavorito = !novoEstado };
             Preferences.Default.Set($"favorito_{Conteudo.Id}", !novoEstado);
         }
     }

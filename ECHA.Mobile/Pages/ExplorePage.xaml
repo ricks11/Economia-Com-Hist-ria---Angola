@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:ECHA.Mobile.Models"
+             xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
              x:Class="ECHA.Mobile.Pages.ExplorePage"
              Title="Explorar">
 
@@ -10,12 +10,12 @@
         
         <CollectionView Grid.Row="1" ItemsSource="{Binding Conteudos}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:ConteudoDto">
+                <DataTemplate x:DataType="dtos:ConteudoResponseDto">
                     <Frame Margin="0,10" CornerRadius="10">
                         <StackLayout>
                             <Image Source="{Binding ThumbnailUrl}" HeightRequest="150" Aspect="AspectFill" />
                             <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="18" />
-                            <Label Text="{Binding Descricao}" MaxLines="2" />
+                            <Label Text="{Binding Resumo}" MaxLines="2" />
                         </StackLayout>
                     </Frame>
                 </DataTemplate>

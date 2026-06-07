@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 using System.Collections.ObjectModel;
 
@@ -13,7 +13,7 @@ public partial class ForumPageModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
-    public ObservableCollection<TopicoDto> Topicos { get; } = new();
+    public ObservableCollection<TopicoForumDto> Topicos { get; } = new();
 
     public ForumPageModel(IApiService apiService)
     {
@@ -28,12 +28,16 @@ public partial class ForumPageModel : ObservableObject
         IsBusy = true;
         try
         {
-            var result = await _apiService.GetAsync<List<TopicoDto>>("api/forum/topicos");
+            var result = await _apiService.GetAsync<List<TopicoForumDto>>("api/forum/topicos");
             Topicos.Clear();
             if (result != null)
             {
                 foreach (var t in result) Topicos.Add(t);
             }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error loading topicos: {ex.Message}");
         }
         finally
         {
