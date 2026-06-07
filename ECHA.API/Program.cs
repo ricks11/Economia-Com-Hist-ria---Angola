@@ -59,13 +59,14 @@ builder.Services.AddSwaggerGen(c =>
 // ─────────────────────────────────────────
 // BASE DE DADOS
 // ─────────────────────────────────────────
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseMySql(
+        connectionString,
+        ServerVersion.AutoDetect(connectionString),
         sqlOptions => sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null)));
+            maxRetryDelay: TimeSpan.FromSeconds(10))));
 
 // ─────────────────────────────────────────
 // AUTENTICAÇÃO JWT
