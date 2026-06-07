@@ -25,3 +25,8 @@ public record TurmaDetalheDto(
     List<AlunoResumoDto> Alunos);
 
 public record AlunoResumoDto(int Id, string Nome, string Email, int PontosTotais);
+
+public record TurmaRankingDto(int Posicao, int TurmaId, string TurmaNome, string EscolaNome, int PontosMedia);
+
+public record RelatorioProgressoDto(int AlunoId, string AlunoNome, int ConteudosVistos, int QuizzesFeitos, int PontosGanhos);
+

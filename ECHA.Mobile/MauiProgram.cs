@@ -35,6 +35,8 @@ namespace ECHA.Mobile
     		builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
+            builder.Services.AddSingleton<MainPageModel>();
+            builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<ExplorePageModel>();
             builder.Services.AddTransient<ExplorePage>();
             builder.Services.AddSingleton<ContentDetailPageModel>();
@@ -59,11 +61,7 @@ namespace ECHA.Mobile
             builder.Services.AddTransient<TurmaRankingPage>();
             builder.Services.AddSingleton<TeacherDashboardPageModel>();
             builder.Services.AddTransient<TeacherDashboardPage>();
-            builder.Services.AddSingleton<ProjectRepository>();
-            builder.Services.AddSingleton<TaskRepository>();
-            builder.Services.AddSingleton<CategoryRepository>();
-            builder.Services.AddSingleton<TagRepository>();
-            builder.Services.AddSingleton<SeedDataService>();
+            
             builder.Services.AddSingleton<ApiService>();
             builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
@@ -71,9 +69,6 @@ namespace ECHA.Mobile
                 client.BaseAddress = new Uri("http://localhost:5000/"); // Update with production URL later
             })
             .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
-
-            builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
-            builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
 
             return builder.Build();
         }

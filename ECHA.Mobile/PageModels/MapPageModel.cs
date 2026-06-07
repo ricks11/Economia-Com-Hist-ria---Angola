@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -15,7 +15,6 @@ public partial class MapPageModel : ObservableObject
     public MapPageModel(IApiService apiService)
     {
         _apiService = apiService;
-        LoadProgressoCommand.Execute(null);
     }
 
     [RelayCommand]

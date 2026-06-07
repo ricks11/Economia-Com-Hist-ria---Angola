@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -15,6 +15,9 @@ public partial class CreateTopicPageModel : ObservableObject
     [ObservableProperty]
     private string _descricao = string.Empty;
 
+    [ObservableProperty]
+    private int _categoriaId = 1; // Default category
+
     public CreateTopicPageModel(IApiService apiService)
     {
         _apiService = apiService;
@@ -25,7 +28,8 @@ public partial class CreateTopicPageModel : ObservableObject
     {
         try
         {
-            await _apiService.PostAsync<object, object>("api/forum/topicos", new { Titulo, Descricao });
+            var request = new CriarTopicoForumDto(Titulo, Descricao, CategoriaId);
+            await _apiService.PostAsync<CriarTopicoForumDto, TopicoForumDto>("api/forum/topicos", request);
             await Shell.Current.GoToAsync("..");
         }
         catch

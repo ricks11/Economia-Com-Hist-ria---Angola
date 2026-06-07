@@ -15,16 +15,28 @@
         Route="main" />
 
     <ShellContent
-        Title="Projects"
-        Icon="{StaticResource IconProjects}"
-        ContentTemplate="{DataTemplate pages:ProjectListPage}"
-        Route="projects" />
+        Title="Explorar"
+        Icon="{StaticResource IconExplore}"
+        ContentTemplate="{DataTemplate pages:ExplorePage}"
+        Route="explore" />
 
     <ShellContent
-        Title="Manage Meta"
-        Icon="{StaticResource IconMeta}"
-        ContentTemplate="{DataTemplate pages:ManageMetaPage}"
-        Route="manage" />
+        Title="Quizzes"
+        Icon="{StaticResource IconQuiz}"
+        ContentTemplate="{DataTemplate pages:QuizListPage}"
+        Route="quizzes" />
+
+    <ShellContent
+        Title="Fórum"
+        Icon="{StaticResource IconForum}"
+        ContentTemplate="{DataTemplate pages:ForumPage}"
+        Route="forum" />
+
+    <ShellContent
+        Title="Perfil"
+        Icon="{StaticResource IconProfile}"
+        ContentTemplate="{DataTemplate pages:ProfilePage}"
+        Route="profile" />
 
     <Shell.FlyoutFooter>
         <Grid Padding="15">

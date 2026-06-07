@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -10,7 +10,7 @@ public partial class TopicDetailPageModel : ObservableObject, IQueryAttributable
     private readonly IApiService _apiService;
 
     [ObservableProperty]
-    private TopicoDto? _topico;
+    private TopicoForumDto? _topico;
 
     [ObservableProperty]
     private List<RespostaForumDto>? _respostas;
@@ -24,7 +24,7 @@ public partial class TopicDetailPageModel : ObservableObject, IQueryAttributable
     {
         if (query.TryGetValue("Topico", out var topico))
         {
-            Topico = (TopicoDto)topico;
+            Topico = (TopicoForumDto)topico;
             LoadRespostasCommand.Execute(null);
         }
     }
@@ -33,20 +33,26 @@ public partial class TopicDetailPageModel : ObservableObject, IQueryAttributable
     private async Task LoadRespostasAsync()
     {
         if (Topico == null) return;
-        Respostas = await _apiService.GetAsync<List<RespostaForumDto>>($"api/forum/topicos/{Topico.Id}/respostas");
+        
+        // The API returns TopicoForumDetalheDto for a specific topic, which includes answers.
+        var detalhe = await _apiService.GetAsync<TopicoForumDetalheDto>($"api/forum/topicos/{Topico.Id}");
+        if (detalhe != null)
+        {
+            Respostas = detalhe.Respostas.ToList();
+        }
     }
 
     [RelayCommand]
     private async Task ReagirAsync(RespostaForumDto resposta)
     {
-        await _apiService.PostAsync<object, object>($"api/forum/respostas/{resposta.Id}/reagir", new { });
+        await _apiService.PostAsync<object, object>("api/forum/reacoes", new { RespostaForumId = resposta.Id, Emoji = "👍" });
         await LoadRespostasCommand.ExecuteAsync(null);
     }
 
     [RelayCommand]
     private async Task DenunciarAsync(RespostaForumDto resposta)
     {
-        await _apiService.PostAsync<object, object>($"api/forum/respostas/{resposta.Id}/denunciar", new { });
+        await _apiService.PostAsync<object, object>("api/forum/denuncias", new { RespostaForumId = resposta.Id, Motivo = 0 });
         await Shell.Current.DisplayAlert("Denúncia", "Conteúdo denunciado.", "OK");
     }
 }

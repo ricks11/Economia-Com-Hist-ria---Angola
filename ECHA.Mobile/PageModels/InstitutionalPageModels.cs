@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -15,7 +15,6 @@ public partial class TurmaRankingPageModel : ObservableObject
     public TurmaRankingPageModel(IApiService apiService)
     {
         _apiService = apiService;
-        LoadRankingCommand.Execute(null);
     }
 
     [RelayCommand]
@@ -35,7 +34,6 @@ public partial class TeacherDashboardPageModel : ObservableObject
     public TeacherDashboardPageModel(IApiService apiService)
     {
         _apiService = apiService;
-        LoadAlunosCommand.Execute(null);
     }
 
     [RelayCommand]

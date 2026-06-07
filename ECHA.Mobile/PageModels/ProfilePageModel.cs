@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ECHA.Mobile.Models;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -25,7 +25,6 @@ public partial class ProfilePageModel : ObservableObject
     {
         _apiService = apiService;
         LoadProfile();
-        LoadStatsCommand.Execute(null);
     }
 
     [RelayCommand]
@@ -49,7 +48,7 @@ public partial class ProfilePageModel : ObservableObject
     {
         try
         {
-            await _apiService.PostAsync<AssociacaoDto, object>("api/institucional/associar", new AssociacaoDto(CodigoConvite));
+            await _apiService.PostAsync<AssociarAlunoDto, object>("api/institucional/associar", new AssociarAlunoDto(CodigoConvite));
             await Shell.Current.DisplayAlert("Sucesso", "Associação concluída!", "OK");
         }
         catch
