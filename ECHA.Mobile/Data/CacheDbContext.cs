@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ECHA.Mobile.Models;
 
 namespace ECHA.Mobile.Data;
 

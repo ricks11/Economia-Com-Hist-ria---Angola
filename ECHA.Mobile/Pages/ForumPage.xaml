@@ -2,14 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
-             xmlns:models="clr-namespace:ECHA.Mobile.Models"
+             xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
              x:Class="ECHA.Mobile.Pages.ForumPage"
              x:DataType="pageModels:ForumPageModel"
              Title="Fórum">
 
     <CollectionView ItemsSource="{Binding Topicos}">
         <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="models:TopicoDto">
+            <DataTemplate x:DataType="dtos:TopicoForumDto">
                 <Frame Margin="10" Padding="10">
                     <StackLayout>
                         <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="18" />
