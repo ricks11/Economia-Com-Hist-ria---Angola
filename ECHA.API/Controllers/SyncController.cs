@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ECHA.Infrastructure.Data;
+using EconomiaComHistoria.Infrastructure.Data;
 
 namespace ECHA.API.Controllers;
 

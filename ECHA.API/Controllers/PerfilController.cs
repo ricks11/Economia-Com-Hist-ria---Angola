@@ -4,6 +4,7 @@ using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ECHA.API.Controllers;
 
@@ -41,7 +42,7 @@ public class PerfilController : ControllerBase
             bc.BadgeId,
             bc.Badge?.Nome ?? "Badge",
             bc.Badge?.Descricao,
-            bc.Badge?.Icone,
+            bc.Badge?.IconeUrl,
             bc.DataConquista
         )).ToList();
 
@@ -169,12 +170,13 @@ public class PerfilController : ControllerBase
 
         var favoritos = await _dbContext.Favoritos
             .Where(f => f.UtilizadorId == userId)
+            .Where(f => f.Conteudo != null)
             .Include(f => f.Conteudo)
             .ThenInclude(c => c.Editor)
             .OrderByDescending(f => f.DataAdicionado)
             .Skip((pagina - 1) * tamanho)
             .Take(tamanho)
-            .Select(f => f.Conteudo)
+            .Select(f => f.Conteudo!)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
@@ -201,14 +203,14 @@ public class PerfilController : ControllerBase
 
         var pagedResult = PagedResult<ConteudoResponseDto>.Create(response, totalCount, pagina, tamanho);
 
-        Response.Headers.Add("X-Total-Count", totalCount.ToString());
-        Response.Headers.Add("X-Page", pagina.ToString());
-        Response.Headers.Add("X-Page-Size", tamanho.ToString());
+        Response.Headers["X-Total-Count"] = totalCount.ToString();
+        Response.Headers["X-Page"] = pagina.ToString();
+        Response.Headers["X-Page-Size"] = tamanho.ToString();
 
         return Ok(pagedResult);
     }
 
-    private PerfilResponseDto MapToPerfilResponseDto(Core.Entities.Utilizador utilizador)
+    private PerfilResponseDto MapToPerfilResponseDto(EconomiaComHistoria.Core.Entities.Utilizador utilizador)
     {
         return new PerfilResponseDto(
             utilizador.Id,

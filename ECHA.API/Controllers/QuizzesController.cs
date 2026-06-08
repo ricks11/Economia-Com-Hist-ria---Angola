@@ -88,9 +88,11 @@ public class QuizzesController : ControllerBase
         var quiz = await _quizRepository.GetByIdAsync(id);
         if (quiz == null) return NotFound();
 
-        var respostas = await _quizRepository.GetRespostasByQuizAsync(id);
+        var respostas = await _dbContext.RespostasPerguntas
+            .Where(r => r.TentativaQuiz.QuizId == id)
+            .ToListAsync();
         
-        var totalTentativas = await _dbContext.TentativasQuiz.CountAsync(t => t.QuizId == id && t.Completa);
+        var totalTentativas = await _dbContext.TentativasQuiz.CountAsync(t => t.QuizId == id && t.Completada);
 
         var statsPerguntas = quiz.Perguntas.Select(p => {
             var respostasPergunta = respostas.Where(r => r.PerguntaId == p.Id).ToList();
@@ -98,7 +100,7 @@ public class QuizzesController : ControllerBase
             var taxaAcerto = totalRespostas > 0 ? (double)respostasPergunta.Count(r => r.IsCorrecta) / totalRespostas * 100 : 0;
             var tempoMedio = totalRespostas > 0 ? respostasPergunta.Average(r => r.TempoRespostaMs) : 0;
 
-            return new QuestionStatsDto(p.Id, p.Texto, totalRespostas, taxaAcerto, tempoMedio);
+            return new QuestionStatsDto(p.Id, p.Enunciado, totalRespostas, taxaAcerto, tempoMedio);
         }).ToList();
 
         return Ok(new QuizStatsDto(quiz.Id, quiz.Titulo, totalTentativas, statsPerguntas));
@@ -106,7 +108,7 @@ public class QuizzesController : ControllerBase
 
     [HttpGet("pool")]
     [Authorize(Roles = "Admin,Editor")]
-    public async Task<ActionResult<List<PerguntaStartDto>>> GetQuestionPool([FromQuery] string? tema, [FromQuery] int? nivel)
+    public async Task<ActionResult<List<PerguntaStartDto>>> GetQuestionPool([FromQuery] string? tema, [FromQuery] NivelDificuldade? nivel)
     {
         var query = _dbContext.Perguntas
             .Include(p => p.Opcoes)
@@ -117,14 +119,14 @@ public class QuizzesController : ControllerBase
             query = query.Where(p => p.Quiz.Tema == tema);
         
         if (nivel.HasValue)
-            query = query.Where(p => p.Quiz.NivelDificuldade == nivel.Value);
+            query = query.Where(p => p.Quiz.Nivel == nivel.Value);
 
         var perguntas = await query.ToListAsync();
         
         var response = perguntas.Select(p => new PerguntaStartDto(
             p.Id,
-            p.Texto,
-            p.Opcoes.Select(o => new OpcaoStartDto(o.Id, o.Texto)).ToList()
+            p.Enunciado,
+            p.Opcoes.Select(o => new OpcaoRespostaStartDto(o.Id, o.Texto)).ToList()
         )).ToList();
 
         return Ok(response);
@@ -226,11 +228,11 @@ public class QuizzesController : ControllerBase
             var isCorrecta = opcao.IsCorrecta;
             respostasPersistidas.Add(new RespostaPergunta
             {
-                TentativaId = tentativa.Id,
+                TentativaQuizId = tentativa.Id,
                 PerguntaId = r.PerguntaId,
                 OpcaoRespostaId = r.OpcaoRespostaId,
-                TempoRespostaSeg = r.TempoRespostaSeg,
-                Correta = isCorrecta
+                TempoRespostaMs = r.TempoRespostaSeg * 1000,
+                IsCorrecta = isCorrecta
             });
 
             detalhada.Add(new RespostaDetalhadaDto(
@@ -239,7 +241,7 @@ public class QuizzesController : ControllerBase
                 opcao.Id,
                 opcao.Texto,
                 isCorrecta,
-                opcao.Explicacao
+                opcao.Explicacao ?? string.Empty
             ));
         }
 
@@ -253,7 +255,7 @@ public class QuizzesController : ControllerBase
 
         await _dbContext.SaveChangesAsync();
 
-        double percentagem = (double)respostasPersistidas.Count(r => r.Correta) / quiz.TotalPerguntas * 100;
+        double percentagem = (double)respostasPersistidas.Count(r => r.IsCorrecta) / quiz.TotalPerguntas * 100;
 
         return Ok(new QuizSubmissionResponseDto(pontuacao, percentagem, detalhada));
     }

@@ -30,17 +30,17 @@ public class ModeracaoController : ControllerBase
             .Include(x => x.Categoria)
             .Where(x => x.Estado == EstadoTopicoForum.Pendente)
             .OrderBy(x => x.CriadoEm)
-            .Select(x => new
-            {
+            .Select(x => new ModeracaoPendenteDto(
                 x.Id,
                 "Topico",
                 x.Titulo,
                 x.AutorId,
-                AutorNome = x.Autor == null ? null : x.Autor.Nome,
-                CategoriaId = x.CategoriaId,
-                CategoriaNome = x.Categoria == null ? null : x.Categoria.Nome,
-                x.Descricao,
-                x.CriadoEm
+                x.Autor == null ? null : x.Autor.Nome,
+                x.CriadoEm,
+                x.CategoriaId,
+                x.Categoria == null ? null : x.Categoria.Nome,
+                null,
+                x.Denuncias.Count
             ))
             .ToListAsync(cancellationToken);
 
@@ -58,7 +58,7 @@ public class ModeracaoController : ControllerBase
                 null,
                 null,
                 x.TopicoId,
-                0 // Respostas no forum nao tem contador de denuncias direto no modelo atual
+                x.Denuncias.Count
             ))
             .ToListAsync(cancellationToken);
 
@@ -70,21 +70,20 @@ public class ModeracaoController : ControllerBase
     {
         var topicos = await _dbContext.TopicosForum
             .Include(x => x.Autor)
-            .Where(x => x.TotalDenuncias > 0)
-            .OrderByDescending(x => x.TotalDenuncias)
+            .Where(x => x.Denuncias.Any())
+            .OrderByDescending(x => x.Denuncias.Count)
             .Select(x => new DenunciaSummaryDto(
                 x.Id,
                 "Topico",
                 x.Titulo,
                 x.AutorId,
-                AutorNome = x.Autor == null ? null : x.Autor.Nome,
-                x.RespostaPaiId,
-                x.DataCriacao,
-                x.Conteudo
-            })
+                x.Autor == null ? null : x.Autor.Nome,
+                x.Denuncias.Count,
+                x.Denuncias.Max(d => d.DataDenuncia)
+            ))
             .ToListAsync(cancellationToken);
 
-        return Ok(utilizadores);
+        return Ok(topicos);
     }
 
     [HttpPut("topicos/{id:int}/aprovar")]
@@ -108,7 +107,7 @@ public class ModeracaoController : ControllerBase
         if (resposta is null)
             return NotFound(new { message = "Resposta nao encontrada" });
 
-        resposta.EstadoResposta = EstadoResposta.Aprovada;
+        resposta.EstadoResposta = EstadoComentario.Aprovada;
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         await _notificacaoService.EnviarPushAsync(resposta.AutorId, "Resposta aprovada", "A sua resposta foi aprovada.", cancellationToken);
@@ -130,7 +129,21 @@ public class ModeracaoController : ControllerBase
     }
 
     [HttpPut("respostas/{id:int}/rejeitar")]
-    public async Task<IActionResult> RejeitarResposta(int id, RejeitarTopicoDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RejeitarResposta(int id, [FromBody] RejeitarTopicoDto request, CancellationToken cancellationToken)
+    {
+        var resposta = await _dbContext.RespostasForum.FindAsync(new object[] { id }, cancellationToken);
+        if (resposta is null)
+            return NotFound(new { message = "Resposta nao encontrada" });
+
+        resposta.EstadoResposta = EstadoComentario.Removido;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _notificacaoService.EnviarPushAsync(resposta.AutorId, "Resposta rejeitada", request.MotivoRejeicao, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpGet("denuncias/detalhado")]
+    public async Task<ActionResult> GetDenunciasDetalhado(CancellationToken cancellationToken)
     {
         var denuncias = await _dbContext.Denuncias
             .Include(x => x.TopicoForum)
@@ -166,7 +179,7 @@ public class ModeracaoController : ControllerBase
     }
 
     [HttpPut("utilizadores/{id:int}/suspender")]
-    public async Task<IActionResult> SuspenderUtilizador(int id, SuspenderUtilizadorDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> SuspenderUtilizador(int id, [FromBody] SuspenderUtilizadorDto request, CancellationToken cancellationToken)
     {
         var utilizador = await _dbContext.Utilizadores.FindAsync(new object[] { id }, cancellationToken);
         if (utilizador is null)
@@ -187,7 +200,6 @@ public class ModeracaoController : ControllerBase
         if (utilizador is null)
             return NotFound(new { message = "Utilizador nao encontrado" });
 
-        utilizador.SuspensaoPermanente = false;
         utilizador.SuspensoAte = null;
 
         await _dbContext.SaveChangesAsync(cancellationToken);

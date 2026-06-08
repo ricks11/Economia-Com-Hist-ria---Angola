@@ -19,7 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<OpcaoResposta> OpcoesResposta => Set<OpcaoResposta>();
     public DbSet<RespostaForum> RespostasForum => Set<RespostaForum>();
     public DbSet<CategoriaForum> CategoriasForum => Set<CategoriaForum>();
-    public DbSet<VisualizacaoConteudo> Visualizacoes => Set<VisualizacaoConteudo>();
+    public DbSet<VisualizacaoConteudo> VisualizacoesConteudo => Set<VisualizacaoConteudo>();
     public DbSet<SessaoEstudo> SessoesEstudo => Set<SessaoEstudo>();
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Pergunta> Perguntas => Set<Pergunta>();
@@ -38,7 +38,7 @@ public class AppDbContext : DbContext
     public DbSet<EventoGamificacao> EventosGamificacao => Set<EventoGamificacao>();
     public DbSet<PlanoEstudo> PlanosEstudo => Set<PlanoEstudo>();
     public DbSet<ModuloProgresso> ModulosProgresso => Set<ModuloProgresso>();
-    public DbSet<RelatorioProgresso> Relatorios => Set<RelatorioProgresso>();
+    public DbSet<RelatorioProgresso> RelatoriosProgresso => Set<RelatorioProgresso>();
     public DbSet<AuditoriaLog> AuditoriaLogs => Set<AuditoriaLog>();
     public DbSet<MetricaDashboard> MetricasDashboard => Set<MetricaDashboard>();
     public DbSet<HistoricoActividade> HistoricoActividade => Set<HistoricoActividade>();

@@ -18,14 +18,14 @@ public class QuizScoringService : IQuizScoringService
 
         foreach (var resposta in respostas)
         {
-            if (resposta.Correta)
+            if (resposta.IsCorrecta)
             {
                 int tempoLimiteMs = tentativa.Quiz.TempoLimiteSeg * 1000;
                 double bonusVelocidade = 0;
 
                 if (tempoLimiteMs > 0)
                 {
-                    bonusVelocidade = Math.Max(0, ((double)(tempoLimiteMs - resposta.TempoRespostaSeg * 1000) / tempoLimiteMs) * 50);
+                    bonusVelocidade = Math.Max(0, ((double)(tempoLimiteMs - resposta.TempoRespostaMs) / tempoLimiteMs) * 50);
                 }
 
                 totalScore += basePoints + bonusVelocidade;

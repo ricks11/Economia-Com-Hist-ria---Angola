@@ -66,7 +66,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         ServerVersion.AutoDetect(connectionString),
         sqlOptions => sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(10))));
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: Array.Empty<int>())));
 
 // ─────────────────────────────────────────
 // AUTENTICAÇÃO JWT

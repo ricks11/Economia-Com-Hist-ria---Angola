@@ -30,7 +30,7 @@ public class TurmasController : ControllerBase
 
         var turmas = await query.ToListAsync(ct);
         var response = turmas.Select(t => new TurmaResponseDto(
-            t.Id, t.Nome, t.Ano, t.EscolaId, t.Escola?.Nome, t.ProfessorId, t.Professor?.Nome, t.Alunos.Count
+            t.Id, t.Nome, ParseAno(t.Ano), t.EscolaId, t.Escola?.Nome, t.ProfessorId, t.Professor?.Nome, t.Alunos.Count
         )).ToList();
 
         return Ok(response);
@@ -50,7 +50,7 @@ public class TurmasController : ControllerBase
         var alunos = turma.Alunos.Select(a => new AlunoResumoDto(a.Id, a.Nome, a.Email, a.PontosTotais)).ToList();
 
         return Ok(new TurmaDetalheDto(
-            turma.Id, turma.Nome, turma.Ano, turma.EscolaId, turma.Escola?.Nome, turma.ProfessorId, turma.Professor?.Nome, alunos
+            turma.Id, turma.Nome, ParseAno(turma.Ano), turma.EscolaId, turma.Escola?.Nome, turma.ProfessorId, turma.Professor?.Nome, alunos
         ));
     }
 
@@ -61,7 +61,7 @@ public class TurmasController : ControllerBase
         var turma = new Turma
         {
             Nome = dto.Nome,
-            Ano = dto.Ano,
+            Ano = dto.Ano?.ToString() ?? string.Empty,
             EscolaId = dto.EscolaId,
             ProfessorId = dto.ProfessorId
         };
@@ -90,5 +90,10 @@ public class TurmasController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    private static int? ParseAno(string? ano)
+    {
+        return int.TryParse(ano, out var value) ? value : null;
     }
 }

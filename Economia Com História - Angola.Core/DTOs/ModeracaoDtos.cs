@@ -2,10 +2,6 @@ using EconomiaComHistoria.Core.Enums;
 
 namespace EconomiaComHistoria.Core.DTOs;
 
-public record RejeitarTopicoDto(string MotivoRejeicao);
-
-public record SuspenderUtilizadorDto(int? DiasSuspensao, string? Motivo);
-
 public record ModeracaoPendenteDto(
     int Id,
     string Tipo, // "Topico" ou "Resposta"

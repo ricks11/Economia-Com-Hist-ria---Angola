@@ -1,3 +1,3 @@
 namespace EconomiaComHistoria.Core.Enums;
 
-public enum EstadoRelatorio { Processando, Pronto, Expirado }
+public enum EstadoRelatorio { Pendente, Processando, Concluido, Expirado }

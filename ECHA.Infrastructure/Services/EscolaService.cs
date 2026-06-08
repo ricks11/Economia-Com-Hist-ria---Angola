@@ -29,17 +29,17 @@ public class EscolaService : IEscolaService
 
         var codigo = GenerateRandomCode(8);
         escola.CodigoConvite = codigo;
-        escola.ConviteExpiraEm = DateTime.UtcNow.AddDays(ttlDias);
+        escola.CodigoConviteExpiracao = DateTime.UtcNow.AddDays(ttlDias);
 
         await _context.SaveChangesAsync(ct);
 
-        return new InviteCodeResponseDto(codigo, escola.ConviteExpiraEm.Value);
+        return new InviteCodeResponseDto(codigo, escola.CodigoConviteExpiracao);
     }
 
     public async Task<bool> AssociarAlunoAsync(int utilizadorId, string codigo, CancellationToken ct = default)
     {
         var escola = await _context.Escolas.FirstOrDefaultAsync(e => e.CodigoConvite == codigo, ct);
-        if (escola == null || escola.ConviteExpiraEm < DateTime.UtcNow) return false;
+        if (escola == null || escola.CodigoConviteExpiracao < DateTime.UtcNow) return false;
 
         var user = await _context.Utilizadores.FindAsync(new object[] { utilizadorId }, ct);
         if (user == null) return false;
@@ -55,12 +55,12 @@ public class EscolaService : IEscolaService
             .Select(e => new EscolaResponseDto(
                 e.Id,
                 e.Nome,
-                e.CodigoMEC,
+                null, // CodigoMEC not in entity
                 e.Provincia,
-                e.Localizacao,
+                e.Municipio, // Using Municipio instead of Localizacao
                 e.CodigoConvite,
-                e.ConviteExpiraEm,
-                e.Utilizadores.Count,
+                e.CodigoConviteExpiracao,
+                e.Alunos.Count,
                 e.Turmas.Count))
             .ToListAsync(ct);
     }

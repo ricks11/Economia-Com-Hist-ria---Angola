@@ -34,13 +34,13 @@ public class ConteudosController : ControllerBase
     public async Task<ActionResult<IEnumerable<object>>> DownloadConteudosCompacto(CancellationToken cancellationToken)
     {
         var conteudos = await _dbContext.Conteudos
-            .Where(c => c.Estado == EstadoConteudo.Ativo)
+            .Where(c => c.Estado == EstadoConteudo.Publicado)
             .Select(c => new {
                 c.Id,
                 c.Titulo,
                 c.Resumo,
-                c.Texto,
-                c.UrlMedia,
+                c.CorpoTexto,
+                c.ThumbnailUrl,
                 c.Tipo
             })
             .ToListAsync(cancellationToken);
@@ -141,9 +141,9 @@ public class ConteudosController : ControllerBase
 
         var pagedResult = PagedResult<ConteudoResponseDto>.Create(response, totalCount, pagina, tamanho);
 
-        Response.Headers.Add("X-Total-Count", totalCount.ToString());
-        Response.Headers.Add("X-Page", pagina.ToString());
-        Response.Headers.Add("X-Page-Size", tamanho.ToString());
+        Response.Headers["X-Total-Count"] = totalCount.ToString();
+        Response.Headers["X-Page"] = pagina.ToString();
+        Response.Headers["X-Page-Size"] = tamanho.ToString();
 
         return Ok(pagedResult);
     }
@@ -172,14 +172,14 @@ public class ConteudosController : ControllerBase
         var isFavorito = userId > 0 && await _dbContext.Favoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
-        var response = MapToResponseDto(conteudo, false);
+        var response = MapToResponseDto(conteudo, isFavorito);
         return Ok(response);
-        }
+    }
 
-        [HttpPost("{id:int}/traducoes")]
-        [Authorize(Roles = "Admin,Editor")]
-        public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
-        {
+    [HttpPost("{id:int}/traducoes")]
+    [Authorize(Roles = "Admin,Editor")]
+    public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
+    {
         var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
         if (conteudo is null) return NotFound();
 
@@ -187,30 +187,30 @@ public class ConteudosController : ControllerBase
         {
             ConteudoId = id,
             Lingua = request.Lingua,
-            Texto = request.Texto,
+            TextoTraduzido = request.Texto,
             AudioUrl = request.AudioUrl
         };
 
-        _dbContext.ConteudoTraducoes.Add(traducao);
+        _dbContext.TraducoesConteudo.Add(traducao);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Ok(new TraducaoResponseDto(traducao.Id, traducao.Lingua, traducao.Texto, traducao.AudioUrl));
-        }
+        return Ok(new TraducaoResponseDto(traducao.Id, traducao.Lingua, traducao.TextoTraduzido, traducao.AudioUrl));
+    }
 
-        [HttpGet("{id:int}/traducoes")]
-        public async Task<ActionResult<IEnumerable<TraducaoResponseDto>>> GetTraducoes(int id, CancellationToken cancellationToken)
-        {
-        var traducoes = await _dbContext.ConteudoTraducoes
+    [HttpGet("{id:int}/traducoes")]
+    public async Task<ActionResult<IEnumerable<TraducaoResponseDto>>> GetTraducoes(int id, CancellationToken cancellationToken)
+    {
+        var traducoes = await _dbContext.TraducoesConteudo
             .Where(t => t.ConteudoId == id)
-            .Select(t => new TraducaoResponseDto(t.Id, t.Lingua, t.Texto, t.AudioUrl))
+            .Select(t => new TraducaoResponseDto(t.Id, t.Lingua, t.TextoTraduzido, t.AudioUrl))
             .ToListAsync(cancellationToken);
 
         return Ok(traducoes);
-        }
+    }
 
-        /// <summary>
-        /// Soft delete a content item (Author or Admin only)
-        /// </summary>
+    /// <summary>
+    /// Updates an existing content item
+    /// </summary>
     [HttpPut("{id}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -284,38 +284,6 @@ public class ConteudosController : ControllerBase
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
         return Ok(MapToResponseDto(conteudo, isFavorito));
-    }
-
-    [HttpPost("{id:int}/traducoes")]
-    [Authorize(Roles = "Admin,Editor")]
-    public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
-    {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
-        if (conteudo is null) return NotFound();
-
-        var traducao = new ConteudoTraducao
-        {
-            ConteudoId = id,
-            Lingua = request.Lingua,
-            Texto = request.Texto,
-            AudioUrl = request.AudioUrl
-        };
-
-        _dbContext.ConteudoTraducoes.Add(traducao);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return Ok(new TraducaoResponseDto(traducao.Id, traducao.Lingua, traducao.Texto, traducao.AudioUrl));
-    }
-
-    [HttpGet("{id:int}/traducoes")]
-    public async Task<ActionResult<IEnumerable<TraducaoResponseDto>>> GetTraducoes(int id, CancellationToken cancellationToken)
-    {
-        var traducoes = await _dbContext.ConteudoTraducoes
-            .Where(t => t.ConteudoId == id)
-            .Select(t => new TraducaoResponseDto(t.Id, t.Lingua, t.Texto, t.AudioUrl))
-            .ToListAsync(cancellationToken);
-
-        return Ok(traducoes);
     }
 
     /// <summary>
@@ -432,7 +400,7 @@ public class ConteudosController : ControllerBase
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         // Check if already viewed
-        var existingView = await _dbContext.Visualizacoes
+        var existingView = await _dbContext.VisualizacoesConteudo
             .FirstOrDefaultAsync(v => v.ConteudoId == id && v.UtilizadorId == userId, cancellationToken);
 
         if (existingView is null)
@@ -444,7 +412,7 @@ public class ConteudosController : ControllerBase
                 DataHora = DateTime.UtcNow
             };
 
-            _dbContext.Visualizacoes.Add(visualizacao);
+            _dbContext.VisualizacoesConteudo.Add(visualizacao);
             conteudo.Visualizacoes++;
             _dbContext.Conteudos.Update(conteudo);
         }

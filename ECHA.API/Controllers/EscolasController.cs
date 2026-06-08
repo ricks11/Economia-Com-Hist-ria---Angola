@@ -34,16 +34,15 @@ public class EscolasController : ControllerBase
         var escola = new EconomiaComHistoria.Core.Entities.Escola
         {
             Nome = dto.Nome,
-            CodigoMEC = dto.CodigoMEC,
-            Provincia = dto.Provincia,
-            Localizacao = dto.Localizacao
+            Provincia = dto.Provincia ?? string.Empty,
+            Municipio = dto.Localizacao
         };
 
         _context.Escolas.Add(escola);
         await _context.SaveChangesAsync(ct);
 
         return CreatedAtAction(nameof(GetEscolas), new { id = escola.Id }, new EscolaResponseDto(
-            escola.Id, escola.Nome, escola.CodigoMEC, escola.Provincia, escola.Localizacao, null, null, 0, 0));
+            escola.Id, escola.Nome, null, escola.Provincia, escola.Municipio, null, null, 0, 0));
     }
 
     [HttpPost("{id}/convite")]
