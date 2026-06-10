@@ -2,6 +2,7 @@ namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
+open System
 open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
@@ -10,14 +11,15 @@ open Microsoft.AspNetCore.Http
 type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
-    private member this.GetToken() =
-        this.User.FindFirst("AccessToken")?.Value
+    member private this.GetToken() =
+        let claim = this.User.FindFirst("AccessToken")
+        if isNull claim then null else claim.Value
 
     [<HttpGet>]
     member this.Index (nivel: string, tema: string) =
         task {
-            let! quizzes = apiClient.ListQuizzesAsync(?nivel = (if string.IsNullOrEmpty nivel then None else Some nivel),
-                                                       ?tema = (if string.IsNullOrEmpty tema then None else Some tema))
+            let! quizzes = apiClient.ListQuizzesAsync(?nivel = (if String.IsNullOrEmpty nivel then None else Some nivel),
+                                                       ?tema = (if String.IsNullOrEmpty tema then None else Some tema))
             return this.View(quizzes) :> IActionResult
         }
 
@@ -39,7 +41,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         task {
             let token = this.GetToken()
             let n = if nivel.HasValue then Some nivel.Value else None
-            let! perguntas = apiClient.GetQuestionPoolAsync(?tema = (if string.IsNullOrEmpty tema then None else Some tema),
+            let! perguntas = apiClient.GetQuestionPoolAsync(?tema = (if String.IsNullOrEmpty tema then None else Some tema),
                                                             ?nivel = n,
                                                             ?token = (if token = null then None else Some token))
             return this.View(perguntas) :> IActionResult

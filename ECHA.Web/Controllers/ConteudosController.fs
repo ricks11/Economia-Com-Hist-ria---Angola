@@ -2,6 +2,7 @@ namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
+open System
 open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
@@ -10,18 +11,19 @@ open Microsoft.AspNetCore.Http
 type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
-    private member this.GetToken() =
-        this.User.FindFirst("AccessToken")?.Value
+    member private this.GetToken() =
+        let claim = this.User.FindFirst("AccessToken")
+        if isNull claim then null else claim.Value
 
     [<HttpGet>]
     [<AllowAnonymous>]
     member this.Index (tema: string, nivel: string, regiao: string, tipo: string, pagina: int) =
         task {
             let p = if pagina = 0 then 1 else pagina
-            let! conteudos = apiClient.ListConteudosAsync(?tema = (if string.IsNullOrEmpty tema then None else Some tema),
-                                                           ?nivel = (if string.IsNullOrEmpty nivel then None else Some nivel),
-                                                           ?regiao = (if string.IsNullOrEmpty regiao then None else Some regiao),
-                                                           ?tipo = (if string.IsNullOrEmpty tipo then None else Some tipo),
+            let! conteudos = apiClient.ListConteudosAsync(?tema = (if String.IsNullOrEmpty tema then None else Some tema),
+                                                           ?nivel = (if String.IsNullOrEmpty nivel then None else Some nivel),
+                                                           ?regiao = (if String.IsNullOrEmpty regiao then None else Some regiao),
+                                                           ?tipo = (if String.IsNullOrEmpty tipo then None else Some tipo),
                                                            pagina = p)
             return this.View(conteudos) :> IActionResult
         }
@@ -54,7 +56,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
                         use stream = imagemCapa.OpenReadStream()
                         let! _ = apiClient.UploadImagemCapaAsync(c.Id, stream, imagemCapa.FileName, t)
                         ()
-                    return this.RedirectToAction("Details", new { id = c.Id }) :> IActionResult
+                    return this.RedirectToAction("Details", {| id = c.Id |}) :> IActionResult
                 | None ->
                     this.ModelState.AddModelError("", "Falha ao criar conteúdo")
                     return this.View(request) :> IActionResult
@@ -83,7 +85,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
                         use stream = imagemCapa.OpenReadStream()
                         let! _ = apiClient.UploadImagemCapaAsync(c.Id, stream, imagemCapa.FileName, t)
                         ()
-                    return this.RedirectToAction("Details", new { id = c.Id }) :> IActionResult
+                    return this.RedirectToAction("Details", {| id = c.Id |}) :> IActionResult
                 | None ->
                     this.ModelState.AddModelError("", "Falha ao atualizar conteúdo")
                     return this.View(request) :> IActionResult

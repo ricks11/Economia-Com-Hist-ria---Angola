@@ -2,6 +2,7 @@ namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
+open System
 open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
@@ -10,8 +11,9 @@ open Microsoft.AspNetCore.Http
 type TurmasController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
-    private member this.GetToken() =
-        this.User.FindFirst("AccessToken")?.Value
+    member private this.GetToken() =
+        let claim = this.User.FindFirst("AccessToken")
+        if isNull claim then null else claim.Value
 
     [<HttpGet>]
     member this.Index (escolaId: System.Nullable<int>) =
@@ -50,6 +52,6 @@ type TurmasController (apiClient: ECHA.Web.Services.ApiClient) =
             | null -> return this.Unauthorized() :> IActionResult
             | t ->
                 let! success = apiClient.CreateTurmaAsync(request, t)
-                if success then return this.RedirectToAction("Index", new { escolaId = request.EscolaId }) :> IActionResult
+                if success then return this.RedirectToAction("Index", {| escolaId = request.EscolaId |}) :> IActionResult
                 else return this.View(request) :> IActionResult
         }

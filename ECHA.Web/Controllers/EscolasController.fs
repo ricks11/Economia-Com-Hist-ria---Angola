@@ -2,6 +2,7 @@ namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
+open System
 open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
@@ -10,8 +11,9 @@ open Microsoft.AspNetCore.Http
 type EscolasController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
-    private member this.GetToken() =
-        this.User.FindFirst("AccessToken")?.Value
+    member private this.GetToken() =
+        let claim = this.User.FindFirst("AccessToken")
+        if isNull claim then null else claim.Value
 
     [<HttpGet>]
     member this.Index () =

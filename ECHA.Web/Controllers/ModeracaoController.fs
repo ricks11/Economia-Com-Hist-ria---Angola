@@ -2,6 +2,8 @@ namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
+open System
+open System.Collections.Generic
 open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
@@ -10,8 +12,9 @@ open Microsoft.AspNetCore.Http
 type ModeracaoController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
-    private member this.GetToken() =
-        this.User.FindFirst("AccessToken")?.Value
+    member private this.GetToken() =
+        let claim = this.User.FindFirst("AccessToken")
+        if isNull claim then null else claim.Value
 
     [<HttpGet>]
     member this.Fila () =
@@ -23,7 +26,7 @@ type ModeracaoController (apiClient: ECHA.Web.Services.ApiClient) =
                 let! pendentes = apiClient.GetPendentesAsync(t)
                 match pendentes with
                 | Some p -> return this.View(p) :> IActionResult
-                | None -> return this.View(ModeracaoPendentesResponse([], [])) :> IActionResult
+                | None -> return this.View(ModeracaoPendentesResponse(List<ModeracaoPendenteDto>(), List<ModeracaoPendenteDto>())) :> IActionResult
         }
 
     [<HttpGet>]
@@ -66,7 +69,7 @@ type ModeracaoController (apiClient: ECHA.Web.Services.ApiClient) =
             match token with
             | null -> return this.Unauthorized() :> IActionResult
             | t ->
-                let request = { MotivoRejeicao = motivo }
+                let request = RejeitarTopicoDto(motivo)
                 let! success = apiClient.RejeitarTopicoAsync(id, request, t)
                 return this.RedirectToAction("Fila") :> IActionResult
         }
@@ -89,7 +92,7 @@ type ModeracaoController (apiClient: ECHA.Web.Services.ApiClient) =
             match token with
             | null -> return this.Unauthorized() :> IActionResult
             | t ->
-                let request = { MotivoRejeicao = motivo }
+                let request = RejeitarTopicoDto(motivo)
                 let! success = apiClient.RejeitarRespostaAsync(id, request, t)
                 return this.RedirectToAction("Fila") :> IActionResult
         }
@@ -101,8 +104,8 @@ type ModeracaoController (apiClient: ECHA.Web.Services.ApiClient) =
             match token with
             | null -> return this.Unauthorized() :> IActionResult
             | t ->
-                let d = if dias.HasValue then Some dias.Value else None
-                let request = { DiasSuspensao = d; Motivo = "Violação de termos" }
+                let d = if dias.HasValue then Some (Nullable(dias.Value)) else None
+                let request = SuspenderUtilizadorDto(if dias.HasValue then Nullable(dias.Value) else Nullable())
                 let! success = apiClient.SuspenderUtilizadorAsync(id, request, t)
                 return this.RedirectToAction("Utilizadores") :> IActionResult
         }

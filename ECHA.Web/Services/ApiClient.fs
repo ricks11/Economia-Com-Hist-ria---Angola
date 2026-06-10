@@ -3,6 +3,7 @@ namespace ECHA.Web.Services
 open System.Net.Http
 open System.Net.Http.Json
 open System.Threading.Tasks
+open System.Text.Json
 open EconomiaComHistoria.Core.DTOs
 
 type ApiClient(httpClient: HttpClient) =
@@ -28,8 +29,8 @@ type ApiClient(httpClient: HttpClient) =
 
             let! response = httpClient.GetAsync(url)
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>()
-                let items = result.GetProperty("items").Deserialize<ConteudoResponseDto list>()
+                let! result = response.Content.ReadFromJsonAsync<JsonElement>()
+                let items = JsonSerializer.Deserialize<ConteudoResponseDto list>(result.GetProperty("items").GetRawText())
                 return items
             else
                 return []
@@ -245,23 +246,23 @@ type ApiClient(httpClient: HttpClient) =
             return response.IsSuccessStatusCode
         }
 
-    member this.GetBadgesAsync(token: string) : Task<Badge list> =
+    member this.GetBadgesAsync(token: string) : Task<BadgeConquistadoDto list> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.GetAsync("/api/moderacao/badges") // Supondo que Admin veja todos aqui
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<Badge list>()
+                let! result = response.Content.ReadFromJsonAsync<BadgeConquistadoDto list>()
                 return result
             else
                 return []
         }
 
-    member this.GetMetricasEngajamentoAsync(token: string) : Task<System.Text.Json.JsonElement option> =
+    member this.GetMetricasEngajamentoAsync(token: string) : Task<JsonElement option> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.GetAsync("/api/moderacao/metricas-engajamento")
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>()
+                let! result = response.Content.ReadFromJsonAsync<JsonElement>()
                 return Some result
             else
                 return None

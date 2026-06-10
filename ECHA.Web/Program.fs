@@ -42,7 +42,7 @@ module Program =
         builder.Services.AddRazorPages()
 
         builder.Services.AddHttpClient<Services.ApiClient>(fun client ->
-            client.BaseAddress <- System.Uri(builder.Configuration["ApiSettings:BaseUrl"]!))
+            client.BaseAddress <- System.Uri(builder.Configuration["ApiSettings:BaseUrl"]))
 
         let app = builder.Build()
 
