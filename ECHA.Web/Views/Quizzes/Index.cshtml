@@ -3,43 +3,38 @@
     ViewData["Title"] = "Gestão de Quizzes";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>@ViewData["Title"]</h1>
-    <div>
-        <a asp-action="Pool" class="btn btn-info">Pool de Perguntas</a>
-        <a asp-action="Create" class="btn btn-success">Novo Quiz</a>
-    </div>
-</div>
+<div class="max-w-7xl mx-auto px-6 pt-12">
+    <!-- Header -->
+    <header class="mb-12 flex justify-between items-center">
+        <div>
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Gestão de Quizzes</h1>
+            <p class="text-secondary mt-2">Administre os desafios interativos disponíveis para os investigadores.</p>
+        </div>
+        <div class="flex gap-3">
+            <a asp-action="Pool" class="px-6 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-all decoration-none">Pool de Perguntas</a>
+            <a asp-action="Create" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none">Novo Quiz</a>
+        </div>
+    </header>
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Tema</th>
-                <th>Nível</th>
-                <th>Perguntas</th>
-                <th>Tempo/Pergunta</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Titulo</td>
-                    <td>@item.Tema</td>
-                    <td>@item.NivelDificuldade</td>
-                    <td>@item.NumeroPerguntas</td>
-                    <td>@item.TempoPorPerguntaSegundos s</td>
-                    <td>
-                        <a asp-action="Stats" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Estatísticas</a>
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Tem a certeza?')">
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <!-- Quizzes Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var item in Model)
+        {
+            <div class="bg-surface-container-lowest p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="font-headline font-bold text-xl text-primary mb-4">@item.Titulo</h3>
+                <div class="space-y-2 text-sm text-secondary mb-6">
+                    <p><strong>Tema:</strong> @item.Tema</p>
+                    <p><strong>Nível:</strong> @item.NivelDificuldade</p>
+                    <p><strong>Perguntas:</strong> @item.NumeroPerguntas</p>
+                    <p><strong>Tempo/Pergunta:</strong> @item.TempoPorPerguntaSegundos s</p>
+                </div>
+                <div class="flex gap-3">
+                    <a asp-action="Stats" asp-route-id="@item.Id" class="px-4 py-2 rounded-full border border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition-colors decoration-none">Estatísticas</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline" onsubmit="return confirm('Tem a certeza?')">
+                        <button type="submit" class="px-4 py-2 rounded-full border border-error text-error font-bold text-sm hover:bg-error hover:text-white transition-colors">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </section>
 </div>

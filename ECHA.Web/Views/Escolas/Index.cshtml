@@ -3,47 +3,48 @@
     ViewData["Title"] = "Gestão de Escolas";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>@ViewData["Title"]</h1>
-    <a asp-action="Create" class="btn btn-success">Nova Escola</a>
-</div>
+<div class="max-w-7xl mx-auto px-6 pt-12">
+    <!-- Header -->
+    <header class="mb-12 flex justify-between items-center flex-wrap gap-4">
+        <div>
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Instituições de Ensino</h1>
+            <p class="text-secondary mt-2">Gerir acessos, turmas e estatísticas de uso pedagógico.</p>
+        </div>
+        <a asp-action="Create" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">add</span> Nova escola
+        </a>
+    </header>
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">@item.Nome</h5>
-                    <p class="mb-1 text-muted"><i class="bi bi-geo-alt"></i> @item.Provincia - @item.Localizacao</p>
-                    <hr />
-                    <div class="row text-center mb-3">
-                        <div class="col-6 border-end">
-                            <h4 class="mb-0">@item.TotalAlunos</h4>
-                            <small class="text-muted text-uppercase">Alunos</small>
-                        </div>
-                        <div class="col-6">
-                            <h4 class="mb-0">@item.TotalTurmas</h4>
-                            <small class="text-muted text-uppercase">Turmas</small>
-                        </div>
+    <!-- Escolas Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var item in Model)
+        {
+            <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="font-headline font-bold text-xl text-primary">@item.Nome</h3>
+                    <span class="text-xs bg-tertiary-container/20 px-3 py-1 rounded-full text-on-tertiary-container font-medium uppercase">Verificada</span>
+                </div>
+                <p class="text-secondary text-sm mb-6">@item.Provincia - @item.Localizacao</p>
+                
+                <div class="flex gap-6 text-sm mb-6 border-t border-stone-200/50 pt-4">
+                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">group</span> @item.TotalAlunos alunos</span>
+                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">menu_book</span> @item.TotalTurmas turmas</span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(item.CodigoConvite)) {
+                    <div class="bg-surface-container-low p-4 rounded-xl mb-6 text-center">
+                        <small class="text-secondary block mb-1">Código de Convite:</small>
+                        <strong class="text-lg font-bold">@item.CodigoConvite</strong>
                     </div>
+                }
 
-                    @if (!string.IsNullOrEmpty(item.CodigoConvite)) {
-                        <div class="alert alert-light border mb-3">
-                            <small class="text-muted d-block">Código de Convite Ativo:</small>
-                            <strong class="h4">@item.CodigoConvite</strong>
-                            <small class="text-muted d-block">Expira em: @item.ConviteExpiraEm?.ToString("dd/MM/yyyy HH:mm")</small>
-                        </div>
-                    }
-
-                    <div class="d-flex gap-2">
-                        <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="btn btn-outline-primary btn-sm flex-grow-1">Ver Turmas</a>
-                        <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post" class="flex-grow-1">
-                            <button type="submit" class="btn btn-outline-info btn-sm w-100">Novo Código</button>
-                        </form>
-                    </div>
+                <div class="flex gap-2">
+                    <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="flex-1 py-2 rounded-full bg-surface-container text-secondary font-bold text-sm hover:bg-surface-container-high transition-colors text-center decoration-none">Ver Turmas</a>
+                    <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post" class="flex-1">
+                        <button type="submit" class="w-full py-2 rounded-full bg-primary/5 text-primary font-bold text-sm hover:bg-primary/10 transition-colors">Novo Código</button>
+                    </form>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </section>
 </div>

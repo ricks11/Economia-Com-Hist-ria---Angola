@@ -4,16 +4,77 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+<section class="flex items-center justify-center px-6">
+  <div class="max-w-md w-full bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+    <div class="flex justify-center gap-6 mb-8 border-b border-outline-variant/30 pb-2">
+      <button id="loginTab" class="text-xl font-headline font-bold text-primary border-b-2 border-primary pb-2">Entrar</button>
+      <button id="registerTab" class="text-xl font-headline font-bold text-stone-400 pb-2">Criar conta</button>
+    </div>
 
-<form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+    <!-- Formulário de login -->
+    <form id="loginForm" asp-action="Login" method="post" class="space-y-5">
+      <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+      <div>
+        <label asp-for="Email" class="text-sm font-bold text-stone-600 ml-2">Email académico</label>
+        <input asp-for="Email" type="email" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1 focus:ring-2 focus:ring-primary/20" placeholder="nome@universidade.ao">
+        <span asp-validation-for="Email" class="text-error text-xs ml-2"></span>
+      </div>
+      <div>
+        <label asp-for="Password" class="text-sm font-bold text-stone-600 ml-2">Palavra‑passe</label>
+        <input asp-for="Password" type="password" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1" placeholder="••••••••">
+        <span asp-validation-for="Password" class="text-error text-xs ml-2"></span>
+      </div>
+      <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-md hover:-translate-y-0.5 transition">Aceder ao Arquivo</button>
+      <p class="text-center text-sm text-stone-400"><a href="#" class="text-tertiary hover:underline">Esqueceu a palavra‑passe?</a></p>
+    </form>
+
+    <!-- Formulário de registo (escondido inicialmente) -->
+    <form id="registerForm" class="space-y-5 hidden">
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Nome completo</label>
+        <input type="text" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1" placeholder="Maria da Silva">
+      </div>
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Email</label>
+        <input type="email" class="w-full bg-surface-container-low rounded-2xl p-4 mt-1" placeholder="m.silva@academia.ao">
+      </div>
+      <div>
+        <label class="text-sm font-bold text-stone-600 ml-2">Filiação institucional</label>
+        <select class="w-full bg-surface-container-low rounded-2xl p-4 mt-1">
+          <option>Universidade Agostinho Neto</option>
+          <option>Universidade Católica de Angola</option>
+          <option>Instituto Superior de Ciências Económicas</option>
+        </select>
+      </div>
+      <button type="button" class="w-full bg-tertiary text-white font-bold py-4 rounded-full shadow-md hover:-translate-y-0.5 transition">Registar como Investigador</button>
+    </form>
+  </div>
+</section>
+
+@section Scripts {
+<script>
+  // toggle simples
+  const loginTab = document.getElementById('loginTab');
+  const registerTab = document.getElementById('registerTab');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  
+  loginTab.onclick = () => { 
+      loginForm.classList.remove('hidden'); 
+      registerForm.classList.add('hidden'); 
+      loginTab.classList.add('border-primary', 'text-primary', 'border-b-2'); 
+      loginTab.classList.remove('text-stone-400'); 
+      registerTab.classList.remove('border-primary', 'text-primary', 'border-b-2'); 
+      registerTab.classList.add('text-stone-400'); 
+  };
+  
+  registerTab.onclick = () => { 
+      registerForm.classList.remove('hidden'); 
+      loginForm.classList.add('hidden'); 
+      registerTab.classList.add('border-primary', 'text-primary', 'border-b-2'); 
+      registerTab.classList.remove('text-stone-400'); 
+      loginTab.classList.remove('border-primary', 'text-primary', 'border-b-2'); 
+      loginTab.classList.add('text-stone-400'); 
+  };
+</script>
+}

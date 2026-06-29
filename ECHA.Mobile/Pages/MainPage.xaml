@@ -6,24 +6,182 @@
              x:Class="ECHA.Mobile.Pages.MainPage"
              x:DataType="pageModels:MainPageModel"
              x:Name="OverviewPage"
-             Title="{Binding Today}">
+             Title="{Binding Today}"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-                BindingContext="{Binding Path=BindingContext, Source={x:Reference OverviewPage}, x:DataType=ContentPage}"
-                EventName="Appearing"                
-                Command="{Binding AppearingCommand}" />
+            BindingContext="{Binding Path=BindingContext, Source={x:Reference OverviewPage}, x:DataType=ContentPage}"
+            EventName="Appearing"                
+            Command="{Binding AppearingCommand}" />
     </ContentPage.Behaviors>
 
-    <Grid>
-        <ScrollView>
-            <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
-                <Image Source="appicon.svg" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" />
-                <Label Text="{Binding WelcomeMessage}" 
-                       Style="{StaticResource Title2}" 
-                       HorizontalTextAlignment="Center" />
-                <Label Text="Explore os conteúdos sobre a história económica de Angola, responda a quizzes e participe no fórum." 
-                       HorizontalTextAlignment="Center" />
+    <Grid RowDefinitions="Auto,*">
+        <!-- Top App Bar -->
+        <Grid Padding="24, 16" ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+            <ImageButton Grid.Column="0" 
+                        Source="{StaticResource IconDashboard}" 
+                        WidthRequest="40" HeightRequest="40"
+                        BackgroundColor="Transparent" />
+            <Label Grid.Column="1" 
+                   Text="The Sovereign Archive" 
+                   TextColor="{StaticResource Primary}"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+            <ImageButton Grid.Column="2" 
+                        WidthRequest="40" HeightRequest="40"
+                        BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                        CornerRadius="20"
+                        Padding="2"
+                        Source="https://lh3.googleusercontent.com/aida-public/AB6AXuATfEE_pG1TL_AVK5NiWzIwBGe5IRu8KhnnvjmoP4_o3gneTu0YcuZLwh1Mpwd75uzwnwCCgqkb3HZusWXybHo42q95q1aHR1rG0J4lgW6wdKqZ2MoYgkE1iPv8Xxv8cINrLxGT0xXTG0jmvFQ0ao0174G_nljlFAGzL2a-r4zmibDCA83EK1nIi_6raM_PB4KNi5V9ZO671nV3n5DgnfEzoBDBYQ6_jGYd3WzAvQvOdwSBmXJtQk3zZxqkkexLBImWjXkR6DX85OB" />
+        </Grid>
+
+        <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Padding="24" Spacing="24">
+                
+                <!-- Welcome Section -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding WelcomeMessage}" 
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Label Text="{Binding Subtitle}" 
+                           FontSize="16"
+                           TextColor="{StaticResource OnSurfaceVariant}" />
+                </VerticalStackLayout>
+                
+                <!-- Featured Archives Section -->
+                <VerticalStackLayout Spacing="16">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Arquivos em Destaque" 
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource OnSurface}" />
+                        <Button Grid.Column="1" 
+                                Text="Ver todos"
+                                TextColor="{StaticResource Primary}"
+                                FontAttributes="Bold"
+                                BackgroundColor="Transparent"
+                                Padding="0" />
+                    </Grid>
+                    
+                    <!-- Carousel -->
+                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                        <HorizontalStackLayout Spacing="16">
+                            <BindableLayout ItemsSource="{Binding FeaturedArchives}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="pageModels:FeaturedArchive">
+                                        <Border WidthRequest="280" 
+                                                BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                                Stroke="{StaticResource OutlineVariant}"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 12">
+                                            <VerticalStackLayout>
+                                                <Grid HeightRequest="160">
+                                                    <Image Aspect="AspectFill" Source="{Binding ImageUrl}" />
+                                                    <Label IsVisible="{Binding IsNew}" 
+                                                           Text="Novo"
+                                                           BackgroundColor="{StaticResource ActionYellow}"
+                                                           TextColor="{StaticResource OnActionYellow}"
+                                                           FontAttributes="Bold"
+                                                           FontSize="12"
+                                                           Padding="8,4"
+                                                           HorizontalOptions="Start"
+                                                           VerticalOptions="Start"
+                                                           Margin="12,12" />
+                                                </Grid>
+                                                <VerticalStackLayout Padding="20" Spacing="12">
+                                                    <Label Text="{Binding Category}"
+                                                           TextColor="{StaticResource OnSurfaceVariant}"
+                                                           FontAttributes="Bold"
+                                                           FontSize="12"
+                                                           CharacterSpacing="1" />
+                                                    <Label Text="{Binding Title}"
+                                                           TextColor="{StaticResource OnSurface}"
+                                                           FontAttributes="Bold"
+                                                           FontSize="18"
+                                                           LineBreakMode="WordWrap" />
+                                                    <Label Text="{Binding Summary}"
+                                                           TextColor="{StaticResource OnSurfaceVariant}"
+                                                           FontSize="14"
+                                                           MaxLines="2"
+                                                           LineBreakMode="TailTruncation" />
+                                                    <Button Text="Ler Arquivo"
+                                                            Command="{Binding Path=BindingContext.NavigateToArchiveCommand, Source={x:Reference OverviewPage}}"
+                                                            CommandParameter="{Binding .}"
+                                                            BackgroundColor="{StaticResource ActionYellow}"
+                                                            TextColor="{StaticResource OnActionYellow}"
+                                                            FontAttributes="Bold"
+                                                            CornerRadius="8"
+                                                            Padding="16,12"
+                                                            HorizontalOptions="Fill" />
+                                                </VerticalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </BindableLayout>
+                        </HorizontalStackLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
+                
+                <!-- Timeline / Journey Section -->
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Sua Jornada Histórica" 
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                            Stroke="{StaticResource OutlineVariant}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="24">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                            <!-- Progress Line -->
+                            <VerticalStackLayout>
+                                <Ellipse WidthRequest="12" HeightRequest="12" Fill="{StaticResource Tertiary}" />
+                                <BoxView WidthRequest="2" HeightRequest="48" Color="{StaticResource Tertiary}" />
+                                <Ellipse WidthRequest="12" HeightRequest="12" Stroke="{StaticResource OutlineVariant}" StrokeThickness="2" Fill="Transparent" />
+                            </VerticalStackLayout>
+                            
+                            <!-- Content -->
+                            <VerticalStackLayout Spacing="16">
+                                <VerticalStackLayout>
+                                    <Label Text="Concluído"
+                                           TextColor="{StaticResource Tertiary}"
+                                           FontAttributes="Bold"
+                                           FontSize="12"
+                                           CharacterSpacing="1" />
+                                    <Label Text="Era Pré-Colonial"
+                                           TextColor="{StaticResource OnSurface}"
+                                           FontAttributes="Bold"
+                                           FontSize="16" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="Próximo Módulo"
+                                           TextColor="{StaticResource OnSurfaceVariant}"
+                                           FontAttributes="Bold"
+                                           FontSize="12"
+                                           CharacterSpacing="1" />
+                                    <Label Text="A Chegada dos Navegadores"
+                                           TextColor="{StaticResource OnSurface}"
+                                           FontAttributes="Bold"
+                                           FontSize="16" />
+                                    <Button Text="Continuar"
+                                            TextColor="{StaticResource ActionYellow}"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"
+                                            Padding="0"
+                                            HorizontalOptions="Start" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+                
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

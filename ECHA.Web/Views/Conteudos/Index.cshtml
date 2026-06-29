@@ -1,56 +1,138 @@
 @model IEnumerable<EconomiaComHistoria.Core.DTOs.ConteudoResponseDto>
 @{
     ViewData["Title"] = "Explorar Conteúdos";
+    var queryParams = Context.Request.Query;
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>@ViewData["Title"]</h1>
-    @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
-    {
-        <a asp-action="Create" class="btn btn-success">Novo Conteúdo</a>
-    }
-</div>
+<div class="max-w-7xl mx-auto px-6">
+    <!-- Search and Title Section -->
+    <section class="mb-12">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">Explorar Conteúdos</h1>
+            @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
+            {
+                <a asp-action="Create" class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium hover:bg-surface-container-high transition-all decoration-none">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    Novo Conteúdo
+                </a>
+            }
+        </div>
+        
+        <form method="get" class="relative max-w-2xl">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
+            <input name="tema" value="@queryParams["tema"]" class="w-full pl-12 pr-6 py-4 bg-surface-container-low border-none rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400" placeholder="Pesquisar por tema..." type="text"/>
+            @foreach (var key in queryParams.Keys.Where(k => k != "tema"))
+            {
+                <input type="hidden" name="@key" value="@queryParams[key]" />
+            }
+        </form>
+    </section>
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                @if (!string.IsNullOrEmpty(item.ImagemCapa))
-                {
-                    <img src="@item.ImagemCapa" class="card-img-top" alt="@item.Titulo" style="height: 200px; object-fit: cover;">
-                }
-                else
-                {
-                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-                        <span>Sem Imagem</span>
+    <!-- Dynamic Filters -->
+    <section class="flex flex-wrap gap-3 mb-12">
+        @{
+            string GetFilterClass(string type) => 
+                (queryParams["tipo"] == type || (string.IsNullOrEmpty(type) && string.IsNullOrEmpty(queryParams["tipo"]))) 
+                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+            
+            string GetJindungoClass() => 
+                (queryParams["jindungo"] == "true") 
+                ? "bg-tertiary-container text-on-tertiary-container shadow-md" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+        }
+
+        <a asp-action="Index" class="px-6 py-2.5 rounded-full font-semibold flex items-center gap-2 transition-all transform hover:-translate-y-0.5 decoration-none @GetFilterClass(null)">
+            <span class="material-symbols-outlined text-[18px]">apps</span>
+            Todos
+        </a>
+        <a asp-action="Index" asp-route-tipo="Vídeo" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Vídeo")">
+            <span class="material-symbols-outlined text-[18px] align-middle mr-1">play_circle</span>
+            Vídeos
+        </a>
+        <a asp-action="Index" asp-route-tipo="Texto" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Texto")">
+            <span class="material-symbols-outlined text-[18px] align-middle mr-1">article</span>
+            Textos
+        </a>
+        <a asp-action="Index" asp-route-tipo="Podcast" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Podcast")">
+            <span class="material-symbols-outlined text-[18px] align-middle mr-1">mic</span>
+            Podcasts
+        </a>
+        <a asp-action="Index" asp-route-jindungo="true" class="px-6 py-2.5 rounded-full font-semibold transition-all decoration-none @GetJindungoClass()">
+            <span class="material-symbols-outlined text-[18px] align-middle mr-1">local_fire_department</span>
+            Textos com Jindungo
+        </a>
+    </section>
+
+    <!-- Bento Grid Content -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        @if (!Model.Any())
+        {
+            <div class="col-span-12 py-20 text-center">
+                <span class="material-symbols-outlined text-6xl text-stone-200 mb-4">search_off</span>
+                <p class="text-secondary">Nenhum conteúdo encontrado para os filtros selecionados.</p>
+            </div>
+        }
+        else
+        {
+            var items = Model.ToList();
+            var featured = items.FirstOrDefault();
+            var others = items.Skip(1);
+
+            <!-- Featured Card -->
+            <a asp-action="Details" asp-route-id="@featured.Id" class="md:col-span-8 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-lg relative decoration-none">
+                <div class="aspect-video w-full overflow-hidden">
+                    @if (!string.IsNullOrEmpty(featured.ImagemCapa))
+                    {
+                        <img src="@featured.ImagemCapa" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    }
+                    else
+                    {
+                        <div class="w-full h-full bg-stone-200 flex items-center justify-center">
+                             <span class="material-symbols-outlined text-stone-400 text-6xl">image</span>
+                        </div>
+                    }
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                </div>
+                <div class="absolute bottom-0 left-0 p-8 w-full">
+                    <div class="flex gap-2 mb-3">
+                        <span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full uppercase">@featured.Tipo</span>
+                        @if (featured.IsJindungo)
+                        {
+                            <span class="px-3 py-1 bg-tertiary text-white text-xs font-bold rounded-full uppercase">Jindungo</span>
+                        }
                     </div>
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@item.Titulo</h5>
-                    <p class="card-text text-muted">@item.Resumo</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">@item.Tema | @item.Nivel</small>
-                        <div>
-                            @if (item.IsJindungo)
-                            {
-                                <span class="badge bg-warning text-dark me-1">Jindungo</span>
-                            }
-                            <span class="badge bg-primary">@item.Tipo</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">@featured.Titulo</h3>
+                    <p class="text-white/80 line-clamp-2 max-w-2xl">@featured.Resumo</p>
+                </div>
+            </a>
+
+            foreach (var item in others)
+            {
+                <a asp-action="Details" asp-route-id="@item.Id" class="md:col-span-4 bg-surface-container-lowest rounded-[20px] overflow-hidden soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
+                    <div class="aspect-[4/3] w-full overflow-hidden relative">
+                        @if (!string.IsNullOrEmpty(item.ImagemCapa))
+                        {
+                            <img src="@item.ImagemCapa" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        }
+                        else
+                        {
+                            <div class="w-full h-full bg-stone-100 flex items-center justify-center">
+                                 <span class="material-symbols-outlined text-stone-300 text-4xl">image</span>
+                            </div>
+                        }
+                        <div class="absolute top-4 left-4 flex gap-2">
+                             <span class="px-2 py-1 bg-white/90 backdrop-blur-sm text-primary text-[10px] font-bold rounded-md uppercase">@item.Tipo</span>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer bg-transparent border-top-0">
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Ler mais</a>
-                    @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Editar</a>
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Tem a certeza?')">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
-                        </form>
-                    }
-                </div>
-            </div>
-        </div>
-    }
+                    <div class="p-6">
+                        <h3 class="font-headline font-bold text-lg text-on-surface mb-2 group-hover:text-primary transition-colors">@item.Titulo</h3>
+                        <p class="text-secondary text-sm line-clamp-2">@item.Resumo</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-stone-400 text-xs font-medium uppercase">@item.Tema</span>
+                            <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+    </section>
 </div>

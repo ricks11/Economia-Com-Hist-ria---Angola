@@ -1,65 +1,56 @@
 @model EconomiaComHistoria.Core.DTOs.SolicitarRelatorioDto
 @{
-    ViewData["Title"] = "Relatórios e Exportação";
+    ViewData["Title"] = "Relatórios e Exportações";
 }
 
-<h1 class="mb-4">@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="Gerar" class="card shadow-sm">
-            <div class="card-header bg-primary text-white">Configurar Novo Relatório</div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label asp-for="Titulo" class="form-label">Título do Relatório</label>
-                    <input asp-for="Titulo" class="form-control" placeholder="Ex: Desempenho Turma 10ªA - Junho" required />
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Tipo" class="form-label">Formato de Exportação</label>
-                        <select asp-for="Tipo" class="form-control">
-                            <option value="PDF">Documento PDF</option>
-                            <option value="CSV">Planilha Excel (CSV)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Escopo</label>
-                        <select name="Escopo" class="form-control">
-                            <option value="Escola">Toda a Escola</option>
-                            <option value="Turma">Turma Específica</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Inicio" class="form-label">Data Início</label>
-                        <input asp-for="Inicio" type="date" class="form-control" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Fim" class="form-label">Data Fim</label>
-                        <input asp-for="Fim" type="date" class="form-control" />
-                    </div>
-                </div>
-
-                <div class="alert alert-info small">
-                    <i class="bi bi-info-circle"></i> O relatório será processado em segundo plano. Você poderá descarregá-lo na seção "Meus Relatórios" assim que estiver pronto.
-                </div>
-
-                <button type="submit" class="btn btn-success btn-lg">Solicitar Geração</button>
-            </div>
-        </form>
+<div class="max-w-4xl mx-auto px-6 pt-12">
+    <div class="mb-10">
+        <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Relatórios e Exportações</h1>
+        <p class="text-on-surface-variant">Gere ficheiros CSV/PDF com dados de utilizadores, comentários, conteúdos e estatísticas de acesso.</p>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-header">Dashboards Comparativos</div>
-            <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action">Turmas da Mesma Escola</a>
-                <a href="#" class="list-group-item list-group-item-action">Desempenho por Tema</a>
-                <a href="#" class="list-group-item list-group-item-action">Média Escolar Nacional</a>
+    <div class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm mb-12">
+        <h2 class="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
+            <span class="material-symbols-outlined">add_chart</span>
+            Configurar Novo Relatório
+        </h2>
+        <form asp-action="Gerar" class="space-y-5">
+            <div class="space-y-2">
+                <label asp-for="Titulo" class="text-xs font-bold text-stone-600 ml-2">Título do Relatório</label>
+                <input asp-for="Titulo" class="w-full bg-surface-container-low border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Ex: Desempenho Turma 10ªA - Junho" required />
             </div>
-        </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                    <label asp-for="Tipo" class="text-xs font-bold text-stone-600 ml-2">Formato de Exportação</label>
+                    <select asp-for="Tipo" class="w-full bg-surface-container-low border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary/20">
+                        <option value="PDF">Documento PDF</option>
+                        <option value="CSV">Planilha Excel (CSV)</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-stone-600 ml-2">Escopo</label>
+                    <select name="Escopo" class="w-full bg-surface-container-low border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary/20">
+                        <option value="Escola">Toda a Escola</option>
+                        <option value="Turma">Turma Específica</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                    <label asp-for="Inicio" class="text-xs font-bold text-stone-600 ml-2">Data Início</label>
+                    <input asp-for="Inicio" type="date" class="w-full bg-surface-container-low border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" />
+                </div>
+                <div class="space-y-2">
+                    <label asp-for="Fim" class="text-xs font-bold text-stone-600 ml-2">Data Fim</label>
+                    <input asp-for="Fim" type="date" class="w-full bg-surface-container-low border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" />
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-md hover:shadow-lg transition-all">Solicitar Geração</button>
+            </div>
+        </form>
     </div>
 </div>

@@ -3,39 +3,30 @@
     ViewData["Title"] = "Gestão de Turmas";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>@ViewData["Title"]</h1>
-    @if (Context.Request.Query.ContainsKey("escolaId")) {
-        <a asp-action="Create" asp-route-escolaId="@Context.Request.Query["escolaId"]" class="btn btn-success">Nova Turma</a>
-    }
-</div>
+<div class="max-w-7xl mx-auto px-6 pt-12">
+    <header class="mb-12 flex justify-between items-center">
+        <div>
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Gestão de Turmas</h1>
+            <p class="text-secondary mt-2">Visualize e gerencie as turmas ativas nas escolas parceiras.</p>
+        </div>
+        @if (Context.Request.Query.ContainsKey("escolaId")) {
+            <a asp-action="Create" asp-route-escolaId="@Context.Request.Query["escolaId"]" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none">Nova Turma</a>
+        }
+    </header>
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover bg-white border">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Ano</th>
-                <th>Escola</th>
-                <th>Professor</th>
-                <th class="text-center">Alunos</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td><strong>@item.Nome</strong></td>
-                    <td>@item.Ano</td>
-                    <td>@item.EscolaNome</td>
-                    <td>@item.ProfessorNome</td>
-                    <td class="text-center">@item.TotalAlunos</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Ver Progresso</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var item in Model)
+        {
+            <div class="bg-surface-container-lowest p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="font-headline font-bold text-xl text-primary mb-4">@item.Nome</h3>
+                <div class="space-y-2 text-sm text-secondary mb-6">
+                    <p><strong>Ano:</strong> @item.Ano</p>
+                    <p><strong>Escola:</strong> @item.EscolaNome</p>
+                    <p><strong>Professor:</strong> @item.ProfessorNome</p>
+                    <p><strong>Alunos:</strong> @item.TotalAlunos</p>
+                </div>
+                <a asp-action="Details" asp-route-id="@item.Id" class="block w-full py-2 rounded-full border border-primary text-primary font-bold text-sm text-center hover:bg-primary hover:text-white transition-colors decoration-none">Ver Progresso</a>
+            </div>
+        }
+    </section>
 </div>

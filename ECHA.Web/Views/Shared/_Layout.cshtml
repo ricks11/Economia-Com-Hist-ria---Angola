@@ -1,91 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ECHA.Web</title>
-
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Economia com História – Angola</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Public_Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2f3131",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#554241",
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-container": "#4f3e00",
+                        "tertiary": "#735c00",
+                        "secondary-fixed": "#e4e2e1",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#5f5e5e",
+                        "surface-container": "#eeeeee",
+                        "on-background": "#1a1c1c",
+                        "surface": "#f9f9f9",
+                        "on-primary-container": "#f0847f",
+                        "inverse-primary": "#ffb3ae",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-surface": "#1a1c1c",
+                        "background": "#f9f9f9",
+                        "on-secondary-container": "#656464",
+                        "inverse-on-surface": "#f1f1f1",
+                        "secondary-container": "#e4e2e1",
+                        "surface-tint": "#9b423f",
+                        "primary-fixed": "#ffdad7",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "primary-container": "#6b1e1e",
+                        "on-secondary-fixed-variant": "#474747",
+                        "tertiary-container": "#cca830",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-container-low": "#f3f3f3",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#410005",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#7d2b2a",
+                        "primary": "#4d070b",
+                        "surface-bright": "#f9f9f9",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "outline-variant": "#dbc0be",
+                        "surface-dim": "#dadada",
+                        "outline": "#887270",
+                        "primary-fixed-dim": "#ffb3ae",
+                        "tertiary-fixed": "#ffe088",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-tertiary-fixed": "#241a00",
+                        "surface-container-highest": "#e2e2e2",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-elevation {
+            box-shadow: 0 8px 24px -4px rgba(26, 28, 28, 0.06);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #6b1e1e 0%, #4d070b 100%);
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ECHA.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav">
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <form asp-controller="Auth" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout (@User.Identity.Name)</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Login</a>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Gamificacao" asp-action="MeuProgresso">Meu Progresso</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Quizzes" asp-action="Index">Quizzes</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownModeracao" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Gestão
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownModeracao">
-                                    <a class="dropdown-item" asp-controller="Moderacao" asp-action="Fila">Fila de Espera</a>
-                                    <a class="dropdown-item" asp-controller="Moderacao" asp-action="Denuncias">Denúncias</a>
-                                    <a class="dropdown-item" asp-controller="Moderacao" asp-action="Utilizadores">Utilizadores</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" asp-controller="Gamificacao" asp-action="DashboardAdmin">Dashboard Gamificação</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" asp-controller="Escolas" asp-action="Index">Gestão de Escolas</a>
-                                    <a class="dropdown-item" asp-controller="Relatorios" asp-action="Index">Relatórios & Exportação</a>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
+<body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen">
+    <!-- TopAppBar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+            <a asp-controller="Home" asp-action="Index" class="text-xl font-black text-red-900 font-headline tracking-tight decoration-none">
+                Economia com História – Angola
+            </a>
+            <div class="flex items-center gap-4">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span class="text-sm font-medium text-secondary hidden md:block">@User.Identity.Name</span>
+                    <a asp-controller="Perfil" asp-action="Index" class="material-symbols-outlined text-stone-600 p-2 hover:bg-stone-100 transition-colors rounded-full">account_circle</a>
+                    <form asp-controller="Auth" asp-action="Logout" method="post" class="inline">
+                        <button type="submit" class="material-symbols-outlined text-stone-600 p-2 hover:bg-stone-100 transition-colors rounded-full">logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Auth" asp-action="Login" class="text-primary font-bold hover:underline">Entrar</a>
+                }
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ECHA.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-12 w-full">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50 font-['Public_Sans'] text-sm tracking-wide">
+        <div class="font-['Manrope'] font-bold text-red-900 text-lg">Economia com História</div>
+        <div class="flex gap-8 text-stone-500">
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" asp-controller="Home" asp-action="Privacy">Termos</a>
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" asp-controller="Home" asp-action="Privacy">Privacidade</a>
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Contacto</a>
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Sobre o Projecto</a>
+        </div>
+        <p class="text-stone-500 opacity-80">© 2026 Economia com História – Angola. Preservando a narrativa económica.</p>
     </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

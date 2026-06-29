@@ -1,4 +1,4 @@
-namespace ECHA.Web.Controllers
+    namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open System.Threading.Tasks
