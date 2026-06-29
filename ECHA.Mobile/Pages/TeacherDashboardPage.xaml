@@ -2,16 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
              x:Class="ECHA.Mobile.Pages.TeacherDashboardPage"
              x:DataType="pageModels:TeacherDashboardPageModel"
              Title="Painel do Professor">
 
     <CollectionView ItemsSource="{Binding Alunos}">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="dtos:RankingEntradaDto">
                 <VerticalStackLayout Padding="10">
-                    <Label Text="{Binding NomeEstudante}" FontAttributes="Bold" />
-                    <Label Text="{Binding ProgressoGeral, StringFormat='Progresso: {0:P}'}" />
+                    <Label Text="{Binding NomeUtilizador}" FontAttributes="Bold" />
+                    <Label Text="{Binding Pontos, StringFormat='Pontos: {0}'}" />
                 </VerticalStackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>

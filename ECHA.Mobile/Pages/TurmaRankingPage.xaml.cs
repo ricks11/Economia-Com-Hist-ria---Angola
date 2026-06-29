@@ -2,12 +2,11 @@ using ECHA.Mobile.PageModels;
 
 namespace ECHA.Mobile.Pages;
 
-public partial class InstitutionalPages : ContentPage
+public partial class TurmaRankingPage : ContentPage
 {
-    public InstitutionalPages(InstitutionalPageModels viewModel)
+    public TurmaRankingPage(TurmaRankingPageModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;
     }
 }
-

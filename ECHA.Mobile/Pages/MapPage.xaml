@@ -4,13 +4,21 @@
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
              x:Class="ECHA.Mobile.Pages.MapPage"
              x:DataType="pageModels:MapPageModel"
-             Title="Mapa de Angola">
+             Title="Mapa de Angola"
+             BackgroundColor="{StaticResource Background}">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            EventName="Appearing"
+            Command="{Binding LoadProgressoCommand}" />
+    </ContentPage.Behaviors>
 
     <CollectionView ItemsSource="{Binding Progresso}">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <HorizontalStackLayout Padding="10">
-                    <Label Text="{Binding NomeProvincia}" WidthRequest="150" />
+            <DataTemplate x:DataType="pageModels:MapPageModel+ProvinciaProgresso">
+                <HorizontalStackLayout Padding="20,10">
+                    <Label Text="{Binding NomeProvincia}" WidthRequest="150" TextColor="{StaticResource OnSurface}" />
                     <ProgressBar Progress="{Binding PercentualExplorado}" WidthRequest="200" />
                 </HorizontalStackLayout>
             </DataTemplate>

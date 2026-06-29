@@ -2,12 +2,11 @@ using ECHA.Mobile.PageModels;
 
 namespace ECHA.Mobile.Pages;
 
-public partial class InstitutionalPages : ContentPage
+public partial class FaqPage : ContentPage
 {
-    public InstitutionalPages(InstitutionalPageModels viewModel)
+    public FaqPage(FaqPageModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;
     }
 }
-

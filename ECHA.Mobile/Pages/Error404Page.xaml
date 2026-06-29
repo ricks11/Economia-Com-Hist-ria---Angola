@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.Error404Page"
+             x:DataType="pageModels:Error404PageModel"
+             Title="Erro 404"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <VerticalStackLayout 
+        Padding="24"
+        Spacing="24"
+        VerticalOptions="Center">
+        <!-- Error Number -->
+        <Label 
+            Text="404"
+            FontAttributes="Bold"
+            FontSize="96"
+            TextColor="{StaticResource SurfaceContainerHigh}"
+            HorizontalTextAlignment="Center"/>
+
+        <!-- Title -->
+        <Label 
+            Text="Página Perdida no Tempo."
+            FontAttributes="Bold"
+            FontSize="24"
+            TextColor="{StaticResource OnSurface}"
+            HorizontalTextAlignment="Center"/>
+
+        <!-- Description -->
+        <Label 
+            Text="Não conseguimos encontrar a página que procura no nosso arquivo digital."
+            FontSize="16"
+            TextColor="{StaticResource OnSurfaceVariant}"
+            HorizontalTextAlignment="Center"
+            MaximumWidthRequest="320"/>
+
+        <!-- Go Home Button -->
+        <Button 
+            Text="Voltar ao Início"
+            Command="{Binding GoHomeCommand}"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource OnPrimary}"
+            FontAttributes="Bold"
+            FontSize="16"
+            CornerRadius="24"
+            Padding="0, 16"
+            MaximumWidthRequest="320"
+            HorizontalOptions="Fill"/>
+    </VerticalStackLayout>
+</ContentPage>

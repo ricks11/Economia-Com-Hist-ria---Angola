@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -9,8 +8,10 @@ public partial class MapPageModel : ObservableObject
 {
     private readonly IApiService _apiService;
 
+    public record ProvinciaProgresso(string NomeProvincia, double PercentualExplorado);
+
     [ObservableProperty]
-    private List<ProgressoProvinciaDto> _progresso = new();
+    private List<ProvinciaProgresso> _progresso = new();
 
     public MapPageModel(IApiService apiService)
     {
@@ -18,8 +19,14 @@ public partial class MapPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadProgressoAsync()
+    private void LoadProgresso()
     {
-        Progresso = await _apiService.GetAsync<List<ProgressoProvinciaDto>>("api/gamificacao/mapa") ?? new();
+        // Placeholder data
+        Progresso = new List<ProvinciaProgresso>
+        {
+            new("Luanda", 0.8),
+            new("Benguela", 0.5),
+            new("Huíla", 0.3)
+        };
     }
 }

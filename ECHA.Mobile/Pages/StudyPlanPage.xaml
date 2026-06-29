@@ -4,17 +4,25 @@
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
              x:Class="ECHA.Mobile.Pages.StudyPlanPage"
              x:DataType="pageModels:StudyPlanPageModel"
-             Title="Plano de Estudo">
+             Title="Plano de Estudo"
+             BackgroundColor="{StaticResource Background}">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            EventName="Appearing"
+            Command="{Binding LoadSugestoesCommand}" />
+    </ContentPage.Behaviors>
 
     <CollectionView ItemsSource="{Binding Sugestoes}">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame Margin="10" Padding="10">
-                    <StackLayout>
-                        <Label Text="{Binding Titulo}" FontAttributes="Bold" />
-                        <Label Text="{Binding Prioridade}" />
-                    </StackLayout>
-                </Frame>
+            <DataTemplate x:DataType="pageModels:StudyPlanPageModel+SugestaoEstudo">
+                <Border Margin="10" Padding="15" BackgroundColor="{StaticResource SurfaceContainerLow}" Stroke="{StaticResource OutlineVariant}" StrokeShape="RoundRectangle 12">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding Titulo}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
+                        <Label Text="{Binding Prioridade}" TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+                </Border>
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.FaqPage"
+             x:DataType="pageModels:FaqPageModel"
+             Title="Centro de Ajuda"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <ScrollView Padding="24">
+        <VerticalStackLayout Spacing="24">
+            <!-- Header -->
+            <VerticalStackLayout Spacing="8">
+                <Label 
+                    Text="Centro de Ajuda"
+                    FontAttributes="Bold"
+                    FontSize="32"
+                    TextColor="{StaticResource OnSurface}"/>
+            </VerticalStackLayout>
+
+            <!-- Search Bar -->
+            <Border 
+                Stroke="{StaticResource OutlineVariant}"
+                StrokeShape="RoundRectangle 24"
+                BackgroundColor="{StaticResource SurfaceContainerLow}"
+                Padding="16">
+                <HorizontalStackLayout Spacing="8">
+                    <Label 
+                        Text="🔍"
+                        FontSize="20"/>
+                    <Entry 
+                        Placeholder="Pesquisar..."
+                        Text="{Binding SearchText}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource OnSurface}"
+                        PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                        HorizontalOptions="FillAndExpand"/>
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- FAQ Items -->
+            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding FaqItems}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="pageModels:FaqPageModel+FaqItem">
+                        <Border 
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            Stroke="{StaticResource OutlineVariant}"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="16">
+                            <VerticalStackLayout Spacing="8">
+                                <Label 
+                                    Text="{Binding Question}"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    TextColor="{StaticResource OnSurface}"/>
+                                <Label 
+                                    Text="{Binding Answer}"
+                                    FontSize="14"
+                                    TextColor="{StaticResource OnSurfaceVariant}"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

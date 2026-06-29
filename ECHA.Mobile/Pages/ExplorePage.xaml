@@ -235,7 +235,7 @@
                                         <Label 
                                             Text="Aula 04 • 12 min"
                                             TextColor="{StaticResource OnSurfaceVariant}"
-                                            FontAttributes="Medium"
+
                                             FontSize="12"
                                             VerticalTextAlignment="Center"/>
                                     </HorizontalStackLayout>

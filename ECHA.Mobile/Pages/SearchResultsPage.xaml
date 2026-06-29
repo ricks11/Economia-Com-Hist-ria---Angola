@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.SearchResultsPage"
+             x:DataType="pageModels:SearchResultsPageModel"
+             Title="Pesquisa"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <ScrollView Padding="24">
+        <VerticalStackLayout Spacing="24">
+            <!-- Header -->
+            <VerticalStackLayout Spacing="8">
+                <Label 
+                    Text="Resultados"
+                    FontAttributes="Bold"
+                    FontSize="32"
+                    TextColor="{StaticResource OnSurface}"/>
+            </VerticalStackLayout>
+
+            <!-- Search Bar -->
+            <Border 
+                Stroke="{StaticResource OutlineVariant}"
+                StrokeShape="RoundRectangle 24"
+                BackgroundColor="{StaticResource SurfaceContainerLow}"
+                Padding="16">
+                <HorizontalStackLayout Spacing="8">
+                    <Label 
+                        Text="🔍"
+                        FontSize="20"/>
+                    <Entry 
+                        Placeholder="Café em Angola..."
+                        Text="{Binding SearchQuery}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource OnSurface}"
+                        PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                        HorizontalOptions="FillAndExpand"
+                        ReturnType="Search">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior 
+                                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                                EventName="Completed"
+                                Command="{Binding SearchCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Search Results -->
+            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding SearchResults}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="pageModels:SearchResultsPageModel+SearchResult">
+                        <Border 
+                            Stroke="{StaticResource OutlineVariant}"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                            Padding="16">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type VerticalStackLayout}}, Path=BindingContext.GoToResultCommand}"
+                                    CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="4">
+                                <Label 
+                                    Text="{Binding Title}"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    TextColor="{StaticResource OnSurface}"/>
+                                <Label 
+                                    Text="{Binding Description}"
+                                    FontSize="14"
+                                    TextColor="{StaticResource OnSurfaceVariant}"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

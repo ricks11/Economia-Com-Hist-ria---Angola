@@ -69,6 +69,20 @@ namespace ECHA.Mobile
             builder.Services.AddTransient<TurmaRankingPage>();
             builder.Services.AddSingleton<TeacherDashboardPageModel>();
             builder.Services.AddTransient<TeacherDashboardPage>();
+            builder.Services.AddSingleton<QuizPageModel>();
+            builder.Services.AddTransient<QuizPage>();
+            builder.Services.AddSingleton<InstitutionalPageModels>();
+            builder.Services.AddTransient<InstitutionalPages>();
+            builder.Services.AddSingleton<FaqPageModel>();
+            builder.Services.AddTransient<FaqPage>();
+            builder.Services.AddSingleton<ContactPageModel>();
+            builder.Services.AddTransient<ContactPage>();
+            builder.Services.AddSingleton<TermsAndPrivacyPageModel>();
+            builder.Services.AddTransient<TermsAndPrivacyPage>();
+            builder.Services.AddSingleton<SearchResultsPageModel>();
+            builder.Services.AddTransient<SearchResultsPage>();
+            builder.Services.AddSingleton<Error404PageModel>();
+            builder.Services.AddTransient<Error404Page>();
             
             builder.Services.AddSingleton<ApiService>();
             builder.Services.AddDbContext<CacheDbContext>();

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.ContactPage"
+             x:DataType="pageModels:ContactPageModel"
+             Title="Contactar Equipa"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <ScrollView Padding="24">
+        <VerticalStackLayout Spacing="24">
+            <!-- Header -->
+            <VerticalStackLayout Spacing="8">
+                <Label 
+                    Text="Contactar Equipa"
+                    FontAttributes="Bold"
+                    FontSize="32"
+                    TextColor="{StaticResource OnSurface}"/>
+            </VerticalStackLayout>
+
+            <!-- Contact Info -->
+            <VerticalStackLayout Spacing="12">
+                <HorizontalStackLayout Spacing="12">
+                    <Label 
+                        Text="📧"
+                        FontSize="20"/>
+                    <Label 
+                        Text="geral@economiahistoria.ao"
+                        FontSize="16"
+                        TextColor="{StaticResource OnSurface}"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="12">
+                    <Label 
+                        Text="📍"
+                        FontSize="20"/>
+                    <Label 
+                        Text="Avenida 4 de Fevereiro, Luanda."
+                        FontSize="16"
+                        TextColor="{StaticResource OnSurface}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Contact Form -->
+            <VerticalStackLayout Spacing="16">
+                <Border 
+                    Stroke="{StaticResource OutlineVariant}"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                    Padding="16">
+                    <Entry 
+                        Placeholder="Nome"
+                        Text="{Binding Name}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource OnSurface}"
+                        PlaceholderColor="{StaticResource OnSurfaceVariant}"/>
+                </Border>
+
+                <Border 
+                    Stroke="{StaticResource OutlineVariant}"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                    Padding="16">
+                    <Editor 
+                        Placeholder="Mensagem"
+                        Text="{Binding Message}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource OnSurface}"
+                        PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                        HeightRequest="120"/>
+                </Border>
+
+                <Button 
+                    Text="Enviar"
+                    Command="{Binding SendMessageCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="{StaticResource OnPrimary}"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    CornerRadius="24"
+                    Padding="0, 16"
+                    HorizontalOptions="Fill"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

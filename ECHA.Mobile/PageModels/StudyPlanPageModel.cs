@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -9,8 +8,10 @@ public partial class StudyPlanPageModel : ObservableObject
 {
     private readonly IApiService _apiService;
 
+    public record SugestaoEstudo(string Titulo, string Prioridade);
+
     [ObservableProperty]
-    private List<SugestaoEstudoDto> _sugestoes = new();
+    private List<SugestaoEstudo> _sugestoes = new();
 
     public StudyPlanPageModel(IApiService apiService)
     {
@@ -18,8 +19,14 @@ public partial class StudyPlanPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadSugestoesAsync()
+    private void LoadSugestoes()
     {
-        Sugestoes = await _apiService.GetAsync<List<SugestaoEstudoDto>>("api/plano-estudo/sugestoes") ?? new();
+        // Placeholder data
+        Sugestoes = new List<SugestaoEstudo>
+        {
+            new("Era Pré-Colonial", "Alta"),
+            new("Economia do Café", "Média"),
+            new("Independência", "Baixa")
+        };
     }
 }
