@@ -70,60 +70,58 @@
                     
                     <!-- Carousel -->
                     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
-                        <HorizontalStackLayout Spacing="16">
-                            <BindableLayout ItemsSource="{Binding FeaturedArchives}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="pageModels:FeaturedArchive">
-                                        <Border WidthRequest="280" 
-                                                BackgroundColor="{StaticResource SurfaceContainerLowest}"
-                                                Stroke="{StaticResource OutlineVariant}"
-                                                StrokeThickness="1"
-                                                StrokeShape="RoundRectangle 12">
-                                            <VerticalStackLayout>
-                                                <Grid HeightRequest="160">
-                                                    <Image Aspect="AspectFill" Source="{Binding ImageUrl}" />
-                                                    <Label IsVisible="{Binding IsNew}" 
-                                                           Text="Novo"
-                                                           BackgroundColor="{StaticResource ActionYellow}"
-                                                           TextColor="{StaticResource OnActionYellow}"
-                                                           FontAttributes="Bold"
-                                                           FontSize="12"
-                                                           Padding="8,4"
-                                                           HorizontalOptions="Start"
-                                                           VerticalOptions="Start"
-                                                           Margin="12,12" />
-                                                </Grid>
-                                                <VerticalStackLayout Padding="20" Spacing="12">
-                                                    <Label Text="{Binding Category}"
-                                                           TextColor="{StaticResource OnSurfaceVariant}"
-                                                           FontAttributes="Bold"
-                                                           FontSize="12"
-                                                           CharacterSpacing="1" />
-                                                    <Label Text="{Binding Title}"
-                                                           TextColor="{StaticResource OnSurface}"
-                                                           FontAttributes="Bold"
-                                                           FontSize="18"
-                                                           LineBreakMode="WordWrap" />
-                                                    <Label Text="{Binding Summary}"
-                                                           TextColor="{StaticResource OnSurfaceVariant}"
-                                                           FontSize="14"
-                                                           MaxLines="2"
-                                                           LineBreakMode="TailTruncation" />
-                                                    <Button Text="Ler Arquivo"
-                                                            Command="{Binding Path=BindingContext.NavigateToArchiveCommand, Source={x:Reference OverviewPage}}"
-                                                            CommandParameter="{Binding .}"
-                                                            BackgroundColor="{StaticResource ActionYellow}"
-                                                            TextColor="{StaticResource OnActionYellow}"
-                                                            FontAttributes="Bold"
-                                                            CornerRadius="8"
-                                                            Padding="16,12"
-                                                            HorizontalOptions="Fill" />
-                                                </VerticalStackLayout>
+                        <HorizontalStackLayout Spacing="16" BindableLayout.ItemsSource="{Binding FeaturedArchives}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="pageModels:FeaturedArchive">
+                                    <Border WidthRequest="280" 
+                                            BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                            Stroke="{StaticResource OutlineVariant}"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 12">
+                                        <VerticalStackLayout>
+                                            <Grid HeightRequest="160">
+                                                <Image Aspect="AspectFill" Source="{Binding ImageUrl}" />
+                                                <Label IsVisible="{Binding IsNew}" 
+                                                       Text="Novo"
+                                                       BackgroundColor="{StaticResource ActionYellow}"
+                                                       TextColor="{StaticResource OnActionYellow}"
+                                                       FontAttributes="Bold"
+                                                       FontSize="12"
+                                                       Padding="8,4"
+                                                       HorizontalOptions="Start"
+                                                       VerticalOptions="Start"
+                                                       Margin="12,12" />
+                                            </Grid>
+                                            <VerticalStackLayout Padding="20" Spacing="12">
+                                                <Label Text="{Binding Category}"
+                                                       TextColor="{StaticResource OnSurfaceVariant}"
+                                                       FontAttributes="Bold"
+                                                       FontSize="12"
+                                                       CharacterSpacing="1" />
+                                                <Label Text="{Binding Title}"
+                                                       TextColor="{StaticResource OnSurface}"
+                                                       FontAttributes="Bold"
+                                                       FontSize="18"
+                                                       LineBreakMode="WordWrap" />
+                                                <Label Text="{Binding Summary}"
+                                                       TextColor="{StaticResource OnSurfaceVariant}"
+                                                       FontSize="14"
+                                                       MaxLines="2"
+                                                       LineBreakMode="TailTruncation" />
+                                                <Button Text="Ler Arquivo"
+                                                        Command="{Binding Path=BindingContext.NavigateToArchiveCommand, Source={x:Reference OverviewPage}}"
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="{StaticResource ActionYellow}"
+                                                        TextColor="{StaticResource OnActionYellow}"
+                                                        FontAttributes="Bold"
+                                                        CornerRadius="8"
+                                                        Padding="16,12"
+                                                        HorizontalOptions="Fill" />
                                             </VerticalStackLayout>
-                                        </Border>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </BindableLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
                         </HorizontalStackLayout>
                     </ScrollView>
                 </VerticalStackLayout>

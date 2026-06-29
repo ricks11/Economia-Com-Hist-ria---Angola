@@ -5,52 +5,47 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
     xmlns:pages="clr-namespace:ECHA.Mobile.Pages"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     Title="ECHA.Mobile">
 
+    <ShellContent
+        Title="Landing"
+        ContentTemplate="{DataTemplate pages:LandingPage}"
+        Route="LandingPage" />
+        
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage" />
+        
     <ShellContent
         Title="Dashboard"
         Icon="{StaticResource IconDashboard}"
         ContentTemplate="{DataTemplate pages:MainPage}"
-        Route="main" />
+        Route="MainPage" />
 
     <ShellContent
         Title="Explorar"
         Icon="{StaticResource IconExplore}"
         ContentTemplate="{DataTemplate pages:ExplorePage}"
-        Route="explore" />
+        Route="ExplorePage" />
 
     <ShellContent
         Title="Quizzes"
         Icon="{StaticResource IconQuiz}"
         ContentTemplate="{DataTemplate pages:QuizListPage}"
-        Route="quizzes" />
+        Route="QuizListPage" />
 
     <ShellContent
         Title="Fórum"
         Icon="{StaticResource IconForum}"
         ContentTemplate="{DataTemplate pages:ForumPage}"
-        Route="forum" />
+        Route="ForumPage" />
 
     <ShellContent
         Title="Perfil"
         Icon="{StaticResource IconProfile}"
         ContentTemplate="{DataTemplate pages:ProfilePage}"
-        Route="profile" />
-
-    <Shell.FlyoutFooter>
-        <Grid Padding="15">
-            <sf:SfSegmentedControl x:Name="ThemeSegmentedControl" 
-                VerticalOptions="Center" HorizontalOptions="Center" SelectionChanged="SfSegmentedControl_SelectionChanged"
-                SegmentWidth="40" SegmentHeight="40">
-                <sf:SfSegmentedControl.ItemsSource>
-                    <x:Array Type="{x:Type sf:SfSegmentItem}">
-                        <sf:SfSegmentItem ImageSource="{StaticResource IconLight}"/>
-                        <sf:SfSegmentItem ImageSource="{StaticResource IconDark}"/>
-                    </x:Array>
-                </sf:SfSegmentedControl.ItemsSource>
-            </sf:SfSegmentedControl>
-        </Grid>
-    </Shell.FlyoutFooter>
+        Route="ProfilePage" />
 
 </Shell>

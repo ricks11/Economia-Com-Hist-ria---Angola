@@ -2,24 +2,308 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
              x:Class="ECHA.Mobile.Pages.ExplorePage"
-             Title="Explorar">
+             x:DataType="pageModels:ExplorePageModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
-    <Grid RowDefinitions="Auto, *" Padding="20">
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center" />
+    <Grid RowDefinitions="Auto, *">
+        <!-- Top Bar -->
+        <Grid 
+            Grid.Row="0" 
+            Padding="24, 16"
+            ColumnDefinitions="*, Auto"
+            BackgroundColor="{StaticResource SurfaceContainerLowest}"
+            ZIndex="10">
+            <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                <Label Text="🗺️" FontSize="24"/>
+                <Label 
+                    Text="Economia com História"
+                    TextColor="{StaticResource Primary}"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    VerticalTextAlignment="Center"/>
+            </HorizontalStackLayout>
+            <ImageButton 
+                Grid.Column="1"
+                Source="{StaticResource IconExplore}"
+                WidthRequest="40"
+                HeightRequest="40"
+                BackgroundColor="Transparent"/>
+        </Grid>
         
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Conteudos}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="dtos:ConteudoResponseDto">
-                    <Frame Margin="0,10" CornerRadius="10">
-                        <StackLayout>
-                            <Image Source="{Binding ThumbnailUrl}" HeightRequest="150" Aspect="AspectFill" />
-                            <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="18" />
-                            <Label Text="{Binding Resumo}" MaxLines="2" />
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <!-- Content -->
+        <ScrollView Grid.Row="1" Padding="24" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="40">
+                <!-- Header -->
+                <VerticalStackLayout Spacing="12">
+                    <Label 
+                        Text="Arquivo Digital"
+                        TextColor="{StaticResource OnSurfaceVariant}"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        CharacterSpacing="2"/>
+                    <Label 
+                        Text="Explorar Conteúdos"
+                        TextColor="{StaticResource OnSurface}"
+                        FontAttributes="Bold"
+                        FontSize="32"/>
+                    <BoxView 
+                        Color="{StaticResource PrimaryContainer}"
+                        WidthRequest="48"
+                        HeightRequest="4"
+                        CornerRadius="2"/>
+                </VerticalStackLayout>
+                
+                <!-- Filter Chips -->
+                <VerticalStackLayout Spacing="16">
+                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                        <HorizontalStackLayout Spacing="12" Padding="0, 0, 24, 0">
+                            <Button 
+                                Text="Todos"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="{StaticResource OnPrimary}"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                CornerRadius="24"
+                                Padding="20, 8"/>
+                            <Button 
+                                Text="Vídeos"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                TextColor="{StaticResource OnSurfaceVariant}"
+                                FontSize="14"
+                                CornerRadius="24"
+                                Padding="20, 8"/>
+                            <Button 
+                                Text="Textos"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                TextColor="{StaticResource OnSurfaceVariant}"
+                                FontSize="14"
+                                CornerRadius="24"
+                                Padding="20, 8"/>
+                            <Button 
+                                Text="Podcasts"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                TextColor="{StaticResource OnSurfaceVariant}"
+                                FontSize="14"
+                                CornerRadius="24"
+                                Padding="20, 8"/>
+                        </HorizontalStackLayout>
+                    </ScrollView>
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <Label 
+                            Text="Temas"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontAttributes="Bold"
+                            FontSize="10"
+                            CharacterSpacing="2"/>
+                        <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                            <HorizontalStackLayout Spacing="8" Padding="0, 0, 24, 0">
+                                <Border 
+                                    Stroke="{StaticResource OutlineVariant}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Button 
+                                        Text="Inflação"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"
+                                        CornerRadius="8"
+                                        Padding="16, 6"/>
+                                </Border>
+                                <Border 
+                                    Stroke="{StaticResource OutlineVariant}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Button 
+                                        Text="Petróleo"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"
+                                        CornerRadius="8"
+                                        Padding="16, 6"/>
+                                </Border>
+                                <Border 
+                                    Stroke="{StaticResource OutlineVariant}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Button 
+                                        Text="Urbanização"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"
+                                        CornerRadius="8"
+                                        Padding="16, 6"/>
+                                </Border>
+                                <Border 
+                                    Stroke="{StaticResource OutlineVariant}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Button 
+                                        Text="Kwanza"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"
+                                        CornerRadius="8"
+                                        Padding="16, 6"/>
+                                </Border>
+                            </HorizontalStackLayout>
+                        </ScrollView>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                
+                <!-- Content List -->
+                <VerticalStackLayout Spacing="24">
+                    <!-- Card 1 -->
+                    <Border 
+                        BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="0">
+                        <VerticalStackLayout>
+                            <Grid HeightRequest="192">
+                                <Image 
+                                    Source="https://lh3.googleusercontent.com/aida-public/AB6AXuBFoxUCReBKZV-IqEg5hn5wdmOUsw8N5_tO9iQ7x1oMXbJ5_XCCYxbvz3mMt-yUwnSDj_VaFa34qhDuoIk1ivmGoe5rVLp80dKR8zXTxWYjHShAWncTk29kbatUjskE9C5oW9gGyTDX6U0XxoOTgUgeshMyo057G-xHLNmw2-qL0hV07dqNkR6UfVyenTX3rk9arbg6d7gFGrL52noOgwtnYEOp_BjqBmNu4uR1iwZDFJcJT5p3vTNBN0CoIL2XKQgWiAABtg1qNV6u"
+                                    Aspect="AspectFill"/>
+                                <Border 
+                                    BackgroundColor="{StaticResource Primary}"
+                                    StrokeShape="RoundRectangle 6"
+                                    Padding="8,4"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    Margin="16,16">
+                                    <Label 
+                                        Text="📌 Disponível Offline"
+                                        TextColor="{StaticResource OnPrimary}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"/>
+                                </Border>
+                                <Border 
+                                    BackgroundColor="{StaticResource Tertiary}"
+                                    StrokeShape="RoundRectangle 6"
+                                    Padding="8,4"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="End"
+                                    Margin="16,16">
+                                    <Label 
+                                        Text="Vídeo"
+                                        TextColor="{StaticResource OnTertiary}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"/>
+                                </Border>
+                            </Grid>
+                            <VerticalStackLayout Padding="20" Spacing="12">
+                                <Label 
+                                    Text="A Ascensão do Kwanza: 1977-1990"
+                                    TextColor="{StaticResource OnSurface}"
+                                    FontAttributes="Bold"
+                                    FontSize="20"/>
+                                <Label 
+                                    Text="Uma análise profunda sobre a transição monetária pós-independência e os desafios da economia centralizada."
+                                    TextColor="{StaticResource OnSurfaceVariant}"
+                                    FontSize="14"
+                                    MaxLines="2"
+                                    LineBreakMode="TailTruncation"/>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="12">
+                                        <Border 
+                                            WidthRequest="32" HeightRequest="32"
+                                            BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                            StrokeShape="RoundRectangle 16"
+                                            Padding="0">
+                                            <Label 
+                                                Text="📚"
+                                                FontSize="16"
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center"/>
+                                        </Border>
+                                        <Label 
+                                            Text="Aula 04 • 12 min"
+                                            TextColor="{StaticResource OnSurfaceVariant}"
+                                            FontAttributes="Medium"
+                                            FontSize="12"
+                                            VerticalTextAlignment="Center"/>
+                                    </HorizontalStackLayout>
+                                    <Button 
+                                        Grid.Column="1"
+                                        Text="Ver agora"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource Primary}"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Padding="0"/>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    <!-- Card 2 -->
+                    <Border 
+                        BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="0">
+                        <Grid Padding="16" ColumnDefinitions="Auto, *" ColumnSpacing="16">
+                            <Border 
+                                Grid.Column="0"
+                                WidthRequest="96" HeightRequest="96"
+                                BackgroundColor="{StaticResource SurfaceContainer}"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="0">
+                                <Grid>
+                                    <Image 
+                                        Source="https://lh3.googleusercontent.com/aida-public/AB6AXuBcGOkvFjMBVmg_meH0vfqILCiXo8He3c6_HHkHvfksWD3oIZl1IzJxSJgSIdpsuWhtbyEy74XXwv-eihnGKC4rF2Ef4UEuhPi7R0udv1XzRnhZVGg46dLoRYFbUntm_6blGGkmWT2aruIhfNORSHl_oJ5NRRZpH6AxJ6e8EsnU7BGXzFjwRhBdbX74FIy1YBpGvEZZPBhD_nZBfpEG0gmsggmAgACbww8mWLiHkaJypvGgRyvaY7oHUkq4xDCCw43KVXXw-FOpCpq"
+                                        Aspect="AspectFill"/>
+                                    <Label 
+                                        Text="🎙️"
+                                        FontSize="32"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="8">
+                                <HorizontalStackLayout Spacing="8">
+                                    <Label 
+                                        Text="Podcast • Ep. 12"
+                                        TextColor="{StaticResource Primary}"
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        CharacterSpacing="2"/>
+                                    <Label 
+                                        Text="✅"
+                                        FontSize="16"
+                                        VerticalTextAlignment="Center"/>
+                                </HorizontalStackLayout>
+                                <Label 
+                                    Text="O Ciclo do Ouro Negro"
+                                    TextColor="{StaticResource OnSurface}"
+                                    FontAttributes="Bold"
+                                    FontSize="16"/>
+                                <Label 
+                                    Text="Como o petróleo moldou a infraestrutura urbana de Luanda nos últimos 20 anos."
+                                    TextColor="{StaticResource OnSurfaceVariant}"
+                                    FontSize="12"
+                                    MaxLines="2"
+                                    LineBreakMode="TailTruncation"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
     </Grid>
 </ContentPage>

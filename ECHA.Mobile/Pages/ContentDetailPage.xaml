@@ -22,8 +22,7 @@
             
             <Picker Title="Selecionar Língua" 
                     ItemsSource="{Binding Conteudo.Traducoes}"
-                    ItemDisplayBinding="{Binding Lingua}"
-                    SelectedIndexChanged="OnLanguageChanged" />
+                    ItemDisplayBinding="{Binding Lingua}" />
             
             <Button Text="{Binding Conteudo.IsFavorito, Converter={StaticResource BoolToFavoritoConverter}}"
                     Command="{Binding ToggleFavoritoCommand}" />

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="ECHA.Mobile.Pages.LandingPage"
+             x:DataType="pageModels:LandingPageModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <Grid>
+        <!-- Ambient Watermark -->
+        <Image 
+            Source="https://lh3.googleusercontent.com/aida-public/AB6AXuBs15Sv1Id7SIzXyTKDEsDMWLo4-bbKouMKVL0wLZ-Pqx_NRU8e2fUpRiuKDXsNPzUzSwXzTa2UA0pHHWV0RiLqFrEzDZrzpevBv4pMS8K58lW60VuqfLnoozyHJcGa8g1uXlYYOpySFNF-PziOZNPvfhYiCOUCJbVemChEYhIxewuUIyGXUZeUnuetsQD_QCAfD-tzv3fgqMnTfZugqRnQpePc1fClft98sjdRhWIl1gCT2zAoftMyQPLoTn3mjbo6ptuUVHKb2USg"
+            Aspect="AspectFill"
+            Opacity="0.05"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"/>
+        
+        <ScrollView Padding="24, 80, 24, 100">
+            <VerticalStackLayout Spacing="64">
+                <!-- Hero Section -->
+                <Grid ColumnDefinitions="2*, *" ColumnSpacing="32">
+                    <VerticalStackLayout Spacing="24" Grid.Column="0">
+                        <Label 
+                            Text="Desvende a"
+                            FontSize="40"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource OnSurface}"
+                            LineBreakMode="WordWrap"/>
+                        <Label 
+                            Text="História Económica"
+                            FontSize="40"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Primary}"/>
+                        <Label 
+                            Text="de Angola."
+                            FontSize="40"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource OnSurface}"/>
+                        
+                        <Label 
+                            Text="{Binding Subtitle}"
+                            FontSize="18"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            LineBreakMode="WordWrap"/>
+                        
+                        <Button 
+                            Text="Começar Jornada"
+                            Command="{Binding StartJourneyCommand}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="8"
+                            Padding="24, 16"
+                            HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+                    
+                    <Border 
+                        Grid.Column="1"
+                        Stroke="{StaticResource OutlineVariant}"
+                        StrokeThickness="1"
+                        BackgroundColor="{StaticResource SurfaceContainerLow}"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="0">
+                        <Grid>
+                            <Image 
+                                Source="https://lh3.googleusercontent.com/aida-public/AB6AXuDr29F1nVqcD55AlvPNxwKVBpCb-4tn4l5Nyc9YkziylVq0UZdng0VGYXnLY0dhMmxFaZoFKNg3jYIllsASSz1NgkKgwjt-Ar6QFnN3FKcc90Lbn-Xdg5oA0UJm7HdsI7bKYJNsQTytMeyv3cdCqEhgj4J3pL55aExrhgW2n9RN-CWm3HsxgjNKcKixyE4yTohH3W4Ydq5B2vV8Qkb6b-AfSp00vqF-feWwv84VeNGGn-RiLnoYjS8AnRwPAOLx1eaz_tZ_gT2xDMel"
+                                Aspect="AspectFill"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+                
+                <!-- Pillars Section -->
+                <VerticalStackLayout Spacing="32">
+                    <VerticalStackLayout Spacing="8">
+                        <Label 
+                            Text="Os Pilares do Conhecimento"
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource OnSurface}"/>
+                        <Label 
+                            Text="Metodologia estruturada para uma compreensão profunda."
+                            FontSize="16"
+                            TextColor="{StaticResource OnSurfaceVariant}"/>
+                    </VerticalStackLayout>
+                    
+                    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" RowSpacing="24" ColumnSpacing="24">
+                        <!-- Education Card -->
+                        <Border 
+                            Grid.Row="0" Grid.Column="0"
+                            BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                            Stroke="{StaticResource OutlineVariant}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="24">
+                            <VerticalStackLayout Spacing="24">
+                                <Border 
+                                    WidthRequest="48" HeightRequest="48"
+                                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Label 
+                                        Text="📚"
+                                        FontSize="24"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center"/>
+                                </Border>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label 
+                                        Text="Educação Estruturada"
+                                        FontSize="20"
+                                        FontAttributes="Bold"
+                                        TextColor="{StaticResource OnSurface}"/>
+                                    <Label 
+                                        Text="Módulos curatoriais focados em dados económicos reais e contexto histórico rigoroso, apresentados em formato editorial."
+                                        FontSize="14"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                        
+                        <!-- Gamification Card -->
+                        <Border 
+                            Grid.Row="0" Grid.Column="1"
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="24">
+                            <VerticalStackLayout Spacing="24">
+                                <Border 
+                                    WidthRequest="48" HeightRequest="48"
+                                    BackgroundColor="{StaticResource Surface}"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Label 
+                                        Text="🎮"
+                                        FontSize="24"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center"/>
+                                </Border>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label 
+                                        Text="Gamificação Subtil"
+                                        FontSize="20"
+                                        FontAttributes="Bold"
+                                        TextColor="{StaticResource OnSurface}"/>
+                                    <Label 
+                                        Text="Avalie o seu conhecimento através de interações inteligentes e desbloqueie marcos históricos ao longo da sua jornada."
+                                        FontSize="14"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                        
+                        <!-- Community Card -->
+                        <Border 
+                            Grid.Row="1" Grid.ColumnSpan="2"
+                            BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                            Stroke="{StaticResource OutlineVariant}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="24">
+                            <HorizontalStackLayout Spacing="24">
+                                <Border 
+                                    WidthRequest="48" HeightRequest="48"
+                                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="0">
+                                    <Label 
+                                        Text="👥"
+                                        FontSize="24"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center"/>
+                                </Border>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label 
+                                        Text="Comunidade de Curadores"
+                                        FontSize="20"
+                                        FontAttributes="Bold"
+                                        TextColor="{StaticResource OnSurface}"/>
+                                    <Label 
+                                        Text="Participe em debates qualificados, partilhe perspetivas e contribua para o arquivo coletivo do conhecimento económico angolano."
+                                        FontSize="14"
+                                        TextColor="{StaticResource OnSurfaceVariant}"
+                                        LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+                
+                <!-- Secondary CTA -->
+                <Border 
+                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="32">
+                    <VerticalStackLayout Spacing="24" HorizontalOptions="Center">
+                        <Label 
+                            Text="Pronto para explorar o Arquivo?"
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource OnSurface}"
+                            HorizontalTextAlignment="Center"/>
+                        <Label 
+                            Text="Aceda a artigos exclusivos, dados interativos e análises profundas."
+                            FontSize="16"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            HorizontalTextAlignment="Center"/>
+                        <Button 
+                            Text="Criar Conta"
+                            Command="{Binding CreateAccountCommand}"
+                            BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                            TextColor="{StaticResource OnSurface}"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="8"
+                            Padding="24, 12"
+                            HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

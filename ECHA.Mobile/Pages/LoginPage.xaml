@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.LoginPage"
+             x:DataType="pageModels:LoginPageModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <Grid>
+        <!-- Ambient Watermark -->
+        <Image 
+            Source="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ1IJabRXZR--EVjBY7lupx0gFYEAgkGHItMoucLN7lPDnqznTnPBphTtQZLvervQ4A0dQBtFMY9IZlDkXoqr_HbLU7XVDEg89JGZ3rAzpIa42c4leheEWe2DY4g3DdntkMc2hf9udFKKz_2rsbfYe8awTjF0aozyc_hIUgk00hQMqJMoKfKfclIZQV7XBs3m-FvNd-CHKeFtJMkuh20vrCiBKeZXMChsHASVNjQxtzge2i8bkGY1ecgx6hEgUnemkt-cBcAazoztY"
+            Aspect="AspectFill"
+            Opacity="0.2"
+            Rotation="12"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"/>
+        
+        <ScrollView Padding="24, 80, 40, 40">
+            <VerticalStackLayout Spacing="40">
+                <!-- Header -->
+                <VerticalStackLayout Spacing="16">
+                    <Border 
+                        WidthRequest="48" HeightRequest="48"
+                        BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="0">
+                        <Label 
+                            Text="🏦"
+                            FontSize="24"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"/>
+                    </Border>
+                    <Label 
+                        Text="The Sovereign"
+                        FontSize="32"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Primary}"/>
+                    <Label 
+                        Text="Archive"
+                        FontSize="32"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Primary}"/>
+                    <Label 
+                        Text="O curador digital do património económico e histórico angolano."
+                        FontSize="18"
+                        TextColor="{StaticResource OnSurfaceVariant}"/>
+                </VerticalStackLayout>
+                
+                <!-- Card -->
+                <Border 
+                    BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                    Stroke="{StaticResource OutlineVariant}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="24">
+                    <VerticalStackLayout Spacing="24">
+                        <!-- Toggle -->
+                        <HorizontalStackLayout Spacing="24">
+                            <Button 
+                                Text="Acesso"
+                                Command="{Binding ToggleModeCommand}"
+                                IsVisible="{Binding IsLoginMode}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Primary}"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Padding="0"
+                                CornerRadius="0"/>
+                            <Button 
+                                Text="Registo"
+                                Command="{Binding ToggleModeCommand}"
+                                IsVisible="{Binding IsLoginMode, Converter={StaticResource NotConverter}}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource OnSurfaceVariant}"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Padding="0"
+                                CornerRadius="0"/>
+                            <Button 
+                                Text="Acesso"
+                                Command="{Binding ToggleModeCommand}"
+                                IsVisible="{Binding IsLoginMode, Converter={StaticResource NotConverter}}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource OnSurfaceVariant}"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Padding="0"
+                                CornerRadius="0"/>
+                            <Button 
+                                Text="Registo"
+                                Command="{Binding ToggleModeCommand}"
+                                IsVisible="{Binding IsLoginMode}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource OnSurfaceVariant}"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Padding="0"
+                                CornerRadius="0"/>
+                        </HorizontalStackLayout>
+                        
+                        <!-- Form -->
+                        <VerticalStackLayout Spacing="16">
+                            <!-- Name (register only) -->
+                            <Entry 
+                                IsVisible="{Binding IsLoginMode, Converter={StaticResource NotConverter}}"
+                                Placeholder="Nome completo"
+                                Text="{Binding Name}"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                                FontSize="16"/>
+                            
+                            <!-- Email -->
+                            <Entry 
+                                Placeholder="Correio eletrónico"
+                                Text="{Binding Email}"
+                                Keyboard="Email"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                                FontSize="16"/>
+                            
+                            <!-- Password -->
+                            <Entry 
+                                Placeholder="Palavra-passe"
+                                Text="{Binding Password}"
+                                IsPassword="True"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="{StaticResource OnSurfaceVariant}"
+                                FontSize="16"/>
+                        </VerticalStackLayout>
+                        
+                        <!-- Forgot password -->
+                        <Button 
+                            IsVisible="{Binding IsLoginMode}"
+                            Text="Recuperar acesso?"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource Primary}"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            Padding="0"
+                            HorizontalOptions="End"/>
+                        
+                        <!-- Submit button -->
+                        <Button 
+                            Text="Entrar no Arquivo"
+                            Command="{Binding LoginCommand}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource OnPrimary}"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="8"
+                            Padding="16, 16"
+                            HorizontalOptions="FillAndExpand"/>
+                    </VerticalStackLayout>
+                </Border>
+                
+                <!-- Guest mode -->
+                <VerticalStackLayout Spacing="24">
+                    <!-- Divider -->
+                    <Grid ColumnDefinitions="*, Auto, *" ColumnSpacing="16">
+                        <BoxView 
+                            Color="{StaticResource OutlineVariant}"
+                            HeightRequest="1"
+                            VerticalOptions="Center"/>
+                        <Label 
+                            Text="Caminho Alternativo"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontAttributes="Bold"
+                            FontSize="10"
+                            CharacterSpacing="2"/>
+                        <BoxView 
+                            Color="{StaticResource OutlineVariant}"
+                            HeightRequest="1"
+                            VerticalOptions="Center"/>
+                    </Grid>
+                    
+                    <Button 
+                        Text="Continuar como Convidado"
+                        Command="{Binding ContinueAsGuestCommand}"
+                        BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                        TextColor="{StaticResource OnSurface}"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        CornerRadius="8"
+                        Padding="16, 16"
+                        HorizontalOptions="FillAndExpand"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using ECHA.Mobile.Services;
@@ -37,6 +37,14 @@ namespace ECHA.Mobile
 
             builder.Services.AddSingleton<MainPageModel>();
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<LandingPageModel>();
+            builder.Services.AddSingleton<LandingPage>();
+            builder.Services.AddSingleton<LoginPageModel>();
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<NotificationsPageModel>();
+            builder.Services.AddSingleton<NotificationsPage>();
+            builder.Services.AddSingleton<AchievementsPageModel>();
+            builder.Services.AddSingleton<AchievementsPage>();
             builder.Services.AddSingleton<ExplorePageModel>();
             builder.Services.AddTransient<ExplorePage>();
             builder.Services.AddSingleton<ContentDetailPageModel>();
