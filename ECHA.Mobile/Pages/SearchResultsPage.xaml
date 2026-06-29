@@ -50,7 +50,7 @@
             <!-- Search Results -->
             <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding SearchResults}">
                 <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="pageModels:SearchResultsPageModel+SearchResult">
+                    <DataTemplate x:CompileBindings="False">
                         <Border 
                             Stroke="{StaticResource OutlineVariant}"
                             StrokeShape="RoundRectangle 12"
@@ -58,7 +58,7 @@
                             Padding="16">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type VerticalStackLayout}}, Path=BindingContext.GoToResultCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.GoToResultCommand}"
                                     CommandParameter="{Binding .}"/>
                             </Border.GestureRecognizers>
                             <VerticalStackLayout Spacing="4">

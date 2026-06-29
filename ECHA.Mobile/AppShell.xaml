@@ -8,6 +8,12 @@
     Shell.FlyoutBehavior="Disabled"
     Title="ECHA.Mobile">
 
+    <!-- Main Navigation Pages -->
+    <ShellContent
+        Title="Opening"
+        ContentTemplate="{DataTemplate pages:OpeningPage}"
+        Route="OpeningPage" />
+
     <ShellContent
         Title="Landing"
         ContentTemplate="{DataTemplate pages:LandingPage}"
@@ -47,5 +53,111 @@
         Icon="{StaticResource IconProfile}"
         ContentTemplate="{DataTemplate pages:ProfilePage}"
         Route="ProfilePage" />
+
+    <!-- Additional Page Routes (not in bottom nav) -->
+    <ShellContent
+        Title="ContentDetail"
+        ContentTemplate="{DataTemplate pages:ContentDetailPage}"
+        Route="ContentDetailPage" />
+
+    <ShellContent
+        Title="CreateTopic"
+        ContentTemplate="{DataTemplate pages:CreateTopicPage}"
+        Route="CreateTopicPage" />
+
+    <ShellContent
+        Title="TopicDetail"
+        ContentTemplate="{DataTemplate pages:TopicDetailPage}"
+        Route="TopicDetailPage" />
+
+    <ShellContent
+        Title="Quiz"
+        ContentTemplate="{DataTemplate pages:QuizPage}"
+        Route="QuizPage" />
+
+    <ShellContent
+        Title="Ranking"
+        ContentTemplate="{DataTemplate pages:RankingPage}"
+        Route="RankingPage" />
+
+    <ShellContent
+        Title="TurmaRanking"
+        ContentTemplate="{DataTemplate pages:TurmaRankingPage}"
+        Route="TurmaRankingPage" />
+
+    <ShellContent
+        Title="TeacherDashboard"
+        ContentTemplate="{DataTemplate pages:TeacherDashboardPage}"
+        Route="TeacherDashboardPage" />
+
+    <ShellContent
+        Title="Map"
+        ContentTemplate="{DataTemplate pages:MapPage}"
+        Route="MapPage" />
+
+    <ShellContent
+        Title="StudyPlan"
+        ContentTemplate="{DataTemplate pages:StudyPlanPage}"
+        Route="StudyPlanPage" />
+
+    <ShellContent
+        Title="Notifications"
+        ContentTemplate="{DataTemplate pages:NotificationsPage}"
+        Route="NotificationsPage" />
+
+    <ShellContent
+        Title="Achievements"
+        ContentTemplate="{DataTemplate pages:AchievementsPage}"
+        Route="AchievementsPage" />
+
+    <ShellContent
+        Title="Faq"
+        ContentTemplate="{DataTemplate pages:FaqPage}"
+        Route="FaqPage" />
+
+    <ShellContent
+        Title="Contact"
+        ContentTemplate="{DataTemplate pages:ContactPage}"
+        Route="ContactPage" />
+
+    <ShellContent
+        Title="TermsAndPrivacy"
+        ContentTemplate="{DataTemplate pages:TermsAndPrivacyPage}"
+        Route="TermsAndPrivacyPage" />
+
+    <ShellContent
+        Title="SearchResults"
+        ContentTemplate="{DataTemplate pages:SearchResultsPage}"
+        Route="SearchResultsPage" />
+
+    <ShellContent
+        Title="Error404"
+        ContentTemplate="{DataTemplate pages:Error404Page}"
+        Route="Error404Page" />
+
+    <ShellContent
+        Title="JindungoAccess"
+        ContentTemplate="{DataTemplate pages:JindungoAccessPage}"
+        Route="JindungoAccessPage" />
+
+    <ShellContent
+        Title="LundaHeritageAbout"
+        ContentTemplate="{DataTemplate pages:LundaHeritageAboutPage}"
+        Route="LundaHeritageAboutPage" />
+
+    <ShellContent
+        Title="LundaHeritageArquivos"
+        ContentTemplate="{DataTemplate pages:LundaHeritageArquivosPage}"
+        Route="LundaHeritageArquivosPage" />
+
+    <ShellContent
+        Title="LundaHeritagePatrimonio"
+        ContentTemplate="{DataTemplate pages:LundaHeritagePatrimonioPage}"
+        Route="LundaHeritagePatrimonioPage" />
+
+    <ShellContent
+        Title="InstitutionalPages"
+        ContentTemplate="{DataTemplate pages:InstitutionalPages}"
+        Route="InstitutionalPages" />
 
 </Shell>

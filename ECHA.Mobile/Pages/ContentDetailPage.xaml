@@ -18,13 +18,10 @@
             <!-- Media Player Placeholder -->
             <BoxView HeightRequest="200" Color="Gray" />
             
-            <Label Text="{Binding Conteudo.Descricao}" />
+            <Label Text="{Binding Conteudo.Resumo}" />
+            <Label Text="{Binding Conteudo.CorpoTexto}" />
             
-            <Picker Title="Selecionar Língua" 
-                    ItemsSource="{Binding Conteudo.Traducoes}"
-                    ItemDisplayBinding="{Binding Lingua}" />
-            
-            <Button Text="{Binding Conteudo.IsFavorito, Converter={StaticResource BoolToFavoritoConverter}}"
+            <Button Text="{Binding Conteudo.EhFavorito, Converter={StaticResource BoolToFavoritoConverter}}"
                     Command="{Binding ToggleFavoritoCommand}" />
         </StackLayout>
     </ScrollView>

@@ -56,4 +56,13 @@ public partial class ProfilePageModel : ObservableObject
             await Shell.Current.DisplayAlert("Erro", "Falha na associação.", "OK");
         }
     }
+
+    [RelayCommand]
+    private async Task SaveProfile()
+    {
+        Preferences.Default.Set("nome", Nome);
+        Preferences.Default.Set("escola", Escola);
+        Preferences.Default.Set("provincia", Provincia);
+        await Shell.Current.DisplayAlert("Sucesso", "Perfil guardado!", "OK");
+    }
 }

@@ -12,7 +12,6 @@
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            BindingContext="{Binding Path=BindingContext, Source={x:Reference OverviewPage}, x:DataType=ContentPage}"
             EventName="Appearing"                
             Command="{Binding AppearingCommand}" />
     </ContentPage.Behaviors>
@@ -72,7 +71,7 @@
                     <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
                         <HorizontalStackLayout Spacing="16" BindableLayout.ItemsSource="{Binding FeaturedArchives}">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="pageModels:FeaturedArchive">
+                                <DataTemplate x:DataType="pageModels:FeaturedArchive" x:CompileBindings="False">
                                     <Border WidthRequest="280" 
                                             BackgroundColor="{StaticResource SurfaceContainerLowest}"
                                             Stroke="{StaticResource OutlineVariant}"
@@ -109,7 +108,7 @@
                                                        MaxLines="2"
                                                        LineBreakMode="TailTruncation" />
                                                 <Button Text="Ler Arquivo"
-                                                        Command="{Binding Path=BindingContext.NavigateToArchiveCommand, Source={x:Reference OverviewPage}}"
+                                                        Command="{Binding Source={x:Reference OverviewPage}, Path=BindingContext.NavigateToArchiveCommand}"
                                                         CommandParameter="{Binding .}"
                                                         BackgroundColor="{StaticResource ActionYellow}"
                                                         TextColor="{StaticResource OnActionYellow}"

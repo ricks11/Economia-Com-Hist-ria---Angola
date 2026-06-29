@@ -13,13 +13,13 @@
         
         <CollectionView ItemsSource="{Binding Respostas}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="dtos:RespostaForumDto">
+                <DataTemplate x:CompileBindings="False">
                     <Frame Margin="0,5" Padding="10">
                         <StackLayout>
                             <Label Text="{Binding Conteudo}" />
                             <HorizontalStackLayout Spacing="10">
-                                <Button Text="Reagir" Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:TopicDetailPageModel}}, Path=ReagirCommand}" CommandParameter="{Binding .}" />
-                                <Button Text="Denunciar" Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:TopicDetailPageModel}}, Path=DenunciarCommand}" CommandParameter="{Binding .}" />
+                                <Button Text="Reagir" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ReagirCommand}" CommandParameter="{Binding .}" />
+                                <Button Text="Denunciar" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DenunciarCommand}" CommandParameter="{Binding .}" />
                             </HorizontalStackLayout>
                         </StackLayout>
                     </Frame>

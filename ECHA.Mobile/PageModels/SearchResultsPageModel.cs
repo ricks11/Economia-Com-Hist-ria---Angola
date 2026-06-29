@@ -37,9 +37,9 @@ public partial class SearchResultsPageModel : ObservableObject
     private async Task GoToResult(SearchResult result)
     {
         // For now, just show alert
-        if (Application.Current?.MainPage != null)
+        if (Shell.Current != null)
         {
-            await Application.Current.MainPage.DisplayAlert("Abrir", $"A abrir: {result.Title}", "OK");
+            await Shell.Current.DisplayAlert("Abrir", $"A abrir: {result.Title}", "OK");
         }
     }
 }

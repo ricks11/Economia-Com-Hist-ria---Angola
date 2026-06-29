@@ -19,9 +19,9 @@ public partial class ContactPageModel : ObservableObject
     private async Task SendMessage()
     {
         // For now, just show an alert
-        if (Application.Current?.MainPage != null)
+        if (Shell.Current != null)
         {
-            await Application.Current.MainPage.DisplayAlert("Obrigado!", "Mensagem enviada com sucesso!", "OK");
+            await Shell.Current.DisplayAlert("Obrigado!", "Mensagem enviada com sucesso!", "OK");
         }
         Name = string.Empty;
         Message = string.Empty;
