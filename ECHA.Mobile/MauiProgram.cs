@@ -83,6 +83,16 @@ namespace ECHA.Mobile
             builder.Services.AddTransient<SearchResultsPage>();
             builder.Services.AddSingleton<Error404PageModel>();
             builder.Services.AddTransient<Error404Page>();
+            builder.Services.AddSingleton<JindungoAccessPageModel>();
+            builder.Services.AddTransient<JindungoAccessPage>();
+            builder.Services.AddSingleton<LundaHeritageAboutPageModel>();
+            builder.Services.AddTransient<LundaHeritageAboutPage>();
+            builder.Services.AddSingleton<LundaHeritageArquivosPageModel>();
+            builder.Services.AddTransient<LundaHeritageArquivosPage>();
+            builder.Services.AddSingleton<LundaHeritagePatrimonioPageModel>();
+            builder.Services.AddTransient<LundaHeritagePatrimonioPage>();
+            builder.Services.AddSingleton<OpeningPageModel>();
+            builder.Services.AddTransient<OpeningPage>();
             
             builder.Services.AddSingleton<ApiService>();
             builder.Services.AddDbContext<CacheDbContext>();

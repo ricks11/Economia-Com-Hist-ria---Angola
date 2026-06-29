@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.OpeningPage"
+             x:DataType="pageModels:OpeningPageModel"
+             Title="Bem-vindo"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <VerticalStackLayout Padding="24"
+                         Spacing="32"
+                         VerticalOptions="Center">
+        <!-- Icon -->
+        <Border WidthRequest="96"
+                HeightRequest="96"
+                BackgroundColor="{StaticResource Primary}"
+                Opacity="0.1"
+                StrokeShape="RoundRectangle 24"
+                HorizontalOptions="Center">
+            <Label Text="history_edu"
+                   FontFamily="FluentSystemIcons-Regular"
+                   FontSize="48"
+                   TextColor="{StaticResource Primary}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+        </Border>
+
+        <!-- Title -->
+        <VerticalStackLayout Spacing="8">
+            <Label Text="Economia com História"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource OnSurface}"
+                   HorizontalTextAlignment="Center"/>
+            <Label Text="Angola"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}"
+                   HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+
+        <!-- Description -->
+        <Label Text="Aprender e transformar realidades através da preservação da narrativa económica nacional."
+               FontSize="16"
+               TextColor="{StaticResource OnSurfaceVariant}"
+               HorizontalTextAlignment="Center"
+               MaximumWidthRequest="280"/>
+
+        <!-- Button -->
+        <Button Text="Entrar no Portal"
+                Command="{Binding EnterPortalCommand}"
+                BackgroundColor="{StaticResource ActionYellow}"
+                TextColor="{StaticResource OnActionYellow}"
+                FontAttributes="Bold"
+                FontSize="16"
+                CornerRadius="24"
+                Padding="0, 16"
+                MaximumWidthRequest="280"
+                HorizontalOptions="Fill"/>
+    </VerticalStackLayout>
+</ContentPage>

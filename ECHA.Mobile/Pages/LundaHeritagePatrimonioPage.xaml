@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             x:Class="ECHA.Mobile.Pages.LundaHeritagePatrimonioPage"
+             x:DataType="pageModels:LundaHeritagePatrimonioPageModel"
+             Title="O Meu Progresso"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <ScrollView Padding="24">
+        <VerticalStackLayout Spacing="24">
+            <Label Text="O Meu Progresso"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource OnSurface}"/>
+
+            <Border BackgroundColor="{StaticResource Primary}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="24">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Jornada Académica"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource OnPrimary}"/>
+                    <Label Text="Concluiu 65% do percurso histórico."
+                           FontSize="14"
+                           TextColor="{StaticResource OnPrimary}"
+                           Opacity="0.8"/>
+                    <Border BackgroundColor="{StaticResource OnPrimary}"
+                            Opacity="0.2"
+                            StrokeShape="RoundRectangle 4"
+                            Padding="0"
+                            HeightRequest="8">
+                        <Grid ColumnDefinitions="*, 2*">
+                            <BoxView Grid.Column="0" 
+                                     BackgroundColor="{StaticResource ActionYellow}"
+                                     CornerRadius="4"/>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
