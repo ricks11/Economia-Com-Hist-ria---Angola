@@ -19,6 +19,8 @@ public class Conteudo
     public string? AudioUrl { get; set; }
     public EstadoConteudo Estado { get; set; } = EstadoConteudo.Rascunho;
     public int Visualizacoes { get; set; }
+    public Visibilidade Visibilidade { get; set; } = Visibilidade.Publico;
+    public bool ComentariosDesativados { get; set; } = false;
     public bool DisponiveOffline { get; set; }
     public bool IsJindungo { get; set; }
     public string? ReferenciaFactual { get; set; }    // obrigatório se IsJindungo = true

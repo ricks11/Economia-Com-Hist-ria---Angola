@@ -17,4 +17,5 @@ public class AuditoriaLog
 
     public int UtilizadorId { get; set; }
     public Utilizador Utilizador { get; set; } = null!;
+    public string? Sessao { get; set; }
 }

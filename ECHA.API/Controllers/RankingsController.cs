@@ -21,6 +21,7 @@ public class RankingsController : ControllerBase
     }
 
     [HttpGet]
+    [ResponseCache(Duration = 300, VaryByQueryKeys = new[] { "tipo", "periodo", "escolaId", "provincia" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

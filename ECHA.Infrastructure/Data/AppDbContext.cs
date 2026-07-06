@@ -13,6 +13,10 @@ public class AppDbContext : DbContext
     public DbSet<Escola> Escolas => Set<Escola>();
     public DbSet<Turma> Turmas => Set<Turma>();
     public DbSet<Conteudo> Conteudos => Set<Conteudo>();
+    public DbSet<SolicitacaoAcesso> SolicitacoesAcesso { get; set; }
+    public DbSet<PropostaQuiz> PropostasQuiz { get; set; }
+    public DbSet<PerguntaProposta> PerguntasProposta { get; set; }
+    public DbSet<AuditoriaLog> AuditoriaLogs { get; set; }
     public DbSet<VersaoConteudo> VersoesConteudo => Set<VersaoConteudo>();
     public DbSet<ConteudoTraducao> TraducoesConteudo => Set<ConteudoTraducao>();
     public DbSet<ConteudoFavorito> Favoritos => Set<ConteudoFavorito>();
@@ -39,7 +43,6 @@ public class AppDbContext : DbContext
     public DbSet<PlanoEstudo> PlanosEstudo => Set<PlanoEstudo>();
     public DbSet<ModuloProgresso> ModulosProgresso => Set<ModuloProgresso>();
     public DbSet<RelatorioProgresso> RelatoriosProgresso => Set<RelatorioProgresso>();
-    public DbSet<AuditoriaLog> AuditoriaLogs => Set<AuditoriaLog>();
     public DbSet<MetricaDashboard> MetricasDashboard => Set<MetricaDashboard>();
     public DbSet<HistoricoActividade> HistoricoActividade => Set<HistoricoActividade>();
 

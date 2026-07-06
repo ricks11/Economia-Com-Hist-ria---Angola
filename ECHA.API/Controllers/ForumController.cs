@@ -88,6 +88,7 @@ public class ForumController : ControllerBase
 
     [HttpGet("topicos")]
     [AllowAnonymous]
+    [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "categoriaId", "ordem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<TopicoForumDto>>> ListarTopicos(
         [FromQuery] int? categoriaId,

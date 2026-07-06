@@ -1,4 +1,6 @@
+using AspNetCoreRateLimit;
 using EconomiaComHistoria.API.Services;
+using EconomiaComHistoria.API.Swagger;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using EconomiaComHistoria.Infrastructure.Repositories;
@@ -6,12 +8,22 @@ using EconomiaComHistoria.Infrastructure.Services;
 using EconomiaComHistoriaAngola.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
+using Serilog;
+using System.Net;
 using System.Text;
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("logs/economia-.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.Console()
+    .CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 // ─────────────────────────────────────────
 // CONTROLLERS & API EXPLORER
@@ -41,20 +53,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Insere o token JWT no formato: Bearer {token}"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+    // Adicionar suporte para exemplos de resposta
 });
 
 // ─────────────────────────────────────────
@@ -121,6 +120,12 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 104857600; // 100 MB
 });
 
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+
+builder.Services.AddInMemoryRateLimiting();
+
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
 // ─────────────────────────────────────────
 // CACHE
 // ─────────────────────────────────────────
@@ -129,13 +134,24 @@ builder.Services.AddMemoryCache();
 // ─────────────────────────────────────────
 // REPOSITÓRIOS
 // ─────────────────────────────────────────
+builder.Services.AddScoped<IUtilizadorRepository, UtilizadorRepository>();
 builder.Services.AddScoped<IConteudoRepository, ConteudoRepository>();
 builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
 builder.Services.AddScoped<IConteudoFavoritoRepository, ConteudoFavoritoRepository>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<ITentativaQuizRepository, TentativaQuizRepository>();
 builder.Services.AddScoped<ITopicoForumRepository, TopicoForumRepository>();
-builder.Services.AddScoped<IRespostaForumRepository, RespostaForumRepository>();  // FALTAVA
+builder.Services.AddScoped<IRespostaForumRepository, RespostaForumRepository>();
 builder.Services.AddScoped<IDenunciaRepository, DenunciaRepository>();
+builder.Services.AddScoped<IBadgeRepository, BadgeRepository>();
+builder.Services.AddScoped<IEventoGamificacaoRepository, EventoGamificacaoRepository>();
+builder.Services.AddScoped<IPlanoEstudoRepository, PlanoEstudoRepository>();
+builder.Services.AddScoped<IEscolaRepository, EscolaRepository>();
+builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
+builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
+builder.Services.AddScoped<ISolicitacaoAcessoRepository, SolicitacaoAcessoRepository>();
+builder.Services.AddScoped<IPropostaQuizRepository, PropostaQuizRepository>();
+builder.Services.AddScoped<IAuditoriaLogRepository, AuditoriaLogRepository>();
 
 // ─────────────────────────────────────────
 // SERVICES — INFRASTRUCTURE
@@ -149,6 +165,14 @@ builder.Services.AddScoped<INotificacaoService, FirebaseNotificacaoService>();
 builder.Services.AddScoped<ISincronizacaoService, SincronizacaoService>();
 builder.Services.AddScoped<IValidadorSincronizacao, ValidadorSincronizacao>();
 builder.Services.AddScoped<IConteudoCacheExportService, ConteudoCacheExportService>();
+builder.Services.AddScoped<IAuditoriaService, AuditoriaService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SuperAdminOnly", policy => policy.RequireRole("SuperAdmin"));
+    options.AddPolicy("ModeratorOrAdmin", policy => policy.RequireRole("Moderador", "Admin", "SuperAdmin"));
+    // Adiciona outras políticas se necessário
+});
 
 // ─────────────────────────────────────────
 // BACKGROUND JOBS
@@ -158,7 +182,6 @@ builder.Services.AddScoped<IStreakService, StreakService>();
 builder.Services.AddScoped<IPlanoEstudoService, PlanoEstudoService>();
 builder.Services.AddScoped<IEscolaService, EscolaService>();
 builder.Services.AddScoped<IRelatorioService, RelatorioService>();
-builder.Services.AddMemoryCache();
 builder.Services.AddHostedService<WeeklyRankingJob>();
 
 // ─────────────────────────────────────────
@@ -181,8 +204,93 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(app.Environment.IsDevelopment() ? "AllowAll" : "Producao");
+// ─────────────────────────────────────────
+// FORWARDED HEADERS (para proxies reversos confiáveis)
+// ─────────────────────────────────────────
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+};
 
+// Configurar proxies conhecidos (adicionar IPs do seu proxy reverso)
+// Exemplos: Azure App Service, Nginx local, etc.
+if (app.Environment.IsDevelopment())
+{
+    // In development, trust localhost and loopback.
+    forwardedHeadersOptions.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("127.0.0.1"), 8));
+    forwardedHeadersOptions.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("::1"), 128));
+}
+else
+{
+    // In production, only trust known proxies (e.g., Azure App Service, or a specific reverse proxy).
+    // Clear the known networks list to avoid trusting any network.
+    forwardedHeadersOptions.KnownNetworks.Clear();
+
+    // Add known proxies from configuration.
+    var knownProxies = builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>() ?? Array.Empty<string>();
+    foreach (var proxy in knownProxies)
+    {
+        if (IPAddress.TryParse(proxy, out var ip))
+        {
+            forwardedHeadersOptions.KnownProxies.Add(ip);
+        }
+    }
+
+    // Optionally, also add known networks if you have trusted subnets.
+    var knownNetworks = builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>() ?? Array.Empty<string>();
+    foreach (var network in knownNetworks)
+    {
+        if (Microsoft.AspNetCore.HttpOverrides.IPNetwork.TryParse(network, out var ipNetwork))
+        {
+            forwardedHeadersOptions.KnownNetworks.Add(ipNetwork);
+        }
+    }
+}
+
+forwardedHeadersOptions.RequireHeaderSymmetry = false;
+forwardedHeadersOptions.ForwardLimit = null;
+
+app.UseForwardedHeaders(forwardedHeadersOptions);
+
+// ─────────────────────────────────────────
+// HEADERS DE SEGURANÇA
+// ─────────────────────────────────────────
+app.Use(async (context, next) =>
+{
+    // HSTS (HTTP Strict-Transport-Security)
+    context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+
+    // X-Frame-Options (contra clickjacking)
+    context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
+
+    // X-Content-Type-Options (contra MIME sniffing)
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+
+    // Content-Security-Policy (CSP) — melhorado para remover 'unsafe-inline'
+    // Para melhor segurança, considere usar nonces para scripts e styles inline
+    context.Response.Headers["Content-Security-Policy"] = 
+        "default-src 'self'; " +
+        "script-src 'self'; " +
+        "style-src 'self'; " +
+        "img-src 'self' data: https:; " +
+        "font-src 'self' data:; " +
+        "connect-src 'self' https:; " +
+        "frame-src 'none'; " +
+        "object-src 'none'; " +
+        "upgrade-insecure-requests";
+
+    // Referrer-Policy
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+
+    // Permissions-Policy (Feature-Policy)
+    context.Response.Headers["Permissions-Policy"] = 
+        "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
+
+    await next();
+});
+
+app.UseCors(app.Environment.IsDevelopment() ? "AllowAll" : "Producao");
+app.UseIpRateLimiting();
 app.UseAuthentication();
 app.UseAuthorization();
 

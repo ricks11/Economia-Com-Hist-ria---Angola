@@ -28,7 +28,12 @@ public partial class CreateTopicPageModel : ObservableObject
     {
         try
         {
-            var request = new CriarTopicoForumDto(Titulo, Descricao, CategoriaId);
+            var request = new CriarTopicoForumDto
+            {
+                Titulo = Titulo,
+                Descricao = Descricao,
+                CategoriaId = CategoriaId
+            };
             await _apiService.PostAsync<CriarTopicoForumDto, TopicoForumDto>("api/forum/topicos", request);
             await Shell.Current.GoToAsync("..");
         }

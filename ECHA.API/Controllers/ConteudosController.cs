@@ -103,6 +103,7 @@ public class ConteudosController : ControllerBase
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
+    [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "tema", "nivel", "tipo", "regiao", "pagina", "tamanho" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResult<ConteudoResponseDto>>> ListConteudos(
         [FromQuery] string? tema,
