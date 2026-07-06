@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Interfaces;
+using EconomiaComHistoria.Core.DTOs.Sync;
 
 namespace EconomiaComHistoria.API.Controllers;
 
@@ -18,11 +19,13 @@ public class ConteudosController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly IFileStorageService _fileStorageService;
+    private readonly IConteudoCacheExportService _conteudoCacheService;
 
-    public ConteudosController(AppDbContext dbContext, IFileStorageService fileStorageService)
+    public ConteudosController(AppDbContext dbContext, IFileStorageService fileStorageService, IConteudoCacheExportService conteudoCacheService)
     {
         _dbContext = dbContext;
         _fileStorageService = fileStorageService;
+        _conteudoCacheService = conteudoCacheService;
     }
 
     /// <summary>
@@ -284,6 +287,14 @@ public class ConteudosController : ControllerBase
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
         return Ok(MapToResponseDto(conteudo, isFavorito));
+    }
+
+    [HttpGet("{id}/offline-package")]
+    public async Task<ActionResult<ConteudoOfflinePacoteDto>> GetConteudoOffline(int id)
+    {
+        var pacote = await _conteudoCacheService.ExportarParaCacheAsync(id);
+        if (pacote == null) return NotFound();
+        return Ok(pacote);
     }
 
     /// <summary>

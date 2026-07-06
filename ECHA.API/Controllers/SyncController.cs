@@ -1,24 +1,29 @@
+using EconomiaComHistoria.Core.DTOs.Sync;
+using EconomiaComHistoria.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EconomiaComHistoria.Infrastructure.Data;
+using System.Security.Claims;
 
 namespace ECHA.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+
 public class SyncController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly ISincronizacaoService _syncService;
 
-    public SyncController(AppDbContext context)
+    public SyncController(ISincronizacaoService syncService)
     {
-        _context = context;
+        _syncService = syncService;
     }
 
     [HttpPost("tentativas")]
-    public async Task<IActionResult> UploadTentativas([FromBody] List<object> tentativas)
+    public async Task<ActionResult<LoteSincronizacaoResponse>> SyncTentativas([FromBody] LoteSincronizacaoRequest request)
     {
-        // TODO: Implement batch processing of offline quiz attempts
-        // Validate client timestamp vs server
-        return Ok(new { Message = "Sincronização concluída com sucesso." });
+        var utilizadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var response = await _syncService.ProcessarLoteAsync(utilizadorId, request);
+        return Ok(response);
     }
 }

@@ -228,7 +228,7 @@ public class QuizzesController : ControllerBase
             var isCorrecta = opcao.IsCorrecta;
             respostasPersistidas.Add(new RespostaPergunta
             {
-                TentativaQuizId = tentativa.Id,
+                TentativaQuizId = (int)tentativa.Id,
                 PerguntaId = r.PerguntaId,
                 OpcaoRespostaId = r.OpcaoRespostaId,
                 TempoRespostaMs = r.TempoRespostaSeg * 1000,

@@ -3,6 +3,7 @@ using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using EconomiaComHistoria.Infrastructure.Repositories;
 using EconomiaComHistoria.Infrastructure.Services;
+using EconomiaComHistoriaAngola.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
@@ -145,6 +146,9 @@ builder.Services.AddScoped<IQuizScoringService, QuizScoringService>();
 builder.Services.AddScoped<IRankingService, RankingService>();
 builder.Services.AddScoped<IModeracaoService, ModeracaoService>();
 builder.Services.AddScoped<INotificacaoService, FirebaseNotificacaoService>();
+builder.Services.AddScoped<ISincronizacaoService, SincronizacaoService>();
+builder.Services.AddScoped<IValidadorSincronizacao, ValidadorSincronizacao>();
+builder.Services.AddScoped<IConteudoCacheExportService, ConteudoCacheExportService>();
 
 // ─────────────────────────────────────────
 // BACKGROUND JOBS

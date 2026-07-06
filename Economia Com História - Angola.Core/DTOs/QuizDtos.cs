@@ -42,7 +42,7 @@ public record QuizResponseDto(
 );
 
 public record QuizStartResponseDto(
-    int TentativaId,
+    int? TentativaId,
     List<PerguntaStartDto> Perguntas
 );
 

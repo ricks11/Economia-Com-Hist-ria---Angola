@@ -1,10 +1,12 @@
+using EconomiaComHistoria.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace EconomiaComHistoria.Core.Entities;
 
 public class TentativaQuiz
 {
-    [Key] public int Id { get; set; }
+    [Key] public int? Id { get; set; }
+    public Guid? IdLocal { get; set; }
     public DateTime DataHora { get; set; } = DateTime.UtcNow;
     public DateTime DataFim { get; set; }
     public int Pontuacao { get; set; }
@@ -13,7 +15,8 @@ public class TentativaQuiz
     public bool Completada { get; set; }
     public int TotalPerguntas { get; set; }
     public int TotalCorretas { get; set; }
-    public bool SincronizadaOffline { get; set; }   // veio de sync offline
+    public OrigemTentativa Origem { get; set; } = OrigemTentativa.Online;
+    public bool ElegivelRanking { get; set; }
     public DateTime? TimestampCliente { get; set; } // para validação anti-fraude
 
     public int UtilizadorId { get; set; }
