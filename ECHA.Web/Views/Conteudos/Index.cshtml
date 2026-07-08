@@ -128,9 +128,10 @@
             <!-- Featured Card -->
             <a asp-action="Details" asp-route-id="@featured.Id" class="md:col-span-8 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-lg relative decoration-none">
                 <div class="aspect-video w-full overflow-hidden">
-                    @if (!string.IsNullOrEmpty(featured.ThumbnailUrl :=???
-Actually we need to replace with ThumbnailUrl.
-Let's just replace ThumbnailUrl with ThumbnailUrl.
+                    @if (!string.IsNullOrEmpty(featured.ThumbnailUrl))
+                    {
+                        <img src="@featured.ThumbnailUrl" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    }
                     else
                     {
                         <div class="w-full h-full bg-stone-200 flex items-center justify-center">
