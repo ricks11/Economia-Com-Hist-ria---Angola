@@ -3,65 +3,90 @@
     ViewData["Title"] = Model.Titulo;
 }
 
-<main class="pt-12 pb-20 px-6 max-w-4xl mx-auto">
+<main class="pt-8 pb-24 px-4 sm:px-6 max-w-3xl mx-auto">
     <!-- Article Header -->
-    <header class="mb-12">
-        <div class="flex items-center gap-3 mb-6">
-            <span class="px-3 py-1 bg-tertiary/10 text-tertiary text-xs font-bold rounded-full uppercase">@Model.Tema</span>
-            <span class="text-secondary text-sm">@Model.Nivel</span>
+    <header class="mb-10">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="px-3 py-1 bg-surface-container text-primary text-[10px] font-bold rounded-md uppercase tracking-wider">@Model.Tema</span>
+            <span class="text-stone-400 text-xs font-medium">•</span>
+            <span class="text-secondary text-xs font-semibold uppercase tracking-wider">Nível @Model.Nivel</span>
         </div>
-        <h1 class="font-headline font-extrabold text-4xl md:text-6xl text-primary leading-tight mb-8">@Model.Titulo</h1>
-        
-        <div class="flex items-center gap-4 p-6 bg-stone-50 rounded-2xl border border-stone-100">
-            <div class="w-12 h-12 bg-stone-200 rounded-full flex items-center justify-center">
-                <span class="material-symbols-outlined text-stone-500">person</span>
+
+        <h1 class="text-3xl md:text-5xl font-black text-primary leading-tight mb-8 tracking-tight">@Model.Titulo</h1>
+
+        <!-- Author & Metadata Card -->
+        <div class="flex items-center justify-between p-4 sm:p-5 bg-surface-container-lowest rounded-2xl border border-stone-100 shadow-sm">
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 bg-stone-100 rounded-full border border-stone-200/60 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-stone-400 text-[22px]">person</span>
+                </div>
+                <div>
+                    <p class="font-bold text-sm text-primary">@Model.EditorNome</p>
+                    <p class="text-xs text-stone-400 mt-0.5">
+                        Publicado em @Model.DataPublicacao?.ToString("dd/MM/yyyy")
+                    </p>
+                </div>
             </div>
-            <div>
-                <p class="font-bold text-primary">@Model.AutorNome</p>
-                <p class="text-xs text-secondary">Publicado em @Model.DataPublicacao.ToString("dd/MM/yyyy") • @Model.Visualizacoes visualizações</p>
+
+            <div class="flex items-center gap-1.5 text-secondary bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-100 text-xs font-medium">
+                <span class="material-symbols-outlined text-[16px] text-stone-400">visibility</span>
+                <span>@Model.Visualizacoes <span class="hidden sm:inline">visitas</span></span>
             </div>
         </div>
     </header>
 
+    <!-- Jindungo Warning Box -->
     @if (Model.IsJindungo)
     {
-        <div class="mb-12 p-6 bg-tertiary-container/10 border-l-4 border-tertiary-container rounded-r-2xl">
-            <div class="flex items-start gap-4">
-                <span class="material-symbols-outlined text-tertiary text-2xl">warning</span>
-                <div>
-                    <h4 class="font-bold text-tertiary">Conteúdo de Opinião (Jindungo)</h4>
-                    <p class="text-sm text-secondary">As opiniões expressas neste artigo são de cariz crítico.</p>
-                </div>
+    <div class="mb-10 p-5 bg-tertiary-container text-on-tertiary-container border-l-4 border-tertiary rounded-r-2xl shadow-sm">
+        <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[22px] shrink-0 mt-0.5">local_fire_department</span>
+            <div>
+                <h4 class="font-bold text-sm uppercase tracking-wide">Conteúdo Crítico (Jindungo)</h4>
+                <p class="text-xs opacity-90 mt-0.5 leading-relaxed">As opiniões e análises expressas neste artigo refletem uma perspetiva analítica acentuada do autor.</p>
             </div>
         </div>
+    </div>
     }
 
     <!-- Featured Image -->
-    @if (!string.IsNullOrEmpty(Model.ImagemCapa))
+    @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
     {
-        <figure class="mb-12">
-            <img src="@Model.ImagemCapa" class="w-full h-[400px] object-cover rounded-[2.5rem] shadow-xl" alt="@Model.Titulo">
-        </figure>
+    <figure class="mb-10 group overflow-hidden rounded-3xl shadow-sm border border-stone-100">
+        <img src="@Model.ThumbnailUrl" class="w-full h-[260px] sm:h-[420px] object-cover transition-transform duration-700 hover:scale-101" alt="@Model.Titulo">
+    </figure>
+    }
+
+    <!-- Media Embed (Caso exista Vídeo ou Áudio na resposta) -->
+    @if (!string.IsNullOrEmpty(Model.VideoUrl))
+    {
+    <div class="mb-10 aspect-video w-full rounded-3xl overflow-hidden shadow-sm border border-stone-100">
+        <iframe class="w-full h-full" src="@Model.VideoUrl" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
     }
 
     <!-- Article Content -->
-    <article class="prose prose-stone prose-lg max-w-none text-stone-700 leading-relaxed space-y-8">
-        <div class="content-text">
-            @Html.Raw(Model.Texto)
+    <article class="prose prose-stone prose-base sm:prose-lg max-w-none text-stone-800 antialiased selection:bg-primary/10">
+        <div class="content-text leading-relaxed space-y-6">
+            @Html.Raw(Model.CorpoTexto)
         </div>
     </article>
 
-    <!-- Navigation Footer -->
-    <footer class="mt-20 pt-12 border-t border-stone-100 flex justify-between gap-6">
-        <a asp-action="Index" class="flex items-center gap-2 text-primary font-bold hover:underline">
-            <span class="material-symbols-outlined">arrow_back</span> Voltar à lista
+    <!-- Navigation / Action Footer -->
+    <footer class="mt-16 pt-8 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:text-primary transition-colors decoration-none group">
+            <span class="material-symbols-outlined text-[20px] translate-x-0 group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            Voltar ao explorar
         </a>
+
         @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
         {
-            <div class="flex gap-3">
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all">Editar</a>
-            </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm shadow-md shadow-primary/10 hover:opacity-95 transition-all decoration-none">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+                Editar Conteúdo
+            </a>
+        </div>
         }
     </footer>
 </main>
-

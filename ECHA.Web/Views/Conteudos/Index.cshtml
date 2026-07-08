@@ -1,186 +1,204 @@
 @model IEnumerable<EconomiaComHistoria.Core.DTOs.ConteudoResponseDto>
-@{
+    @{
     ViewData["Title"] = "Explorar Conteúdos";
     var queryParams = Context.Request.Query;
-}
 
-<div class="max-w-7xl mx-auto px-6">
-    @if (TempData["SuccessMessage"] != null)
+    // Ajusta a normalização para garantir consistência
+    string tipoAtual = queryParams["tipo"].ToString()?.Trim() ?? "";
+    string jindungoAtual = queryParams["jindungo"].ToString()?.Trim() ?? "";
+    string temaAtual = queryParams["tema"].ToString()?.Trim() ?? "";
+
+    // "Todos" só fica ativo se nenhum filtro de formato específico estiver selecionado
+    bool isTodosAtivo = string.IsNullOrEmpty(tipoAtual) && string.IsNullOrEmpty(jindungoAtual);
+
+    string GetFilterClass(string targetType)
     {
-        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-            @TempData["SuccessMessage"]
-        </div>
+    if (isTodosAtivo) return "bg-surface-container text-secondary hover:bg-surface-container-high";
+
+    bool matchTipo = tipoAtual.Equals(targetType, StringComparison.OrdinalIgnoreCase) ||
+    (targetType.Equals("Vídeo", StringComparison.OrdinalIgnoreCase) && tipoAtual.Equals("Video", StringComparison.OrdinalIgnoreCase));
+
+    // Para o botão "Textos" normal ficar ativo, o tipo deve ser "Texto" E o parâmetro jindungo NÃO pode ser "true"
+    if (targetType.Equals("Texto", StringComparison.OrdinalIgnoreCase))
+    {
+    return matchTipo && !jindungoAtual.Equals("true", StringComparison.OrdinalIgnoreCase)
+    ? "bg-primary text-white shadow-md shadow-primary/10"
+    : "bg-surface-container text-secondary hover:bg-surface-container-high";
     }
-    <!-- Search and Title Section -->
-    <section class="mb-12">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">Explorar Conteúdos</h1>
-            @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
-            {
-                <a asp-action="Create" class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium hover:bg-surface-container-high transition-all decoration-none">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
+
+    return matchTipo ? "bg-primary text-white shadow-md shadow-primary/10" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+    }
+
+    string GetJindungoClass() =>
+    jindungoAtual.Equals("true", StringComparison.OrdinalIgnoreCase)
+    ? "bg-tertiary-container text-on-tertiary-container shadow-md"
+    : "bg-surface-container text-secondary hover:bg-surface-container-high";
+    }
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+        <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-xl shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-green-600">check_circle</span>
+            <span class="font-medium">@TempData["SuccessMessage"]</span>
+        </div>
+        }
+
+        <header class="mb-10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-black text-primary tracking-tight">Explorar Conteúdos</h1>
+                    <p class="text-sm text-stone-500 mt-1">Descubra artigos, vídeos e podcasts sobre economia e história.</p>
+                </div>
+                @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
+                {
+                <a asp-action="Create" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-surface-container text-secondary font-semibold hover:bg-surface-container-high transition-all shadow-sm hover:shadow decoration-none shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
                     Novo Conteúdo
                 </a>
-            }
-        </div>
-        
-        <form method="get" class="relative max-w-2xl">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
-            <input name="tema" value="@queryParams["tema"]" class="w-full pl-12 pr-6 py-4 bg-surface-container-low border-none rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400" placeholder="Pesquisar por tema..." type="text"/>
-            @foreach (var key in queryParams.Keys.Where(k => k != "tema"))
-            {
-                <input type="hidden" name="@key" value="@queryParams[key]" />
-            }
-        </form>
-    </section>
-
-    <!-- Dynamic Filters -->
-    <section class="flex flex-wrap gap-3 mb-12">
-        @{
-            string GetFilterClass(string type) => 
-                (queryParams["tipo"] == type || (string.IsNullOrEmpty(type) && string.IsNullOrEmpty(queryParams["tipo"]))) 
-                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
-            
-            string GetJindungoClass() => 
-                (queryParams["jindungo"] == "true") 
-                ? "bg-tertiary-container text-on-tertiary-container shadow-md" : "bg-surface-container text-secondary hover:bg-surface-container-high";
-        }
-
-        <a asp-action="Index" class="px-6 py-2.5 rounded-full font-semibold flex items-center gap-2 transition-all transform hover:-translate-y-0.5 decoration-none @GetFilterClass(null)">
-            <span class="material-symbols-outlined text-[18px]">apps</span>
-            Todos
-        </a>
-        <a asp-action="Index" asp-route-tipo="Vídeo" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Vídeo")">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">play_circle</span>
-            Vídeos
-        </a>
-        <a asp-action="Index" asp-route-tipo="Texto" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Texto")">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">article</span>
-            Textos
-        </a>
-        <a asp-action="Index" asp-route-tipo="Podcast" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Podcast")">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">mic</span>
-            Podcasts
-        </a>
-        <a asp-action="Index" asp-route-jindungo="true" class="px-6 py-2.5 rounded-full font-semibold transition-all decoration-none @GetJindungoClass()">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">local_fire_department</span>
-            Textos com Jindungo
-        </a>
-    </section>
-
-    <!-- Additional Filters: Nivel and Estado -->
-    <section class="flex flex-wrap gap-3 mb-12">
-        @{
-            string GetNivelClass(string nivel) =>
-                (queryParams["nivel"] == nivel)
-                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
-
-            string GetEstadoClass(string estado) =>
-                (queryParams["estado"] == estado)
-                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
-        }
-
-        <div>
-            <span class="mr-2">Nível:</span>
-            <a asp-action="Index" asp-route-nivel="Basico" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Basico")">
-                Básico
-            </a>
-            <a asp-action="Index" asp-route-nivel="Intermedio" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Intermedio")">
-                Intermediário
-            </a>
-            <a asp-action="Index" asp-route-nivel="Avancado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Avancado")">
-                Avançado
-            </a>
-        </div>
-
-        <div class="mt-2">
-            <span class="mr-2">Estado:</span>
-            <a asp-action="Index" asp-route-estado="Rascunho" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Rascunho")">
-                Rascunho
-            </a>
-            <a asp-action="Index" asp-route-estado="EmRevisao" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("EmRevisao")">
-                Em Revisão
-            </a>
-            <a asp-action="Index" asp-route-estado="Publicado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Publicado")">
-                Publicado
-            </a>
-            <a asp-action="Index" asp-route-estado="Arquivado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Arquivado")">
-                Arquivado
-            </a>
-        </div>
-    </section>
-
-    <!-- Bento Grid Content -->
-    <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
-        @if (!Model.Any())
-        {
-            <div class="col-span-12 py-20 text-center">
-                <span class="material-symbols-outlined text-6xl text-stone-200 mb-4">search_off</span>
-                <p class="text-secondary">Nenhum conteúdo encontrado para os filtros selecionados.</p>
+                }
             </div>
-        }
-        else
-        {
+
+            <form method="get" class="relative max-w-2xl shadow-sm rounded-2xl">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
+                <input name="tema" value="@queryParams[" tema"]" class="w-full pl-12 pr-6 py-3.5 bg-surface-container-low border border-stone-200/40 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400 outline-none" placeholder="Pesquisar por tema..." type="text" />
+                @foreach (var key in queryParams.Keys.Where(k => k != "tema"))
+                {
+                <input type="hidden" name="@key" value="@queryParams[key]" />
+                }
+            </form>
+        </header>
+
+        <div class="space-y-6 mb-10 pb-6 border-b border-stone-100">
+            <section class="flex flex-wrap gap-2.5">
+                <a asp-action="Index" asp-route-tipo="" asp-route-jindungo="" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="@queryParams["estado"]" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @(isTodosAtivo ? " bg-primary text-white shadow-md shadow-primary /10" : "bg-surface-container text-secondary hover:bg-surface-container-high" )">
+                    <span class="material-symbols-outlined text-[18px]">apps</span>
+                    Todos
+                </a>
+
+                <a asp-action="Index" asp-route-tipo="Vídeo" asp-route-jindungo="" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="@queryParams["estado"]" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass("Vídeo")">
+                    <span class="material-symbols-outlined text-[18px]">play_circle</span>
+                    Vídeos
+                </a>
+
+                <a asp-action="Index" asp-route-tipo="Texto" asp-route-jindungo="false" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="@queryParams["estado"]" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass("Texto")">
+                    <span class="material-symbols-outlined text-[18px]">article</span>
+                    Textos
+                </a>
+
+                <a asp-action="Index" asp-route-tipo="Podcast" asp-route-jindungo="" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="@queryParams["estado"]" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass("Podcast")">
+                    <span class="material-symbols-outlined text-[18px]">mic</span>
+                    Podcasts
+                </a>
+
+                <a asp-action="Index" asp-route-tipo="Texto" asp-route-jindungo="true" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="@queryParams["estado"]" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetJindungoClass()">
+                    <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+                    Textos com Jindungo
+                </a>
+            </section>
+
+            <section class="flex flex-wrap items-center gap-y-3 gap-x-6 text-sm text-stone-600">
+                @{
+                string GetNivelClass(string nivel) => queryParams["nivel"].ToString()?.Trim().Equals(nivel, StringComparison.OrdinalIgnoreCase) == true ? "text-primary font-bold underline underline-offset-4" : "hover:text-primary";
+                string GetEstadoClass(string estado) => queryParams["estado"].ToString()?.Trim().Equals(estado, StringComparison.OrdinalIgnoreCase) == true ? "text-primary font-bold underline underline-offset-4" : "hover:text-primary";
+                }
+
+                <div class="flex items-center gap-2 bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-100">
+                    <span class="font-semibold text-stone-400 uppercase text-[11px] tracking-wider mr-1">Nível:</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@queryParams["estado"]" asp-route-nivel="Basico" class="transition-colors decoration-none @GetNivelClass(" Basico")">Básico</a>
+                    <span class="text-stone-300">|</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@queryParams["estado"]" asp-route-nivel="Intermedio" class="transition-colors decoration-none @GetNivelClass(" Intermedio")">Intermediário</a>
+                    <span class="text-stone-300">|</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@queryParams["estado"]" asp-route-nivel="Avancado" class="transition-colors decoration-none @GetNivelClass(" Avancado")">Avançado</a>
+                </div>
+
+                <div class="flex items-center gap-2 bg-stone-50 px-3 py-1.5 rounded-xl border border-stone-100">
+                    <span class="font-semibold text-stone-400 uppercase text-[11px] tracking-wider mr-1">Estado:</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="Rascunho" class="transition-colors decoration-none @GetEstadoClass(" Rascunho")">Rascunho</a>
+                    <span class="text-stone-300">|</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="EmRevisao" class="transition-colors decoration-none @GetEstadoClass(" EmRevisao")">Em Revisão</a>
+                    <span class="text-stone-300">|</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="Publicado" class="transition-colors decoration-none @GetEstadoClass(" Publicado")">Publicado</a>
+                    <span class="text-stone-300">|</span>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@queryParams["nivel"]" asp-route-estado="Arquivado" class="transition-colors decoration-none @GetEstadoClass(" Arquivado")">Arquivado</a>
+                </div>
+            </section>
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            @if (!Model.Any())
+            {
+            <div class="col-span-12 py-20 text-center bg-stone-50 rounded-3xl border border-dashed border-stone-200">
+                <span class="material-symbols-outlined text-5xl text-stone-300 mb-3">search_off</span>
+                <p class="text-secondary font-medium">Nenhum conteúdo encontrado para os filtros selecionados.</p>
+            </div>
+            }
+            else
+            {
             var items = Model.ToList();
             var featured = items.FirstOrDefault();
             var others = items.Skip(1);
 
-            <!-- Featured Card -->
-            <a asp-action="Details" asp-route-id="@featured.Id" class="md:col-span-8 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-lg relative decoration-none">
-                <div class="aspect-video w-full overflow-hidden">
+            <a asp-action="Details" asp-route-id="@featured.Id" class="col-span-12 @(others.Any() ? " md:col-span-8" : "md:col-span-12" ) group cursor-pointer bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 relative decoration-none block min-h-[380px]">
+                <div class="absolute inset-0 w-full h-full overflow-hidden">
                     @if (!string.IsNullOrEmpty(featured.ThumbnailUrl))
                     {
-                        <img src="@featured.ThumbnailUrl" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <img src="@featured.ThumbnailUrl" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-102" />
                     }
                     else
                     {
-                        <div class="w-full h-full bg-stone-200 flex items-center justify-center">
-                             <span class="material-symbols-outlined text-stone-400 text-6xl">image</span>
-                        </div>
+                    <div class="w-full h-full bg-gradient-to-br from-stone-100 to-stone-200 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-stone-400 text-6xl">image</span>
+                    </div>
                     }
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent"></div>
                 </div>
-                <div class="absolute bottom-0 left-0 p-8 w-full">
-                    <div class="flex gap-2 mb-3">
-                        <span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full uppercase">@featured.Tipo</span>
+
+                <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full z-10">
+                    <div class="flex gap-2 mb-4">
+                        <span class="px-2.5 py-1 bg-primary text-white text-[10px] font-bold rounded-md uppercase tracking-wider">@featured.Tipo</span>
                         @if (featured.IsJindungo)
                         {
-                            <span class="px-3 py-1 bg-tertiary text-white text-xs font-bold rounded-full uppercase">Jindungo</span>
+                        <span class="px-2.5 py-1 bg-tertiary text-white text-[10px] font-bold rounded-md uppercase tracking-wider">Jindungo</span>
                         }
                     </div>
-                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">@featured.Titulo</h3>
-                    <p class="text-white/80 line-clamp-2 max-w-2xl">@featured.Resumo</p>
+                    <h3 class="text-xl md:text-3xl font-bold text-white mb-2 leading-tight group-hover:text-white/90 transition-colors">@featured.Titulo</h3>
+                    <p class="text-white/80 text-sm md:text-base line-clamp-2 max-w-2xl font-light">@featured.Resumo</p>
                 </div>
             </a>
 
             foreach (var item in others)
             {
-                <a asp-action="Details" asp-route-id="@item.Id" class="md:col-span-4 bg-surface-container-lowest rounded-[20px] overflow-hidden soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
-                    <div class="aspect-[4/3] w-full overflow-hidden relative">
+            <a asp-action="Details" asp-route-id="@item.Id" class="col-span-12 md:col-span-4 bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group decoration-none flex flex-col justify-between border border-stone-100">
+                <div>
+                    <div class="aspect-[16/10] w-full overflow-hidden relative bg-stone-100">
                         @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
                         {
-                            <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103" />
                         }
                         else
                         {
-                            <div class="w-full h-full bg-stone-100 flex items-center justify-center">
-                                 <span class="material-symbols-outlined text-stone-300 text-4xl">image</span>
-                            </div>
+                        <div class="w-full h-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-stone-300 text-4xl">image</span>
+                        </div>
                         }
-                        <div class="absolute top-4 left-4 flex gap-2">
-                             <span class="px-2 py-1 bg-white/90 backdrop-blur-sm text-primary text-[10px] font-bold rounded-md uppercase">@item.Tipo</span>
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2 py-1 bg-white/95 backdrop-blur-sm text-primary text-[10px] font-bold rounded-md uppercase tracking-wider shadow-sm">@item.Tipo</span>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="font-headline font-bold text-lg text-on-surface mb-2 group-hover:text-primary transition-colors">@item.Titulo</h3>
-                        <p class="text-secondary text-sm line-clamp-2">@item.Resumo</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-stone-400 text-xs font-medium uppercase">@item.Tema</span>
-                            <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
-                        </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-base text-on-surface mb-2 group-hover:text-primary transition-colors line-clamp-2 leading-snug">@item.Titulo</h3>
+                        <p class="text-secondary text-xs line-clamp-2 font-light leading-relaxed">@item.Resumo</p>
                     </div>
-                </a>
+                </div>
+
+                <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-stone-50">
+                    <span class="text-stone-400 text-[11px] font-bold uppercase tracking-wider">@item.Tema</span>
+                    <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 translate-x-[-4px] group-hover:translate-x-0 transition-all text-xl">arrow_forward</span>
+                </div>
+            </a>
             }
-        }
-    </section>
-</div>
+            }
+        </section>
+    </div>
