@@ -166,6 +166,7 @@ builder.Services.AddScoped<ISincronizacaoService, SincronizacaoService>();
 builder.Services.AddScoped<IValidadorSincronizacao, ValidadorSincronizacao>();
 builder.Services.AddScoped<IConteudoCacheExportService, ConteudoCacheExportService>();
 builder.Services.AddScoped<IAuditoriaService, AuditoriaService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -322,7 +323,7 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await db.Database.EnsureDeletedAsync();
+    //await db.Database.EnsureDeletedAsync();
     await db.Database.EnsureCreatedAsync();
 }
 

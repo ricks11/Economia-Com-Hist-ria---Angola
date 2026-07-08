@@ -13,14 +13,17 @@ public class AuthController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly IAuthService _authService;
+    private readonly IEmailService _emailService;
+
     // TODO Sprint 8: substituir por RefreshToken persistido na base de dados
     // campo RefreshToken e RefreshTokenExpiry na entidade Utilizador
     private static readonly Dictionary<string, string> RefreshTokenStore = new(); // Simple in-memory store
 
-    public AuthController(AppDbContext dbContext, IAuthService authService)
+    public AuthController(AppDbContext dbContext, IAuthService authService, IEmailService emailService)
     {
         _dbContext = dbContext;
         _authService = authService;
+        _emailService = emailService;
     }
 
     [HttpPost("register")]
@@ -152,5 +155,80 @@ public class AuthController : ControllerBase
             user.Tipo.ToString());
 
         return Ok(response);
+    }
+
+    [HttpPost("forgot-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto request, CancellationToken cancellationToken)
+    {
+        // 1. Validar se o input não é nulo ou vazio
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            return BadRequest(new { message = "O email é obrigatório." });
+        }
+
+        // 2. Procurar o utilizador na base de dados
+        var user = await _dbContext.Utilizadores
+            .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+
+        // 3. Se o utilizador existir, geramos o token e disparamos o email real
+        if (user is not null)
+        {
+            var resetToken = Guid.NewGuid().ToString();
+
+            // Opcional Sprint 8/9: Persistir o token se tiveres campos dedicados na entidade Utilizador
+            // user.ResetToken = resetToken;
+            // user.ResetTokenExpiry = DateTime.UtcNow.AddHours(2);
+            // await _dbContext.SaveChangesAsync(cancellationToken);
+
+            await _emailService.SendResetPasswordLinkAsync(user.Email, resetToken);
+        }
+
+        // 4. Retorna sempre Ok por questões de segurança (Impede atacantes de descobrirem emails válidos)
+        return Ok(new { message = "Se o email introduzido estiver registado, receberá um link de recuperação em breve." });
+    }
+
+    [HttpPost("reset-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request, CancellationToken cancellationToken)
+    {
+        // Log de diagnóstico para ver o que o Front-end está a enviar
+        Console.WriteLine($"[DEBUG RESET] Email recebido: '{request.Email}', Password vazia?: {string.IsNullOrWhiteSpace(request.NewPassword)}");
+
+        if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            return BadRequest(new { message = "O email e a nova palavra-passe são obrigatórios." });
+        }
+
+        // 1. Procura o utilizador de forma explícita pelo Email
+        var user = await _dbContext.Utilizadores
+            .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+
+        if (user is null)
+        {
+            // Se entrar aqui, dá 400 mas NÃO apaga nada porque o utilizador nem foi encontrado
+            return BadRequest(new { message = "Utilizador não encontrado no sistema." });
+        }
+
+        try
+        {
+            // 2. Faz APENAS a atualização da propriedade PasswordHash
+            user.PasswordHash = _authService.HashPassword(request.NewPassword);
+
+            // Garante que o Entity Framework sabe que isto é uma MODIFICAÇÃO e não uma remoção/inserção
+            _dbContext.Entry(user).State = EntityState.Modified;
+
+            // 3. Grava apenas a alteração
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Ok(new { message = "Palavra-passe alterada com sucesso." });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ERRO GRAVAÇÃO] Falha ao atualizar password: {ex.Message}");
+            return StatusCode(500, new { message = "Erro interno ao atualizar a base de dados." });
+        }
     }
 }
