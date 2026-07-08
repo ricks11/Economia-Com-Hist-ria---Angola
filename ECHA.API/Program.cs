@@ -5,15 +5,15 @@ using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using EconomiaComHistoria.Infrastructure.Repositories;
 using EconomiaComHistoria.Infrastructure.Services;
-using EconomiaComHistoriaAngola.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Net;
+using System.Reflection;
 using System.Text;
 
 Log.Logger = new LoggerConfiguration()
@@ -189,6 +189,22 @@ builder.Services.AddHostedService<WeeklyRankingJob>();
 // ─────────────────────────────────────────
 var app = builder.Build();
 
+// --- DIAGNÓSTICO TEMPORÁRIO — remove depois de resolver ---
+try
+{
+    var assembly = typeof(Program).Assembly;
+    var types = assembly.GetTypes();
+}
+catch (ReflectionTypeLoadException ex)
+{
+    foreach (var loaderEx in ex.LoaderExceptions)
+    {
+        Console.WriteLine("LOADER EXCEPTION: " + loaderEx?.Message);
+    }
+    throw;
+}
+// --- FIM DIAGNÓSTICO ---
+
 // ─────────────────────────────────────────
 // MIDDLEWARE PIPELINE
 // ─────────────────────────────────────────
@@ -252,6 +268,9 @@ forwardedHeadersOptions.ForwardLimit = null;
 
 app.UseForwardedHeaders(forwardedHeadersOptions);
 
+app.UseRouting();
+app.UseResponseCaching();
+
 // ─────────────────────────────────────────
 // HEADERS DE SEGURANÇA
 // ─────────────────────────────────────────
@@ -268,7 +287,7 @@ app.Use(async (context, next) =>
 
     // Content-Security-Policy (CSP) — melhorado para remover 'unsafe-inline'
     // Para melhor segurança, considere usar nonces para scripts e styles inline
-    context.Response.Headers["Content-Security-Policy"] = 
+    context.Response.Headers["Content-Security-Policy"] =
         "default-src 'self'; " +
         "script-src 'self'; " +
         "style-src 'self'; " +
@@ -283,7 +302,7 @@ app.Use(async (context, next) =>
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
 
     // Permissions-Policy (Feature-Policy)
-    context.Response.Headers["Permissions-Policy"] = 
+    context.Response.Headers["Permissions-Policy"] =
         "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
 
     await next();
@@ -297,13 +316,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 // ─────────────────────────────────────────
-// MIGRAÇÃO AUTOMÁTICA (apenas desenvolvimento)
+// INICIALIZAÇÃO DO BANCO DE DADOS (apenas desenvolvimento)
 // ─────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await db.Database.MigrateAsync();
+    await db.Database.EnsureDeletedAsync();
+    await db.Database.EnsureCreatedAsync();
 }
 
 app.Run();

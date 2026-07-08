@@ -337,5 +337,30 @@ public class QuizzesController : ControllerBase
         return Ok(tentativas);
     }
 
+    [HttpGet("{id}/detalhe")]
+    [Authorize(Roles = "Admin,Editor")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<QuizDetalheDto>> GetQuizDetalhe(int id, CancellationToken cancellationToken)
+    {
+        var quiz = await _quizRepository.GetByIdAsync(id, cancellationToken);
+        if (quiz is null)
+            return NotFound(new { message = "Quiz não encontrado" });
 
+        var perguntas = quiz.Perguntas.Select(p => new PerguntaDetalheDto(
+            p.Id,
+            p.Enunciado,
+            p.Opcoes.Select(o => new OpcaoRespostaDetalheDto(o.Id, o.Texto, o.IsCorrecta, o.Explicacao)).ToList()
+        )).ToList();
+
+        return Ok(new QuizDetalheDto(
+            quiz.Id,
+            quiz.Titulo,
+            quiz.Tema,
+            quiz.Nivel,
+            quiz.TotalPerguntas,
+            quiz.TempoLimiteSeg,
+            quiz.Ativo,
+            perguntas));
+    }
 }

@@ -25,7 +25,7 @@
         <span asp-validation-for="Password" class="text-error text-xs ml-2"></span>
       </div>
       <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-md hover:-translate-y-0.5 transition">Aceder ao Arquivo</button>
-      <p class="text-center text-sm text-stone-400"><a href="#" class="text-tertiary hover:underline">Esqueceu a palavra‑passe?</a></p>
+      <p class="text-center text-sm text-stone-400"><a asp-action="ForgotPassword" asp-controller="Auth" class="text-tertiary hover:underline">Esqueceu a palavra‑passe?</a></p>
     </form>
 
     <!-- Formulário de registo (escondido inicialmente) -->

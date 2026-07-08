@@ -37,7 +37,10 @@ module Program =
                 options.LoginPath <- Microsoft.AspNetCore.Http.PathString("/Auth/Login")
                 options.LogoutPath <- Microsoft.AspNetCore.Http.PathString("/Auth/Logout")
                 options.Cookie.HttpOnly <- true
-                options.Cookie.SecurePolicy <- Microsoft.AspNetCore.Http.CookieSecurePolicy.Always))
+                options.Cookie.SecurePolicy <- Microsoft.AspNetCore.Http.CookieSecurePolicy.Always
+                options.Cookie.SameSite <- Microsoft.AspNetCore.Http.SameSiteMode.Lax
+                options.ExpireTimeSpan <- TimeSpan.FromMinutes(60.0)
+                options.SlidingExpiration <- true))
 
         builder.Services.AddRazorPages()
 

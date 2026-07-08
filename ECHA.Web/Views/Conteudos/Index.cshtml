@@ -5,6 +5,12 @@
 }
 
 <div class="max-w-7xl mx-auto px-6">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            @TempData["SuccessMessage"]
+        </div>
+    }
     <!-- Search and Title Section -->
     <section class="mb-12">
         <div class="flex justify-between items-center mb-8">
@@ -62,6 +68,48 @@
         </a>
     </section>
 
+    <!-- Additional Filters: Nivel and Estado -->
+    <section class="flex flex-wrap gap-3 mb-12">
+        @{
+            string GetNivelClass(string nivel) =>
+                (queryParams["nivel"] == nivel)
+                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+
+            string GetEstadoClass(string estado) =>
+                (queryParams["estado"] == estado)
+                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+        }
+
+        <div>
+            <span class="mr-2">Nível:</span>
+            <a asp-action="Index" asp-route-nivel="Basico" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Basico")">
+                Básico
+            </a>
+            <a asp-action="Index" asp-route-nivel="Intermedio" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Intermedio")">
+                Intermediário
+            </a>
+            <a asp-action="Index" asp-route-nivel="Avancado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Avancado")">
+                Avançado
+            </a>
+        </div>
+
+        <div class="mt-2">
+            <span class="mr-2">Estado:</span>
+            <a asp-action="Index" asp-route-estado="Rascunho" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Rascunho")">
+                Rascunho
+            </a>
+            <a asp-action="Index" asp-route-estado="EmRevisao" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("EmRevisao")">
+                Em Revisão
+            </a>
+            <a asp-action="Index" asp-route-estado="Publicado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Publicado")">
+                Publicado
+            </a>
+            <a asp-action="Index" asp-route-estado="Arquivado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Arquivado")">
+                Arquivado
+            </a>
+        </div>
+    </section>
+
     <!-- Bento Grid Content -->
     <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
         @if (!Model.Any())
@@ -80,10 +128,9 @@
             <!-- Featured Card -->
             <a asp-action="Details" asp-route-id="@featured.Id" class="md:col-span-8 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-lg relative decoration-none">
                 <div class="aspect-video w-full overflow-hidden">
-                    @if (!string.IsNullOrEmpty(featured.ImagemCapa))
-                    {
-                        <img src="@featured.ImagemCapa" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    }
+                    @if (!string.IsNullOrEmpty(featured.ThumbnailUrl :=???
+Actually we need to replace with ThumbnailUrl.
+Let's just replace ThumbnailUrl with ThumbnailUrl.
                     else
                     {
                         <div class="w-full h-full bg-stone-200 flex items-center justify-center">
@@ -109,9 +156,9 @@
             {
                 <a asp-action="Details" asp-route-id="@item.Id" class="md:col-span-4 bg-surface-container-lowest rounded-[20px] overflow-hidden soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
                     <div class="aspect-[4/3] w-full overflow-hidden relative">
-                        @if (!string.IsNullOrEmpty(item.ImagemCapa))
+                        @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
                         {
-                            <img src="@item.ImagemCapa" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                            <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         }
                         else
                         {

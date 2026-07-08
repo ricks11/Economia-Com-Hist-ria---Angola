@@ -2,6 +2,21 @@ using EconomiaComHistoria.Core.Enums;
 
 namespace EconomiaComHistoria.Core.DTOs;
 
+public record OpcaoRespostaDetalheDto(int Id, string Texto, bool IsCorrecta, string? Explicacao);
+
+public record PerguntaDetalheDto(int Id, string Enunciado, List<OpcaoRespostaDetalheDto> Opcoes);
+
+public record QuizDetalheDto(
+    int Id,
+    string Titulo,
+    string Tema,
+    NivelDificuldade Nivel,
+    int TotalPerguntas,
+    int TempoLimiteSeg,
+    bool Ativo,
+    List<PerguntaDetalheDto> Perguntas
+);
+
 public record CreateQuizDto(
     string Titulo,
     string Tema,

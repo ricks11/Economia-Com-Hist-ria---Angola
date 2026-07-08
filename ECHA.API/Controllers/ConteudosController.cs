@@ -88,7 +88,8 @@ public class ConteudosController : ControllerBase
             Tipo = request.Tipo,
             EditorId = userId,
             DataPublicacao = DateTime.UtcNow,
-            Estado = EstadoConteudo.Publicado
+            Estado = request.Estado,
+            DataAgendada = request.DataAgendada
         };
 
         _dbContext.Conteudos.Add(conteudo);
@@ -103,13 +104,14 @@ public class ConteudosController : ControllerBase
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
-    [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "tema", "nivel", "tipo", "regiao", "pagina", "tamanho" })]
+    [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "tema", "nivel", "tipo", "regiao", "pagina", "tamanho", "estado" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResult<ConteudoResponseDto>>> ListConteudos(
         [FromQuery] string? tema,
         [FromQuery] NivelDificuldade? nivel,
         [FromQuery] TipoConteudo? tipo,
         [FromQuery] string? regiao,
+        [FromQuery] EstadoConteudo? estado,
         [FromQuery] int pagina = 1,
         [FromQuery] int tamanho = 20,
         CancellationToken cancellationToken = default)
@@ -120,9 +122,17 @@ public class ConteudosController : ControllerBase
         var userIdClaim = User.FindFirst("sub")?.Value;
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
 
-        var query = _dbContext.Conteudos
-            .Where(c => c.Estado == EstadoConteudo.Publicado)
-            .AsNoTracking();
+        var query = _dbContext.Conteudos.AsNoTracking();
+
+        // Apply estado filter: if provided, filter by estado; otherwise, default to published for backward compatibility
+        if (estado.HasValue)
+        {
+            query = query.Where(c => c.Estado == estado.Value);
+        }
+        else
+        {
+            query = query.Where(c => c.Estado == EstadoConteudo.Publicado);
+        }
 
         // Apply filters
         if (!string.IsNullOrEmpty(tema)) query = query.Where(c => c.Tema == tema);
@@ -277,6 +287,10 @@ public class ConteudosController : ControllerBase
             if (!request.IsJindungo.Value)
                 conteudo.ReferenciaFactual = null;
         }
+        if (request.Estado.HasValue)
+            conteudo.Estado = request.Estado.Value;
+        if (request.DataAgendada.HasValue)
+            conteudo.DataAgendada = request.DataAgendada.Value;
         if (request.ReferenciaFactual is not null)
             conteudo.ReferenciaFactual = request.ReferenciaFactual;
 

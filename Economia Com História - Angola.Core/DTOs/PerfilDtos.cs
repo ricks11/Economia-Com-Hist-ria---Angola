@@ -32,3 +32,12 @@ public class UpdatePerfilDto
     [Range(1, int.MaxValue, ErrorMessage = "Turma ID deve ser válido")]
     public int? TurmaId { get; set; }
 }
+
+public record PerfilDto(
+    int Id,
+    string Nome,
+    string Email,
+    string Tipo
+);
+
+public record UpdatePerfilDtos(string Nome);

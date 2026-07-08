@@ -3,6 +3,13 @@
     ViewData["Title"] = "Criar Conteúdo";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
@@ -71,6 +78,38 @@
                         </select>
                         <span asp-validation-for="Tipo" class="text-danger"></span>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Estado" class="control-label">Estado</label>
+                        <select asp-for="Estado" class="form-control" required>
+                            <option value="">Selecione...</option>
+                            <option value="Rascunho">Rascunho</option>
+                            <option value="EmRevisao">Em Revisão</option>
+                            <option value="Publicado">Publicado</option>
+                            <option value="Arquivado">Arquivado</option>
+                        </select>
+                        <span asp-validation-for="Estado" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- We can leave this empty for now, or put something else -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="DataAgendada" class="control-label">Data de Agendamento</label>
+                        <input asp-for="DataAgendada" type="date" class="form-control" />
+                        <span asp-validation-for="DataAgendada" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Empty for alignment -->
                 </div>
             </div>
 

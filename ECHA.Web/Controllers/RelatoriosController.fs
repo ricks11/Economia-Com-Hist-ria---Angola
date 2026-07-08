@@ -35,6 +35,12 @@ type RelatoriosController (apiClient: ECHA.Web.Services.ApiClient) =
     [<HttpGet>]
     member this.Status (id: int) =
         task {
-            // Seria implementado GetStatus no ApiClient
-            return this.View() :> IActionResult
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! status = apiClient.GetRelatorioStatusAsync(id, t)
+                match status with
+                | Some s -> return this.View(s) :> IActionResult
+                | None -> return this.NotFound() :> IActionResult
         }

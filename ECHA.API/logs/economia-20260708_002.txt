@@ -1,0 +1,477 @@
+2026-07-08 03:59:08.532 +01:00 [INF] Executed DbCommand (626ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP DATABASE `u288106130_ECHA`;
+2026-07-08 03:59:09.935 +01:00 [ERR] The model for context 'AppDbContext' has pending changes. Add a new migration before updating the database. See https://aka.ms/efcore-docs-pending-changes.
+2026-07-08 03:59:12.523 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE DATABASE `u288106130_ECHA`;
+2026-07-08 04:04:46.439 +01:00 [INF] Executed DbCommand (438ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP DATABASE `u288106130_ECHA`;
+2026-07-08 04:04:47.703 +01:00 [ERR] The model for context 'AppDbContext' has pending changes. Add a new migration before updating the database. See https://aka.ms/efcore-docs-pending-changes.
+2026-07-08 04:04:50.360 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE DATABASE `u288106130_ECHA`;
+2026-07-08 04:04:53.022 +01:00 [INF] Executed DbCommand (278ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT GET_LOCK('__u288106130_ECHA_EFMigrationsLock', 259200)
+2026-07-08 04:04:53.535 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:55.680 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='u288106130_ECHA' AND TABLE_NAME='__EFMigrationsHistory';
+2026-07-08 04:04:55.911 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;
+2026-07-08 04:04:55.928 +01:00 [INF] Applying migration '20260602051836_AddForumEModeracao'.
+2026-07-08 04:04:56.301 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER DATABASE CHARACTER SET utf8mb4;
+2026-07-08 04:04:56.524 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Badges` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_Badges` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:56.754 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `CategoriasForum` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` varchar(500) CHARACTER SET utf8mb4 NULL,
+    `Icone` varchar(100) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_CategoriasForum` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:56.979 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Escolas` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `CodigoMEC` varchar(20) CHARACTER SET utf8mb4 NULL,
+    `Provincia` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `Localizacao` varchar(200) CHARACTER SET utf8mb4 NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    CONSTRAINT `PK_Escolas` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:57.208 +01:00 [INF] Executed DbCommand (228ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `BadgesConquistados` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UtilizadorId` int NOT NULL,
+    `BadgeId` int NOT NULL,
+    `DataConquista` datetime(6) NOT NULL,
+    CONSTRAINT `PK_BadgesConquistados` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_BadgesConquistados_Badges_BadgeId` FOREIGN KEY (`BadgeId`) REFERENCES `Badges` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:57.430 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Comentarios` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Texto` varchar(1000) CHARACTER SET utf8mb4 NOT NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    `AutorId` int NOT NULL,
+    CONSTRAINT `PK_Comentarios` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:57.652 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Conteudos` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Titulo` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Resumo` varchar(500) CHARACTER SET utf8mb4 NULL,
+    `Texto` longtext CHARACTER SET utf8mb4 NULL,
+    `DataPublicacao` datetime(6) NOT NULL,
+    `AutorId` int NOT NULL,
+    `Tema` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `Nivel` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `Regiao` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `Tipo` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `Estado` int NOT NULL,
+    `ImagemCapa` varchar(500) CHARACTER SET utf8mb4 NULL,
+    `UrlMedia` varchar(500) CHARACTER SET utf8mb4 NULL,
+    `Visualizacoes` int NOT NULL,
+    `Discriminator` varchar(21) CHARACTER SET utf8mb4 NOT NULL,
+    `Origem` varchar(200) CHARACTER SET utf8mb4 NULL,
+    `DataHistorica` datetime(6) NULL,
+    CONSTRAINT `PK_Conteudos` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:57.882 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Moderacoes` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Status` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    `ConteudoId` int NULL,
+    `ComentarioId` int NULL,
+    CONSTRAINT `PK_Moderacoes` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Moderacoes_Comentarios_ComentarioId` FOREIGN KEY (`ComentarioId`) REFERENCES `Comentarios` (`Id`),
+    CONSTRAINT `FK_Moderacoes_Conteudos_ConteudoId` FOREIGN KEY (`ConteudoId`) REFERENCES `Conteudos` (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:58.101 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Quizzes` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Titulo` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` longtext CHARACTER SET utf8mb4 NULL,
+    `NivelDificuldade` int NOT NULL,
+    `Tema` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+    `NumeroPerguntas` int NOT NULL,
+    `TempoPorPerguntaSegundos` int NOT NULL,
+    `IsDeleted` tinyint(1) NOT NULL,
+    `ConteudoId` int NULL,
+    CONSTRAINT `PK_Quizzes` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Quizzes_Conteudos_ConteudoId` FOREIGN KEY (`ConteudoId`) REFERENCES `Conteudos` (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:58.334 +01:00 [INF] Executed DbCommand (233ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `DecisoesModeracao` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Decisao` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Observacoes` longtext CHARACTER SET utf8mb4 NULL,
+    `DataDecisao` datetime(6) NOT NULL,
+    `ModeracaoId` int NOT NULL,
+    CONSTRAINT `PK_DecisoesModeracao` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_DecisoesModeracao_Moderacoes_ModeracaoId` FOREIGN KEY (`ModeracaoId`) REFERENCES `Moderacoes` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:58.558 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Perguntas` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `QuizId` int NOT NULL,
+    `Texto` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `OrdemAleatorizada` int NOT NULL,
+    `TempoLimiteSegundos` int NOT NULL,
+    CONSTRAINT `PK_Perguntas` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Perguntas_Quizzes_QuizId` FOREIGN KEY (`QuizId`) REFERENCES `Quizzes` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:58.777 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `OpcoesRespostas` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `PerguntaId` int NOT NULL,
+    `Texto` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `IsCorrecta` tinyint(1) NOT NULL,
+    `Explicacao` varchar(1000) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_OpcoesRespostas` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_OpcoesRespostas_Perguntas_PerguntaId` FOREIGN KEY (`PerguntaId`) REFERENCES `Perguntas` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:59.008 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `ConteudosFavoritos` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `ConteudoId` int NOT NULL,
+    `UtilizadorId` int NOT NULL,
+    `DataAdicionado` datetime(6) NOT NULL,
+    CONSTRAINT `PK_ConteudosFavoritos` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_ConteudosFavoritos_Conteudos_ConteudoId` FOREIGN KEY (`ConteudoId`) REFERENCES `Conteudos` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:59.315 +01:00 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `DenunciasConteudo` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `DenuncianteId` int NOT NULL,
+    `TopicoId` int NULL,
+    `RespostaId` int NULL,
+    `Motivo` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `DataDenuncia` datetime(6) NOT NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    `ConteudoId` int NULL,
+    `ComentarioId` int NULL,
+    CONSTRAINT `PK_DenunciasConteudo` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_DenunciasConteudo_Comentarios_ComentarioId` FOREIGN KEY (`ComentarioId`) REFERENCES `Comentarios` (`Id`),
+    CONSTRAINT `FK_DenunciasConteudo_Conteudos_ConteudoId` FOREIGN KEY (`ConteudoId`) REFERENCES `Conteudos` (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:59.534 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `EventosGamificacao` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Descricao` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `DataEvento` datetime(6) NOT NULL,
+    `UtilizadorId` int NOT NULL,
+    CONSTRAINT `PK_EventosGamificacao` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:59.765 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `ModulosProgresso` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UtilizadorId` int NOT NULL,
+    `Tema` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `PercentagemCompleta` decimal(5,2) NOT NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    `DataUltimaAtualizacao` datetime(6) NULL,
+    CONSTRAINT `PK_ModulosProgresso` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:04:59.988 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `PlanosEstudo` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Titulo` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Descricao` longtext CHARACTER SET utf8mb4 NULL,
+    `DataInicio` datetime(6) NOT NULL,
+    `DataFim` datetime(6) NULL,
+    `UtilizadorId` int NOT NULL,
+    CONSTRAINT `PK_PlanosEstudo` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:00.207 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Rankings` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UtilizadorId` int NOT NULL,
+    `Pontuacao` int NOT NULL,
+    `Periodo` int NOT NULL,
+    `EscolaId` int NULL,
+    `Provincia` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `DataSnapshot` datetime(6) NOT NULL,
+    CONSTRAINT `PK_Rankings` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:00.442 +01:00 [INF] Executed DbCommand (235ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Reacoes` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UtilizadorId` int NOT NULL,
+    `TopicoId` int NULL,
+    `RespostaId` int NULL,
+    `TipoReacao` int NOT NULL,
+    `ConteudoId` int NULL,
+    `ComentarioId` int NULL,
+    CONSTRAINT `PK_Reacoes` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Reacoes_Comentarios_ComentarioId` FOREIGN KEY (`ComentarioId`) REFERENCES `Comentarios` (`Id`),
+    CONSTRAINT `FK_Reacoes_Conteudos_ConteudoId` FOREIGN KEY (`ConteudoId`) REFERENCES `Conteudos` (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:00.669 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `RelatoriosProgresso` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Resumo` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `DataGeracao` datetime(6) NOT NULL,
+    `UtilizadorId` int NOT NULL,
+    CONSTRAINT `PK_RelatoriosProgresso` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:00.899 +01:00 [INF] Executed DbCommand (230ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `RespostasForum` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `TopicoId` int NOT NULL,
+    `AutorId` int NOT NULL,
+    `Conteudo` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `RespostaPaiId` int NULL,
+    `EstadoResposta` int NOT NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    `DataEdicao` datetime(6) NULL,
+    CONSTRAINT `PK_RespostasForum` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_RespostasForum_RespostasForum_RespostaPaiId` FOREIGN KEY (`RespostaPaiId`) REFERENCES `RespostasForum` (`Id`) ON DELETE RESTRICT
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:01.139 +01:00 [INF] Executed DbCommand (240ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `RespostasPerguntas` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `TentativaQuizId` int NOT NULL,
+    `PerguntaId` int NOT NULL,
+    `OpcaoRespostaId` int NOT NULL,
+    `TempoRespostaMs` int NOT NULL,
+    `IsCorrecta` tinyint(1) NOT NULL,
+    CONSTRAINT `PK_RespostasPerguntas` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_RespostasPerguntas_OpcoesRespostas_OpcaoRespostaId` FOREIGN KEY (`OpcaoRespostaId`) REFERENCES `OpcoesRespostas` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_RespostasPerguntas_Perguntas_PerguntaId` FOREIGN KEY (`PerguntaId`) REFERENCES `Perguntas` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:01.363 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `SessoesEstudo` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UtilizadorId` int NOT NULL,
+    `Inicio` datetime(6) NOT NULL,
+    `Fim` datetime(6) NULL,
+    `DuracaoMinutos` int NOT NULL,
+    CONSTRAINT `PK_SessoesEstudo` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:01.671 +01:00 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `TentativasQuiz` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UtilizadorId` int NOT NULL,
+    `QuizId` int NOT NULL,
+    `DataInicio` datetime(6) NOT NULL,
+    `DataFim` datetime(6) NULL,
+    `Pontuacao` int NOT NULL,
+    `Completa` tinyint(1) NOT NULL,
+    CONSTRAINT `PK_TentativasQuiz` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_TentativasQuiz_Quizzes_QuizId` FOREIGN KEY (`QuizId`) REFERENCES `Quizzes` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:01.977 +01:00 [INF] Executed DbCommand (305ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `TopicosForum` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Titulo` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Conteudo` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `AutorId` int NOT NULL,
+    `CategoriaId` int NOT NULL,
+    `EstadoTopico` int NOT NULL,
+    `DataCriacao` datetime(6) NOT NULL,
+    `TotalDenuncias` int NOT NULL,
+    `MotivoRejeicao` varchar(500) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_TopicosForum` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_TopicosForum_CategoriasForum_CategoriaId` FOREIGN KEY (`CategoriaId`) REFERENCES `CategoriasForum` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:02.204 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Turmas` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+    `Ano` int NULL,
+    `EscolaId` int NOT NULL,
+    `ProfessorId` int NULL,
+    CONSTRAINT `PK_Turmas` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Turmas_Escolas_EscolaId` FOREIGN KEY (`EscolaId`) REFERENCES `Escolas` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:02.430 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Utilizadores` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Nome` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Email` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `Telemovel` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `PasswordHash` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `Tipo` int NOT NULL,
+    `DataRegisto` datetime(6) NOT NULL,
+    `PontosTotais` int NOT NULL,
+    `StreakAtual` int NOT NULL,
+    `SuspensoAte` datetime(6) NULL,
+    `SuspensaoPermanente` tinyint(1) NOT NULL,
+    `Provincia` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `EscolaId` int NULL,
+    `TurmaId` int NULL,
+    CONSTRAINT `PK_Utilizadores` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_Utilizadores_Escolas_EscolaId` FOREIGN KEY (`EscolaId`) REFERENCES `Escolas` (`Id`),
+    CONSTRAINT `FK_Utilizadores_Turmas_TurmaId` FOREIGN KEY (`TurmaId`) REFERENCES `Turmas` (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:02.669 +01:00 [INF] Executed DbCommand (239ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `VisualizacoesConteudo` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `ConteudoId` int NOT NULL,
+    `UtilizadorId` int NOT NULL,
+    `DataVisualizacao` datetime(6) NOT NULL,
+    CONSTRAINT `PK_VisualizacoesConteudo` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_VisualizacoesConteudo_Conteudos_ConteudoId` FOREIGN KEY (`ConteudoId`) REFERENCES `Conteudos` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_VisualizacoesConteudo_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-07-08 04:05:03.040 +01:00 [INF] Executed DbCommand (371ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_BadgesConquistados_BadgeId` ON `BadgesConquistados` (`BadgeId`);
+2026-07-08 04:05:03.317 +01:00 [INF] Executed DbCommand (276ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_BadgesConquistados_UtilizadorId` ON `BadgesConquistados` (`UtilizadorId`);
+2026-07-08 04:05:03.540 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Comentarios_AutorId` ON `Comentarios` (`AutorId`);
+2026-07-08 04:05:03.763 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Conteudos_AutorId` ON `Conteudos` (`AutorId`);
+2026-07-08 04:05:04.230 +01:00 [INF] Executed DbCommand (466ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX `IX_ConteudosFavoritos_ConteudoId_UtilizadorId` ON `ConteudosFavoritos` (`ConteudoId`, `UtilizadorId`);
+2026-07-08 04:05:04.454 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_ConteudosFavoritos_UtilizadorId` ON `ConteudosFavoritos` (`UtilizadorId`);
+2026-07-08 04:05:04.844 +01:00 [INF] Executed DbCommand (390ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_DecisoesModeracao_ModeracaoId` ON `DecisoesModeracao` (`ModeracaoId`);
+2026-07-08 04:05:05.254 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_DenunciasConteudo_ComentarioId` ON `DenunciasConteudo` (`ComentarioId`);
+2026-07-08 04:05:05.664 +01:00 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_DenunciasConteudo_ConteudoId` ON `DenunciasConteudo` (`ConteudoId`);
+2026-07-08 04:05:05.889 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_DenunciasConteudo_DenuncianteId` ON `DenunciasConteudo` (`DenuncianteId`);
+2026-07-08 04:05:06.114 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_DenunciasConteudo_RespostaId` ON `DenunciasConteudo` (`RespostaId`);
+2026-07-08 04:05:06.337 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_DenunciasConteudo_TopicoId` ON `DenunciasConteudo` (`TopicoId`);
+2026-07-08 04:05:06.586 +01:00 [INF] Executed DbCommand (248ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_EventosGamificacao_UtilizadorId` ON `EventosGamificacao` (`UtilizadorId`);
+2026-07-08 04:05:06.995 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Moderacoes_ComentarioId` ON `Moderacoes` (`ComentarioId`);
+2026-07-08 04:05:07.376 +01:00 [INF] Executed DbCommand (381ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Moderacoes_ConteudoId` ON `Moderacoes` (`ConteudoId`);
+2026-07-08 04:05:07.609 +01:00 [INF] Executed DbCommand (233ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX `IX_ModulosProgresso_UtilizadorId_Tema` ON `ModulosProgresso` (`UtilizadorId`, `Tema`);
+2026-07-08 04:05:08.018 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_OpcoesRespostas_PerguntaId` ON `OpcoesRespostas` (`PerguntaId`);
+2026-07-08 04:05:08.393 +01:00 [INF] Executed DbCommand (374ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Perguntas_QuizId` ON `Perguntas` (`QuizId`);
+2026-07-08 04:05:08.633 +01:00 [INF] Executed DbCommand (240ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_PlanosEstudo_UtilizadorId` ON `PlanosEstudo` (`UtilizadorId`);
+2026-07-08 04:05:09.042 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Quizzes_ConteudoId` ON `Quizzes` (`ConteudoId`);
+2026-07-08 04:05:09.263 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Rankings_UtilizadorId` ON `Rankings` (`UtilizadorId`);
+2026-07-08 04:05:09.620 +01:00 [INF] Executed DbCommand (357ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Reacoes_ComentarioId` ON `Reacoes` (`ComentarioId`);
+2026-07-08 04:05:09.985 +01:00 [INF] Executed DbCommand (365ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Reacoes_ConteudoId` ON `Reacoes` (`ConteudoId`);
+2026-07-08 04:05:10.206 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Reacoes_RespostaId` ON `Reacoes` (`RespostaId`);
+2026-07-08 04:05:10.427 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Reacoes_TopicoId` ON `Reacoes` (`TopicoId`);
+2026-07-08 04:05:10.682 +01:00 [INF] Executed DbCommand (254ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX `IX_Reacoes_UtilizadorId_TopicoId_RespostaId_TipoReacao` ON `Reacoes` (`UtilizadorId`, `TopicoId`, `RespostaId`, `TipoReacao`);
+2026-07-08 04:05:10.906 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RelatoriosProgresso_UtilizadorId` ON `RelatoriosProgresso` (`UtilizadorId`);
+2026-07-08 04:05:11.135 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasForum_AutorId` ON `RespostasForum` (`AutorId`);
+2026-07-08 04:05:11.398 +01:00 [INF] Executed DbCommand (263ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasForum_EstadoResposta` ON `RespostasForum` (`EstadoResposta`);
+2026-07-08 04:05:11.747 +01:00 [INF] Executed DbCommand (349ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasForum_RespostaPaiId` ON `RespostasForum` (`RespostaPaiId`);
+2026-07-08 04:05:11.969 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasForum_TopicoId` ON `RespostasForum` (`TopicoId`);
+2026-07-08 04:05:12.421 +01:00 [INF] Executed DbCommand (452ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasPerguntas_OpcaoRespostaId` ON `RespostasPerguntas` (`OpcaoRespostaId`);
+2026-07-08 04:05:12.767 +01:00 [INF] Executed DbCommand (346ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasPerguntas_PerguntaId` ON `RespostasPerguntas` (`PerguntaId`);
+2026-07-08 04:05:12.989 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_RespostasPerguntas_TentativaQuizId` ON `RespostasPerguntas` (`TentativaQuizId`);
+2026-07-08 04:05:13.212 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_SessoesEstudo_UtilizadorId` ON `SessoesEstudo` (`UtilizadorId`);
+2026-07-08 04:05:13.556 +01:00 [INF] Executed DbCommand (344ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_TentativasQuiz_QuizId` ON `TentativasQuiz` (`QuizId`);
+2026-07-08 04:05:13.776 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_TentativasQuiz_UtilizadorId` ON `TentativasQuiz` (`UtilizadorId`);
+2026-07-08 04:05:13.999 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_TopicosForum_AutorId` ON `TopicosForum` (`AutorId`);
+2026-07-08 04:05:14.368 +01:00 [INF] Executed DbCommand (369ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_TopicosForum_CategoriaId` ON `TopicosForum` (`CategoriaId`);
+2026-07-08 04:05:14.592 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_TopicosForum_EstadoTopico` ON `TopicosForum` (`EstadoTopico`);
+2026-07-08 04:05:14.981 +01:00 [INF] Executed DbCommand (389ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Turmas_EscolaId` ON `Turmas` (`EscolaId`);
+2026-07-08 04:05:15.206 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Turmas_ProfessorId` ON `Turmas` (`ProfessorId`);
+2026-07-08 04:05:15.430 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX `IX_Utilizadores_Email` ON `Utilizadores` (`Email`);
+2026-07-08 04:05:15.903 +01:00 [INF] Executed DbCommand (473ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Utilizadores_EscolaId` ON `Utilizadores` (`EscolaId`);
+2026-07-08 04:05:16.312 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_Utilizadores_TurmaId` ON `Utilizadores` (`TurmaId`);
+2026-07-08 04:05:16.722 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX `IX_VisualizacoesConteudo_ConteudoId_UtilizadorId` ON `VisualizacoesConteudo` (`ConteudoId`, `UtilizadorId`);
+2026-07-08 04:05:17.123 +01:00 [INF] Executed DbCommand (401ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_VisualizacoesConteudo_UtilizadorId` ON `VisualizacoesConteudo` (`UtilizadorId`);
+2026-07-08 04:05:17.364 +01:00 [INF] Executed DbCommand (241ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `BadgesConquistados` ADD CONSTRAINT `FK_BadgesConquistados_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:17.592 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Comentarios` ADD CONSTRAINT `FK_Comentarios_Utilizadores_AutorId` FOREIGN KEY (`AutorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:17.851 +01:00 [INF] Executed DbCommand (259ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Conteudos` ADD CONSTRAINT `FK_Conteudos_Utilizadores_AutorId` FOREIGN KEY (`AutorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:18.077 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `ConteudosFavoritos` ADD CONSTRAINT `FK_ConteudosFavoritos_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:18.311 +01:00 [INF] Executed DbCommand (234ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `DenunciasConteudo` ADD CONSTRAINT `FK_DenunciasConteudo_RespostasForum_RespostaId` FOREIGN KEY (`RespostaId`) REFERENCES `RespostasForum` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:18.566 +01:00 [INF] Executed DbCommand (255ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `DenunciasConteudo` ADD CONSTRAINT `FK_DenunciasConteudo_TopicosForum_TopicoId` FOREIGN KEY (`TopicoId`) REFERENCES `TopicosForum` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:18.792 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `DenunciasConteudo` ADD CONSTRAINT `FK_DenunciasConteudo_Utilizadores_DenuncianteId` FOREIGN KEY (`DenuncianteId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:19.019 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `EventosGamificacao` ADD CONSTRAINT `FK_EventosGamificacao_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:19.243 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `ModulosProgresso` ADD CONSTRAINT `FK_ModulosProgresso_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:19.466 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `PlanosEstudo` ADD CONSTRAINT `FK_PlanosEstudo_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:19.693 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Rankings` ADD CONSTRAINT `FK_Rankings_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:19.921 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Reacoes` ADD CONSTRAINT `FK_Reacoes_RespostasForum_RespostaId` FOREIGN KEY (`RespostaId`) REFERENCES `RespostasForum` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:20.148 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Reacoes` ADD CONSTRAINT `FK_Reacoes_TopicosForum_TopicoId` FOREIGN KEY (`TopicoId`) REFERENCES `TopicosForum` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:20.409 +01:00 [INF] Executed DbCommand (261ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Reacoes` ADD CONSTRAINT `FK_Reacoes_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:20.634 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `RelatoriosProgresso` ADD CONSTRAINT `FK_RelatoriosProgresso_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:20.867 +01:00 [INF] Executed DbCommand (233ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `RespostasForum` ADD CONSTRAINT `FK_RespostasForum_TopicosForum_TopicoId` FOREIGN KEY (`TopicoId`) REFERENCES `TopicosForum` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:21.098 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `RespostasForum` ADD CONSTRAINT `FK_RespostasForum_Utilizadores_AutorId` FOREIGN KEY (`AutorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:21.330 +01:00 [INF] Executed DbCommand (232ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `RespostasPerguntas` ADD CONSTRAINT `FK_RespostasPerguntas_TentativasQuiz_TentativaQuizId` FOREIGN KEY (`TentativaQuizId`) REFERENCES `TentativasQuiz` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:21.556 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `SessoesEstudo` ADD CONSTRAINT `FK_SessoesEstudo_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:21.785 +01:00 [INF] Executed DbCommand (228ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `TentativasQuiz` ADD CONSTRAINT `FK_TentativasQuiz_Utilizadores_UtilizadorId` FOREIGN KEY (`UtilizadorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:22.012 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `TopicosForum` ADD CONSTRAINT `FK_TopicosForum_Utilizadores_AutorId` FOREIGN KEY (`AutorId`) REFERENCES `Utilizadores` (`Id`) ON DELETE CASCADE;
+2026-07-08 04:05:22.237 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE `Turmas` ADD CONSTRAINT `FK_Turmas_Utilizadores_ProfessorId` FOREIGN KEY (`ProfessorId`) REFERENCES `Utilizadores` (`Id`);
+2026-07-08 04:05:22.478 +01:00 [INF] Executed DbCommand (241ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20260602051836_AddForumEModeracao', '9.0.15');
+2026-07-08 04:05:22.921 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT RELEASE_LOCK('__u288106130_ECHA_EFMigrationsLock')
+2026-07-08 04:05:22.950 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-08 04:05:23.087 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-08 04:05:23.092 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-08 04:05:23.092 +01:00 [INF] Hosting environment: Development
+2026-07-08 04:05:23.092 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API

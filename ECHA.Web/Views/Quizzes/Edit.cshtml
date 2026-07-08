@@ -1,0 +1,57 @@
+@model EconomiaComHistoria.Core.DTOs.QuizDetalheDto
+
+@{
+    ViewData["Title"] = "Editar Quiz";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.Id">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Configurações Gerais</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Titulo" class="form-label">Título do Quiz</label>
+                    <input asp-for="Titulo" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Tema" class="form-label">Tema</label>
+                    <input asp-for="Tema" class="form-control" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Nivel" class="form-label">Nível de Dificuldade (1-5)</label>
+                    <select asp-for="Nivel" class="form-control" required>
+                        <option value="1">1 - Básico</option>
+                        <option value="2">2 - Intermediário</option>
+                        <option value="3">3 - Avançado</option>
+                        <option value="4">4 - Especialista</option>
+                        <option value="5">5 - Mestre</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TotalPerguntas" class="form-label">Total de Perguntas</label>
+                    <input asp-for="TotalPerguntas" type="number" min="1" class="form-control" required />
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TempoLimiteSeg" class="form-label">Tempo Limite (seg)</label>
+                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="form-control" required />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Descricao" class="form-label">Descrição (Opcional)</label>
+                <textarea asp-for="Descricao" class="form-control" rows="2"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4 mb-5">
+        <button type="submit" class="btn btn-success btn-lg">Salvar Alterações</button>
+        <a asp-action="Index" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>

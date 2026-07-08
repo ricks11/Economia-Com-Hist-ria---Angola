@@ -32,3 +32,20 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                 this.ModelState.AddModelError("", "Login failed")
                 return this.View(request) :> IActionResult
         }
+
+    [<HttpGet>]
+    member this.ForgotPassword() =
+        this.View()
+
+    [<HttpPost>]
+    member this.ForgotPassword(email: string) =
+        // In a real app, we would send a reset email here
+        // For now, just show a success message (whether email exists or not - for security)
+        this.View("ForgotPasswordConfirmation")
+
+    [<HttpPost>]
+    member this.Logout() =
+        task {
+            do! this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme)
+            return this.RedirectToAction("Index", "Home") :> IActionResult
+        }

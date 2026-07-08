@@ -59,10 +59,16 @@ public class CreateConteudoDto
     [Required(ErrorMessage = "Tipo de conteúdo é obrigatório")]
     public TipoConteudo Tipo { get; set; }
 
+    [Required(ErrorMessage = "Estado é obrigatório")]
+    public EstadoConteudo Estado { get; set; }
+
     public bool IsJindungo { get; set; }
 
     [StringLength(500, ErrorMessage = "Referência Factual não pode exceder 500 caracteres")]
     public string? ReferenciaFactual { get; set; }
+
+    [DataType(DataType.Date)]
+    public DateTime? DataAgendada { get; set; }
 }
 
 public class UpdateConteudoDto
@@ -95,8 +101,13 @@ public class UpdateConteudoDto
 
     public TipoConteudo? Tipo { get; set; }
 
+    public EstadoConteudo? Estado { get; set; }
+
     public bool? IsJindungo { get; set; }
 
     [StringLength(500, ErrorMessage = "Referência Factual não pode exceder 500 caracteres")]
     public string? ReferenciaFactual { get; set; }
+
+    [DataType(DataType.Date)]
+    public DateTime? DataAgendada { get; set; }
 }
