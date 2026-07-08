@@ -21,6 +21,16 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
+    member this.RegisterAsync(request: RegisterRequestDto) : Task<AuthResponseDto option> =
+        task {
+            let! response = httpClient.PostAsJsonAsync("/api/auth/register", request)
+            if response.IsSuccessStatusCode then
+                let! authResponse = response.Content.ReadFromJsonAsync<AuthResponseDto>()
+                return Some authResponse
+            else
+                return None
+        }
+
     member this.ListConteudosAsync(?tema, ?nivel, ?regiao, ?tipo, ?pagina, ?tamanho, ?estado) : Task<ConteudoResponseDto list> =
         task {
             let mutable url = "/api/conteudos?"
