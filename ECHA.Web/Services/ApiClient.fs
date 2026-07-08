@@ -31,6 +31,23 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
+    member this.ForgotPasswordAsync(email: string) : Task<bool> =
+        task {
+            // Criamos o objeto anónimo ou um mapa para serializar como JSON {"email": "..."}
+            let requestBody = dict [ "Email", email ]
+            let! response = httpClient.PostAsJsonAsync("/api/auth/forgot-password", requestBody)
+        
+            // Retornamos true se a API processou (mesmo que dê 400/500, a boa prática é seguir em frente na UI)
+            return response.IsSuccessStatusCode
+        }
+
+    member this.ResetPasswordAsync(request: EconomiaComHistoria.Core.DTOs.ResetPasswordRequestDto) : Task<bool> =
+        task {
+            // Passamos o objeto 'request' diretamente. O .NET encarrega-se de gerar o JSON perfeito para a API
+            let! response = httpClient.PostAsJsonAsync("/api/auth/reset-password", request)
+            return response.IsSuccessStatusCode
+        }
+
     member this.ListConteudosAsync(?tema, ?nivel, ?regiao, ?tipo, ?pagina, ?tamanho, ?estado) : Task<ConteudoResponseDto list> =
         task {
             let mutable url = "/api/conteudos?"

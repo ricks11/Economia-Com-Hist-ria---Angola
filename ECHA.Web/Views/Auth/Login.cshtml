@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Login & Registo";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+<div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 text-sm font-medium text-center shadow-sm">
+    @TempData["SuccessMessage"]
+</div>
+}
 
 <section class="flex min-h-[80vh] items-center justify-center px-4 py-12">
     <div class="w-full max-w-md bg-surface-container-lowest rounded-[2rem] p-8 md:p-10 shadow-xl shadow-stone-200/50 border border-stone-100/50">

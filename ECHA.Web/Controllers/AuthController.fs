@@ -5,6 +5,7 @@ open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Authentication
 open System.Security.Claims
+open System
 
 type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
@@ -66,7 +67,18 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
 
     [<HttpPost>]
     member this.ForgotPassword(email: string) =
-        this.View("ForgotPasswordConfirmation")
+        task {
+            if String.IsNullOrWhiteSpace(email) then
+                this.ModelState.AddModelError("", "Por favor, insira um email válido.")
+                return this.View() :> IActionResult
+            else
+                let! success = apiClient.ForgotPasswordAsync(email)
+                if success then
+                    return this.View("ForgotPasswordConfirmation") :> IActionResult
+                else
+                    this.ModelState.AddModelError("", "A API backend falhou ao processar o pedido.")
+                    return this.View() :> IActionResult
+        }
 
     [<HttpPost>]
     member this.Logout() =
@@ -74,4 +86,46 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
             // Garante que o SignOut também limpa o cookie correto
             do! this.HttpContext.SignOutAsync(AuthScheme)
             return this.RedirectToAction("Index", "Home") :> IActionResult
+        }
+
+    [<HttpGet>]
+    member this.ResetPassword() =
+        // Lemos diretamente os parâmetros da Query String do pedido HTTP
+        let query = this.Request.Query
+        let token = if query.ContainsKey("token") then query.["token"].ToString() else ""
+        let email = if query.ContainsKey("email") then query.["email"].ToString() else ""
+
+        if String.IsNullOrWhiteSpace(token) || String.IsNullOrWhiteSpace(email) then
+            // Se o link vier sem parâmetros válidos, manda de volta para o Login
+            this.RedirectToAction("Login") :> IActionResult
+        else
+            // Injeta os valores na ViewData para serem renderizados no HTML
+            this.ViewData["Token"] <- token
+            this.ViewData["Email"] <- email
+            this.View() :> IActionResult
+
+    [<HttpPost>]
+    member this.ResetPassword(form: Microsoft.AspNetCore.Http.IFormCollection) =
+        task {
+            // Capturamos os valores vindos do formulário HTML de forma explícita
+            let email = form.["Email"].ToString()
+            let token = form.["Token"].ToString()
+            let newPassword = form.["NewPassword"].ToString()
+
+            if String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(newPassword) then
+                this.ModelState.AddModelError("", "Dados de recuperação inválidos.")
+                return this.View() :> IActionResult
+            else
+                // Instanciamos o DTO explicitamente com os valores capturados
+                let dto = EconomiaComHistoria.Core.DTOs.ResetPasswordRequestDto(email, token, newPassword)
+            
+                let! success = apiClient.ResetPasswordAsync(dto)
+                if success then
+                    this.TempData["SuccessMessage"] <- "Palavra-passe redefinida com sucesso! Faça login com a nova credencial."
+                    return this.RedirectToAction("Login") :> IActionResult
+                else
+                    this.ModelState.AddModelError("", "Não foi possível redefinir a palavra-passe. O link pode ter expirado ou os dados são inválidos.")
+                    this.ViewData["Token"] <- token
+                    this.ViewData["Email"] <- email
+                    return this.View() :> IActionResult
         }
