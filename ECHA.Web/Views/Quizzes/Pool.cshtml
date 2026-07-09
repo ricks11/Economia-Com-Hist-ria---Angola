@@ -1,114 +1,50 @@
-@model IEnumerable<EconomiaComHistoria.Core.DTOs.PerguntaStartDto>
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.PerguntaDetalheDto>
 
     @{
-    ViewData["Title"] = "Editar Quiz";
+    ViewData["Title"] = "Pool de Perguntas";
     }
 
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <header class="mb-10 flex items-center justify-between border-b border-stone-100 pb-6">
             <div>
-                <h1 class="text-3xl font-black text-primary tracking-tight">@ViewData["Title"]</h1>
-                <p class="text-sm text-stone-500 mt-1">Atualize as informações essenciais e visualize as questões associadas.</p>
+                <h1 class="text-3xl font-black text-primary tracking-tight">Pool de Perguntas</h1>
+                <p class="text-sm text-stone-500 mt-1">Banco global de questões disponíveis para a criação de novos desafios.</p>
             </div>
             <a asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2 bg-stone-50 text-secondary border border-stone-200/60 rounded-xl text-sm font-semibold hover:bg-stone-100 transition-colors decoration-none">
                 <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-                Voltar
+                Voltar aos Quizzes
             </a>
         </header>
 
-        <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="space-y-8">
-            <div asp-validation-summary="ModelOnly" class="p-4 bg-red-50 border-l-4 border-error text-error text-sm rounded-r-xl"></div>
-
-            <div class="bg-surface-container-lowest border border-stone-100 rounded-3xl p-6 shadow-sm">
-                <div class="flex items-center gap-2 text-primary font-bold text-lg mb-6 pb-2 border-b border-stone-50">
-                    <span class="material-symbols-outlined text-primary">tune</span>
-                    <h2>Configurações Gerais</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @foreach (var p in Model)
+            {
+            <div class="bg-surface-container-lowest border border-stone-200/60 rounded-2xl p-5 shadow-sm">
+                <div class="flex justify-between items-start gap-4 mb-3">
+                    <h4 class="font-bold text-on-surface text-sm leading-snug">@p.Enunciado</h4>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                    <div>
-                        <label asp-for="Titulo" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Título do Quiz</label>
-                        <input asp-for="Titulo" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" required />
-                    </div>
-                    <div>
-                        <label asp-for="Tema" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tema</label>
-                        <input asp-for="Tema" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" required />
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                    <div>
-                        <label asp-for="Nivel" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Nível de Dificuldade</label>
-                        <select asp-for="Nivel" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" asp-items="Html.GetEnumSelectList<EconomiaComHistoria.Core.Enums.NivelDificuldade>()" required></select>
-                    </div>
-                    <div>
-                        <label asp-for="TotalPerguntas" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Total de Perguntas</label>
-                        <input asp-for="TotalPerguntas" type="number" min="1" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" required />
-                    </div>
-                    <div>
-                        <label asp-for="TempoLimiteSeg" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tempo Limite (segundos)</label>
-                        <input asp-for="TempoLimiteSeg" type="number" min="5" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" required />
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-3 pt-4 border-b border-stone-100 pb-10">
-                <button type="submit" class="px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-95 shadow-md shadow-primary/10 transition-all">
-                    Salvar Alterações
-                </button>
-                <a asp-action="Index" class="px-6 py-3 rounded-xl bg-stone-100 text-secondary font-bold text-sm hover:bg-stone-200/70 transition-colors decoration-none">
-                    Cancelar
-                </a>
-            </div>
-        </form>
-
-        <section class="mt-10">
-            <div class="mb-6">
-                <div class="flex items-baseline gap-2">
-                    <h3 class="text-xl font-bold text-primary">Perguntas deste Quiz</h3>
-                    <span class="px-2 py-0.5 bg-stone-100 text-stone-600 rounded-md text-xs font-bold">@Model.Perguntas.Count</span>
-                </div>
-                <p class="text-stone-400 text-xs mt-1">As perguntas pertencem à <a asp-action="Pool" class="text-primary font-semibold underline">Pool de Perguntas</a>. Podes visualizar o sumário ou usar o atalho rápido para correções.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach (var p in Model.Perguntas)
-                {
-                <div class="bg-surface-container-lowest border border-stone-200/60 rounded-2xl p-5 shadow-sm hover:border-stone-300 transition-all flex flex-col justify-between group">
-                    <div>
-                        <div class="flex justify-between items-start gap-4 mb-3">
-                            <h4 class="font-bold text-on-surface text-sm leading-snug">@p.Enunciado</h4>
-                            <a asp-controller="Perguntas" asp-action="Edit" asp-route-id="@p.Id" class="opacity-0 group-hover:opacity-100 text-stone-400 hover:text-primary transition-all p-1 rounded-lg hover:bg-stone-50" title="Editar esta pergunta na Pool">
-                                <span class="material-symbols-outlined text-[18px]">open_in_new</span>
-                            </a>
-                        </div>
-
-                        <div class="space-y-2.5">
-                            @foreach (var o in p.Opcoes)
+                <div class="space-y-2.5">
+                    @foreach (var o in p.Opcoes)
+                    {
+                    <div class="p-3 rounded-xl text-xs border @(o.IsCorrecta ? " bg-green-50 /70 border-green-200 text-green-900 font-medium" : "bg-stone-50/50 border-stone-100 text-stone-600" )">
+                        <div class="flex items-start justify-between gap-3">
+                            <span>@o.Texto</span>
+                            @if (o.IsCorrecta)
                             {
-                            <div class="p-3 rounded-xl text-xs transition-all border @(o.IsCorrecta ? " bg-green-50 /70 border-green-200 text-green-900 font-medium shadow-sm" : "bg-stone-50/50 border-stone-100 text-stone-600" )">
-                                <div class="flex items-start justify-between gap-3">
-                                    <span class="break-words max-w-[80%]">@o.Texto</span>
-                                    @if (o.IsCorrecta)
-                                    {
-                                    <span class="inline-flex items-center gap-0.5 px-2 py-0.5 bg-green-500 text-white rounded-md text-[10px] font-bold uppercase tracking-wider shrink-0">
-                                        Correta
-                                    </span>
-                                    }
-                                </div>
-                                @if (!string.IsNullOrEmpty(o.Explicacao))
-                                {
-                                <div class="mt-2 pt-1.5 border-t @(o.IsCorrecta ? " border-green-200 /50 text-green-700" : "border-stone-200/40 text-stone-400" ) text-[11px] leading-relaxed">
-                                    <span class="font-bold">Explicação:</span> @o.Explicacao
-                                </div>
-                                }
-                            </div>
+                            <span class="inline-flex items-center px-2 py-0.5 bg-green-500 text-white rounded-md text-[10px] font-bold uppercase shrink-0">Correta</span>
                             }
                         </div>
+                        @if (!string.IsNullOrEmpty(o.Explicacao))
+                        {
+                        <div class="mt-2 pt-1.5 border-t border-stone-200/40 text-stone-400 text-[11px]">
+                            <span class="font-bold">Explicação:</span> @o.Explicacao
+                        </div>
+                        }
                     </div>
+                    }
                 </div>
-                }
             </div>
-        </section>
+            }
+        </div>
     </div>

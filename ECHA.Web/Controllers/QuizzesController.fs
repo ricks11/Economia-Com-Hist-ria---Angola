@@ -25,16 +25,15 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
     [<HttpGet>]
     member this.Index (nivel: string, tema: string) =
         task {
-            // CORREÇÃO: Extrair o Token JWT e passá-lo para a chamada à API
             let! token = this.GetTokenAsync()
             match token with
             | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
             | t ->
                 try
                     let! quizzes = apiClient.ListQuizzesAsync(
+                                        t,
                                         ?nivel = (if String.IsNullOrEmpty nivel then None else Some nivel),
-                                        ?tema = (if String.IsNullOrEmpty tema then None else Some tema),
-                                        token = t) // Passagem obrigatória do Token JWT
+                                        ?tema = (if String.IsNullOrEmpty tema then None else Some tema))
                     return this.View(quizzes) :> IActionResult
                 with
                 | :? ApiClientException ->

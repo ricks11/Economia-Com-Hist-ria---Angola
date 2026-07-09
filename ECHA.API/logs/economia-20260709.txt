@@ -1176,3 +1176,845 @@ WHERE `q`.`Ativo`
 2026-07-09 01:21:53.658 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.CreateQuiz (ECHA.API) in 1365.5052ms
 2026-07-09 01:21:53.660 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.CreateQuiz (ECHA.API)'
 2026-07-09 01:21:53.661 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/quizzes - 400 null application/problem+json; charset=utf-8 1380.691ms
+2026-07-09 16:37:13.081 +01:00 [INF] Executed DbCommand (235ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 16:37:14.414 +01:00 [INF] Executed DbCommand (275ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__adminEmail_0)
+2026-07-09 16:37:14.951 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__superAdminEmail_0)
+2026-07-09 16:37:15.028 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 16:37:15.654 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 16:37:15.658 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 16:37:15.942 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 16:37:15.947 +01:00 [INF] Hosting environment: Development
+2026-07-09 16:37:15.950 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-09 16:37:25.168 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 16:37:25.583 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 16:37:25.643 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 16:37:27.372 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 16:37:29.308 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 16:37:29.409 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 16:37:29.450 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 3795.9113ms
+2026-07-09 16:37:29.458 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 16:37:29.493 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 4349.9628ms
+2026-07-09 16:40:44.168 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 16:40:44.183 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 16:40:44.186 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 16:40:46.291 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 16:40:46.952 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 16:40:46.960 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 16:40:46.962 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2772.705ms
+2026-07-09 16:40:46.966 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 16:40:46.969 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2800.7551ms
+2026-07-09 16:41:09.755 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 16:41:09.766 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 16:41:09.768 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 16:41:11.829 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 16:41:12.490 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 16:41:12.495 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 16:41:12.498 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2724.3889ms
+2026-07-09 16:41:12.502 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 16:41:12.505 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2749.7341ms
+2026-07-09 16:41:30.997 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 16:41:31.095 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 16:41:31.106 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 16:41:32.633 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 16:41:32.667 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 16:41:32.676 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1566.636ms
+2026-07-09 16:41:32.680 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 16:41:32.683 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1686.9136ms
+2026-07-09 16:41:43.968 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 16:41:43.977 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 16:41:43.980 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 16:41:45.332 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 16:41:45.339 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 16:41:45.342 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1353.9539ms
+2026-07-09 16:41:45.344 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 16:41:45.347 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1380.5302ms
+2026-07-09 16:57:45.570 +01:00 [INF] Executed DbCommand (269ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 16:57:46.696 +01:00 [INF] Executed DbCommand (290ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__adminEmail_0)
+2026-07-09 16:57:48.146 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__superAdminEmail_0)
+2026-07-09 16:57:48.210 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 16:57:48.729 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 16:57:48.731 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 16:57:48.953 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 16:57:48.958 +01:00 [INF] Hosting environment: Development
+2026-07-09 16:57:48.960 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-09 16:59:47.322 +01:00 [INF] Executed DbCommand (242ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 16:59:48.524 +01:00 [INF] Executed DbCommand (246ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__adminEmail_0)
+2026-07-09 16:59:49.002 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__superAdminEmail_0)
+2026-07-09 16:59:49.092 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 16:59:49.621 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 16:59:49.624 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 16:59:49.915 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 16:59:49.918 +01:00 [INF] Hosting environment: Development
+2026-07-09 16:59:49.924 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-09 16:59:54.142 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 16:59:54.477 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 16:59:54.513 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 16:59:55.992 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 16:59:56.093 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 16:59:56.137 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1613.4249ms
+2026-07-09 16:59:56.142 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 16:59:56.159 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2033.2097ms
+2026-07-09 17:00:35.604 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/2/stats - null null
+2026-07-09 17:00:35.634 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API)'
+2026-07-09 17:00:35.640 +01:00 [INF] Route matched with {action = "GetQuizStats", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.QuizStatsDto]] GetQuizStats(Int32) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:00:36.792 +01:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-07-09 17:00:38.058 +01:00 [INF] Executed DbCommand (247ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `q0`.`Id`, `q0`.`Ativo`, `q0`.`ConteudoId`, `q0`.`Nivel`, `q0`.`Tema`, `q0`.`TempoLimiteSeg`, `q0`.`Titulo`, `q0`.`TotalPerguntas`, `s`.`Id`, `s`.`AutorId`, `s`.`CriadaEm`, `s`.`Dificuldade`, `s`.`Enunciado`, `s`.`Estado`, `s`.`Explicacao`, `s`.`NumVezesErrada`, `s`.`Pontos`, `s`.`QuizId`, `s`.`Tema`, `s`.`Id0`, `s`.`Explicacao0`, `s`.`IsCorrecta`, `s`.`PerguntaId`, `s`.`Texto`
+FROM (
+    SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+    FROM `Quizzes` AS `q`
+    WHERE (`q`.`Id` = @__id_0) AND `q`.`Ativo`
+    LIMIT 1
+) AS `q0`
+LEFT JOIN (
+    SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `o`.`Id` AS `Id0`, `o`.`Explicacao` AS `Explicacao0`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`
+    FROM `Perguntas` AS `p`
+    LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+) AS `s` ON `q0`.`Id` = `s`.`QuizId`
+ORDER BY `q0`.`Id`, `s`.`Id`
+2026-07-09 17:00:38.714 +01:00 [INF] Executed DbCommand (274ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `r`.`Id`, `r`.`IsCorrecta`, `r`.`OpcaoRespostaId`, `r`.`PerguntaId`, `r`.`TempoRespostaMs`, `r`.`TentativaQuizId`
+FROM `RespostasPerguntas` AS `r`
+INNER JOIN `TentativasQuiz` AS `t` ON `r`.`TentativaQuizId` = `t`.`Id`
+WHERE `t`.`QuizId` = @__id_0
+2026-07-09 17:00:39.264 +01:00 [INF] Executed DbCommand (259ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `TentativasQuiz` AS `t`
+WHERE (`t`.`QuizId` = @__id_0) AND `t`.`Completada`
+2026-07-09 17:00:39.273 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.QuizStatsDto'.
+2026-07-09 17:00:39.289 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API) in 3643.589ms
+2026-07-09 17:00:39.292 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API)'
+2026-07-09 17:00:39.297 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/2/stats - 200 null application/json; charset=utf-8 3692.9174ms
+2026-07-09 17:00:45.846 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:00:45.862 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:00:45.864 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:00:47.230 +01:00 [INF] Executed DbCommand (233ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:00:47.235 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:00:47.238 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1370.7921ms
+2026-07-09 17:00:47.241 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:00:47.245 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1398.4259ms
+2026-07-09 17:00:49.065 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/1/stats - null null
+2026-07-09 17:00:49.072 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API)'
+2026-07-09 17:00:49.075 +01:00 [INF] Route matched with {action = "GetQuizStats", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.QuizStatsDto]] GetQuizStats(Int32) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:00:50.498 +01:00 [INF] Executed DbCommand (269ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `q0`.`Id`, `q0`.`Ativo`, `q0`.`ConteudoId`, `q0`.`Nivel`, `q0`.`Tema`, `q0`.`TempoLimiteSeg`, `q0`.`Titulo`, `q0`.`TotalPerguntas`, `s`.`Id`, `s`.`AutorId`, `s`.`CriadaEm`, `s`.`Dificuldade`, `s`.`Enunciado`, `s`.`Estado`, `s`.`Explicacao`, `s`.`NumVezesErrada`, `s`.`Pontos`, `s`.`QuizId`, `s`.`Tema`, `s`.`Id0`, `s`.`Explicacao0`, `s`.`IsCorrecta`, `s`.`PerguntaId`, `s`.`Texto`
+FROM (
+    SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+    FROM `Quizzes` AS `q`
+    WHERE (`q`.`Id` = @__id_0) AND `q`.`Ativo`
+    LIMIT 1
+) AS `q0`
+LEFT JOIN (
+    SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `o`.`Id` AS `Id0`, `o`.`Explicacao` AS `Explicacao0`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`
+    FROM `Perguntas` AS `p`
+    LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+) AS `s` ON `q0`.`Id` = `s`.`QuizId`
+ORDER BY `q0`.`Id`, `s`.`Id`
+2026-07-09 17:00:50.949 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `r`.`Id`, `r`.`IsCorrecta`, `r`.`OpcaoRespostaId`, `r`.`PerguntaId`, `r`.`TempoRespostaMs`, `r`.`TentativaQuizId`
+FROM `RespostasPerguntas` AS `r`
+INNER JOIN `TentativasQuiz` AS `t` ON `r`.`TentativaQuizId` = `t`.`Id`
+WHERE `t`.`QuizId` = @__id_0
+2026-07-09 17:00:51.429 +01:00 [INF] Executed DbCommand (252ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `TentativasQuiz` AS `t`
+WHERE (`t`.`QuizId` = @__id_0) AND `t`.`Completada`
+2026-07-09 17:00:51.436 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.QuizStatsDto'.
+2026-07-09 17:00:51.440 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API) in 2361.1044ms
+2026-07-09 17:00:51.447 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API)'
+2026-07-09 17:00:51.450 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/1/stats - 200 null application/json; charset=utf-8 2385.8776ms
+2026-07-09 17:00:52.927 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:00:52.935 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:00:52.938 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:00:54.285 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:00:54.290 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:00:54.293 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1352.4829ms
+2026-07-09 17:00:54.296 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:00:54.299 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1372.2222ms
+2026-07-09 17:00:56.732 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/1/detalhe - null null
+2026-07-09 17:00:56.738 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizDetalhe (ECHA.API)'
+2026-07-09 17:00:56.748 +01:00 [INF] Route matched with {action = "GetQuizDetalhe", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.QuizDetalheDto]] GetQuizDetalhe(Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:00:58.283 +01:00 [INF] Executed DbCommand (294ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `q0`.`Id`, `q0`.`Ativo`, `q0`.`ConteudoId`, `q0`.`Nivel`, `q0`.`Tema`, `q0`.`TempoLimiteSeg`, `q0`.`Titulo`, `q0`.`TotalPerguntas`, `s`.`Id`, `s`.`AutorId`, `s`.`CriadaEm`, `s`.`Dificuldade`, `s`.`Enunciado`, `s`.`Estado`, `s`.`Explicacao`, `s`.`NumVezesErrada`, `s`.`Pontos`, `s`.`QuizId`, `s`.`Tema`, `s`.`Id0`, `s`.`Explicacao0`, `s`.`IsCorrecta`, `s`.`PerguntaId`, `s`.`Texto`
+FROM (
+    SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+    FROM `Quizzes` AS `q`
+    WHERE (`q`.`Id` = @__id_0) AND `q`.`Ativo`
+    LIMIT 1
+) AS `q0`
+LEFT JOIN (
+    SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `o`.`Id` AS `Id0`, `o`.`Explicacao` AS `Explicacao0`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`
+    FROM `Perguntas` AS `p`
+    LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+) AS `s` ON `q0`.`Id` = `s`.`QuizId`
+ORDER BY `q0`.`Id`, `s`.`Id`
+2026-07-09 17:00:58.295 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.QuizDetalheDto'.
+2026-07-09 17:00:58.303 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizDetalhe (ECHA.API) in 1551.8263ms
+2026-07-09 17:00:58.307 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizDetalhe (ECHA.API)'
+2026-07-09 17:00:58.312 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/1/detalhe - 200 null application/json; charset=utf-8 1579.5288ms
+2026-07-09 17:02:37.589 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:02:37.596 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:02:37.599 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:02:39.626 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:02:39.631 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:02:39.634 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 2030.1956ms
+2026-07-09 17:02:39.637 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:02:39.640 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2051.2566ms
+2026-07-09 17:03:56.256 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:03:56.269 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:03:56.271 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:03:58.282 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:03:58.288 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:03:58.291 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 2016.1186ms
+2026-07-09 17:03:58.294 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:03:58.297 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2041.2659ms
+2026-07-09 17:03:58.706 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
+2026-07-09 17:03:58.715 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:03:58.721 +01:00 [INF] Route matched with {action = "GetQuestionPool", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.PerguntaStartDto]]] GetQuestionPool(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade]) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:04:00.149 +01:00 [INF] Executed DbCommand (280ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `q`.`Id`, `o`.`Id`, `o`.`Explicacao`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Perguntas` AS `p`
+INNER JOIN `Quizzes` AS `q` ON `p`.`QuizId` = `q`.`Id`
+LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+ORDER BY `p`.`Id`, `q`.`Id`
+2026-07-09 17:04:00.174 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.PerguntaStartDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:04:00.182 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API) in 1457.344ms
+2026-07-09 17:04:00.184 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:04:00.186 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 200 null application/json; charset=utf-8 1480.5444ms
+2026-07-09 17:13:35.795 +01:00 [INF] Executed DbCommand (237ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 17:13:37.141 +01:00 [INF] Executed DbCommand (269ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__adminEmail_0)
+2026-07-09 17:13:37.640 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__superAdminEmail_0)
+2026-07-09 17:13:37.711 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 17:13:38.345 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 17:13:38.348 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 17:13:38.672 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 17:13:38.675 +01:00 [INF] Hosting environment: Development
+2026-07-09 17:13:38.678 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-09 17:13:42.188 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:13:42.620 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:13:42.665 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:13:44.116 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:13:44.266 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:13:44.303 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1626.7108ms
+2026-07-09 17:13:44.307 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:13:44.330 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2169.1764ms
+2026-07-09 17:13:47.787 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
+2026-07-09 17:13:47.812 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:13:47.822 +01:00 [INF] Route matched with {action = "GetQuestionPool", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.PerguntaStartDto]]] GetQuestionPool(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade]) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:13:49.592 +01:00 [INF] Executed DbCommand (288ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `q`.`Id`, `o`.`Id`, `o`.`Explicacao`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Perguntas` AS `p`
+INNER JOIN `Quizzes` AS `q` ON `p`.`QuizId` = `q`.`Id`
+LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+ORDER BY `p`.`Id`, `q`.`Id`
+2026-07-09 17:13:49.730 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.PerguntaStartDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:13:49.742 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API) in 1915.8789ms
+2026-07-09 17:13:49.746 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:13:49.754 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 200 null application/json; charset=utf-8 1966.7069ms
+2026-07-09 17:20:55.722 +01:00 [INF] Executed DbCommand (232ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 17:20:56.869 +01:00 [INF] Executed DbCommand (256ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__adminEmail_0)
+2026-07-09 17:20:57.386 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__superAdminEmail_0)
+2026-07-09 17:20:57.460 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 17:20:58.053 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 17:20:58.055 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 17:20:58.270 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 17:20:58.273 +01:00 [INF] Hosting environment: Development
+2026-07-09 17:20:58.275 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-09 17:21:02.254 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:21:02.582 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:21:02.614 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:21:04.872 +01:00 [INF] Executed DbCommand (1,002ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:21:05.025 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:21:05.058 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 2435.0658ms
+2026-07-09 17:21:05.063 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:21:05.082 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2850.0367ms
+2026-07-09 17:21:09.894 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
+2026-07-09 17:21:09.915 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:21:09.923 +01:00 [INF] Route matched with {action = "GetQuestionPool", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.PerguntaStartDto]]] GetQuestionPool(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade]) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:21:11.650 +01:00 [INF] Executed DbCommand (288ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `q`.`Id`, `o`.`Id`, `o`.`Explicacao`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Perguntas` AS `p`
+INNER JOIN `Quizzes` AS `q` ON `p`.`QuizId` = `q`.`Id`
+LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+ORDER BY `p`.`Id`, `q`.`Id`
+2026-07-09 17:21:11.756 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.PerguntaStartDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:21:11.765 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API) in 1838.3856ms
+2026-07-09 17:21:11.768 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:21:11.771 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 200 null application/json; charset=utf-8 1877.4714ms
+2026-07-09 17:22:00.926 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
+2026-07-09 17:22:00.946 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:22:00.950 +01:00 [INF] Route matched with {action = "GetQuestionPool", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.PerguntaStartDto]]] GetQuestionPool(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade]) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:22:03.568 +01:00 [INF] Executed DbCommand (458ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `q`.`Id`, `o`.`Id`, `o`.`Explicacao`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Perguntas` AS `p`
+INNER JOIN `Quizzes` AS `q` ON `p`.`QuizId` = `q`.`Id`
+LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+ORDER BY `p`.`Id`, `q`.`Id`
+2026-07-09 17:22:03.580 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.PerguntaStartDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:22:03.583 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API) in 2627.8047ms
+2026-07-09 17:22:03.586 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:22:03.589 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 200 null application/json; charset=utf-8 2676.4402ms
+2026-07-09 17:22:22.446 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 17:22:23.583 +01:00 [INF] Executed DbCommand (251ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__adminEmail_0)
+2026-07-09 17:22:24.054 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Utilizadores` AS `u`
+    WHERE `u`.`Email` = @__superAdminEmail_0)
+2026-07-09 17:22:24.118 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 17:22:24.639 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 17:22:24.642 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 17:22:24.898 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 17:22:24.900 +01:00 [INF] Hosting environment: Development
+2026-07-09 17:22:24.903 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-09 17:22:25.921 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:22:26.237 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:22:26.273 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:22:27.718 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:22:27.843 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:22:27.877 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1596.855ms
+2026-07-09 17:22:27.882 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:22:27.898 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1991.0305ms
+2026-07-09 17:22:31.218 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
+2026-07-09 17:22:31.237 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:22:31.243 +01:00 [INF] Route matched with {action = "GetQuestionPool", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.PerguntaStartDto]]] GetQuestionPool(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade]) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:22:32.906 +01:00 [INF] Executed DbCommand (282ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `q`.`Id`, `o`.`Id`, `o`.`Explicacao`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Perguntas` AS `p`
+INNER JOIN `Quizzes` AS `q` ON `p`.`QuizId` = `q`.`Id`
+LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+ORDER BY `p`.`Id`, `q`.`Id`
+2026-07-09 17:22:33.009 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.PerguntaStartDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:22:33.018 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API) in 1769.9244ms
+2026-07-09 17:22:33.022 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
+2026-07-09 17:22:33.025 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 200 null application/json; charset=utf-8 1807.4944ms
+2026-07-09 17:22:55.112 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:22:55.125 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:22:55.128 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:22:57.243 +01:00 [INF] Executed DbCommand (236ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:22:57.253 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:22:57.257 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 2124.7044ms
+2026-07-09 17:22:57.260 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:22:57.263 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2151.1874ms
+2026-07-09 17:23:04.131 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/3/detalhe - null null
+2026-07-09 17:23:04.139 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizDetalhe (ECHA.API)'
+2026-07-09 17:23:04.146 +01:00 [INF] Route matched with {action = "GetQuizDetalhe", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.QuizDetalheDto]] GetQuizDetalhe(Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:23:05.134 +01:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-07-09 17:23:05.744 +01:00 [INF] Executed DbCommand (316ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `q0`.`Id`, `q0`.`Ativo`, `q0`.`ConteudoId`, `q0`.`Nivel`, `q0`.`Tema`, `q0`.`TempoLimiteSeg`, `q0`.`Titulo`, `q0`.`TotalPerguntas`, `s`.`Id`, `s`.`AutorId`, `s`.`CriadaEm`, `s`.`Dificuldade`, `s`.`Enunciado`, `s`.`Estado`, `s`.`Explicacao`, `s`.`NumVezesErrada`, `s`.`Pontos`, `s`.`QuizId`, `s`.`Tema`, `s`.`Id0`, `s`.`Explicacao0`, `s`.`IsCorrecta`, `s`.`PerguntaId`, `s`.`Texto`
+FROM (
+    SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+    FROM `Quizzes` AS `q`
+    WHERE (`q`.`Id` = @__id_0) AND `q`.`Ativo`
+    LIMIT 1
+) AS `q0`
+LEFT JOIN (
+    SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `o`.`Id` AS `Id0`, `o`.`Explicacao` AS `Explicacao0`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`
+    FROM `Perguntas` AS `p`
+    LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+) AS `s` ON `q0`.`Id` = `s`.`QuizId`
+ORDER BY `q0`.`Id`, `s`.`Id`
+2026-07-09 17:23:05.764 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.QuizDetalheDto'.
+2026-07-09 17:23:05.772 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizDetalhe (ECHA.API) in 1621.4872ms
+2026-07-09 17:23:05.777 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizDetalhe (ECHA.API)'
+2026-07-09 17:23:05.780 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/3/detalhe - 200 null application/json; charset=utf-8 1649.2502ms
+2026-07-09 17:23:14.679 +01:00 [INF] Request starting HTTP/1.1 PUT https://localhost:7275/api/quizzes/3 - application/json; charset=utf-8 null
+2026-07-09 17:23:14.688 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.UpdateQuiz (ECHA.API)'
+2026-07-09 17:23:14.699 +01:00 [INF] Route matched with {action = "UpdateQuiz", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] UpdateQuiz(Int32, EconomiaComHistoria.Core.DTOs.UpdateQuizDto) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:23:18.253 +01:00 [INF] Executed DbCommand (1,172ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `q0`.`Id`, `q0`.`Ativo`, `q0`.`ConteudoId`, `q0`.`Nivel`, `q0`.`Tema`, `q0`.`TempoLimiteSeg`, `q0`.`Titulo`, `q0`.`TotalPerguntas`, `s`.`Id`, `s`.`AutorId`, `s`.`CriadaEm`, `s`.`Dificuldade`, `s`.`Enunciado`, `s`.`Estado`, `s`.`Explicacao`, `s`.`NumVezesErrada`, `s`.`Pontos`, `s`.`QuizId`, `s`.`Tema`, `s`.`Id0`, `s`.`Explicacao0`, `s`.`IsCorrecta`, `s`.`PerguntaId`, `s`.`Texto`
+FROM (
+    SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+    FROM `Quizzes` AS `q`
+    WHERE (`q`.`Id` = @__id_0) AND `q`.`Ativo`
+    LIMIT 1
+) AS `q0`
+LEFT JOIN (
+    SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `o`.`Id` AS `Id0`, `o`.`Explicacao` AS `Explicacao0`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`
+    FROM `Perguntas` AS `p`
+    LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+) AS `s` ON `q0`.`Id` = `s`.`QuizId`
+ORDER BY `q0`.`Id`, `s`.`Id`
+2026-07-09 17:23:18.979 +01:00 [INF] Executed DbCommand (270ms) [Parameters=[@p7='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Quizzes` SET `Ativo` = @p0, `ConteudoId` = @p1, `Nivel` = @p2, `Tema` = @p3, `TempoLimiteSeg` = @p4, `Titulo` = @p5, `TotalPerguntas` = @p6
+WHERE `Id` = @p7;
+SELECT ROW_COUNT();
+2026-07-09 17:23:19.000 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
+2026-07-09 17:23:19.002 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.UpdateQuiz (ECHA.API) in 4297.1911ms
+2026-07-09 17:23:19.004 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.UpdateQuiz (ECHA.API)'
+2026-07-09 17:23:19.007 +01:00 [INF] Request finished HTTP/1.1 PUT https://localhost:7275/api/quizzes/3 - 204 null null 4328.0229ms
+2026-07-09 17:23:19.037 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:23:19.045 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:23:19.047 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:23:20.546 +01:00 [INF] Executed DbCommand (270ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:23:20.554 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:23:20.558 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1505.5554ms
+2026-07-09 17:23:20.562 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:23:20.566 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1528.4261ms
+2026-07-09 17:23:27.815 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/3/stats - null null
+2026-07-09 17:23:27.827 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API)'
+2026-07-09 17:23:27.835 +01:00 [INF] Route matched with {action = "GetQuizStats", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.QuizStatsDto]] GetQuizStats(Int32) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:23:29.804 +01:00 [INF] Executed DbCommand (247ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `q0`.`Id`, `q0`.`Ativo`, `q0`.`ConteudoId`, `q0`.`Nivel`, `q0`.`Tema`, `q0`.`TempoLimiteSeg`, `q0`.`Titulo`, `q0`.`TotalPerguntas`, `s`.`Id`, `s`.`AutorId`, `s`.`CriadaEm`, `s`.`Dificuldade`, `s`.`Enunciado`, `s`.`Estado`, `s`.`Explicacao`, `s`.`NumVezesErrada`, `s`.`Pontos`, `s`.`QuizId`, `s`.`Tema`, `s`.`Id0`, `s`.`Explicacao0`, `s`.`IsCorrecta`, `s`.`PerguntaId`, `s`.`Texto`
+FROM (
+    SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+    FROM `Quizzes` AS `q`
+    WHERE (`q`.`Id` = @__id_0) AND `q`.`Ativo`
+    LIMIT 1
+) AS `q0`
+LEFT JOIN (
+    SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `o`.`Id` AS `Id0`, `o`.`Explicacao` AS `Explicacao0`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`
+    FROM `Perguntas` AS `p`
+    LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
+) AS `s` ON `q0`.`Id` = `s`.`QuizId`
+ORDER BY `q0`.`Id`, `s`.`Id`
+2026-07-09 17:23:30.274 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `r`.`Id`, `r`.`IsCorrecta`, `r`.`OpcaoRespostaId`, `r`.`PerguntaId`, `r`.`TempoRespostaMs`, `r`.`TentativaQuizId`
+FROM `RespostasPerguntas` AS `r`
+INNER JOIN `TentativasQuiz` AS `t` ON `r`.`TentativaQuizId` = `t`.`Id`
+WHERE `t`.`QuizId` = @__id_0
+2026-07-09 17:23:30.770 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `TentativasQuiz` AS `t`
+WHERE (`t`.`QuizId` = @__id_0) AND `t`.`Completada`
+2026-07-09 17:23:30.779 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.QuizStatsDto'.
+2026-07-09 17:23:30.791 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API) in 2951.2468ms
+2026-07-09 17:23:30.794 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizStats (ECHA.API)'
+2026-07-09 17:23:30.797 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/3/stats - 200 null application/json; charset=utf-8 2982.0185ms
+2026-07-09 17:24:09.521 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-09 17:24:09.545 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:24:09.547 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 17:24:11.792 +01:00 [INF] Executed DbCommand (247ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 17:24:11.797 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:24:11.801 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 2247.9574ms
+2026-07-09 17:24:11.803 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 17:24:11.807 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2285.2424ms
+2026-07-09 17:24:20.225 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-09 17:24:20.238 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:24:20.241 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:20.254 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:24:21.594 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE `c`.`Estado` = 2
+2026-07-09 17:24:22.113 +01:00 [INF] Executed DbCommand (238ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE `c`.`Estado` = 2
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:24:22.129 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:24:22.175 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1916.8036ms
+2026-07-09 17:24:22.178 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:22.182 +01:00 [INF] The response has been cached.
+2026-07-09 17:24:22.184 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 1959.1428ms
+2026-07-09 17:24:25.057 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=V%C3%ADdeo&pagina=1& - null null
+2026-07-09 17:24:25.068 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:24:25.070 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:25.073 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:24:26.021 +01:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-07-09 17:24:26.049 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 971.3051ms
+2026-07-09 17:24:26.052 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:26.055 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 17:24:26.057 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=V%C3%ADdeo&pagina=1& - 400 null application/problem+json; charset=utf-8 999.6773ms
+2026-07-09 17:24:27.279 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=Texto&pagina=1&jindungo=False& - null null
+2026-07-09 17:24:27.285 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:24:27.287 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:27.289 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:24:28.636 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__tipo_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Tipo` = @__tipo_Value_1)
+2026-07-09 17:24:28.658 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=Podcast&pagina=1& - null null
+2026-07-09 17:24:28.664 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:24:28.666 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:28.668 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:24:29.153 +01:00 [INF] Executed DbCommand (237ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__tipo_Value_1='?' (DbType = Int32), @__p_3='?' (DbType = Int32), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Tipo` = @__tipo_Value_1)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_3 OFFSET @__p_2
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:24:29.161 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:24:29.166 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1871.9815ms
+2026-07-09 17:24:29.169 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:29.171 +01:00 [INF] The response has been cached.
+2026-07-09 17:24:29.174 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=Texto&pagina=1&jindungo=False& - 200 null application/json; charset=utf-8 1894.9717ms
+2026-07-09 17:24:30.005 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[@__tipo_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE (`c`.`Estado` = 2) AND (`c`.`Tipo` = @__tipo_Value_0)
+2026-07-09 17:24:30.510 +01:00 [INF] Executed DbCommand (237ms) [Parameters=[@__tipo_Value_0='?' (DbType = Int32), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE (`c`.`Estado` = 2) AND (`c`.`Tipo` = @__tipo_Value_0)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:24:30.517 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:24:30.519 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1847.1513ms
+2026-07-09 17:24:30.522 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:30.525 +01:00 [INF] The response has been cached.
+2026-07-09 17:24:30.531 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=Podcast&pagina=1& - 200 null application/json; charset=utf-8 1872.8699ms
+2026-07-09 17:24:31.873 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=Texto&pagina=1&jindungo=True& - null null
+2026-07-09 17:24:31.882 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:24:31.884 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:31.886 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:24:33.211 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__tipo_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Tipo` = @__tipo_Value_1)
+2026-07-09 17:24:33.672 +01:00 [INF] Executed DbCommand (237ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__tipo_Value_1='?' (DbType = Int32), @__p_3='?' (DbType = Int32), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Tipo` = @__tipo_Value_1)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_3 OFFSET @__p_2
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:24:33.679 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:24:33.682 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1791.876ms
+2026-07-09 17:24:33.685 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:24:33.687 +01:00 [INF] The response has been cached.
+2026-07-09 17:24:33.689 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=Texto&pagina=1&jindungo=True& - 200 null application/json; charset=utf-8 1816.4235ms
+2026-07-09 17:24:35.839 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-09 17:24:35.850 +01:00 [INF] Serving response from cache.
+2026-07-09 17:24:35.853 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 13.7815ms
+2026-07-09 17:24:51.798 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 17:24:51.810 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 17:24:51.820 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 17:24:55.412 +01:00 [INF] Executed DbCommand (235ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 17:24:56.508 +01:00 [INF] Executed DbCommand (240ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 17:24:56.535 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 17:24:56.547 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 4721.1624ms
+2026-07-09 17:24:56.551 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 17:24:56.554 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 4755.8754ms
+2026-07-09 17:24:58.288 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
+2026-07-09 17:24:58.295 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
+2026-07-09 17:24:58.301 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
+2026-07-09 17:25:00.440 +01:00 [INF] Executed DbCommand (236ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
+    WHEN 0 THEN 'Visitante'
+    WHEN 1 THEN 'Registado'
+    WHEN 2 THEN 'Premium'
+    WHEN 3 THEN 'Professor'
+    WHEN 4 THEN 'Editor'
+    WHEN 5 THEN 'Moderador'
+    WHEN 6 THEN 'Admin'
+    WHEN 7 THEN 'SuperAdmin'
+    WHEN 8 THEN 'ClienteInstitucional'
+    ELSE CAST(`u`.`Tipo` AS char)
+END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
+FROM `Utilizadores` AS `u`
+ORDER BY `u`.`Nome`
+2026-07-09 17:25:00.450 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:25:00.458 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 2153.4561ms
+2026-07-09 17:25:00.461 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
+2026-07-09 17:25:00.465 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 2177.116ms
+2026-07-09 17:25:13.520 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-09 17:25:13.529 +01:00 [INF] Serving response from cache.
+2026-07-09 17:25:13.532 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 12.128ms
+2026-07-09 17:25:20.450 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=V%C3%ADdeo&pagina=1& - null null
+2026-07-09 17:25:20.461 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:25:20.465 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:25:20.468 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:25:21.384 +01:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-07-09 17:25:21.388 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 915.2481ms
+2026-07-09 17:25:21.392 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:25:21.395 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 17:25:21.397 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?tipo=V%C3%ADdeo&pagina=1& - 400 null application/problem+json; charset=utf-8 946.6671ms
+2026-07-09 17:25:23.059 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-09 17:25:23.069 +01:00 [INF] Serving response from cache.
+2026-07-09 17:25:23.073 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 13.972ms
+2026-07-09 17:25:26.329 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
+2026-07-09 17:25:26.338 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:25:26.341 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:25:26.344 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:25:28.378 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[@__nivel_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = 2) AND (`c`.`Nivel` = @__nivel_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_0)
+2026-07-09 17:25:28.904 +01:00 [INF] Executed DbCommand (228ms) [Parameters=[@__nivel_Value_0='?' (DbType = Int32), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = 2) AND (`c`.`Nivel` = @__nivel_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_0)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:25:28.914 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:25:28.918 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 2567.5443ms
+2026-07-09 17:25:28.923 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:25:28.926 +01:00 [INF] The response has been cached.
+2026-07-09 17:25:28.928 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 2599.4119ms
+2026-07-09 17:27:06.166 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
+2026-07-09 17:27:06.174 +01:00 [INF] Serving response from cache.
+2026-07-09 17:27:06.176 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 9.6199ms
+2026-07-09 17:27:09.211 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=V%C3%ADdeo&pagina=1& - null null
+2026-07-09 17:27:09.221 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:27:09.223 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:09.227 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:27:10.121 +01:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-07-09 17:27:10.126 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 893.0165ms
+2026-07-09 17:27:10.129 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:10.132 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 17:27:10.137 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=V%C3%ADdeo&pagina=1& - 400 null application/problem+json; charset=utf-8 925.9111ms
+2026-07-09 17:27:12.208 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
+2026-07-09 17:27:12.220 +01:00 [INF] Serving response from cache.
+2026-07-09 17:27:12.223 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 14.7583ms
+2026-07-09 17:27:13.633 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
+2026-07-09 17:27:13.643 +01:00 [INF] Serving response from cache.
+2026-07-09 17:27:13.645 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 11.6456ms
+2026-07-09 17:27:14.928 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
+2026-07-09 17:27:14.938 +01:00 [INF] Serving response from cache.
+2026-07-09 17:27:14.941 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 13.2054ms
+2026-07-09 17:27:17.528 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1& - null null
+2026-07-09 17:27:17.534 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:27:17.537 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:17.540 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:27:19.542 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[@__nivel_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = 2) AND (`c`.`Nivel` = @__nivel_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_0)
+2026-07-09 17:27:19.997 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[@__nivel_Value_0='?' (DbType = Int32), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = 2) AND (`c`.`Nivel` = @__nivel_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_0)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_2 OFFSET @__p_1
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:27:20.005 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:27:20.009 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 2464.4844ms
+2026-07-09 17:27:20.013 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:20.019 +01:00 [INF] The response has been cached.
+2026-07-09 17:27:20.022 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1& - 200 null application/json; charset=utf-8 2494.1345ms
+2026-07-09 17:27:22.176 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1&estado=Rascunho& - null null
+2026-07-09 17:27:22.184 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:27:22.187 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:22.190 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:27:23.514 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[@__estado_Value_0='?' (DbType = Int32), @__nivel_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = @__estado_Value_0) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)
+2026-07-09 17:27:24.040 +01:00 [INF] Executed DbCommand (235ms) [Parameters=[@__estado_Value_0='?' (DbType = Int32), @__nivel_Value_1='?' (DbType = Int32), @__p_3='?' (DbType = Int32), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = @__estado_Value_0) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_3 OFFSET @__p_2
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:27:24.047 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:27:24.051 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1855.584ms
+2026-07-09 17:27:24.054 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:24.057 +01:00 [INF] The response has been cached.
+2026-07-09 17:27:24.060 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1&estado=Rascunho& - 200 null application/json; charset=utf-8 1884.014ms
+2026-07-09 17:27:25.490 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1&estado=EmRevisao& - null null
+2026-07-09 17:27:25.496 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:27:25.500 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:25.503 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:27:26.827 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[@__estado_Value_0='?' (DbType = Int32), @__nivel_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = @__estado_Value_0) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)
+2026-07-09 17:27:27.292 +01:00 [INF] Executed DbCommand (238ms) [Parameters=[@__estado_Value_0='?' (DbType = Int32), @__nivel_Value_1='?' (DbType = Int32), @__p_3='?' (DbType = Int32), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = @__estado_Value_0) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_3 OFFSET @__p_2
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:27:27.299 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:27:27.304 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1797.1073ms
+2026-07-09 17:27:27.307 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:27.310 +01:00 [INF] The response has been cached.
+2026-07-09 17:27:27.313 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1&estado=EmRevisao& - 200 null application/json; charset=utf-8 1822.7335ms
+2026-07-09 17:27:29.290 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1&estado=Publicado& - null null
+2026-07-09 17:27:29.299 +01:00 [INF] No cached response available for this request.
+2026-07-09 17:27:29.301 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:29.305 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-09 17:27:30.701 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[@__estado_Value_0='?' (DbType = Int32), @__nivel_Value_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE ((`c`.`Estado` = @__estado_Value_0) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)
+2026-07-09 17:27:31.178 +01:00 [INF] Executed DbCommand (234ms) [Parameters=[@__estado_Value_0='?' (DbType = Int32), @__nivel_Value_1='?' (DbType = Int32), @__p_3='?' (DbType = Int32), @__p_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE ((`c`.`Estado` = @__estado_Value_0) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)
+    ORDER BY `c`.`DataPublicacao` DESC
+    LIMIT @__p_3 OFFSET @__p_2
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-09 17:27:31.186 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 17:27:31.191 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1880.2625ms
+2026-07-09 17:27:31.194 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-09 17:27:31.202 +01:00 [INF] The response has been cached.
+2026-07-09 17:27:31.204 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Avancado&pagina=1&estado=Publicado& - 200 null application/json; charset=utf-8 1914.2906ms
