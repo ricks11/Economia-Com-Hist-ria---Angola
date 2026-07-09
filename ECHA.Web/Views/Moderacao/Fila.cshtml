@@ -3,109 +3,94 @@
     ViewData["Title"] = "Fila de Moderação";
 }
 
-<div class="max-w-5xl mx-auto px-6 pt-12">
-    <div class="mb-10">
-        <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Moderação de Conteúdo</h1>
-        <p class="text-on-surface-variant">Analise e aprove tópicos do fórum e respostas pendentes.</p>
-    </div>
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Fila de Aprovação</h1>
 
-    <!-- Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        <div class="bg-surface-container-lowest rounded-2xl p-6 text-center shadow-sm">
-            <span class="text-4xl font-headline font-bold text-primary">@Model.Topicos.Count</span>
-            <p class="text-secondary text-sm font-medium mt-1">Tópicos pendentes</p>
-        </div>
-        <div class="bg-surface-container-lowest rounded-2xl p-6 text-center shadow-sm">
-            <span class="text-4xl font-headline font-bold text-primary">@Model.Respostas.Count</span>
-            <p class="text-secondary text-sm font-medium mt-1">Respostas pendentes</p>
-        </div>
-    </div>
-
-    <!-- Tópicos -->
-    <div class="space-y-8">
-        <div>
-            <h2 class="text-2xl font-headline font-bold text-primary mb-6">Tópicos pendentes</h2>
-            @if (!Model.Topicos.Any())
+    <section class="mb-10">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Tópicos a Aguardar Revisão (@Model.Topicos.Count)</h2>
+        @if (!Model.Topicos.Any())
+        {
+        <p class="text-gray-500 bg-gray-50 p-4 rounded-lg">Não existem tópicos pendentes de aprovação.</p>
+        }
+        else
+        {
+        <div class="grid gap-4">
+            @foreach (var topico in Model.Topicos)
             {
-                <p class="text-secondary italic">Nenhum tópico pendente.</p>
-            }
-            else
-            {
-                <div class="space-y-4">
-                    @foreach (var item in Model.Topicos)
-                    {
-                        <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-stone-100">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="bg-secondary-container text-xs font-bold px-3 py-1 rounded-full text-on-secondary-container uppercase">@item.CategoriaNome</span>
-                                <span class="text-xs text-stone-400">@item.DataCriacao.ToString("dd/MM/yyyy HH:mm")</span>
-                            </div>
-                            <h3 class="font-headline font-bold text-lg text-primary mb-2">@item.TituloOuConteudo</h3>
-                            <p class="text-sm text-secondary mb-4">por @item.AutorNome</p>
-                            <div class="flex gap-3">
-                                <form asp-action="AprovarTopico" asp-route-id="@item.Id" method="post" class="inline">
-                                    <button type="submit" class="px-5 py-2 rounded-full bg-primary text-white text-sm font-bold hover:shadow-md transition-all">Aprovar</button>
-                                </form>
-                                <button type="button" class="px-5 py-2 rounded-full bg-error-container/20 text-error text-sm font-bold hover:bg-error-container/30 transition-all" onclick="rejeitarConteudo('@Url.Action("RejeitarTopico", "Moderacao")', @item.Id)">Rejeitar</button>
-                            </div>
-                        </div>
-                    }
+            <div class="bg-white p-5 rounded-lg shadow border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="flex-1">
+                    <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mb-2 font-medium">@topico.CategoriaNome</span>
+                    <h3 class="text-lg font-bold text-gray-900">@topico.TituloOuConteudo</h3>
+                    <p class="text-sm text-gray-500">Autor: @topico.AutorNome | Criado em: @topico.DataCriacao.ToString("dd/MM/yyyy HH:mm")</p>
                 </div>
-            }
-        </div>
-
-        <!-- Respostas -->
-        <div>
-            <h2 class="text-2xl font-headline font-bold text-primary mb-6">Respostas pendentes</h2>
-            @if (!Model.Respostas.Any())
-            {
-                <p class="text-secondary italic">Nenhuma resposta pendente.</p>
-            }
-            else
-            {
-                <div class="space-y-4">
-                    @foreach (var item in Model.Respostas)
-                    {
-                        <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-stone-100">
-                            <p class="text-on-surface mb-4">"@item.TituloOuConteudo"</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-secondary font-medium">por @item.AutorNome</span>
-                                <div class="flex gap-3">
-                                    <form asp-action="AprovarResposta" asp-route-id="@item.Id" method="post" class="inline">
-                                        <button type="submit" class="px-5 py-2 rounded-full bg-primary text-white text-sm font-bold hover:shadow-md transition-all">Aprovar</button>
-                                    </form>
-                                    <button type="button" class="px-5 py-2 rounded-full bg-error-container/20 text-error text-sm font-bold hover:bg-error-container/30 transition-all" onclick="rejeitarConteudo('@Url.Action("RejeitarResposta", "Moderacao")', @item.Id)">Rejeitar</button>
-                                </div>
-                            </div>
-                        </div>
-                    }
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <form asp-action="AprovarTopico" asp-route-id="@topico.Id" method="post">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium transition">Aprovar</button>
+                    </form>
+                    <button onclick="abrirModalRejeicao('@topico.Id', 'Topico')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition">Rejeitar</button>
                 </div>
+            </div>
             }
         </div>
-    </div>
+        }
+    </section>
+
+    <section>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Respostas a Aguardar Revisão (@Model.Respostas.Count)</h2>
+        @if (!Model.Respostas.Any())
+        {
+        <p class="text-gray-500 bg-gray-50 p-4 rounded-lg">Não existem respostas pendentes de aprovação.</p>
+        }
+        else
+        {
+        <div class="grid gap-4">
+            @foreach (var resposta in Model.Respostas)
+            {
+            <div class="bg-white p-5 rounded-lg shadow border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="flex-1">
+                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Em resposta ao Tópico #@resposta.TopicoId</h4>
+                    <p class="text-gray-800 italic bg-gray-50 p-3 rounded mb-2 border-l-4 border-gray-300">"@resposta.TituloOuConteudo"</p>
+                    <p class="text-sm text-gray-500">Autor: @resposta.AutorNome | Submetido em: @resposta.DataCriacao.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <form asp-action="AprovarResposta" asp-route-id="@resposta.Id" method="post">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium transition">Aprovar</button>
+                    </form>
+                    <button onclick="abrirModalRejeicao('@resposta.Id', 'Resposta')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition">Rejeitar</button>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </section>
 </div>
 
-<!-- Modal para Rejeição -->
-<div id="rejeitarModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
-    <div class="bg-white p-8 rounded-3xl w-full max-w-md shadow-2xl">
-        <h3 class="text-xl font-headline font-bold text-primary mb-6">Motivo da Rejeição</h3>
-        <form id="rejeitarForm" method="post">
-            <textarea name="motivo" class="w-full bg-surface-container-low border-none rounded-2xl p-4 mb-6 focus:ring-2 focus:ring-primary/20" required rows="3" placeholder="Insira o motivo..."></textarea>
-            <div class="flex gap-3 justify-end">
-                <button type="button" class="px-6 py-3 rounded-full bg-surface-container font-bold" onclick="fecharModal()">Cancelar</button>
-                <button type="submit" class="px-6 py-3 rounded-full bg-error text-white font-bold">Confirmar</button>
+<div id="modalRejeicao" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Motivo da Rejeição</h3>
+        <form id="formRejeicao" method="post">
+            <input type="hidden" id="rejeicaoId" name="id" />
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Por favor, indique a razão de rejeição:</label>
+                <textarea id="motivo" name="motivo" required rows="4" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Ex: Linguagem imprópria, fora do âmbito económico-histórico..."></textarea>
+            </div>
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="fecharModalRejeicao()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded font-medium text-sm transition">Cancelar</button>
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium text-sm transition">Confirmar Rejeição</button>
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        function rejeitarConteudo(actionUrl, id) {
-            document.getElementById('rejeitarForm').action = actionUrl + '/' + id;
-            document.getElementById('rejeitarModal').classList.remove('hidden');
-        }
-        function fecharModal() {
-            document.getElementById('rejeitarModal').classList.add('hidden');
-        }
-    </script>
-}
+<script>
+    function abrirModalRejeicao(id, tipo) {
+        document.getElementById('rejeicaoId').value = id;
+        const form = document.getElementById('formRejeicao');
+        form.action = `/Moderacao/Rejeitar${tipo}/${id}`;
+        document.getElementById('modalRejeicao').classList.remove('hidden');
+    }
+    function fecharModalRejeicao() {
+        document.getElementById('modalRejeicao').classList.add('hidden');
+        document.getElementById('motivo').value = '';
+    }
+</script>

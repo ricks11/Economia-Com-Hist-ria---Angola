@@ -27,6 +27,13 @@ public class Utilizador
     public int NumeroPublicacoes { get; set; }     // controlo moderação prévia (<5)
     public DateTime? SuspensoAte { get; set; }      // null = não suspenso
 
+    // Indica se o utilizador está atualmente sob o efeito de qualquer suspensão
+    public bool Suspenso => SuspensaoPermanente || (SuspensoAte.HasValue && SuspensoAte.Value > DateTime.UtcNow);
+
+    // Consideramos um banimento permanente se a data for muito longa no futuro (ex: 100 anos como definiste no modal)
+    // ou se preferires, define uma regra com base no ano configurado (ex: ano > 2100)
+    public bool SuspensaoPermanente => SuspensoAte.HasValue && SuspensoAte.Value.Year >= DateTime.UtcNow.Year + 90;
+
     // Navigation properties
     public int? EscolaId { get; set; }
     public Escola? Escola { get; set; }
