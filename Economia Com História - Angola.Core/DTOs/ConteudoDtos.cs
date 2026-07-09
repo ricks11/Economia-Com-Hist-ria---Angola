@@ -1,28 +1,35 @@
 using EconomiaComHistoria.Core.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EconomiaComHistoria.Core.DTOs;
 
 public record ConteudoResponseDto(
-    int Id, 
-    string Titulo, 
-    string? Resumo, 
+    int Id,
+    string Titulo,
+    string? Resumo,
     string? CorpoTexto,
-    string? VideoUrl, 
-    string? AudioUrl, 
-    string? ThumbnailUrl, 
-    TipoConteudo Tipo,
-    NivelDificuldade Nivel, 
-    string Tema, 
-    string Regiao, 
-    EstadoConteudo Estado,
-    int? EditorId, 
-    string? EditorNome, 
-    int Visualizacoes, 
+    string? VideoUrl,
+    string? AudioUrl,
+    string? ThumbnailUrl,
+
+    // CORREÇÃO: Usar o prefixo 'property:' para records posicionais
+    [property: JsonConverter(typeof(JsonStringEnumConverter))] TipoConteudo Tipo,
+    [property: JsonConverter(typeof(JsonStringEnumConverter))] NivelDificuldade Nivel,
+
+    string Tema,
+    string Regiao,
+
+    [property: JsonConverter(typeof(JsonStringEnumConverter))] EstadoConteudo Estado,
+
+    int? EditorId,
+    string? EditorNome,
+    int Visualizacoes,
     bool EhFavorito,
-    bool IsJindungo, 
-    string? ReferenciaFactual, 
-    DateTime? DataPublicacao);
+    bool IsJindungo,
+    string? ReferenciaFactual,
+    DateTime? DataPublicacao
+);
 
 public class CreateConteudoDto
 {

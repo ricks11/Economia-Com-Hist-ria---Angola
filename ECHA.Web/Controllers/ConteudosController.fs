@@ -9,7 +9,7 @@ open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
 open ECHA.Web.Services
 
-[<Authorize(Roles = "Editor,Admin")>]
+[<Authorize(Roles = "Editor,Admin, SuperAdmin")>]
 type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
@@ -43,21 +43,24 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
         task {
             try
                 let p = if pagina = 0 then 1 else pagina
-            
-                // Converte a string da URL ("true"/"false") num bool opcional
+        
                 let filtrarJindungo = 
                     if String.IsNullOrEmpty jindungo then None
                     elif jindungo.Equals("true", StringComparison.OrdinalIgnoreCase) then Some true
                     elif jindungo.Equals("false", StringComparison.OrdinalIgnoreCase) then Some false
                     else None
 
+                // Função auxiliar local para converter string vazia ou nula em None
+                let validarFiltro str = 
+                    if String.IsNullOrWhiteSpace str then None else Some str
+
                 let! conteudos = apiClient.ListConteudosAsync(
-                                    ?tema = (if String.IsNullOrEmpty tema then None else Some tema),
-                                    ?nivel = (if String.IsNullOrEmpty nivel then None else Some nivel),
-                                    ?regiao = (if String.IsNullOrEmpty regiao then None else Some regiao),
-                                    ?tipo = (if String.IsNullOrEmpty tipo then None else Some tipo),
-                                    ?estado = (if String.IsNullOrEmpty estado then None else Some estado),
-                                    ?jindungo = filtrarJindungo, // 👈 Passa o filtro mapeado para a API
+                                    ?tema = validarFiltro tema,
+                                    ?nivel = validarFiltro nivel,
+                                    ?regiao = validarFiltro regiao,
+                                    ?tipo = validarFiltro tipo,
+                                    ?estado = validarFiltro estado,
+                                    ?jindungo = filtrarJindungo,
                                     pagina = p)
                 return this.View(conteudos) :> IActionResult
             with

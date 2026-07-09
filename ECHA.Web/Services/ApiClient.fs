@@ -56,7 +56,7 @@ type ApiClient(httpClient: HttpClient) =
             return response.IsSuccessStatusCode
         }
 
-    member this.ListConteudosAsync(?tema, ?nivel, ?regiao, ?tipo, ?pagina, ?tamanho, ?estado, ?jindungo) : Task<ConteudoResponseDto list> =
+    member this.ListConteudosAsync(?tema, ?nivel, ?regiao, ?tipo, ?pagina, ?tamanho, ?estado, ?jindungo) : Task<EconomiaComHistoria.Core.Helpers.PagedResult<ConteudoResponseDto>> =
         task {
             let mutable url = "/api/conteudos?"
             tema |> Option.iter (fun v -> url <- url + "tema=" + v + "&")
@@ -70,38 +70,14 @@ type ApiClient(httpClient: HttpClient) =
 
             let! response = httpClient.GetAsync(url)
             if response.IsSuccessStatusCode then
-                let! jsonString = response.Content.ReadAsStringAsync()
-                let options = JsonSerializerOptions(PropertyNamingPolicy = JsonNamingPolicy.CamelCase)
-                
-                try
-                    use doc = JsonDocument.Parse(jsonString)
-                    let root = doc.RootElement
-                    
-                    // Criamos a variável mutável que o TryGetProperty vai preencher se encontrar a propriedade
-                    let mutable itemsElement = JsonElement()
-                    
-                    // 1. Tenta extrair a propriedade "items" (com 'i' minúsculo)
-                    if root.ValueKind = JsonValueKind.Object && root.TryGetProperty("items", &itemsElement) then
-                        let rawItems = itemsElement.GetRawText()
-                        let items = JsonSerializer.Deserialize<ConteudoResponseDto list>(rawItems, options)
-                        return items
-                        
-                    // 2. Fallback caso a API envie "Items" em maiúsculo
-                    elif root.ValueKind = JsonValueKind.Object && root.TryGetProperty("Items", &itemsElement) then
-                        let rawItems = itemsElement.GetRawText()
-                        let items = JsonSerializer.Deserialize<ConteudoResponseDto list>(rawItems, options)
-                        return items
-                        
-                    // 3. Se a API devolver diretamente um array puro [...]
-                    else
-                        let items = JsonSerializer.Deserialize<ConteudoResponseDto list>(jsonString, options)
-                        return items
-                with _ ->
-                    return []
+                // CORREÇÃO CRÍTICA: Usa os JsonOpts.options globais que contêm o JsonStringEnumConverter()
+                // E mapeia diretamente para o wrapper PagedResult que a tua API envia
+                let! pagedResult = response.Content.ReadFromJsonAsync<EconomiaComHistoria.Core.Helpers.PagedResult<ConteudoResponseDto>>(JsonOpts.options)
+                return pagedResult
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
             else
-                return []
+                return EconomiaComHistoria.Core.Helpers.PagedResult<ConteudoResponseDto>() // Retorna uma instância de paginação vazia
         }
 
     member this.GetConteudoAsync(id: int) : Task<ConteudoResponseDto option> =

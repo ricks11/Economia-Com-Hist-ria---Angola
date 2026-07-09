@@ -35,7 +35,8 @@ builder.Host.UseSerilog();
 // CONTROLLERS & API EXPLORER
 // ─────────────────────────────────────────
 builder.Services.AddControllers()
-    .AddJsonOptions(options => {
+    .AddJsonOptions(options =>
+    {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 builder.Services.AddEndpointsApiExplorer();
