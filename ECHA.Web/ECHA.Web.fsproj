@@ -7,18 +7,19 @@
   <ItemGroup>
     <Compile Include="Models/ErrorViewModel.fs" />
     <Compile Include="Services/ApiClient.fs" />
-	<Compile Include="Controllers/AdminController.fs" />
-	<Compile Include="Controllers/AuthController.fs" />
-	<Compile Include="Controllers/ConteudosController.fs" />
-	<Compile Include="Controllers/EscolasController.fs" />
-	<Compile Include="Controllers/GamificacaoController.fs" />
-    <Compile Include="Controllers/HomeController.fs" />	
-	<Compile Include="Controllers/ModeracaoController.fs" />
-	<Compile Include="Controllers/PerfilController.fs" />
+    <Compile Include="Controllers/HomeController.fs" />
+    <Compile Include="Controllers/AuthController.fs" />
+    <Compile Include="Controllers/ConteudosController.fs" />
     <Compile Include="Controllers/QuizzesController.fs" />
-	<Compile Include="Controllers/RelatoriosController.fs" />
+    <Compile Include="Controllers/ModeracaoController.fs" />
+    <Compile Include="Controllers/GamificacaoController.fs" />
+    <Compile Include="Controllers/EscolasController.fs" />
     <Compile Include="Controllers/TurmasController.fs" />
-    
+    <Compile Include="Controllers/ForumController.fs" />
+    <Compile Include="Controllers/PerfilController.fs" />
+    <Compile Include="Controllers/RankingsController.fs" />
+    <Compile Include="Controllers/AdminController.fs" />
+    <Compile Include="Controllers/RelatoriosController.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

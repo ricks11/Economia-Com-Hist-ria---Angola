@@ -170,6 +170,7 @@ public class QuizzesController : ControllerBase
         quiz.Titulo = dto.Titulo;
         quiz.Tema = dto.Tema;
         quiz.Nivel = dto.Nivel;
+        quiz.Tema = dto.Tema;
         quiz.TotalPerguntas = dto.TotalPerguntas;
         quiz.TempoLimiteSeg = dto.TempoLimiteSeg;
 

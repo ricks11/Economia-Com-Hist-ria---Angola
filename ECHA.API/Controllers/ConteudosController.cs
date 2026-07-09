@@ -1,16 +1,15 @@
-using EconomiaComHistoria.API.Services;
-using EconomiaComHistoria.Core.DTOs;
-using EconomiaComHistoria.Core.DTOs.Sync;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
+using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.Core.Helpers;
-using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
-using EconomiaComHistoria.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.Core.Interfaces;
+using EconomiaComHistoria.Core.DTOs.Sync;
 
 namespace EconomiaComHistoria.API.Controllers;
 
@@ -21,18 +20,16 @@ public class ConteudosController : ControllerBase
     private readonly AppDbContext _dbContext;
     private readonly IFileStorageService _fileStorageService;
     private readonly IConteudoCacheExportService _conteudoCacheService;
-    private readonly IConteudoRepository _conteudoRepository;
 
-    public ConteudosController(AppDbContext dbContext, IFileStorageService fileStorageService, IConteudoCacheExportService conteudoCacheService, IConteudoRepository conteudoRepository )
+    public ConteudosController(AppDbContext dbContext, IFileStorageService fileStorageService, IConteudoCacheExportService conteudoCacheService)
     {
         _dbContext = dbContext;
         _fileStorageService = fileStorageService;
         _conteudoCacheService = conteudoCacheService;
-        _conteudoRepository = conteudoRepository;
     }
 
     /// <summary>
-    /// Obtém conteúdos otimizados para download offline
+    /// Gets content optimized for offline download
     /// </summary>
     [HttpGet("download")]
     [Authorize]
@@ -55,27 +52,31 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Cria um novo item de conteúdo (Apenas Editor, Professor, Admin)
+    /// Creates a new content item (Editor/Admin only)
     /// </summary>
     [HttpPost]
-    [Authorize(Roles = "Editor,Professor,Admin,SuperAdmin")]
+    [Authorize(Roles = "Editor,Professor,Admin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<ConteudoResponseDto>> CreateConteudo(
         [FromBody] CreateConteudoDto request,
         CancellationToken cancellationToken)
     {
-        // 1. Regras de negócio específicas para o Jindungo
-        if (request.IsJindungo && string.IsNullOrWhiteSpace(request.ReferenciaFactual))
-            return BadRequest(new { message = "Referência factual é obrigatória para conteúdo Jindungo" });
+        // Validate input
+        if (string.IsNullOrWhiteSpace(request.Titulo))
+            return BadRequest(new { message = "Título é obrigatório" });
 
-        // 2. Recupera o ID do utilizador autenticado via Claim "sub" ou NameIdentifier
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // Get current user ID from JWT
+        var userIdClaim = User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
-        // 3. Criação da entidade alinhada com as propriedades recebidas do CreateConteudoDto
+        if (request.IsJindungo && string.IsNullOrEmpty(request.ReferenciaFactual))
+            return BadRequest(new { message = "Referência factual é obrigatória para conteúdo Jindungo" });
+
+        // Create content
         var conteudo = new Conteudo
         {
             Titulo = request.Titulo,
@@ -87,31 +88,19 @@ public class ConteudosController : ControllerBase
             Tipo = request.Tipo,
             EditorId = userId,
             DataPublicacao = DateTime.UtcNow,
-
-            // Forçamos o Estado para Publicado (2) para garantir que aparece no Index da listagem
-            Estado = EstadoConteudo.Publicado,
-
-            DataAgendada = request.DataAgendada,
-            IsJindungo = request.IsJindungo,
-            ReferenciaFactual = request.IsJindungo ? request.ReferenciaFactual : null,
-
-            // Sincronização dos campos multimédia com base no Enum TipoConteudo
-            VideoUrl = request.Tipo == TipoConteudo.Video ? request.VideoUrl : null,
-            AudioUrl = request.Tipo == TipoConteudo.Podcast ? request.AudioUrl : null,
-            ThumbnailUrl = request.ThumbnailUrl
+            Estado = request.Estado,
+            DataAgendada = request.DataAgendada
         };
 
-        // 4. Salva fisicamente na base de dados
         _dbContext.Conteudos.Add(conteudo);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        // 5. Mapeia para o DTO de Resposta Oficial
         var response = MapToResponseDto(conteudo, false);
         return CreatedAtAction(nameof(GetConteudo), new { id = conteudo.Id }, response);
     }
 
     /// <summary>
-    /// Lista todos os conteúdos com filtros opcionais e paginação
+    /// Lists all content with optional filtering and pagination
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
@@ -122,7 +111,7 @@ public class ConteudosController : ControllerBase
         [FromQuery] NivelDificuldade? nivel,
         [FromQuery] TipoConteudo? tipo,
         [FromQuery] string? regiao,
-        [FromQuery] EstadoConteudo? estado, 
+        [FromQuery] EstadoConteudo? estado,
         [FromQuery] bool? jindungo,
         [FromQuery] int pagina = 1,
         [FromQuery] int tamanho = 20,
@@ -131,43 +120,39 @@ public class ConteudosController : ControllerBase
         if (pagina < 1) pagina = 1;
         if (tamanho < 1 || tamanho > 100) tamanho = 20;
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value;
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
 
         var query = _dbContext.Conteudos.AsNoTracking();
 
-        // Aplica o filtro de estado se fornecido, senão assume apenas publicados por omissão
+        // Apply estado filter: if provided, filter by estado; otherwise, default to published for backward compatibility
         if (estado.HasValue)
-            query = query.Where(c => c.Estado == estado.Value);
-        else
-            query = query.Where(c => c.Estado == EstadoConteudo.Publicado);
-
-        // Dentro do método ListConteudos da tua API C#
-        if (jindungo.HasValue)
         {
-            // Se for true -> traz apenas com jindungo. Se for false -> traz apenas sem jindungo.
-            query = query.Where(c => c.IsJindungo == jindungo.Value);
+            query = query.Where(c => c.Estado == estado.Value);
+        }
+        else
+        {
+            query = query.Where(c => c.Estado == EstadoConteudo.Publicado);
         }
 
-        if (!string.IsNullOrEmpty(tema)) query = query.Where(c => c.Tema == tema);
-        if (nivel.HasValue) query = query.Where(c => c.Nivel == nivel.Value);
-
+        // Apply filters
         if (!string.IsNullOrEmpty(tema)) query = query.Where(c => c.Tema == tema);
         if (nivel.HasValue) query = query.Where(c => c.Nivel == nivel.Value);
         if (tipo.HasValue) query = query.Where(c => c.Tipo == tipo.Value);
         if (!string.IsNullOrEmpty(regiao)) query = query.Where(c => c.Regiao == regiao);
+        if (jindungo.HasValue) query = query.Where(c => c.IsJindungo == jindungo.Value);
+    
 
         var totalCount = await query.CountAsync(cancellationToken);
 
         var conteudos = await query
             .Include(c => c.Editor)
-            .OrderByDescending(c => c.DataPublicacao)
             .Skip((pagina - 1) * tamanho)
             .Take(tamanho)
+            .OrderByDescending(c => c.DataPublicacao)
             .ToListAsync(cancellationToken);
 
-        // Mapeamento dinâmico verificando se cada item consta nos favoritos do utilizador logado
-        var response = conteudos.Select(c => MapToResponseDto(c, userId > 0 &&
+        var response = conteudos.Select(c => MapToResponseDto(c, userId > 0 && 
             _dbContext.Favoritos.Any(f => f.ConteudoId == c.Id && f.UtilizadorId == userId))).ToList();
 
         var pagedResult = PagedResult<ConteudoResponseDto>.Create(response, totalCount, pagina, tamanho);
@@ -180,40 +165,99 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Obtém um conteúdo específico por ID
+    /// Gets a specific content item (public access)
     /// </summary>
     [HttpGet("{id}")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ConteudoResponseDto>> GetConteudo(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ConteudoResponseDto>> GetConteudo(
+        int id,
+        CancellationToken cancellationToken)
     {
         var conteudo = await _dbContext.Conteudos
             .Include(c => c.Editor)
-            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(c => c.Id == id && c.Estado == EstadoConteudo.Publicado, cancellationToken);
 
         if (conteudo is null)
             return NotFound(new { message = "Conteúdo não encontrado" });
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value;
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
 
         var isFavorito = userId > 0 && await _dbContext.Favoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
-        var response = MapToResponseDto(conteudo, isFavorito);
+        bool temAcessoJindungo = true;
+        if (conteudo.IsJindungo)
+        {
+            var isEditorOrAdmin = User.Identity?.IsAuthenticated == true && (User.IsInRole("Admin") || User.IsInRole("Editor"));
+            if (!isEditorOrAdmin)
+            {
+                temAcessoJindungo = userId > 0 && await _dbContext.SolicitacoesAcesso
+                    .AnyAsync(s => s.ConteudoId == id && s.UtilizadorId == userId && s.Status == "Aprovado", cancellationToken);
+            }
+        }
+
+        var response = MapToResponseDto(conteudo, isFavorito, temAcessoJindungo);
         return Ok(response);
     }
 
-    /// <summary>
-    /// Adiciona a tradução a um conteúdo existente
-    /// </summary>
+    [HttpPost("{id:int}/solicitar-acesso")]
+    [Authorize]
+    public async Task<IActionResult> SolicitarAcesso(int id, CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
+        if (userId <= 0) return Unauthorized();
+
+        var jaExiste = await _dbContext.SolicitacoesAcesso
+            .AnyAsync(s => s.ConteudoId == id && s.UtilizadorId == userId, cancellationToken);
+
+        if (jaExiste)
+        {
+            return BadRequest(new { message = "Já existe uma solicitação para este conteúdo." });
+        }
+
+        var solicitacao = new SolicitacaoAcesso
+        {
+            ConteudoId = id,
+            UtilizadorId = userId,
+            DataSolicitacao = DateTime.UtcNow,
+            Status = "Pendente"
+        };
+
+        _dbContext.SolicitacoesAcesso.Add(solicitacao);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(new { message = "Solicitação de acesso enviada com sucesso!" });
+    }
+
+    [HttpGet("{id:int}/solicitacao-status")]
+    [Authorize]
+    public async Task<IActionResult> GetSolicitacaoStatus(int id, CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
+        if (userId <= 0) return Unauthorized();
+
+        var solicitacao = await _dbContext.SolicitacoesAcesso
+            .FirstOrDefaultAsync(s => s.ConteudoId == id && s.UtilizadorId == userId, cancellationToken);
+
+        if (solicitacao is null)
+        {
+            return Ok(new { status = "Nenhuma" });
+        }
+
+        return Ok(new { status = solicitacao.Status });
+    }
+
     [HttpPost("{id:int}/traducoes")]
     [Authorize(Roles = "Admin,Editor")]
     public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
     {
         var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
-        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
+        if (conteudo is null) return NotFound();
 
         var traducao = new ConteudoTraducao
         {
@@ -229,9 +273,6 @@ public class ConteudosController : ControllerBase
         return Ok(new TraducaoResponseDto(traducao.Id, traducao.Lingua, traducao.TextoTraduzido, traducao.AudioUrl));
     }
 
-    /// <summary>
-    /// Obtém as traduções de um conteúdo específico
-    /// </summary>
     [HttpGet("{id:int}/traducoes")]
     public async Task<ActionResult<IEnumerable<TraducaoResponseDto>>> GetTraducoes(int id, CancellationToken cancellationToken)
     {
@@ -244,7 +285,7 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Atualiza um conteúdo existente
+    /// Updates an existing content item
     /// </summary>
     [HttpPut("{id}")]
     [Authorize]
@@ -254,9 +295,9 @@ public class ConteudosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ConteudoResponseDto>> UpdateConteudo(
-        int id,
-        [FromBody] UpdateConteudoDto request,
-        CancellationToken cancellationToken)
+    int id,
+    [FromBody] UpdateConteudoDto request,
+    CancellationToken cancellationToken)
     {
         var conteudo = await _dbContext.Conteudos
             .Include(c => c.Editor)
@@ -265,7 +306,8 @@ public class ConteudosController : ControllerBase
         if (conteudo is null)
             return NotFound(new { message = "Conteúdo não encontrado" });
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                       ?? User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
@@ -276,32 +318,42 @@ public class ConteudosController : ControllerBase
         if (!isEditor && !isAdmin)
             return Forbid();
 
-        // Validação condicional para a referência do Jindungo no Update
-        if (request.IsJindungo == true && string.IsNullOrWhiteSpace(request.ReferenciaFactual) && string.IsNullOrWhiteSpace(conteudo.ReferenciaFactual))
+        // Valida Jindungo — se activado, referência factual é obrigatória
+        if (request.IsJindungo == true && string.IsNullOrWhiteSpace(request.ReferenciaFactual))
             return BadRequest(new { message = "Conteúdo Jindungo requer referência factual." });
 
-        // Atualização incremental baseada no preenchimento do UpdateConteudoDto
-        if (!string.IsNullOrWhiteSpace(request.Titulo)) conteudo.Titulo = request.Titulo;
-        if (request.Resumo is not null) conteudo.Resumo = request.Resumo;
-        if (request.CorpoTexto is not null) conteudo.CorpoTexto = request.CorpoTexto;
-        if (request.VideoUrl is not null) conteudo.VideoUrl = request.VideoUrl;
-        if (request.AudioUrl is not null) conteudo.AudioUrl = request.AudioUrl;
-        if (request.ThumbnailUrl is not null) conteudo.ThumbnailUrl = request.ThumbnailUrl;
-        if (request.Tema is not null) conteudo.Tema = request.Tema;
-        if (request.Nivel.HasValue) conteudo.Nivel = request.Nivel.Value;
-        if (request.Regiao is not null) conteudo.Regiao = request.Regiao;
-        if (request.Tipo.HasValue) conteudo.Tipo = request.Tipo.Value;
-        if (request.Estado.HasValue) conteudo.Estado = request.Estado.Value;
-        if (request.DataAgendada.HasValue) conteudo.DataAgendada = request.DataAgendada.Value;
-
+        if (!string.IsNullOrWhiteSpace(request.Titulo))
+            conteudo.Titulo = request.Titulo;
+        if (request.Resumo is not null)
+            conteudo.Resumo = request.Resumo;
+        if (request.CorpoTexto is not null)
+            conteudo.CorpoTexto = request.CorpoTexto;
+        if (request.VideoUrl is not null)
+            conteudo.VideoUrl = request.VideoUrl;
+        if (request.AudioUrl is not null)
+            conteudo.AudioUrl = request.AudioUrl;
+        if (request.ThumbnailUrl is not null)
+            conteudo.ThumbnailUrl = request.ThumbnailUrl;
+        if (request.Tema is not null)
+            conteudo.Tema = request.Tema;
+        if (request.Nivel.HasValue)
+            conteudo.Nivel = request.Nivel.Value;
+        if (request.Regiao is not null)
+            conteudo.Regiao = request.Regiao;
+        if (request.Tipo.HasValue)
+            conteudo.Tipo = request.Tipo.Value;
         if (request.IsJindungo.HasValue)
         {
             conteudo.IsJindungo = request.IsJindungo.Value;
+            // Se desactivar Jindungo, limpa a referência
             if (!request.IsJindungo.Value)
                 conteudo.ReferenciaFactual = null;
         }
-
-        if (request.ReferenciaFactual is not null && conteudo.IsJindungo)
+        if (request.Estado.HasValue)
+            conteudo.Estado = request.Estado.Value;
+        if (request.DataAgendada.HasValue)
+            conteudo.DataAgendada = request.DataAgendada.Value;
+        if (request.ReferenciaFactual is not null)
             conteudo.ReferenciaFactual = request.ReferenciaFactual;
 
         conteudo.AtualizadoEm = DateTime.UtcNow;
@@ -323,21 +375,36 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Arquiva temporariamente um conteúdo (Soft Delete)
+    /// Soft delete a content item (Author or Admin only)
     /// </summary>
     [HttpDelete("{id}")]
     [Authorize]
-    public async Task<IActionResult> DeleteConteudo(int id, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteConteudo(
+        int id,
+        CancellationToken cancellationToken)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
-        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
+        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
+        if (conteudo is null)
+            return NotFound(new { message = "Conteúdo não encontrado" });
+
+        // Get current user and check authorization
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
-        if (conteudo.EditorId != userId && roleClaim != "Admin") return Forbid();
+        var isAdmin = roleClaim == "Admin";
+        var isAuthor = conteudo.EditorId == userId;
 
+        if (!isAuthor && !isAdmin)
+            return Forbid();
+
+        // Soft delete
         conteudo.Estado = EstadoConteudo.Arquivado;
         _dbContext.Conteudos.Update(conteudo);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -346,32 +413,52 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Faz o upload ou substituição da imagem de capa (ThumbnailUrl)
+    /// Uploads a cover image for content
     /// </summary>
     [HttpPost("{id}/imagem")]
     [Authorize]
-    public async Task<ActionResult<ConteudoResponseDto>> UploadImagemCapa(int id, IFormFile imagem, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ConteudoResponseDto>> UploadImagemCapa(
+        int id,
+        IFormFile imagem,
+        CancellationToken cancellationToken)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
-        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
+        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
+        if (conteudo is null)
+            return NotFound(new { message = "Conteúdo não encontrado" });
+
+        // Get current user and check authorization
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
-        if (conteudo.EditorId != userId && roleClaim != "Admin") return Forbid();
+        var isAdmin = roleClaim == "Admin";
+        var isAuthor = conteudo.EditorId == userId;
+
+        if (!isAuthor && !isAdmin)
+            return Forbid();
 
         try
         {
+            // Delete old image if exists
             if (!string.IsNullOrEmpty(conteudo.ThumbnailUrl))
                 await _fileStorageService.DeleteFileAsync(conteudo.ThumbnailUrl);
 
-            conteudo.ThumbnailUrl = await _fileStorageService.UploadFileAsync(imagem.OpenReadStream(), imagem.FileName, "uploads/conteudos");
+            // Upload new image
+            conteudo.ThumbnailUrl = await _fileStorageService
+                .UploadFileAsync(imagem.OpenReadStream(), imagem.FileName, "uploads/conteudos");
 
             _dbContext.Conteudos.Update(conteudo);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Ok(MapToResponseDto(conteudo, false));
+            var response = MapToResponseDto(conteudo, false);
+            return Ok(response);
         }
         catch (ArgumentException ex)
         {
@@ -380,18 +467,27 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Regista visualizações únicas por utilizador
+    /// Registers a content view (authenticated users only)
     /// </summary>
     [HttpPost("{id}/visualizacao")]
     [Authorize]
-    public async Task<IActionResult> RegistrarVisualizacao(int id, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RegistrarVisualizacao(
+        int id,
+        CancellationToken cancellationToken)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
-        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
+        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
+        if (conteudo is null)
+            return NotFound(new { message = "Conteúdo não encontrado" });
 
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
+
+        // Check if already viewed
         var existingView = await _dbContext.VisualizacoesConteudo
             .FirstOrDefaultAsync(v => v.ConteudoId == id && v.UtilizadorId == userId, cancellationToken);
 
@@ -414,17 +510,25 @@ public class ConteudosController : ControllerBase
     }
 
     /// <summary>
-    /// Alterna o estado de favorito do conteúdo para o utilizador atual
+    /// Toggles a content as favorite (authenticated users only)
     /// </summary>
     [HttpPost("{id}/favorito")]
     [Authorize]
-    public async Task<ActionResult<object>> ToggleFavorito(int id, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<object>> ToggleFavorito(
+        int id,
+        CancellationToken cancellationToken)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
-        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
+        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
+        if (conteudo is null)
+            return NotFound(new { message = "Conteúdo não encontrado" });
+
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var favorito = await _dbContext.Favoritos
             .FirstOrDefaultAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
@@ -450,41 +554,27 @@ public class ConteudosController : ControllerBase
         }
     }
 
-    // Auxiliar centralizado para mapear estritamente para o record ConteudoResponseDto fornecido
-    private static ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito)
+    private static ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito, bool temAcessoJindungo = true)
     {
         return new ConteudoResponseDto(
             conteudo.Id,
             conteudo.Titulo,
             conteudo.Resumo,
-            conteudo.CorpoTexto,
+            temAcessoJindungo ? conteudo.CorpoTexto : null,
             conteudo.VideoUrl,
             conteudo.AudioUrl,
             conteudo.ThumbnailUrl,
-            conteudo.Tipo, // TipoConteudo (Video, Texto, Podcast)
+            conteudo.Tipo,
             conteudo.Nivel,
             conteudo.Tema,
             conteudo.Regiao,
             conteudo.Estado,
             conteudo.EditorId,
-            conteudo.Editor?.Nome, // Mapeia para EditorNome no Record DTO
+            conteudo.Editor?.Nome,
             conteudo.Visualizacoes,
             ehFavorito,
             conteudo.IsJindungo,
             conteudo.ReferenciaFactual,
             conteudo.DataPublicacao);
-    }
-
-    [HttpPost("{id}/incrementar-visita")]
-    [AllowAnonymous]
-    public async Task<IActionResult> IncrementarVisitaAsync(int id, CancellationToken cancellationToken)
-    {
-        var conteudo = await _conteudoRepository.GetByIdAsync(id);
-        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
-
-        conteudo.Visualizacoes += 1;
-        await _conteudoRepository.UpdateAsync(conteudo);
-
-        return NoContent();
     }
 }

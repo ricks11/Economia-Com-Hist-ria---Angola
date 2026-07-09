@@ -1,89 +1,233 @@
-@{
-    ViewData["Title"] = "Painel do Explorador";
-}
+@if (User.Identity?.IsAuthenticated == true)
+{
+    ViewData["Title"] = "Início - Economia com História – Angola";
 
-<div class="max-w-7xl mx-auto px-6">
-    <!-- Welcome Section -->
-    <header class="mb-12">
-        <h1 class="font-headline font-extrabold text-4xl md:text-5xl text-primary tracking-tight mb-2">Painel do Explorador</h1>
-        <p class="font-body text-lg text-secondary max-w-2xl leading-relaxed">
-            Bem-vindo ao centro nevrálgico da investigação económica angolana. Seleccione um dos eixos abaixo para iniciar a sua jornada histórica.
-        </p>
-    </header>
-
-    <!-- Bento Grid Menu -->
-    <div class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-6">
-        <!-- Large Card: Explorar Conteúdos -->
-        <a asp-controller="Conteudos" asp-action="Index" class="md:col-span-6 lg:col-span-8 group relative overflow-hidden bg-surface-container-lowest rounded-[20px] p-8 text-left soft-elevation hover:-translate-y-1 transition-all duration-300 decoration-none">
-            <div class="relative z-10 flex flex-col h-full justify-between">
-                <div>
-                    <div class="bg-primary/5 w-14 h-14 rounded-full flex items-center justify-center mb-6 text-primary">
-                        <span class="material-symbols-outlined text-3xl">library_books</span>
+    <!-- Main Content Area -->
+    <div class="grid grid-cols-12 gap-8 relative">
+        <!-- Center Column: Welcome & Map -->
+        <section class="col-span-12 lg:col-span-8 space-y-8">
+            <div class="relative overflow-hidden bg-surface-container-lowest p-10 rounded-xl shadow-sm">
+                <div class="relative z-10 max-w-lg">
+                    <h2 class="text-4xl font-extrabold text-primary tracking-tight mb-2 font-headline">Bem-vindo, Explorador.</h2>
+                    <p class="text-on-surface-variant text-lg leading-relaxed font-light mb-6">
+                        Explore o rico tapeçário da economia angolana através dos séculos. Hoje, o arquivo destaca a transição monetária da era colonial para a independência.
+                    </p>
+                    <a href="@Url.Action("Index", "Conteudos")" class="bg-accent-yellow text-on-accent-yellow px-8 py-3 rounded-lg font-bold inline-flex items-center gap-2 hover:bg-yellow-500 transition-colors no-underline">
+                        Iniciar Jornada Histórica
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+                <!-- Stylized Background Map Fragment -->
+                <div class="absolute -right-20 -bottom-20 opacity-10 pointer-events-none transform -rotate-12">
+                    <img class="w-[600px] grayscale contrast-125" alt="Mapa de Angola" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaknjhJy_-l6CFHYhqe_5mAgvSAwuH14KdV2Et5Wv1OPqiNrf3fv2CZ75TbWKCkfN4zGJWGh5xERX4mrFZZ_-grtdKi8Ew6rhOWmR392qWZzjiz_L1ylF2TKoZ8AsbJsI85vO_hmWWSc6hs0h01vIYMmm2Nl_-0A-cd4kBP4VXIqtk8anJUbyfEahdgx-oLaHiTUdhSNu7b7zHJt_xhmsnwXU3Sk43Bc-ZjeoAtoxrER6GQl5G2shtjDqzX18_Dt88anAwCLhI1aJw" />
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Bento Card: Featured Era -->
+                <div class="bg-surface-container-low p-6 rounded-xl relative group cursor-pointer hover:shadow-lg transition-all duration-300">
+                    <div class="h-40 mb-4 rounded-lg overflow-hidden bg-stone-200">
+                        <img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform" alt="Ciclo do Sal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZOq7POI16IzSbZj3dU__oLDl5-E94mw7j2LP_ftWsmNvR6zuxrlt6_mMZGz8tNN4_4Q6XJZh1ZmX859zIvIdE6zHIfYujM5HE7WaavBZ0TLmOSwKvXsHr8wBxHKTPDRNwjJqbr5jS-1P-6Rck1LMIEAW0UmUC-XJEjmtoAhZBuqmWfQU0kIDtlqdnLQIijjvUZ6t3bXVlgDK1cZWTCU9ylAnSEq3Yh3tDpmrUr6qQEog0iRdIVsEJ2q4iJAYH_SCISMfsngB1bIbJ" />
                     </div>
-                    <h2 class="font-headline font-bold text-2xl text-on-surface mb-2">Explorar Conteúdos</h2>
-                    <p class="text-secondary leading-snug max-w-md">Aceda ao arquivo completo de lições, documentos históricos e análise macroeconómica de Angola.</p>
+                    <span class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-1 block">Era do Ouro Branco</span>
+                    <h3 class="text-xl font-bold mb-2 font-headline">O Ciclo do Sal</h3>
+                    <p class="text-sm text-on-surface-variant line-clamp-2">Descubra como o sal moldou as primeiras rotas comerciais e alianças estratégicas no território...</p>
                 </div>
-                <div class="mt-8 flex items-center text-primary font-semibold">
-                    <span>Iniciar Pesquisa</span>
-                    <span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                <!-- Bento Card: Economic Data -->
+                <div class="bg-tertiary-container text-white p-6 rounded-xl flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <span class="text-xs opacity-70 block mb-1">Crescimento do Arquivo</span>
+                            <p class="text-3xl font-black font-headline">+24.8%</p>
+                        </div>
+                        <span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between text-sm border-b border-white/10 pb-2">
+                            <span class="opacity-80 font-light">Documentos Digitalizados</span>
+                            <span class="font-bold">12,402</span>
+                        </div>
+                        <div class="flex justify-between text-sm border-b border-white/10 pb-2">
+                            <span class="opacity-80 font-light">Moedas Raras Catalogadas</span>
+                            <span class="font-bold">843</span>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Index", "Conteudos")" class="mt-6 w-full py-2 bg-white/10 rounded-lg text-xs font-bold hover:bg-white/20 transition-colors uppercase tracking-widest text-center no-underline inline-block">Ver Painel Completo</a>
                 </div>
             </div>
-            <div class="absolute right-0 bottom-0 w-1/2 h-full opacity-10 grayscale group-hover:grayscale-0 group-hover:opacity-20 transition-all duration-500">
-                <img alt="Old manuscripts and books" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH-frLzmNnKNQJTNpwZKRIKQKXaV9c7lk-pttPygLK4_uxMBCW5cLpl2HtVLMIsSeoG3Y7iqisiK8JJ7Zmw55MZgMmQ4OgrrIMSUul0gTva5q11lw_AkPcdCXIRIkV4js-MS-6KtFqwtw6LoY_uZXsz20vSm0fvMnBs7LhDFNTsLi7v522tXnV2U-N2ZOAO9-CYM58snbL86ZVrwNtLB8VyEYkLFEXLLmjPNS3Okdv6CWnq3FaRz-ak6g35uQBkODkxCrnEpFi8Qw"/>
-            </div>
-        </a>
-
-        <!-- Card: Quiz Interactivo -->
-        <a asp-controller="Quizzes" asp-action="Index" class="md:col-span-3 lg:col-span-4 bg-surface-container-lowest rounded-[20px] p-8 text-left soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
-            <div class="bg-tertiary-container/20 w-12 h-12 rounded-full flex items-center justify-center mb-6 text-tertiary-container">
-                <span class="material-symbols-outlined text-2xl">quiz</span>
-            </div>
-            <h2 class="font-headline font-bold text-xl text-on-surface mb-2">Quiz Interactivo</h2>
-            <p class="text-secondary text-sm">Teste os seus conhecimentos sobre a evolução económica do país através de desafios dinâmicos.</p>
-            <div class="mt-6 flex items-center text-tertiary font-semibold text-sm">
-                <span>Desafiar-se</span>
-                <span class="material-symbols-outlined ml-1 text-base">chevron_right</span>
-            </div>
-        </a>
-
-        <!-- Card: Fórum de Discussão -->
-        <a href="#" class="md:col-span-3 lg:col-span-4 bg-surface-container-lowest rounded-[20px] p-8 text-left soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
-            <div class="bg-secondary-container w-12 h-12 rounded-full flex items-center justify-center mb-6 text-secondary">
-                <span class="material-symbols-outlined text-2xl">forum</span>
-            </div>
-            <h2 class="font-headline font-bold text-xl text-on-surface mb-2">Fórum de Discussão</h2>
-            <p class="text-secondary text-sm">Participe em debates académicos e troque ideias com outros investigadores e estudantes.</p>
-            <div class="mt-6 flex items-center text-primary font-semibold text-sm">
-                <span>Entrar no Debate</span>
-                <span class="material-symbols-outlined ml-1 text-base">chevron_right</span>
-            </div>
-        </a>
-
-        <!-- Card: Comentários e Participação -->
-        <a href="#" class="md:col-span-3 lg:col-span-4 bg-surface-container-lowest rounded-[20px] p-8 text-left soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
-            <div class="bg-primary/5 w-12 h-12 rounded-full flex items-center justify-center mb-6 text-primary">
-                <span class="material-symbols-outlined text-2xl">rate_review</span>
-            </div>
-            <h2 class="font-headline font-bold text-xl text-on-surface mb-2">Comentários</h2>
-            <p class="text-secondary text-sm">A sua voz é fundamental. Partilhe as suas reflexões sobre as lições e conteúdos disponíveis.</p>
-            <div class="mt-6 flex items-center text-primary font-semibold text-sm">
-                <span>Ver Participações</span>
-                <span class="material-symbols-outlined ml-1 text-base">chevron_right</span>
-            </div>
-        </a>
-
-        <!-- Card: Subscrição e Perfil -->
-        <a asp-controller="Perfil" asp-action="Index" class="md:col-span-3 lg:col-span-4 bg-surface-container-lowest rounded-[20px] p-8 text-left soft-elevation hover:-translate-y-1 transition-all duration-300 group overflow-hidden relative decoration-none">
-            <div class="relative z-10">
-                <div class="bg-primary/5 w-12 h-12 rounded-full flex items-center justify-center mb-6 text-primary">
-                    <span class="material-symbols-outlined text-2xl">person_add</span>
+        </section>
+        <!-- Right Column: Highlights & Progress -->
+        <aside class="col-span-12 lg:col-span-4 space-y-8">
+            <!-- Highlights Section -->
+            <div class="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-accent-yellow">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-accent-yellow" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface font-headline">Destaques do Mês</h3>
                 </div>
-                <h2 class="font-headline font-bold text-xl text-on-surface mb-2">Perfil e Progresso</h2>
-                <p class="text-secondary text-sm">Gerencie a sua conta e acompanhe o seu progresso na exploração do património angolano.</p>
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary font-bold">15</div>
+                        <div>
+                            <p class="text-xs text-primary font-bold uppercase tracking-tighter mb-1">Janeiro</p>
+                            <h4 class="text-sm font-bold leading-snug">Exposição Virtual: O Kwanza através das gerações</h4>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary font-bold">22</div>
+                        <div>
+                            <p class="text-xs text-primary font-bold uppercase tracking-tighter mb-1">Janeiro</p>
+                            <h4 class="text-sm font-bold leading-snug">Webinar: Economia Azul e o potencial costeiro</h4>
+                        </div>
+                    </div>
+                </div>
+                <button class="mt-8 text-primary font-bold text-xs flex items-center gap-2 group">
+                    Ver Calendário Completo
+                    <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">chevron_right</span>
+                </button>
             </div>
-            <div class="absolute -right-4 -bottom-4 opacity-5">
-                <span class="material-symbols-outlined text-[100px]">notifications</span>
+            <!-- Fast Progress Section -->
+            <div class="bg-surface-container-low p-6 rounded-xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface font-headline">Progresso Rápido</h3>
+                    <span class="text-xs font-bold text-primary bg-primary-fixed px-2 py-1 rounded">Nível 8</span>
+                </div>
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-on-surface-variant">Módulo de Exportação Colonial</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                            <div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-on-surface-variant">Pesquisa de Macroeconomia</span>
+                            <span>42%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                            <div class="h-full bg-tertiary rounded-full" style="width: 42%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 p-4 bg-white/50 rounded-lg">
+                    <p class="text-[10px] uppercase font-black text-stone-400 mb-2">Próxima Conquista</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-accent-yellow/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-accent-yellow" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold">Historiador de Luanda</p>
+                            <p class="text-[10px] text-stone-500">Conclua 3 capítulos sobre a capital</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </a>
+            <!-- Mini CTA Card -->
+            <div class="relative h-40 rounded-xl overflow-hidden group cursor-pointer">
+                <img class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="CTA Card" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRLfCkcBCrk2Ev8eLuvGcDbmK_uVjybsVcPai55a5Cd5pU5tOYQ8R0469WRdLMweMnNjOrDVyz0M5uKM2hb_IG9R-U7rWB5I7jy82BncunXvnQNvJsTNq-MgtD163Upu_-6CQQKdhO39rrHK9a66pee91v3lLvZGp6QzjaTPsyCLDcyXtYnj-EmEjNwsB61wK40BkGnBinSRxVzy81JWyOwTi6_obIEy5gVmJWOsn6Fwxq-r9iCuvkB8MLDDS2QxwwfoFpRQNKpAA9" />
+                <div class="absolute inset-0 bg-primary/60 backdrop-blur-[2px] p-6 flex flex-col justify-end">
+                    <p class="text-white font-bold leading-tight font-headline">Contribuir para o Arquivo Público</p>
+                    <p class="text-white/70 text-[10px] uppercase tracking-widest mt-1">Envie documentos raros</p>
+                </div>
+            </div>
+        </aside>
     </div>
-</div>
+}
+else
+{
+    ViewData["Title"] = "Economia com História — Angola";
+
+    <!-- Landing Page (Anonymous) -->
+    <div class="relative w-full">
+        <!-- Subtle Map Watermark Background -->
+        <div class="absolute inset-0 z-0 opacity-10 pointer-events-none mix-blend-multiply flex justify-center items-center overflow-hidden">
+            <img alt="Topografia de Angola" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB1IqoMXdmHK4OA39uptmjQJKCqSkqVz7fkurNcw9URxGo-x-PJ825fOg6nhVi38Z494y0TxiQZOHcSlYuoxZ5BX97_P0Aksnu9WgyA4j0_JusoLOGRgQlr9zx05SYsRL2ciLKJUzGMw-QU8pcHrNShfjBrTand-0niWewx742ICI7m0vb29d1GS9Xa83msccbegv9CAz6nw1u30J3fEcK4r76V6yizjQMIrrrLPVLjBp3PM2CLvHpUM00PDvpPAZ4QypeVQ8-FmAK" />
+        </div>
+        <!-- Hero Section -->
+        <section class="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-8 pt-12 pb-20 flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-1/2 pr-0 lg:pr-12">
+                <h1 class="font-headline font-bold text-5xl lg:text-6xl text-on-surface leading-tight mb-6">
+                    Descubra o Valor<br />
+                    <span class="text-primary">da Nossa História</span>
+                </h1>
+                <p class="font-body text-lg text-on-surface-variant mb-10 max-w-xl leading-relaxed">
+                    Economia com História — Angola é a sua plataforma definitiva para entender o desenvolvimento económico através dos tempos. Uma jornada educativa, interativa e colaborativa.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="@Url.Action("Login", "Auth")" class="px-8 py-4 rounded-md font-label font-bold text-lg shadow-[0_8px_32px_rgba(26,28,28,0.06)] hover:opacity-90 transition-opacity flex items-center justify-center gap-2 no-underline text-center" style="background-color: #FFD700; color: #1a1c1c;">
+                        Começar Agora
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                    <a href="@Url.Action("Index", "Conteudos")" class="px-8 py-4 rounded-md font-label font-semibold text-lg text-primary hover:bg-surface-container-low transition-colors bg-surface-container-highest no-underline text-center">
+                        Saber Mais
+                    </a>
+                </div>
+            </div>
+            <div class="lg:w-1/2 relative">
+                <!-- Asymmetric Bento-style Hero Grid -->
+                <div class="grid grid-cols-2 gap-4 auto-rows-[200px]">
+                    <div class="col-span-2 rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(26,28,28,0.06)] bg-surface-container-lowest">
+                        <img alt="Luanda Skyline" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjGlTd5TANbSqHOW_ukwgI2bkpeFYmiO8hX6eKa2U_nSmZq5HAehK-XirODNq-qHakJd92KIYqItBydCr8fH8YqkOMT8i-DxIr8pA1nvoHgK4gAipTFs2PRQkHLZywJeJEnktfc90CRU9peCmXzOl7Koea2tkNV_Ks1euk2imauRcJ4dpPGoV3KxCjVH-p_0RhvIKdjj_0GcjAuiuI1h_3GCJbLE3d8yyHE9wCBMQtzjnF84NpDr774lEd3216hdxI-sX_fTquk4BD" />
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(26,28,28,0.06)] bg-surface-container-lowest">
+                        <img alt="Dados Economicos" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwsSENOO1Ffl2VeHMcuhkl7sjn9TnSxsSNmVIkflpGJenrY8nbIGguWvLVQWSIuuyWRFtIbrowco-0LVFEuQiusbpNPPTdcB-G-IAhL84srlNAOLn04OSMZQg4uJC6c4cGlYhCrSsndYcmV6nC4-oqmKGnhc07h-1BDWsln0wJuyvV2w6Wo_r4o1rRtZNSQfkaTN13OgOqlicQNm1Sa6KP1GDsKfsOULtbq57mwH0RoHYkZzv-6Uwi7nJ6KBrgGj3ZADhL5-iPITZM" />
+                    </div>
+                    <div class="rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(26,28,28,0.06)] bg-surface-container-lowest flex flex-col justify-center p-6 bg-gradient-to-br from-surface-container-low to-surface">
+                        <span class="material-symbols-outlined text-primary text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                        <h3 class="font-headline font-bold text-lg text-on-surface">500 Anos</h3>
+                        <p class="font-label text-sm text-on-surface-variant">de dados económicos compilados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Pillars Section (Bento Grid) -->
+        <section class="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-8 py-20 bg-surface-container-low rounded-t-[3rem]">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <h2 class="font-headline font-bold text-3xl lg:text-4xl text-on-surface mb-4">Três Pilares do Conhecimento</h2>
+                <p class="font-body text-lg text-on-surface-variant">Uma abordagem holística para dominar a história económica de Angola.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pillar 1: Explorar -->
+                <div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_8px_32px_rgba(26,28,28,0.06)] transform hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-8xl text-primary">travel_explore</span>
+                    </div>
+                    <div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-on-secondary-container">menu_book</span>
+                    </div>
+                    <h3 class="font-headline font-bold text-2xl text-on-surface mb-3">Educação</h3>
+                    <p class="font-body text-on-surface-variant leading-relaxed">
+                        Módulos interativos detalhando as eras económicas. Desde o comércio pré-colonial até aos modernos mercados de exportação. Textos ricos e verificados.
+                    </p>
+                </div>
+                <!-- Pillar 2: Jogar -->
+                <div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_8px_32px_rgba(26,28,28,0.06)] transform hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-8xl text-primary">sports_esports</span>
+                    </div>
+                    <div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-on-primary-fixed">emoji_events</span>
+                    </div>
+                    <h3 class="font-headline font-bold text-2xl text-on-surface mb-3">Gamificação</h3>
+                    <p class="font-body text-on-surface-variant leading-relaxed">
+                        Teste seus conhecimentos. Resolva cenários históricos, tome decisões económicas do passado e veja as consequências simuladas. Ganhe distintivos.
+                    </p>
+                </div>
+                <!-- Pillar 3: Participar -->
+                <div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_8px_32px_rgba(26,28,28,0.06)] transform hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-8xl text-primary">forum</span>
+                    </div>
+                    <div class="w-12 h-12 bg-tertiary-fixed rounded-full flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-on-tertiary-fixed">groups</span>
+                    </div>
+                    <h3 class="font-headline font-bold text-2xl text-on-surface mb-3">Comunidade</h3>
+                    <p class="font-body text-on-surface-variant leading-relaxed">
+                        Participe nos fóruns de debate. Discuta políticas históricas, partilhe pesquisas e conecte-se com outros estudantes e historiadores apaixonados.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+}

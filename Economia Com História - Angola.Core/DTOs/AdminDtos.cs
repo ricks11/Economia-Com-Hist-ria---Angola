@@ -2,4 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EconomiaComHistoria.Core.DTOs;
 
-public record RoleChangeDto(string NovaRole);
+public class RoleChangeDto
+{
+    [Required(ErrorMessage = "Nova role é obrigatória")]
+    public string NovaRole { get; set; } = string.Empty;
+}

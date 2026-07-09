@@ -1,7 +1,6 @@
 using AspNetCoreRateLimit;
 using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.API.Swagger;
-using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using EconomiaComHistoria.Infrastructure.Repositories;
@@ -13,19 +12,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Reflection;
-using System.Security.Claims;
 using System.Text;
-using System.Text.Json.Serialization;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/economia-.txt", rollingInterval: RollingInterval.Day)
     .WriteTo.Console()
     .CreateLogger();
-
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +56,8 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Insere o token JWT no formato: Bearer {token}"
     });
+
+    // Adicionar suporte para exemplos de resposta
 });
 
 // ─────────────────────────────────────────
@@ -78,13 +74,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             errorNumbersToAdd: Array.Empty<int>())));
 
 // ─────────────────────────────────────────
-// AUTENTICAÇÃO JWT (Corrigido para mapear Roles)
+// AUTENTICAÇÃO JWT
 // ─────────────────────────────────────────
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.MapInboundClaims = true;
-
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -95,32 +89,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
-            ClockSkew = TimeSpan.Zero,
-
-            // Força o ASP.NET Core a usar a URI correta para ler os Roles das claims
-            RoleClaimType = ClaimTypes.Role
+            ClockSkew = TimeSpan.Zero  // sem tolerância extra na expiração
         };
     });
 
-// ─────────────────────────────────────────
-// AUTORIZAÇÃO (Políticas)
-// ─────────────────────────────────────────
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("SuperAdminOnly", policy => policy.RequireRole("SuperAdmin"));
-    options.AddPolicy("ModeratorOrAdmin", policy => policy.RequireRole("Moderador", "Admin", "SuperAdmin"));
-});
+builder.Services.AddAuthorization();
 
 // ─────────────────────────────────────────
 // CORS
 // ─────────────────────────────────────────
 builder.Services.AddCors(options =>
 {
+    // Desenvolvimento — permissivo
     options.AddPolicy("AllowAll", policy =>
         policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader());
 
+    // TODO Sprint 10: activar esta policy em produção
     options.AddPolicy("Producao", policy =>
         policy.WithOrigins(
                 builder.Configuration.GetSection("Cors:AllowedOrigins")
@@ -131,15 +117,27 @@ builder.Services.AddCors(options =>
 });
 
 // ─────────────────────────────────────────
-// CONFIGURAÇÕES ADICIONAIS & REPOSITÓRIOS
+// UPLOAD DE FICHEIROS
 // ─────────────────────────────────────────
-builder.Services.Configure<FormOptions>(options => { options.MultipartBodyLengthLimit = 104857600; });
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100 MB
+});
+
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+
 builder.Services.AddInMemoryRateLimiting();
+
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+// ─────────────────────────────────────────
+// CACHE
+// ─────────────────────────────────────────
 builder.Services.AddMemoryCache();
 
-// Repositórios Scoped
+// ─────────────────────────────────────────
+// REPOSITÓRIOS
+// ─────────────────────────────────────────
 builder.Services.AddScoped<IUtilizadorRepository, UtilizadorRepository>();
 builder.Services.AddScoped<IConteudoRepository, ConteudoRepository>();
 builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
@@ -159,7 +157,9 @@ builder.Services.AddScoped<ISolicitacaoAcessoRepository, SolicitacaoAcessoReposi
 builder.Services.AddScoped<IPropostaQuizRepository, PropostaQuizRepository>();
 builder.Services.AddScoped<IAuditoriaLogRepository, AuditoriaLogRepository>();
 
-// Serviços Scoped
+// ─────────────────────────────────────────
+// SERVICES — INFRASTRUCTURE
+// ─────────────────────────────────────────
 builder.Services.AddScoped<IAuthService, BCryptAuthService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IQuizScoringService, QuizScoringService>();
@@ -171,6 +171,18 @@ builder.Services.AddScoped<IValidadorSincronizacao, ValidadorSincronizacao>();
 builder.Services.AddScoped<IConteudoCacheExportService, ConteudoCacheExportService>();
 builder.Services.AddScoped<IAuditoriaService, AuditoriaService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ISeedService, SeedService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SuperAdminOnly", policy => policy.RequireRole("SuperAdmin"));
+    options.AddPolicy("ModeratorOrAdmin", policy => policy.RequireRole("Moderador", "Admin", "SuperAdmin"));
+    // Adiciona outras políticas se necessário
+});
+
+// ─────────────────────────────────────────
+// BACKGROUND JOBS
+// ─────────────────────────────────────────
 builder.Services.AddScoped<IGamificacaoService, GamificacaoService>();
 builder.Services.AddScoped<IStreakService, StreakService>();
 builder.Services.AddScoped<IPlanoEstudoService, PlanoEstudoService>();
@@ -178,18 +190,29 @@ builder.Services.AddScoped<IEscolaService, EscolaService>();
 builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 builder.Services.AddHostedService<WeeklyRankingJob>();
 
+// ─────────────────────────────────────────
+// BUILD
+// ─────────────────────────────────────────
 var app = builder.Build();
 
-// Diagnóstico de tipos de compilação
-try { var types = typeof(Program).Assembly.GetTypes(); }
+// --- DIAGNÓSTICO TEMPORÁRIO — remove depois de resolver ---
+try
+{
+    var assembly = typeof(Program).Assembly;
+    var types = assembly.GetTypes();
+}
 catch (ReflectionTypeLoadException ex)
 {
-    foreach (var loaderEx in ex.LoaderExceptions) { Console.WriteLine("LOADER EXCEPTION: " + loaderEx?.Message); }
+    foreach (var loaderEx in ex.LoaderExceptions)
+    {
+        Console.WriteLine("LOADER EXCEPTION: " + loaderEx?.Message);
+    }
     throw;
 }
+// --- FIM DIAGNÓSTICO ---
 
 // ─────────────────────────────────────────
-// MIDDLEWARE PIPELINE (Ordem Corrigida)
+// MIDDLEWARE PIPELINE
 // ─────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
@@ -197,87 +220,116 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Economia com História Angola API v1");
-        c.RoutePrefix = string.Empty;
+        c.RoutePrefix = string.Empty; // Swagger na raiz: https://localhost:PORT/
     });
 }
 
 app.UseHttpsRedirection();
 
-// Headers encaminhados de proxies
-var forwardedHeadersOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
+// ─────────────────────────────────────────
+// FORWARDED HEADERS (para proxies reversos confiáveis)
+// ─────────────────────────────────────────
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+};
+
+// Configurar proxies conhecidos (adicionar IPs do seu proxy reverso)
+// Exemplos: Azure App Service, Nginx local, etc.
 if (app.Environment.IsDevelopment())
 {
+    // In development, trust localhost and loopback.
     forwardedHeadersOptions.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("127.0.0.1"), 8));
     forwardedHeadersOptions.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("::1"), 128));
 }
+else
+{
+    // In production, only trust known proxies (e.g., Azure App Service, or a specific reverse proxy).
+    // Clear the known networks list to avoid trusting any network.
+    forwardedHeadersOptions.KnownNetworks.Clear();
+
+    // Add known proxies from configuration.
+    var knownProxies = builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>() ?? Array.Empty<string>();
+    foreach (var proxy in knownProxies)
+    {
+        if (IPAddress.TryParse(proxy, out var ip))
+        {
+            forwardedHeadersOptions.KnownProxies.Add(ip);
+        }
+    }
+
+    // Optionally, also add known networks if you have trusted subnets.
+    var knownNetworks = builder.Configuration.GetSection("ForwardedHeaders:KnownNetworks").Get<string[]>() ?? Array.Empty<string>();
+    foreach (var network in knownNetworks)
+    {
+        if (Microsoft.AspNetCore.HttpOverrides.IPNetwork.TryParse(network, out var ipNetwork))
+        {
+            forwardedHeadersOptions.KnownNetworks.Add(ipNetwork);
+        }
+    }
+}
+
+forwardedHeadersOptions.RequireHeaderSymmetry = false;
+forwardedHeadersOptions.ForwardLimit = null;
+
 app.UseForwardedHeaders(forwardedHeadersOptions);
 
 app.UseRouting();
-
-// CORS e Rate Limiting devem vir antes de autenticar e autorizar
-app.UseCors(app.Environment.IsDevelopment() ? "AllowAll" : "Producao");
-app.UseIpRateLimiting();
 app.UseResponseCaching();
 
-// Headers de Segurança customizados
+// ─────────────────────────────────────────
+// HEADERS DE SEGURANÇA
+// ─────────────────────────────────────────
 app.Use(async (context, next) =>
 {
+    // HSTS (HTTP Strict-Transport-Security)
     context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+
+    // X-Frame-Options (contra clickjacking)
     context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
+
+    // X-Content-Type-Options (contra MIME sniffing)
     context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-    context.Response.Headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; upgrade-insecure-requests";
+
+    // Content-Security-Policy (CSP) — melhorado para remover 'unsafe-inline'
+    // Para melhor segurança, considere usar nonces para scripts e styles inline
+    context.Response.Headers["Content-Security-Policy"] =
+        "default-src 'self'; " +
+        "script-src 'self'; " +
+        "style-src 'self'; " +
+        "img-src 'self' data: https:; " +
+        "font-src 'self' data:; " +
+        "connect-src 'self' https:; " +
+        "frame-src 'none'; " +
+        "object-src 'none'; " +
+        "upgrade-insecure-requests";
+
+    // Referrer-Policy
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-    context.Response.Headers["Permissions-Policy"] = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
+
+    // Permissions-Policy (Feature-Policy)
+    context.Response.Headers["Permissions-Policy"] =
+        "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
+
     await next();
 });
 
-// Autenticação primeiro, Autorização a seguir
+app.UseCors(app.Environment.IsDevelopment() ? "AllowAll" : "Producao");
+app.UseIpRateLimiting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 // ─────────────────────────────────────────
-// INICIALIZAÇÃO DO BANCO DE DADOS & SEED
+// INICIALIZAÇÃO DO BANCO DE DADOS (apenas desenvolvimento)
 // ─────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    //await db.Database.EnsureDeletedAsync();
     await db.Database.EnsureCreatedAsync();
-
-    var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
-    var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
-    // SEED ADMIN
-    var adminEmail = config["SeedAdmin:Email"];
-    if (!string.IsNullOrWhiteSpace(adminEmail) && !await db.Utilizadores.AnyAsync(u => u.Email == adminEmail))
-    {
-        db.Utilizadores.Add(new EconomiaComHistoria.Core.Entities.Utilizador
-        {
-            Nome = config["SeedAdmin:Nome"] ?? "Administrador",
-            Email = adminEmail,
-            PasswordHash = authService.HashPassword(config["SeedAdmin:Password"]!),
-            Tipo = TipoUtilizador.Admin,
-            DataRegisto = DateTime.UtcNow
-        });
-        await db.SaveChangesAsync();
-    }
-
-    // SEED SUPER ADMIN
-    var superAdminEmail = config["SeedSuperAdmin:Email"];
-    if (!string.IsNullOrWhiteSpace(superAdminEmail) && !await db.Utilizadores.AnyAsync(u => u.Email == superAdminEmail))
-    {
-        db.Utilizadores.Add(new EconomiaComHistoria.Core.Entities.Utilizador
-        {
-            Nome = config["SeedSuperAdmin:Nome"] ?? "Super Administrador",
-            Email = superAdminEmail,
-            PasswordHash = authService.HashPassword(config["SeedSuperAdmin:Password"]!),
-            Tipo = TipoUtilizador.SuperAdmin,
-            DataRegisto = DateTime.UtcNow
-        });
-        await db.SaveChangesAsync();
-    }
 }
 
 app.Run();

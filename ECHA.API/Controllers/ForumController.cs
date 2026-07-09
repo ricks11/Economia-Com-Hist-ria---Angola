@@ -86,6 +86,34 @@ public class ForumController : ControllerBase
             MapTopico(topico));
     }
 
+    [HttpGet("categorias")]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<object>>> ListarCategorias(
+        CancellationToken cancellationToken)
+    {
+        var categorias = await _dbContext.CategoriasForum
+            .AsNoTracking()
+            .OrderBy(c => c.Nome)
+            .ToListAsync(cancellationToken);
+
+        if (categorias.Count == 0)
+        {
+            var defaults = new[]
+            {
+                new CategoriaForum { Nome = "Economia", Descricao = "Debates sobre economia angolana", Icone = "payments" },
+                new CategoriaForum { Nome = "História", Descricao = "Narrativas e factos históricos", Icone = "history_edu" },
+                new CategoriaForum { Nome = "Política", Descricao = "Políticas públicas e governação", Icone = "gavel" },
+                new CategoriaForum { Nome = "Sociedade", Descricao = "Cultura e transformação social", Icone = "groups" }
+            };
+            _dbContext.CategoriasForum.AddRange(defaults);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            categorias = defaults.ToList();
+        }
+
+        return Ok(categorias.Select(c => new { c.Id, c.Nome, c.Descricao, c.Icone }));
+    }
+
     [HttpGet("topicos")]
     [AllowAnonymous]
     [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "categoriaId", "ordem" })]

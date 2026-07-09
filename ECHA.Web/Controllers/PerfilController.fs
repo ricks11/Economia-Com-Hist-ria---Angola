@@ -1,37 +1,57 @@
-namespace EconomiaComHistoria.Web.Controllers
+namespace ECHA.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
-open Microsoft.AspNetCore.Authentication
 open System.Threading.Tasks
+open EconomiaComHistoria.Core.DTOs
 open ECHA.Web.Services
 
+[<Authorize>]
 type PerfilController(apiClient: ApiClient) =
     inherit Controller()
 
+    member private this.GetToken() =
+        let claim = this.User.FindFirst("AccessToken")
+        if isNull claim then null else claim.Value
+
     [<HttpGet>]
-    member this.Index() =
+    member this.Index(tab: string) =
         task {
-            // Vai buscar a claim onde guardaste o JWT
-            let tokenClaim = this.User.FindFirst("AccessToken")
-            
-            if isNull tokenClaim || System.String.IsNullOrEmpty(tokenClaim.Value) then
-                return this.RedirectToAction("Login", "Auth") :> IActionResult
-            else
-                // REMOVE POSSÍVEIS ASPAS EMBUTIDAS QUE FAZEM O BEARER FALHAR
-                let token = tokenClaim.Value.Trim().Replace("\"", "")
-                
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
                 try
-                    // Faz o pedido à API através do ApiClient
-                    let! perfilResult = apiClient.GetPerfilAsync(token)
-                    
-                    match perfilResult with
-                    | Some perfil -> 
-                        return this.View(perfil) :> IActionResult
-                    | None -> 
-                        return this.NotFound("Não foi possível encontrar os dados do perfil.") :> IActionResult
+                    let! perfil = apiClient.GetPerfilAsync(t)
+                    let! progresso = apiClient.GetProgressoAsync(t)
+                    match perfil with
+                    | Some p ->
+                        this.ViewData.["Progresso"] <- progresso
+                        this.ViewData.["Tab"] <- if System.String.IsNullOrEmpty tab then "perfil" else tab
+                        return this.View(p) :> IActionResult
+                    | None -> return this.NotFound() :> IActionResult
                 with
-                | :? ApiClientException as ex when (int ex.StatusCode = 401) ->
-                    // Se a API disser que o token é inválido/expirou, manda de volta para o Login
+                | :? ApiClientException ->
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpPost>]
+    member this.Atualizar(request: UpdatePerfilDto) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    let! perfil = apiClient.UpdatePerfilAsync(request, t)
+                    match perfil with
+                    | Some _ ->
+                        this.TempData["SuccessMessage"] <- "Perfil actualizado com sucesso!"
+                        return this.RedirectToAction("Index") :> IActionResult
+                    | None ->
+                        this.TempData["ErrorMessage"] <- "Não foi possível actualizar o perfil."
+                        return this.RedirectToAction("Index") :> IActionResult
+                with
+                | :? ApiClientException ->
                     return this.RedirectToAction("Login", "Auth") :> IActionResult
         }

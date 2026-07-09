@@ -24,7 +24,7 @@ public class PerfilController : ControllerBase
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public async Task<ActionResult<ProgressoUtilizadorDto>> GetProgresso(CancellationToken ct)
     {
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
 
         var user = await _dbContext.Utilizadores
@@ -69,7 +69,7 @@ public class PerfilController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PerfilResponseDto>> GetPerfil(CancellationToken cancellationToken)
     {
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
@@ -98,7 +98,7 @@ public class PerfilController : ControllerBase
         [FromBody] UpdatePerfilDto request,
         CancellationToken cancellationToken)
     {
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
@@ -162,7 +162,7 @@ public class PerfilController : ControllerBase
         if (pagina < 1) pagina = 1;
         if (tamanho < 1 || tamanho > 100) tamanho = 20;
 
-        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 

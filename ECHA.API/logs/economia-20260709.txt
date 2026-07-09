@@ -1,1088 +1,365 @@
-2026-07-09 00:02:38.309 +01:00 [INF] Executed DbCommand (235ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+2026-07-09 11:09:17.284 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
 FROM information_schema.tables
 WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:02:39.421 +01:00 [INF] Executed DbCommand (298ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:02:39.971 +01:00 [INF] Executed DbCommand (258ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:02:40.038 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:02:40.457 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:02:40.459 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:02:40.583 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:02:40.584 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:02:40.586 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:02:43.784 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
-2026-07-09 00:02:43.889 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:02:43.945 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:02:43.966 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:02:45.684 +01:00 [INF] Executed DbCommand (296ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+2026-07-09 11:09:17.585 +01:00 [INF] User profile is available. Using 'C:\Users\guilh\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 11:09:18.028 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 11:09:18.039 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 11:09:18.047 +01:00 [INF] Hosting environment: Development
+2026-07-09 11:09:18.049 +01:00 [INF] Content root path: C:\Users\guilh\Music\Projecto Final\Economia-Com-Hist-ria---Angola\ECHA.API
+2026-07-09 11:09:34.778 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.html - null null
+2026-07-09 11:09:35.036 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.html - 200 null text/html;charset=utf-8 260.4751ms
+2026-07-09 11:09:35.215 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.js - null null
+2026-07-09 11:09:35.243 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.js - 200 null application/javascript;charset=utf-8 30.1768ms
+2026-07-09 11:09:36.164 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - null null
+2026-07-09 11:09:36.785 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 620.8268ms
+2026-07-09 11:10:00.441 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.html - null null
+2026-07-09 11:10:00.460 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.html - 200 null text/html;charset=utf-8 19.3718ms
+2026-07-09 11:10:00.641 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.js - null null
+2026-07-09 11:10:00.794 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.js - 200 null application/javascript;charset=utf-8 152.2148ms
+2026-07-09 11:10:01.000 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - null null
+2026-07-09 11:10:01.173 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 173.4145ms
+2026-07-09 11:10:03.032 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger - null null
+2026-07-09 11:10:03.075 +01:00 [WRN] Failed to determine the https port for redirect.
+2026-07-09 11:10:03.172 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:10:03.376 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:10:03.382 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger - 404 0 null 350.1659ms
+2026-07-09 11:10:03.440 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5194/swagger, Response status code: 404
+2026-07-09 11:11:42.466 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 11:11:42.496 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:11:42.537 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 11:11:46.699 +01:00 [INF] Executed DbCommand (887ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 11:11:55.416 +01:00 [INF] Executed DbCommand (687ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 11:11:57.516 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 11:11:57.565 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 15018.175ms
+2026-07-09 11:11:57.567 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:11:57.574 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 200 null application/json; charset=utf-8 15107.96ms
+2026-07-09 11:22:12.019 +01:00 [INF] Executed DbCommand (305ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 11:22:12.387 +01:00 [INF] User profile is available. Using 'C:\Users\guilh\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 11:22:13.326 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 11:22:13.344 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 11:22:13.359 +01:00 [INF] Hosting environment: Development
+2026-07-09 11:22:13.385 +01:00 [INF] Content root path: C:\Users\guilh\Music\Projecto Final\Economia-Com-Hist-ria---Angola\ECHA.API
+2026-07-09 11:23:34.365 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger - null null
+2026-07-09 11:23:34.476 +01:00 [WRN] Failed to determine the https port for redirect.
+2026-07-09 11:23:34.571 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:23:34.785 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:23:34.822 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger - 404 0 null 462.4668ms
+2026-07-09 11:23:34.948 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5194/swagger, Response status code: 404
+2026-07-09 11:23:35.031 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/favicon.ico - null null
+2026-07-09 11:23:35.112 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:23:35.142 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:23:35.160 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/favicon.ico - 404 0 null 129.9023ms
+2026-07-09 11:23:35.185 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5194/favicon.ico, Response status code: 404
+2026-07-09 11:27:15.393 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/admin/seed - null null
+2026-07-09 11:27:15.409 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:27:15.446 +01:00 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2026-07-09 11:27:15.449 +01:00 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2026-07-09 11:27:15.451 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:27:15.453 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/admin/seed - 405 0 null 60.2516ms
+2026-07-09 11:27:28.993 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/admin/seed - application/json 6
+2026-07-09 11:27:29.024 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.AdminController.Seed (ECHA.API)'
+2026-07-09 11:27:29.109 +01:00 [INF] Route matched with {action = "Seed", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Seed() on controller ECHA.API.Controllers.AdminController (ECHA.API).
+2026-07-09 11:27:32.176 +01:00 [INF] Executed DbCommand (283ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT COUNT(*)
-FROM `Conteudos` AS `c`
-WHERE `c`.`Estado` = 2
-2026-07-09 00:02:46.389 +01:00 [INF] Executed DbCommand (313ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM (
-    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
-    FROM `Conteudos` AS `c`
-    WHERE `c`.`Estado` = 2
-    ORDER BY `c`.`DataPublicacao` DESC
-    LIMIT @__p_1 OFFSET @__p_0
-) AS `c0`
-LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
-ORDER BY `c0`.`DataPublicacao` DESC
-2026-07-09 00:02:46.414 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:02:46.466 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 2494.6488ms
-2026-07-09 00:02:46.468 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:02:46.471 +01:00 [INF] The response has been cached.
-2026-07-09 00:02:46.479 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 2704.2253ms
-2026-07-09 00:02:52.425 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/conteudos/3/incrementar-visita - null 0
-2026-07-09 00:02:52.432 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.IncrementarVisitaAsync (ECHA.API)'
-2026-07-09 00:02:52.437 +01:00 [INF] Route matched with {action = "IncrementarVisita", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] IncrementarVisitaAsync(Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:02:52.449 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos/3 - null null
-2026-07-09 00:02:52.453 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:02:52.455 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.GetConteudo (ECHA.API)'
-2026-07-09 00:02:52.460 +01:00 [INF] Route matched with {action = "GetConteudo", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]] GetConteudo(Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:02:53.959 +01:00 [INF] Executed DbCommand (245ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Conteudos` AS `c`
-LEFT JOIN `Utilizadores` AS `u` ON `c`.`EditorId` = `u`.`Id`
-WHERE `c`.`Id` = @__id_0
-LIMIT 1
-2026-07-09 00:02:54.744 +01:00 [INF] Executed DbCommand (260ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Conteudos` AS `c`
-LEFT JOIN `Utilizadores` AS `u` ON `c`.`EditorId` = `u`.`Id`
-WHERE `c`.`Id` = @__id_0
-LIMIT 1
-2026-07-09 00:02:54.744 +01:00 [INF] Executed DbCommand (257ms) [Parameters=[@p26='?' (DbType = Int32), @p0='?' (Size = 4000), @p1='?' (DbType = DateTime), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (DbType = Boolean), @p5='?' (Size = 4000), @p6='?' (DbType = DateTime), @p7='?' (DbType = DateTime), @p8='?' (DbType = DateTime), @p9='?' (DbType = Boolean), @p10='?' (DbType = Int32), @p11='?' (DbType = Int32), @p12='?' (DbType = Int32), @p13='?' (DbType = Boolean), @p14='?' (DbType = Int32), @p15='?' (Size = 4000), @p16='?' (Size = 4000), @p17='?' (Size = 4000), @p18='?' (Size = 4000), @p19='?' (Size = 4000), @p20='?' (DbType = Int32), @p21='?' (Size = 4000), @p22='?' (DbType = Int32), @p23='?' (Size = 4000), @p24='?' (DbType = Int32), @p25='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Conteudos` SET `AlertaOpiniao` = @p0, `AtualizadoEm` = @p1, `AudioUrl` = @p2, `AutorOpiniao` = @p3, `ComentariosDesativados` = @p4, `CorpoTexto` = @p5, `CriadoEm` = @p6, `DataAgendada` = @p7, `DataPublicacao` = @p8, `DisponiveOffline` = @p9, `DuracaoMinutos` = @p10, `EditorId` = @p11, `Estado` = @p12, `IsJindungo` = @p13, `Nivel` = @p14, `ReferenciaFactual` = @p15, `Regiao` = @p16, `Resumo` = @p17, `Tema` = @p18, `ThumbnailUrl` = @p19, `Tipo` = @p20, `Titulo` = @p21, `VersaoAtual` = @p22, `VideoUrl` = @p23, `Visibilidade` = @p24, `Visualizacoes` = @p25
-WHERE `Id` = @p26;
-SELECT ROW_COUNT();
-2026-07-09 00:02:54.749 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.ConteudoResponseDto'.
-2026-07-09 00:02:54.752 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.GetConteudo (ECHA.API) in 2289.5888ms
-2026-07-09 00:02:54.754 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.GetConteudo (ECHA.API)'
-2026-07-09 00:02:54.755 +01:00 [INF] The response could not be cached for this request.
-2026-07-09 00:02:54.757 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos/3 - 200 null application/json; charset=utf-8 2308.0444ms
-2026-07-09 00:02:54.767 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
-2026-07-09 00:02:54.768 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.IncrementarVisitaAsync (ECHA.API) in 2328.0119ms
-2026-07-09 00:02:54.770 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.IncrementarVisitaAsync (ECHA.API)'
-2026-07-09 00:02:54.772 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/conteudos/3/incrementar-visita - 204 null null 2346.7965ms
-2026-07-09 00:06:52.435 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:06:53.216 +01:00 [INF] Executed DbCommand (234ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:06:53.668 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:06:53.733 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:06:54.055 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:06:54.057 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:06:54.151 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:06:54.153 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:06:54.154 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:07:02.692 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:07:02.851 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:07:02.870 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:07:04.293 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:07:05.206 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:07:05.248 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:07:05.266 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2390.6778ms
-2026-07-09 00:07:05.268 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:07:05.277 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2595.6271ms
-2026-07-09 00:09:04.539 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:09:05.303 +01:00 [INF] Executed DbCommand (239ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:09:05.758 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:09:05.792 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:09:06.143 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:09:06.144 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:09:06.265 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:09:06.266 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:09:06.268 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:09:13.602 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:09:13.737 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:09:13.763 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:09:15.341 +01:00 [INF] Executed DbCommand (294ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:09:16.289 +01:00 [INF] Executed DbCommand (269ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:09:16.329 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:09:16.344 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2575.4833ms
-2026-07-09 00:09:16.347 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:09:16.359 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2766.6737ms
-2026-07-09 00:09:20.401 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:09:20.465 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:09:20.470 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:09:21.981 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:09:21.985 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:09:21.992 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1519.4528ms
-2026-07-09 00:09:21.994 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:09:21.996 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1595.4448ms
-2026-07-09 00:18:23.986 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:18:24.844 +01:00 [INF] Executed DbCommand (238ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:18:25.294 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:18:25.337 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:18:25.610 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:18:25.612 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:18:25.769 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:18:25.771 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:18:25.772 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:18:36.642 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:18:36.792 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:18:36.815 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:18:38.244 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:18:39.129 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:18:39.173 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:18:39.191 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2370.8644ms
-2026-07-09 00:18:39.193 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:18:39.201 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2569.0322ms
-2026-07-09 00:18:40.972 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:18:41.035 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:18:41.039 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:18:42.524 +01:00 [INF] Executed DbCommand (218ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:18:42.528 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:18:42.538 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1496.8047ms
-2026-07-09 00:18:42.540 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:18:42.541 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1569.2762ms
-2026-07-09 00:18:55.892 +01:00 [INF] Request starting HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - application/json; charset=utf-8 null
-2026-07-09 00:18:55.898 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:18:55.901 +01:00 [INF] Route matched with {action = "AlterarRole", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AlterarRole(Int32, EconomiaComHistoria.Core.DTOs.RoleChangeDto) on controller ECHA.API.Controllers.AdminController (ECHA.API).
-2026-07-09 00:18:57.241 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Id` = @__p_0
-LIMIT 1
-2026-07-09 00:18:57.685 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@p22='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (Size = 4000), @p2='?' (DbType = DateTime), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = Int32), @p9='?' (Size = 4000), @p10='?' (DbType = Int32), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = DateTime), @p15='?' (Size = 4000), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int32), @p19='?' (DbType = Boolean), @p20='?' (Size = 4000), @p21='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `Ativo` = @p0, `AvatarConfig` = @p1, `DataRegisto` = @p2, `Email` = @p3, `EscolaId` = @p4, `IpUltimoLogin` = @p5, `Municipio` = @p6, `Nome` = @p7, `NumeroPublicacoes` = @p8, `PasswordHash` = @p9, `PontosTotais` = @p10, `Provincia` = @p11, `StreakAtual` = @p12, `StreakRecorde` = @p13, `SuspensoAte` = @p14, `Telemovel` = @p15, `TempoEstudoMinutos` = @p16, `Tipo` = @p17, `TurmaId` = @p18, `TwoFactorAtivo` = @p19, `TwoFactorSegredo` = @p20, `UltimoAcesso` = @p21
-WHERE `Id` = @p22;
-SELECT ROW_COUNT();
-2026-07-09 00:18:58.171 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime), @p9='?' (Size = 4000), @p10='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-INSERT INTO `AuditoriaLogs` (`Acao`, `DadosAntes`, `DadosDepois`, `IdRecurso`, `Ip`, `Recurso`, `Sessao`, `SessaoHash`, `Timestamp`, `UserAgent`, `UtilizadorId`)
-VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10)
+FROM `Quizzes` AS `q`
+2026-07-09 11:27:34.202 +01:00 [INF] Executed DbCommand (244ms) [Parameters=[@p0='?' (DbType = Boolean), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (DbType = Int32), @p7='?' (DbType = Boolean), @p8='?' (DbType = Int32), @p9='?' (DbType = Int32), @p10='?' (Size = 4000), @p11='?' (DbType = Int32), @p12='?' (Size = 4000), @p13='?' (DbType = Int32), @p14='?' (DbType = Boolean), @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?' (Size = 4000), @p18='?' (DbType = Int32), @p19='?' (Size = 4000), @p20='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `Quizzes` (`Ativo`, `ConteudoId`, `Nivel`, `Tema`, `TempoLimiteSeg`, `Titulo`, `TotalPerguntas`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
 RETURNING `Id`;
-2026-07-09 00:18:58.191 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
-2026-07-09 00:18:58.192 +01:00 [INF] Executed action ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API) in 2288.8626ms
-2026-07-09 00:18:58.193 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:18:58.195 +01:00 [INF] Request finished HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - 200 0 null 2302.6552ms
-2026-07-09 00:18:58.209 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:18:58.214 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:18:58.215 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:18:59.528 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:18:59.531 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:18:59.532 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1315.3352ms
-2026-07-09 00:18:59.534 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:18:59.537 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1327.6826ms
-2026-07-09 00:19:12.067 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:19:12.073 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:19:12.074 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:19:13.403 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:19:13.959 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:19:13.963 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:19:13.965 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 1888.5599ms
-2026-07-09 00:19:13.966 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:19:13.968 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 1900.6859ms
-2026-07-09 00:19:31.153 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:19:31.158 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:19:31.159 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:19:32.473 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:19:33.084 +01:00 [INF] Executed DbCommand (260ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:19:33.087 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:19:33.089 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 1927.5915ms
-2026-07-09 00:19:33.090 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:19:33.091 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 1938.0529ms
-2026-07-09 00:20:52.395 +01:00 [INF] Executed DbCommand (248ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:20:53.582 +01:00 [INF] Executed DbCommand (262ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:20:54.058 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:20:54.114 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:20:54.614 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:20:54.615 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:20:54.769 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:20:54.772 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:20:54.773 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:21:18.633 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:21:18.790 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:21:18.816 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:21:20.935 +01:00 [INF] Executed DbCommand (246ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:21:21.947 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:21:21.989 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:21:22.007 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 3186.4507ms
-2026-07-09 00:21:22.010 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:21:22.024 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 3400.5655ms
-2026-07-09 00:21:26.467 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:21:26.516 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:21:26.520 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:21:27.962 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:21:27.968 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:21:27.975 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1453.1763ms
-2026-07-09 00:21:27.977 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:21:27.979 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1511.9015ms
-2026-07-09 00:23:04.655 +01:00 [INF] Request starting HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - application/json; charset=utf-8 null
-2026-07-09 00:23:04.661 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:23:04.666 +01:00 [INF] Route matched with {action = "AlterarRole", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AlterarRole(Int32, EconomiaComHistoria.Core.DTOs.RoleChangeDto) on controller ECHA.API.Controllers.AdminController (ECHA.API).
-2026-07-09 00:23:06.701 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Id` = @__p_0
-LIMIT 1
-2026-07-09 00:23:07.157 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[@p22='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (Size = 4000), @p2='?' (DbType = DateTime), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = Int32), @p9='?' (Size = 4000), @p10='?' (DbType = Int32), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = DateTime), @p15='?' (Size = 4000), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int32), @p19='?' (DbType = Boolean), @p20='?' (Size = 4000), @p21='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `Ativo` = @p0, `AvatarConfig` = @p1, `DataRegisto` = @p2, `Email` = @p3, `EscolaId` = @p4, `IpUltimoLogin` = @p5, `Municipio` = @p6, `Nome` = @p7, `NumeroPublicacoes` = @p8, `PasswordHash` = @p9, `PontosTotais` = @p10, `Provincia` = @p11, `StreakAtual` = @p12, `StreakRecorde` = @p13, `SuspensoAte` = @p14, `Telemovel` = @p15, `TempoEstudoMinutos` = @p16, `Tipo` = @p17, `TurmaId` = @p18, `TwoFactorAtivo` = @p19, `TwoFactorSegredo` = @p20, `UltimoAcesso` = @p21
-WHERE `Id` = @p22;
-SELECT ROW_COUNT();
-2026-07-09 00:23:07.666 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime), @p9='?' (Size = 4000), @p10='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-INSERT INTO `AuditoriaLogs` (`Acao`, `DadosAntes`, `DadosDepois`, `IdRecurso`, `Ip`, `Recurso`, `Sessao`, `SessaoHash`, `Timestamp`, `UserAgent`, `UtilizadorId`)
-VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10)
+INSERT INTO `Quizzes` (`Ativo`, `ConteudoId`, `Nivel`, `Tema`, `TempoLimiteSeg`, `Titulo`, `TotalPerguntas`)
+VALUES (@p7, @p8, @p9, @p10, @p11, @p12, @p13)
 RETURNING `Id`;
-2026-07-09 00:23:07.681 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
-2026-07-09 00:23:07.682 +01:00 [INF] Executed action ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API) in 3013.8968ms
-2026-07-09 00:23:07.683 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:23:07.684 +01:00 [INF] Request finished HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - 200 0 null 3029.7917ms
-2026-07-09 00:23:07.701 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:23:07.706 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:23:07.707 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:23:09.019 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:23:09.024 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:23:09.026 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1316.8769ms
-2026-07-09 00:23:09.030 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:23:09.032 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1330.6789ms
-2026-07-09 00:23:18.572 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:23:18.577 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:23:18.579 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:23:19.888 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:23:20.463 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:23:20.466 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:23:20.468 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 1886.9356ms
-2026-07-09 00:23:20.469 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:23:20.471 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 1898.4695ms
-2026-07-09 00:26:26.539 +01:00 [INF] Executed DbCommand (226ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:26:27.502 +01:00 [INF] Executed DbCommand (259ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:26:27.970 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:26:28.027 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:26:28.417 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:26:28.419 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:26:28.643 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:26:28.645 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:26:28.647 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:26:31.617 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:26:31.805 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:26:31.827 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:26:33.258 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:26:34.253 +01:00 [INF] Executed DbCommand (230ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:26:34.306 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:26:34.331 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2495.7427ms
-2026-07-09 00:26:34.334 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:26:34.346 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2740.5027ms
-2026-07-09 00:31:29.644 +01:00 [INF] Executed DbCommand (227ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:31:30.721 +01:00 [INF] Executed DbCommand (395ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:31:31.302 +01:00 [INF] Executed DbCommand (248ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:31:31.360 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:31:31.768 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:31:31.770 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:31:31.944 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:31:31.946 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:31:31.948 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:32:08.872 +01:00 [INF] Executed DbCommand (239ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:32:10.051 +01:00 [INF] Executed DbCommand (247ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:32:10.537 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:32:10.580 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:32:10.979 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:32:10.981 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:32:11.134 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:32:11.136 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:32:11.138 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:32:25.721 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:32:25.891 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:32:25.918 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:32:27.608 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:32:29.096 +01:00 [INF] Executed DbCommand (399ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:32:29.134 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:32:29.151 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 3227.572ms
-2026-07-09 00:32:29.154 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:32:29.164 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 3452.7093ms
-2026-07-09 00:33:06.773 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:33:06.781 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:33:06.782 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:33:08.944 +01:00 [INF] Executed DbCommand (225ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:33:09.593 +01:00 [INF] Executed DbCommand (256ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:33:09.598 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:33:09.600 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2815.5992ms
-2026-07-09 00:33:09.602 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:33:09.604 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2830.8662ms
-2026-07-09 00:33:47.763 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
-2026-07-09 00:33:47.816 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.PerfilController.GetPerfil (ECHA.API)'
-2026-07-09 00:33:47.821 +01:00 [INF] Route matched with {action = "GetPerfil", controller = "Perfil"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.PerfilResponseDto]] GetPerfil(System.Threading.CancellationToken) on controller ECHA.API.Controllers.PerfilController (ECHA.API).
-2026-07-09 00:33:49.888 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`, `e`.`Id`, `e`.`Ativa`, `e`.`CodigoConvite`, `e`.`CodigoConviteExpiracao`, `e`.`CriadaEm`, `e`.`Municipio`, `e`.`Nome`, `e`.`PlanoContrato`, `e`.`Provincia`, `t`.`Id`, `t`.`Ano`, `t`.`Ativa`, `t`.`EscolaId`, `t`.`Nome`, `t`.`ProfessorId`, `t`.`Turno`
-FROM `Utilizadores` AS `u`
-LEFT JOIN `Escolas` AS `e` ON `u`.`EscolaId` = `e`.`Id`
-LEFT JOIN `Turmas` AS `t` ON `u`.`TurmaId` = `t`.`Id`
-WHERE `u`.`Id` = @__userId_0
-LIMIT 1
-2026-07-09 00:33:49.893 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.PerfilResponseDto'.
-2026-07-09 00:33:49.901 +01:00 [INF] Executed action ECHA.API.Controllers.PerfilController.GetPerfil (ECHA.API) in 2078.816ms
-2026-07-09 00:33:49.903 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.PerfilController.GetPerfil (ECHA.API)'
-2026-07-09 00:33:49.905 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 200 null application/json; charset=utf-8 2141.6137ms
-2026-07-09 00:34:38.742 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:34:38.746 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:34:38.747 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:34:40.772 +01:00 [INF] Executed DbCommand (213ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:34:41.333 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:34:41.336 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:34:41.338 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2587.3468ms
-2026-07-09 00:34:41.339 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:34:41.341 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2599.0202ms
-2026-07-09 00:34:49.847 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:34:49.852 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:34:49.856 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:34:52.206 +01:00 [INF] Executed DbCommand (253ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:34:52.215 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:34:52.223 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 2364.8361ms
-2026-07-09 00:34:52.224 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:34:52.226 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 2378.8819ms
-2026-07-09 00:35:01.468 +01:00 [INF] Request starting HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - application/json; charset=utf-8 null
-2026-07-09 00:35:01.474 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:35:01.478 +01:00 [INF] Route matched with {action = "AlterarRole", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AlterarRole(Int32, EconomiaComHistoria.Core.DTOs.RoleChangeDto) on controller ECHA.API.Controllers.AdminController (ECHA.API).
-2026-07-09 00:35:02.889 +01:00 [INF] Executed DbCommand (236ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Id` = @__p_0
-LIMIT 1
-2026-07-09 00:35:03.359 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@p22='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (Size = 4000), @p2='?' (DbType = DateTime), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = Int32), @p9='?' (Size = 4000), @p10='?' (DbType = Int32), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = DateTime), @p15='?' (Size = 4000), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int32), @p19='?' (DbType = Boolean), @p20='?' (Size = 4000), @p21='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `Ativo` = @p0, `AvatarConfig` = @p1, `DataRegisto` = @p2, `Email` = @p3, `EscolaId` = @p4, `IpUltimoLogin` = @p5, `Municipio` = @p6, `Nome` = @p7, `NumeroPublicacoes` = @p8, `PasswordHash` = @p9, `PontosTotais` = @p10, `Provincia` = @p11, `StreakAtual` = @p12, `StreakRecorde` = @p13, `SuspensoAte` = @p14, `Telemovel` = @p15, `TempoEstudoMinutos` = @p16, `Tipo` = @p17, `TurmaId` = @p18, `TwoFactorAtivo` = @p19, `TwoFactorSegredo` = @p20, `UltimoAcesso` = @p21
-WHERE `Id` = @p22;
-SELECT ROW_COUNT();
-2026-07-09 00:35:03.837 +01:00 [INF] Executed DbCommand (213ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime), @p9='?' (Size = 4000), @p10='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-INSERT INTO `AuditoriaLogs` (`Acao`, `DadosAntes`, `DadosDepois`, `IdRecurso`, `Ip`, `Recurso`, `Sessao`, `SessaoHash`, `Timestamp`, `UserAgent`, `UtilizadorId`)
-VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10)
+INSERT INTO `Quizzes` (`Ativo`, `ConteudoId`, `Nivel`, `Tema`, `TempoLimiteSeg`, `Titulo`, `TotalPerguntas`)
+VALUES (@p14, @p15, @p16, @p17, @p18, @p19, @p20)
 RETURNING `Id`;
-2026-07-09 00:35:03.853 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
-2026-07-09 00:35:03.854 +01:00 [INF] Executed action ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API) in 2373.7727ms
-2026-07-09 00:35:03.855 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:35:03.856 +01:00 [INF] Request finished HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - 200 0 null 2388.0536ms
-2026-07-09 00:35:03.873 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:35:03.878 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:35:03.880 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:35:05.194 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:35:05.199 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:35:05.201 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1319.0634ms
-2026-07-09 00:35:05.203 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:35:05.205 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1331.5703ms
-2026-07-09 00:35:12.081 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:35:12.085 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:35:12.087 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:35:13.383 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:35:13.951 +01:00 [INF] Executed DbCommand (213ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:35:13.959 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:35:13.962 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 1872.8844ms
-2026-07-09 00:35:13.965 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:35:13.968 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 1886.8238ms
-2026-07-09 00:35:16.486 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
-2026-07-09 00:35:16.495 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:35:16.497 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:16.505 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:35:17.836 +01:00 [INF] Executed DbCommand (213ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT COUNT(*)
-FROM `Conteudos` AS `c`
-WHERE `c`.`Estado` = 2
-2026-07-09 00:35:18.317 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM (
-    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
-    FROM `Conteudos` AS `c`
-    WHERE `c`.`Estado` = 2
-    ORDER BY `c`.`DataPublicacao` DESC
-    LIMIT @__p_1 OFFSET @__p_0
-) AS `c0`
-LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
-ORDER BY `c0`.`DataPublicacao` DESC
-2026-07-09 00:35:18.327 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:35:18.354 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1847.0217ms
-2026-07-09 00:35:18.356 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:18.362 +01:00 [INF] The response has been cached.
-2026-07-09 00:35:18.363 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 1877.7082ms
-2026-07-09 00:35:22.051 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
-2026-07-09 00:35:22.055 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:35:22.056 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:22.057 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:35:23.375 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@__nivel_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT COUNT(*)
-FROM `Conteudos` AS `c`
-WHERE ((`c`.`Estado` = 2) AND (`c`.`Nivel` = @__nivel_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_0)
-2026-07-09 00:35:23.852 +01:00 [INF] Executed DbCommand (228ms) [Parameters=[@__nivel_Value_0='?' (DbType = Int32), @__p_2='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM (
-    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
-    FROM `Conteudos` AS `c`
-    WHERE ((`c`.`Estado` = 2) AND (`c`.`Nivel` = @__nivel_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_0)
-    ORDER BY `c`.`DataPublicacao` DESC
-    LIMIT @__p_2 OFFSET @__p_1
-) AS `c0`
-LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
-ORDER BY `c0`.`DataPublicacao` DESC
-2026-07-09 00:35:23.856 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:35:23.858 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1798.7708ms
-2026-07-09 00:35:23.859 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:23.861 +01:00 [INF] The response has been cached.
-2026-07-09 00:35:23.862 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 1811.3374ms
-2026-07-09 00:35:26.225 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=V%C3%ADdeo&pagina=1& - null null
-2026-07-09 00:35:26.230 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:35:26.232 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:26.233 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:35:27.112 +01:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
-2026-07-09 00:35:27.128 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 893.0774ms
-2026-07-09 00:35:27.130 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:27.131 +01:00 [INF] The response could not be cached for this request.
-2026-07-09 00:35:27.132 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=V%C3%ADdeo&pagina=1& - 400 null application/problem+json; charset=utf-8 907.6054ms
-2026-07-09 00:35:28.477 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=Texto&pagina=1&jindungo=False& - null null
-2026-07-09 00:35:28.480 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:35:28.481 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:28.483 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:35:29.897 +01:00 [INF] Executed DbCommand (212ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__nivel_Value_1='?' (DbType = Int32), @__tipo_Value_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT COUNT(*)
-FROM `Conteudos` AS `c`
-WHERE ((((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Tipo` = @__tipo_Value_2)
-2026-07-09 00:35:30.364 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__nivel_Value_1='?' (DbType = Int32), @__tipo_Value_2='?' (DbType = Int32), @__p_4='?' (DbType = Int32), @__p_3='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM (
-    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
-    FROM `Conteudos` AS `c`
-    WHERE ((((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Tipo` = @__tipo_Value_2)
-    ORDER BY `c`.`DataPublicacao` DESC
-    LIMIT @__p_4 OFFSET @__p_3
-) AS `c0`
-LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
-ORDER BY `c0`.`DataPublicacao` DESC
-2026-07-09 00:35:30.367 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:35:30.369 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1884.0732ms
-2026-07-09 00:35:30.370 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:30.374 +01:00 [INF] The response has been cached.
-2026-07-09 00:35:30.376 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=Texto&pagina=1&jindungo=False& - 200 null application/json; charset=utf-8 1898.7248ms
-2026-07-09 00:35:33.049 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=Texto&pagina=1&jindungo=True& - null null
-2026-07-09 00:35:33.053 +01:00 [INF] No cached response available for this request.
-2026-07-09 00:35:33.055 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:33.057 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
-2026-07-09 00:35:34.370 +01:00 [INF] Executed DbCommand (212ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__nivel_Value_1='?' (DbType = Int32), @__tipo_Value_2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT COUNT(*)
-FROM `Conteudos` AS `c`
-WHERE ((((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Tipo` = @__tipo_Value_2)
-2026-07-09 00:35:34.813 +01:00 [INF] Executed DbCommand (228ms) [Parameters=[@__jindungo_Value_0='?' (DbType = Boolean), @__nivel_Value_1='?' (DbType = Int32), @__tipo_Value_2='?' (DbType = Int32), @__p_4='?' (DbType = Int32), @__p_3='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM (
-    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
-    FROM `Conteudos` AS `c`
-    WHERE ((((`c`.`Estado` = 2) AND (`c`.`IsJindungo` = @__jindungo_Value_0)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Nivel` = @__nivel_Value_1)) AND (`c`.`Tipo` = @__tipo_Value_2)
-    ORDER BY `c`.`DataPublicacao` DESC
-    LIMIT @__p_4 OFFSET @__p_3
-) AS `c0`
-LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
-ORDER BY `c0`.`DataPublicacao` DESC
-2026-07-09 00:35:34.816 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:35:34.818 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 1758.5999ms
-2026-07-09 00:35:34.819 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
-2026-07-09 00:35:34.822 +01:00 [INF] The response has been cached.
-2026-07-09 00:35:34.824 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&tipo=Texto&pagina=1&jindungo=True& - 200 null application/json; charset=utf-8 1774.6428ms
-2026-07-09 00:35:36.764 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - null null
-2026-07-09 00:35:36.770 +01:00 [INF] Serving response from cache.
-2026-07-09 00:35:36.773 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?nivel=Intermedio&pagina=1& - 200 null application/json; charset=utf-8 9.0961ms
-2026-07-09 00:36:52.640 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:36:52.645 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:36:52.646 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:36:54.910 +01:00 [INF] Executed DbCommand (239ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:36:55.488 +01:00 [INF] Executed DbCommand (221ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:36:55.492 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:36:55.493 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2844.4471ms
-2026-07-09 00:36:55.495 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:36:55.496 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2856.1662ms
-2026-07-09 00:36:56.692 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:36:56.697 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:36:56.698 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:36:58.021 +01:00 [INF] Executed DbCommand (220ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:36:58.024 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:36:58.027 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1325.8185ms
-2026-07-09 00:36:58.029 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:36:58.031 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1339.8655ms
-2026-07-09 00:37:16.067 +01:00 [INF] Request starting HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - application/json; charset=utf-8 null
-2026-07-09 00:37:16.076 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:37:16.078 +01:00 [INF] Route matched with {action = "AlterarRole", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AlterarRole(Int32, EconomiaComHistoria.Core.DTOs.RoleChangeDto) on controller ECHA.API.Controllers.AdminController (ECHA.API).
-2026-07-09 00:37:17.483 +01:00 [INF] Executed DbCommand (239ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Id` = @__p_0
-LIMIT 1
-2026-07-09 00:37:17.962 +01:00 [INF] Executed DbCommand (259ms) [Parameters=[@p22='?' (DbType = Int32), @p0='?' (DbType = Boolean), @p1='?' (Size = 4000), @p2='?' (DbType = DateTime), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = Int32), @p9='?' (Size = 4000), @p10='?' (DbType = Int32), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = DateTime), @p15='?' (Size = 4000), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int32), @p19='?' (DbType = Boolean), @p20='?' (Size = 4000), @p21='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `Ativo` = @p0, `AvatarConfig` = @p1, `DataRegisto` = @p2, `Email` = @p3, `EscolaId` = @p4, `IpUltimoLogin` = @p5, `Municipio` = @p6, `Nome` = @p7, `NumeroPublicacoes` = @p8, `PasswordHash` = @p9, `PontosTotais` = @p10, `Provincia` = @p11, `StreakAtual` = @p12, `StreakRecorde` = @p13, `SuspensoAte` = @p14, `Telemovel` = @p15, `TempoEstudoMinutos` = @p16, `Tipo` = @p17, `TurmaId` = @p18, `TwoFactorAtivo` = @p19, `TwoFactorSegredo` = @p20, `UltimoAcesso` = @p21
-WHERE `Id` = @p22;
-SELECT ROW_COUNT();
-2026-07-09 00:37:18.434 +01:00 [INF] Executed DbCommand (241ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime), @p9='?' (Size = 4000), @p10='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-INSERT INTO `AuditoriaLogs` (`Acao`, `DadosAntes`, `DadosDepois`, `IdRecurso`, `Ip`, `Recurso`, `Sessao`, `SessaoHash`, `Timestamp`, `UserAgent`, `UtilizadorId`)
-VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10)
+2026-07-09 11:27:34.443 +01:00 [INF] Executed DbCommand (206ms) [Parameters=[@p21='?' (DbType = Int32), @p22='?' (DbType = DateTime), @p23='?' (DbType = Int32), @p24='?' (Size = 4000), @p25='?' (DbType = Int32), @p26='?' (Size = 4000), @p27='?' (DbType = Int32), @p28='?' (DbType = Int32), @p29='?' (DbType = Int32), @p30='?' (Size = 4000), @p31='?' (DbType = Int32), @p32='?' (DbType = DateTime), @p33='?' (DbType = Int32), @p34='?' (Size = 4000), @p35='?' (DbType = Int32), @p36='?' (Size = 4000), @p37='?' (DbType = Int32), @p38='?' (DbType = Int32), @p39='?' (DbType = Int32), @p40='?' (Size = 4000), @p41='?' (DbType = Int32), @p42='?' (DbType = DateTime), @p43='?' (DbType = Int32), @p44='?' (Size = 4000), @p45='?' (DbType = Int32), @p46='?' (Size = 4000), @p47='?' (DbType = Int32), @p48='?' (DbType = Int32), @p49='?' (DbType = Int32), @p50='?' (Size = 4000), @p51='?' (DbType = Int32), @p52='?' (DbType = DateTime), @p53='?' (DbType = Int32), @p54='?' (Size = 4000), @p55='?' (DbType = Int32), @p56='?' (Size = 4000), @p57='?' (DbType = Int32), @p58='?' (DbType = Int32), @p59='?' (DbType = Int32), @p60='?' (Size = 4000), @p61='?' (DbType = Int32), @p62='?' (DbType = DateTime), @p63='?' (DbType = Int32), @p64='?' (Size = 4000), @p65='?' (DbType = Int32), @p66='?' (Size = 4000), @p67='?' (DbType = Int32), @p68='?' (DbType = Int32), @p69='?' (DbType = Int32), @p70='?' (Size = 4000), @p71='?' (DbType = Int32), @p72='?' (DbType = DateTime), @p73='?' (DbType = Int32), @p74='?' (Size = 4000), @p75='?' (DbType = Int32), @p76='?' (Size = 4000), @p77='?' (DbType = Int32), @p78='?' (DbType = Int32), @p79='?' (DbType = Int32), @p80='?' (Size = 4000), @p81='?' (DbType = Int32), @p82='?' (DbType = DateTime), @p83='?' (DbType = Int32), @p84='?' (Size = 4000), @p85='?' (DbType = Int32), @p86='?' (Size = 4000), @p87='?' (DbType = Int32), @p88='?' (DbType = Int32), @p89='?' (DbType = Int32), @p90='?' (Size = 4000), @p91='?' (DbType = Int32), @p92='?' (DbType = DateTime), @p93='?' (DbType = Int32), @p94='?' (Size = 4000), @p95='?' (DbType = Int32), @p96='?' (Size = 4000), @p97='?' (DbType = Int32), @p98='?' (DbType = Int32), @p99='?' (DbType = Int32), @p100='?' (Size = 4000), @p101='?' (DbType = Int32), @p102='?' (DbType = DateTime), @p103='?' (DbType = Int32), @p104='?' (Size = 4000), @p105='?' (DbType = Int32), @p106='?' (Size = 4000), @p107='?' (DbType = Int32), @p108='?' (DbType = Int32), @p109='?' (DbType = Int32), @p110='?' (Size = 4000), @p111='?' (DbType = Int32), @p112='?' (DbType = DateTime), @p113='?' (DbType = Int32), @p114='?' (Size = 4000), @p115='?' (DbType = Int32), @p116='?' (Size = 4000), @p117='?' (DbType = Int32), @p118='?' (DbType = Int32), @p119='?' (DbType = Int32), @p120='?' (Size = 4000), @p121='?' (DbType = Int32), @p122='?' (DbType = DateTime), @p123='?' (DbType = Int32), @p124='?' (Size = 4000), @p125='?' (DbType = Int32), @p126='?' (Size = 4000), @p127='?' (DbType = Int32), @p128='?' (DbType = Int32), @p129='?' (DbType = Int32), @p130='?' (Size = 4000), @p131='?' (DbType = Int32), @p132='?' (DbType = DateTime), @p133='?' (DbType = Int32), @p134='?' (Size = 4000), @p135='?' (DbType = Int32), @p136='?' (Size = 4000), @p137='?' (DbType = Int32), @p138='?' (DbType = Int32), @p139='?' (DbType = Int32), @p140='?' (Size = 4000), @p141='?' (DbType = Int32), @p142='?' (DbType = DateTime), @p143='?' (DbType = Int32), @p144='?' (Size = 4000), @p145='?' (DbType = Int32), @p146='?' (Size = 4000), @p147='?' (DbType = Int32), @p148='?' (DbType = Int32), @p149='?' (DbType = Int32), @p150='?' (Size = 4000), @p151='?' (DbType = Int32), @p152='?' (DbType = DateTime), @p153='?' (DbType = Int32), @p154='?' (Size = 4000), @p155='?' (DbType = Int32), @p156='?' (Size = 4000), @p157='?' (DbType = Int32), @p158='?' (DbType = Int32), @p159='?' (DbType = Int32), @p160='?' (Size = 4000), @p161='?' (DbType = Int32), @p162='?' (DbType = DateTime), @p163='?' (DbType = Int32), @p164='?' (Size = 4000), @p165='?' (DbType = Int32), @p166='?' (Size = 4000), @p167='?' (DbType = Int32), @p168='?' (DbType = Int32), @p169='?' (DbType = Int32), @p170='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30)
 RETURNING `Id`;
-2026-07-09 00:37:18.437 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
-2026-07-09 00:37:18.438 +01:00 [INF] Executed action ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API) in 2357.2327ms
-2026-07-09 00:37:18.439 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.AdminController.AlterarRole (ECHA.API)'
-2026-07-09 00:37:18.441 +01:00 [INF] Request finished HTTP/1.1 PUT https://localhost:7275/api/admin/utilizadores/1/role - 200 0 null 2373.8204ms
-2026-07-09 00:37:18.457 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
-2026-07-09 00:37:18.461 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:37:18.463 +01:00 [INF] Route matched with {action = "GetUtilizadores", controller = "Moderacao"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto]]] GetUtilizadores(System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ModeracaoController (ECHA.API).
-2026-07-09 00:37:19.916 +01:00 [INF] Executed DbCommand (263ms) [Parameters=[@__agora_0='?' (DbType = DateTime), @__AddYears_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Nome`, `u`.`Email`, CASE `u`.`Tipo`
-    WHEN 0 THEN 'Visitante'
-    WHEN 1 THEN 'Registado'
-    WHEN 2 THEN 'Premium'
-    WHEN 3 THEN 'Professor'
-    WHEN 4 THEN 'Editor'
-    WHEN 5 THEN 'Moderador'
-    WHEN 6 THEN 'Admin'
-    WHEN 7 THEN 'SuperAdmin'
-    WHEN 8 THEN 'ClienteInstitucional'
-    ELSE CAST(`u`.`Tipo` AS char)
-END, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__agora_0), `u`.`SuspensoAte`, `u`.`SuspensoAte` IS NOT NULL AND (`u`.`SuspensoAte` > @__AddYears_1)
-FROM `Utilizadores` AS `u`
-ORDER BY `u`.`Nome`
-2026-07-09 00:37:19.919 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:37:19.920 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API) in 1455.3582ms
-2026-07-09 00:37:19.922 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ModeracaoController.GetUtilizadores (ECHA.API)'
-2026-07-09 00:37:19.924 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 200 null application/json; charset=utf-8 1466.2388ms
-2026-07-09 00:37:26.035 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:37:26.041 +01:00 [INF] Request post:/api/auth/login from IP ::1 has been blocked, quota 5/1h exceeded by 1. Blocked by rule POST:/api/auth/login, TraceIdentifier 0HNMT94LFHCGL:00000005. MonitorMode: False
-2026-07-09 00:37:26.043 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 429 null text/plain 7.8808ms
-2026-07-09 00:37:31.757 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:37:31.760 +01:00 [INF] Request post:/api/auth/login from IP ::1 has been blocked, quota 5/1h exceeded by 2. Blocked by rule POST:/api/auth/login, TraceIdentifier 0HNMT94LFHCGL:00000006. MonitorMode: False
-2026-07-09 00:37:31.762 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 429 null text/plain 5.2708ms
-2026-07-09 00:38:04.187 +01:00 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:38:05.224 +01:00 [INF] Executed DbCommand (315ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:38:05.724 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:38:05.756 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:38:05.976 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:38:05.977 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:38:06.127 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:38:06.129 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:38:06.131 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:38:15.480 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:38:15.622 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:38:15.640 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:38:17.294 +01:00 [INF] Executed DbCommand (283ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49, @p50)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59, @p60)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69, @p70)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79, @p80)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89, @p90)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99, @p100)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109, @p110)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119, @p120)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129, @p130)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139, @p140)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p141, @p142, @p143, @p144, @p145, @p146, @p147, @p148, @p149, @p150)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159, @p160)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p161, @p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169, @p170)
+RETURNING `Id`;
+2026-07-09 11:27:34.683 +01:00 [INF] Executed DbCommand (204ms) [Parameters=[@p171='?' (Size = 4000), @p172='?' (DbType = Boolean), @p173='?' (DbType = Int32), @p174='?' (Size = 4000), @p175='?' (Size = 4000), @p176='?' (DbType = Boolean), @p177='?' (DbType = Int32), @p178='?' (Size = 4000), @p179='?' (Size = 4000), @p180='?' (DbType = Boolean), @p181='?' (DbType = Int32), @p182='?' (Size = 4000), @p183='?' (Size = 4000), @p184='?' (DbType = Boolean), @p185='?' (DbType = Int32), @p186='?' (Size = 4000), @p187='?' (Size = 4000), @p188='?' (DbType = Boolean), @p189='?' (DbType = Int32), @p190='?' (Size = 4000), @p191='?' (Size = 4000), @p192='?' (DbType = Boolean), @p193='?' (DbType = Int32), @p194='?' (Size = 4000), @p195='?' (Size = 4000), @p196='?' (DbType = Boolean), @p197='?' (DbType = Int32), @p198='?' (Size = 4000), @p199='?' (Size = 4000), @p200='?' (DbType = Boolean), @p201='?' (DbType = Int32), @p202='?' (Size = 4000), @p203='?' (Size = 4000), @p204='?' (DbType = Boolean), @p205='?' (DbType = Int32), @p206='?' (Size = 4000), @p207='?' (Size = 4000), @p208='?' (DbType = Boolean), @p209='?' (DbType = Int32), @p210='?' (Size = 4000), @p211='?' (Size = 4000), @p212='?' (DbType = Boolean), @p213='?' (DbType = Int32), @p214='?' (Size = 4000), @p215='?' (Size = 4000), @p216='?' (DbType = Boolean), @p217='?' (DbType = Int32), @p218='?' (Size = 4000), @p219='?' (Size = 4000), @p220='?' (DbType = Boolean), @p221='?' (DbType = Int32), @p222='?' (Size = 4000), @p223='?' (Size = 4000), @p224='?' (DbType = Boolean), @p225='?' (DbType = Int32), @p226='?' (Size = 4000), @p227='?' (Size = 4000), @p228='?' (DbType = Boolean), @p229='?' (DbType = Int32), @p230='?' (Size = 4000), @p231='?' (Size = 4000), @p232='?' (DbType = Boolean), @p233='?' (DbType = Int32), @p234='?' (Size = 4000), @p235='?' (Size = 4000), @p236='?' (DbType = Boolean), @p237='?' (DbType = Int32), @p238='?' (Size = 4000), @p239='?' (Size = 4000), @p240='?' (DbType = Boolean), @p241='?' (DbType = Int32), @p242='?' (Size = 4000), @p243='?' (Size = 4000), @p244='?' (DbType = Boolean), @p245='?' (DbType = Int32), @p246='?' (Size = 4000), @p247='?' (Size = 4000), @p248='?' (DbType = Boolean), @p249='?' (DbType = Int32), @p250='?' (Size = 4000), @p251='?' (Size = 4000), @p252='?' (DbType = Boolean), @p253='?' (DbType = Int32), @p254='?' (Size = 4000), @p255='?' (Size = 4000), @p256='?' (DbType = Boolean), @p257='?' (DbType = Int32), @p258='?' (Size = 4000), @p259='?' (Size = 4000), @p260='?' (DbType = Boolean), @p261='?' (DbType = Int32), @p262='?' (Size = 4000), @p263='?' (Size = 4000), @p264='?' (DbType = Boolean), @p265='?' (DbType = Int32), @p266='?' (Size = 4000), @p267='?' (Size = 4000), @p268='?' (DbType = Boolean), @p269='?' (DbType = Int32), @p270='?' (Size = 4000), @p271='?' (Size = 4000), @p272='?' (DbType = Boolean), @p273='?' (DbType = Int32), @p274='?' (Size = 4000), @p275='?' (Size = 4000), @p276='?' (DbType = Boolean), @p277='?' (DbType = Int32), @p278='?' (Size = 4000), @p279='?' (Size = 4000), @p280='?' (DbType = Boolean), @p281='?' (DbType = Int32), @p282='?' (Size = 4000), @p283='?' (Size = 4000), @p284='?' (DbType = Boolean), @p285='?' (DbType = Int32), @p286='?' (Size = 4000), @p287='?' (Size = 4000), @p288='?' (DbType = Boolean), @p289='?' (DbType = Int32), @p290='?' (Size = 4000), @p291='?' (Size = 4000), @p292='?' (DbType = Boolean), @p293='?' (DbType = Int32), @p294='?' (Size = 4000), @p295='?' (Size = 4000), @p296='?' (DbType = Boolean), @p297='?' (DbType = Int32), @p298='?' (Size = 4000), @p299='?' (Size = 4000), @p300='?' (DbType = Boolean), @p301='?' (DbType = Int32), @p302='?' (Size = 4000), @p303='?' (Size = 4000), @p304='?' (DbType = Boolean), @p305='?' (DbType = Int32), @p306='?' (Size = 4000), @p307='?' (Size = 4000), @p308='?' (DbType = Boolean), @p309='?' (DbType = Int32), @p310='?' (Size = 4000), @p311='?' (Size = 4000), @p312='?' (DbType = Boolean), @p313='?' (DbType = Int32), @p314='?' (Size = 4000), @p315='?' (Size = 4000), @p316='?' (DbType = Boolean), @p317='?' (DbType = Int32), @p318='?' (Size = 4000), @p319='?' (Size = 4000), @p320='?' (DbType = Boolean), @p321='?' (DbType = Int32), @p322='?' (Size = 4000), @p323='?' (Size = 4000), @p324='?' (DbType = Boolean), @p325='?' (DbType = Int32), @p326='?' (Size = 4000), @p327='?' (Size = 4000), @p328='?' (DbType = Boolean), @p329='?' (DbType = Int32), @p330='?' (Size = 4000), @p331='?' (Size = 4000), @p332='?' (DbType = Boolean), @p333='?' (DbType = Int32), @p334='?' (Size = 4000), @p335='?' (Size = 4000), @p336='?' (DbType = Boolean), @p337='?' (DbType = Int32), @p338='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p171, @p172, @p173, @p174)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p175, @p176, @p177, @p178)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p179, @p180, @p181, @p182)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p183, @p184, @p185, @p186)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p187, @p188, @p189, @p190)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p191, @p192, @p193, @p194)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p195, @p196, @p197, @p198)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p199, @p200, @p201, @p202)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p203, @p204, @p205, @p206)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p207, @p208, @p209, @p210)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p211, @p212, @p213, @p214)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p215, @p216, @p217, @p218)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p219, @p220, @p221, @p222)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p223, @p224, @p225, @p226)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p227, @p228, @p229, @p230)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p231, @p232, @p233, @p234)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p235, @p236, @p237, @p238)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p239, @p240, @p241, @p242)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p243, @p244, @p245, @p246)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p247, @p248, @p249, @p250)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p251, @p252, @p253, @p254)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p255, @p256, @p257, @p258)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p259, @p260, @p261, @p262)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p263, @p264, @p265, @p266)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p267, @p268, @p269, @p270)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p271, @p272, @p273, @p274)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p275, @p276, @p277, @p278)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p279, @p280, @p281, @p282)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p283, @p284, @p285, @p286)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p287, @p288, @p289, @p290)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p291, @p292, @p293, @p294)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p295, @p296, @p297, @p298)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p299, @p300, @p301, @p302)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p303, @p304, @p305, @p306)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p307, @p308, @p309, @p310)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p311, @p312, @p313, @p314)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p315, @p316, @p317, @p318)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p319, @p320, @p321, @p322)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p323, @p324, @p325, @p326)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p327, @p328, @p329, @p330)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p331, @p332, @p333, @p334)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p335, @p336, @p337, @p338)
+RETURNING `Id`;
+2026-07-09 11:27:34.923 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = Boolean), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (DbType = Boolean), @p6='?' (DbType = Int32), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (DbType = Boolean), @p10='?' (DbType = Int32), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (DbType = Boolean), @p14='?' (DbType = Int32), @p15='?' (Size = 4000), @p16='?' (Size = 4000), @p17='?' (DbType = Boolean), @p18='?' (DbType = Int32), @p19='?' (Size = 4000), @p20='?' (Size = 4000), @p21='?' (DbType = Boolean), @p22='?' (DbType = Int32), @p23='?' (Size = 4000), @p24='?' (Size = 4000), @p25='?' (DbType = Boolean), @p26='?' (DbType = Int32), @p27='?' (Size = 4000), @p28='?' (Size = 4000), @p29='?' (DbType = Boolean), @p30='?' (DbType = Int32), @p31='?' (Size = 4000), @p32='?' (Size = 4000), @p33='?' (DbType = Boolean), @p34='?' (DbType = Int32), @p35='?' (Size = 4000), @p36='?' (Size = 4000), @p37='?' (DbType = Boolean), @p38='?' (DbType = Int32), @p39='?' (Size = 4000), @p40='?' (Size = 4000), @p41='?' (DbType = Boolean), @p42='?' (DbType = Int32), @p43='?' (Size = 4000), @p44='?' (Size = 4000), @p45='?' (DbType = Boolean), @p46='?' (DbType = Int32), @p47='?' (Size = 4000), @p48='?' (Size = 4000), @p49='?' (DbType = Boolean), @p50='?' (DbType = Int32), @p51='?' (Size = 4000), @p52='?' (Size = 4000), @p53='?' (DbType = Boolean), @p54='?' (DbType = Int32), @p55='?' (Size = 4000), @p56='?' (Size = 4000), @p57='?' (DbType = Boolean), @p58='?' (DbType = Int32), @p59='?' (Size = 4000), @p60='?' (Size = 4000), @p61='?' (DbType = Boolean), @p62='?' (DbType = Int32), @p63='?' (Size = 4000), @p64='?' (Size = 4000), @p65='?' (DbType = Boolean), @p66='?' (DbType = Int32), @p67='?' (Size = 4000), @p68='?' (Size = 4000), @p69='?' (DbType = Boolean), @p70='?' (DbType = Int32), @p71='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p0, @p1, @p2, @p3)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p4, @p5, @p6, @p7)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p8, @p9, @p10, @p11)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p12, @p13, @p14, @p15)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p16, @p17, @p18, @p19)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p20, @p21, @p22, @p23)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p24, @p25, @p26, @p27)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p28, @p29, @p30, @p31)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p32, @p33, @p34, @p35)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p36, @p37, @p38, @p39)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p40, @p41, @p42, @p43)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p44, @p45, @p46, @p47)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p48, @p49, @p50, @p51)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p52, @p53, @p54, @p55)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p56, @p57, @p58, @p59)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p60, @p61, @p62, @p63)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p64, @p65, @p66, @p67)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p68, @p69, @p70, @p71)
+RETURNING `Id`;
+2026-07-09 11:27:35.231 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-09 11:27:35.562 +01:00 [INF] Executed action ECHA.API.Controllers.AdminController.Seed (ECHA.API) in 6436.2014ms
+2026-07-09 11:27:35.573 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.AdminController.Seed (ECHA.API)'
+2026-07-09 11:27:35.605 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/admin/seed - 200 null application/json; charset=utf-8 6611.6748ms
+2026-07-09 11:27:50.531 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/quizzes - null null
+2026-07-09 11:27:50.685 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:27:50.697 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:27:50.724 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 11:27:52.516 +01:00 [INF] Executed DbCommand (202ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 11:27:52.549 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 11:27:52.610 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1881.514ms
+2026-07-09 11:27:52.614 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:27:52.618 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:27:52.622 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/quizzes - 200 null application/json; charset=utf-8 2090.8284ms
+2026-07-09 11:34:20.501 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 11:34:20.534 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:34:20.561 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 11:34:23.730 +01:00 [INF] Executed DbCommand (204ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
 SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
 FROM `Utilizadores` AS `u`
 WHERE `u`.`Email` = @__request_Email_0
 LIMIT 1
-2026-07-09 00:38:18.246 +01:00 [INF] Executed DbCommand (262ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+2026-07-09 11:34:25.160 +01:00 [INF] Executed DbCommand (297ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
 SET AUTOCOMMIT = 1;
 UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
 WHERE `Id` = @p1;
 SELECT ROW_COUNT();
-2026-07-09 00:38:18.287 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:38:18.305 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 2659.9651ms
-2026-07-09 00:38:18.308 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:38:18.323 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 2852.7081ms
-2026-07-09 00:42:33.871 +01:00 [INF] Executed DbCommand (223ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:42:34.679 +01:00 [INF] Executed DbCommand (229ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:42:35.128 +01:00 [INF] Executed DbCommand (213ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:42:35.181 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:42:35.640 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:42:35.641 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:42:35.711 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 00:42:35.820 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:42:35.821 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:42:35.824 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:42:36.061 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:42:36.097 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 00:42:37.455 +01:00 [INF] Executed DbCommand (213ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+2026-07-09 11:34:25.234 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 11:34:25.247 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 4678.0472ms
+2026-07-09 11:34:25.256 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:34:25.260 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 200 null application/json; charset=utf-8 4759.7507ms
+2026-07-09 11:34:29.191 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/quizzes? - null null
+2026-07-09 11:34:29.201 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:34:29.207 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:34:29.208 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 11:34:30.689 +01:00 [INF] Executed DbCommand (264ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
 FROM `Quizzes` AS `q`
 WHERE `q`.`Ativo`
-2026-07-09 00:42:37.471 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:42:37.490 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1387.7377ms
-2026-07-09 00:42:37.493 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:42:37.503 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1807.6255ms
-2026-07-09 00:42:40.771 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
-2026-07-09 00:42:40.780 +01:00 [INF] Authorization failed. These requirements were not met:
-RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin|Editor)
-2026-07-09 00:42:40.784 +01:00 [INF] AuthenticationScheme: Bearer was forbidden.
-2026-07-09 00:42:40.786 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 403 0 null 14.3152ms
-2026-07-09 00:42:44.304 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 00:42:44.311 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:42:44.312 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 00:42:45.736 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
-FROM `Quizzes` AS `q`
-WHERE `q`.`Ativo`
-2026-07-09 00:42:45.740 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:42:45.742 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1427.2999ms
-2026-07-09 00:42:45.744 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:42:45.746 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1441.8199ms
-2026-07-09 00:43:02.476 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 00:43:02.482 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:43:02.485 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 00:43:03.861 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
-FROM `Quizzes` AS `q`
-WHERE `q`.`Ativo`
-2026-07-09 00:43:03.863 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:43:03.865 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1377.9426ms
-2026-07-09 00:43:03.867 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:43:03.869 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1392.1098ms
-2026-07-09 00:55:53.973 +01:00 [INF] Executed DbCommand (222ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 00:55:54.836 +01:00 [INF] Executed DbCommand (245ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 00:55:55.312 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 00:55:55.366 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 00:55:55.730 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 00:55:55.732 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 00:55:55.915 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 00:55:55.917 +01:00 [INF] Hosting environment: Development
-2026-07-09 00:55:55.919 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 00:56:19.054 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
-2026-07-09 00:56:19.198 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:56:19.222 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
-2026-07-09 00:56:21.401 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
-FROM `Utilizadores` AS `u`
-WHERE `u`.`Email` = @__request_Email_0
-LIMIT 1
-2026-07-09 00:56:22.272 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
-SET AUTOCOMMIT = 1;
-UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
-WHERE `Id` = @p1;
-SELECT ROW_COUNT();
-2026-07-09 00:56:22.314 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
-2026-07-09 00:56:22.336 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 3108.9348ms
-2026-07-09 00:56:22.338 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
-2026-07-09 00:56:22.346 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 3301.5973ms
-2026-07-09 00:56:25.403 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 00:56:25.448 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:56:25.455 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 00:56:26.803 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
-FROM `Quizzes` AS `q`
-WHERE `q`.`Ativo`
-2026-07-09 00:56:26.807 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 00:56:26.813 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1354.8883ms
-2026-07-09 00:56:26.814 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 00:56:26.816 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1413.8005ms
-2026-07-09 01:00:54.349 +01:00 [INF] Executed DbCommand (230ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
-FROM information_schema.tables
-WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
-2026-07-09 01:00:55.202 +01:00 [INF] Executed DbCommand (236ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__adminEmail_0)
-2026-07-09 01:00:55.657 +01:00 [INF] Executed DbCommand (214ms) [Parameters=[@__superAdminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
-SELECT EXISTS (
-    SELECT 1
-    FROM `Utilizadores` AS `u`
-    WHERE `u`.`Email` = @__superAdminEmail_0)
-2026-07-09 01:00:55.697 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2026-07-09 01:00:56.040 +01:00 [INF] Now listening on: https://localhost:7275
-2026-07-09 01:00:56.042 +01:00 [INF] Now listening on: http://localhost:5194
-2026-07-09 01:00:56.213 +01:00 [INF] Application started. Press Ctrl+C to shut down.
-2026-07-09 01:00:56.215 +01:00 [INF] Hosting environment: Development
-2026-07-09 01:00:56.217 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
-2026-07-09 01:00:57.269 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 01:00:57.491 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 01:00:57.512 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 01:00:58.973 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
-FROM `Quizzes` AS `q`
-WHERE `q`.`Ativo`
-2026-07-09 01:00:58.984 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 01:00:58.999 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1483.0964ms
-2026-07-09 01:00:59.001 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 01:00:59.011 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 1750.3025ms
-2026-07-09 01:01:04.649 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - null null
-2026-07-09 01:01:04.659 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
-2026-07-09 01:01:04.663 +01:00 [INF] Route matched with {action = "GetQuestionPool", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.PerguntaStartDto]]] GetQuestionPool(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade]) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 01:01:06.100 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-SELECT `p`.`Id`, `p`.`AutorId`, `p`.`CriadaEm`, `p`.`Dificuldade`, `p`.`Enunciado`, `p`.`Estado`, `p`.`Explicacao`, `p`.`NumVezesErrada`, `p`.`Pontos`, `p`.`QuizId`, `p`.`Tema`, `q`.`Id`, `o`.`Id`, `o`.`Explicacao`, `o`.`IsCorrecta`, `o`.`PerguntaId`, `o`.`Texto`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
-FROM `Perguntas` AS `p`
-INNER JOIN `Quizzes` AS `q` ON `p`.`QuizId` = `q`.`Id`
-LEFT JOIN `OpcoesResposta` AS `o` ON `p`.`Id` = `o`.`PerguntaId`
-ORDER BY `p`.`Id`, `q`.`Id`
-2026-07-09 01:01:06.104 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.PerguntaStartDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
-2026-07-09 01:01:06.108 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API) in 1442.4094ms
-2026-07-09 01:01:06.110 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuestionPool (ECHA.API)'
-2026-07-09 01:01:06.111 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes/pool? - 200 null application/json; charset=utf-8 1462.6467ms
-2026-07-09 01:01:10.559 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 01:01:10.565 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 01:01:10.566 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 01:01:21.622 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
-2026-07-09 01:01:21.625 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 01:01:21.627 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
-2026-07-09 01:01:37.070 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 26502.0706ms
-2026-07-09 01:01:37.073 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
-2026-07-09 01:01:38.433 +01:00 [ERR] An unhandled exception has occurred while executing the request.
-MySqlConnector.MySqlException (0x80004005): Unable to connect to any of the specified MySQL hosts.
-   at MySqlConnector.Core.ServerSession.OpenTcpSocketAsync(ConnectionSettings cs, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 1283
-   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int64 startingTimestamp, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 427
-   at MySqlConnector.Core.ServerSession.ConnectAndRedirectAsync(ILogger connectionLogger, ILogger poolLogger, IConnectionPoolMetadata pool, ConnectionSettings cs, ILoadBalancer loadBalancer, MySqlConnection connection, Action`4 logMessage, Int64 startingTimestamp, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 697
-   at MySqlConnector.Core.ServerSession.ConnectAndRedirectAsync(ILogger connectionLogger, ILogger poolLogger, IConnectionPoolMetadata pool, ConnectionSettings cs, ILoadBalancer loadBalancer, MySqlConnection connection, Action`4 logMessage, Int64 startingTimestamp, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 702
-   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int64 startingTimestamp, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 1099
-   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 567
-   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 522
-   at Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(String connectionString)
-   at Program.<>c__DisplayClass0_0.<<Main>$>b__2(DbContextOptionsBuilder options) in C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API\Program.cs:line 71
-   at Microsoft.Extensions.DependencyInjection.EntityFrameworkServiceCollectionExtensions.<>c__DisplayClass1_0`2.<AddDbContext>b__0(IServiceProvider _, DbContextOptionsBuilder b)
-   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.DbContextOptionsConfiguration`1.Configure(IServiceProvider serviceProvider, DbContextOptionsBuilder optionsBuilder)
-   at Microsoft.Extensions.DependencyInjection.EntityFrameworkServiceCollectionExtensions.CreateDbContextOptions[TContext](IServiceProvider applicationServiceProvider)
-   at ResolveService(ILEmitResolverBuilderRuntimeContext, ServiceProviderEngineScope)
-   at ResolveService(ILEmitResolverBuilderRuntimeContext, ServiceProviderEngineScope)
-   at ResolveService(ILEmitResolverBuilderRuntimeContext, ServiceProviderEngineScope)
-   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
-   at lambda_method28(Closure, IServiceProvider, Object[])
-   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
---- End of stack trace from previous location ---
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
-   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
-   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
-   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
-   at Program.<>c.<<<Main>$>b__0_8>d.MoveNext() in C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API\Program.cs:line 230
---- End of stack trace from previous location ---
-   at Microsoft.AspNetCore.ResponseCaching.ResponseCachingMiddleware.Invoke(HttpContext httpContext)
-   at AspNetCoreRateLimit.RateLimitMiddleware`1.Invoke(HttpContext context) in C:\Users\User\Documents\Github\AspNetCoreRateLimit\src\AspNetCoreRateLimit\Middleware\RateLimitMiddleware.cs:line 124
-   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
-   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
-   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
-2026-07-09 01:01:38.493 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 500 null text/plain; charset=utf-8 27934.1731ms
-2026-07-09 01:03:42.735 +01:00 [INF] Executed DbCommand (342ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+2026-07-09 11:34:30.702 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 11:34:30.710 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1493.3789ms
+2026-07-09 11:34:30.731 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:34:30.736 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:34:30.738 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/quizzes? - 200 null application/json; charset=utf-8 1547.6203ms
+2026-07-09 11:40:10.051 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
 FROM information_schema.tables
 WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'

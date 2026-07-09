@@ -205,25 +205,4 @@ public class ModeracaoController : ControllerBase
         await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
-
-    [HttpGet("utilizadores")]
-    public async Task<ActionResult<IEnumerable<UtilizadorModeracaoDto>>> GetUtilizadores(CancellationToken cancellationToken)
-    {
-        var agora = DateTime.UtcNow;
-
-        var utilizadores = await _dbContext.Utilizadores
-            .OrderBy(u => u.Nome)
-            .Select(u => new UtilizadorModeracaoDto(
-                u.Id,
-                u.Nome,
-                u.Email,
-                u.Tipo.ToString(),
-                u.SuspensoAte.HasValue && u.SuspensoAte.Value > agora,
-                u.SuspensoAte,
-                u.SuspensoAte.HasValue && u.SuspensoAte.Value > agora.AddYears(50)
-            ))
-            .ToListAsync(cancellationToken);
-
-        return Ok(utilizadores);
-    }
 }
