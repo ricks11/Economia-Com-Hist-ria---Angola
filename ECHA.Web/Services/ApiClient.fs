@@ -84,7 +84,7 @@ type ApiClient(httpClient: HttpClient) =
         task {
             let! response = httpClient.GetAsync($"/api/conteudos/{id}")
             if response.IsSuccessStatusCode then
-                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>()
+                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)
                 return Some conteudo
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -102,9 +102,9 @@ type ApiClient(httpClient: HttpClient) =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.PostAsJsonAsync("/api/conteudos", request)
-        
+    
             if response.IsSuccessStatusCode then
-                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>()
+                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)
                 return Some conteudo
             else
                 let! errorContent = response.Content.ReadAsStringAsync()
@@ -529,7 +529,7 @@ type ApiClient(httpClient: HttpClient) =
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.GetAsync("/api/perfil")
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<PerfilResponseDto>()
+                let! result = response.Content.ReadFromJsonAsync<PerfilResponseDto>(JsonOpts.options)
                 return Some result
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
