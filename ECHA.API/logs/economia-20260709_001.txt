@@ -589,3 +589,13 @@ SELECT ROW_COUNT();
 2026-07-09 18:30:26.070 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.SubmitQuiz (ECHA.API) in 5530.2877ms
 2026-07-09 18:30:26.074 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.SubmitQuiz (ECHA.API)'
 2026-07-09 18:30:26.076 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/quizzes/tentativa - 200 null application/json; charset=utf-8 5543.6242ms
+2026-07-09 23:16:42.630 +01:00 [INF] Executed DbCommand (458ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 23:16:42.928 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 23:16:43.815 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-09 23:16:43.841 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 23:16:44.480 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 23:16:44.497 +01:00 [INF] Hosting environment: Development
+2026-07-09 23:16:44.506 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API

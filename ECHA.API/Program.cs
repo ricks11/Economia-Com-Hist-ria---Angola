@@ -15,6 +15,7 @@ using Serilog;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/economia-.txt", rollingInterval: RollingInterval.Day)
