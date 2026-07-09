@@ -1,0 +1,57 @@
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto>
+@{
+    ViewData["Title"] = "Gestão de Permissões";
+    var roles = new[] { "Visitante", "Registado", "Editor", "Admin", "Moderador", "SuperAdmin" };
+}
+
+<div class="max-w-6xl mx-auto">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 flex items-center gap-3 bg-green-50 text-green-800 px-6 py-4 rounded-xl">
+            <span class="material-symbols-outlined">check_circle</span>
+            <p>@TempData["SuccessMessage"]</p>
+        </div>
+    }
+
+    <header class="mb-10">
+        <h1 class="text-4xl font-headline font-extrabold text-primary">Gestão de Permissões</h1>
+        <p class="text-on-surface-variant mt-2">Controlo de roles e acessos de super administrador.</p>
+    </header>
+
+    <div class="bg-surface-container-lowest rounded-3xl overflow-hidden ambient-shadow">
+        <table class="w-full">
+            <thead class="bg-surface-container-low">
+                <tr>
+                    <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Utilizador</th>
+                    <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Email</th>
+                    <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Role Actual</th>
+                    <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Alterar Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="px-6 py-4 font-bold">@user.Nome</td>
+                        <td class="px-6 py-4 text-sm text-stone-500">@user.Email</td>
+                        <td class="px-6 py-4">
+                            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">@user.Tipo</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <form asp-action="AlterarRole" method="post" class="flex gap-2">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <select name="novaRole" class="bg-surface-container-low border-0 rounded-xl px-3 py-2 text-sm">
+                                    @foreach (var role in roles)
+                                    {
+                                        <option value="@role" selected="@(user.Tipo.ToString() == role)">@role</option>
+                                    }
+                                </select>
+                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold hover:opacity-90">Guardar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,46 +1,80 @@
 @model IEnumerable<EconomiaComHistoria.Core.DTOs.QuizResponseDto>
 @{
-    ViewData["Title"] = "Gestão de Quizzes";
+    ViewData["Title"] = "Quizzes Interactivos";
+    var isAdmin = User.IsInRole("Editor") || User.IsInRole("Admin");
 }
 
-<div class="max-w-7xl mx-auto px-6 pt-12">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-    <!-- Header -->
-    <header class="mb-12 flex justify-between items-center">
-        <div>
-            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Gestão de Quizzes</h1>
-            <p class="text-secondary mt-2">Administre os desafios interativos disponíveis para os investigadores.</p>
-        </div>
-        <div class="flex gap-3">
-            <a asp-action="Pool" class="px-6 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-all decoration-none">Pool de Perguntas</a>
-            <a asp-action="Create" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none">Novo Quiz</a>
-        </div>
-    </header>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded-xl">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-xl">@TempData["ErrorMessage"]</div>
+}
 
-    <!-- Quizzes Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach (var item in Model)
+<div class="max-w-6xl mx-auto">
+    <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Quizzes Interactivos</h1>
+            <p class="text-on-surface-variant mt-2">Testa os teus conhecimentos sobre economia e história de Angola.</p>
+        </div>
+        @if (isAdmin)
         {
-            <div class="bg-surface-container-lowest p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow">
-                <h3 class="font-headline font-bold text-xl text-primary mb-4">@item.Titulo</h3>
-                <div class="space-y-2 text-sm text-secondary mb-6">
-                    <p><strong>Tema:</strong> @item.Tema</p>
-                    <p><strong>Nível:</strong> @item.NivelDificuldade</p>
-                    <p><strong>Perguntas:</strong> @item.NumeroPerguntas</p>
-                    <p><strong>Tempo/Pergunta:</strong> @item.TempoPorPerguntaSegundos s</p>
-                </div>
-                <div class="flex gap-3">
-                    <a asp-action="Stats" asp-route-id="@item.Id" class="px-4 py-2 rounded-full border border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition-colors decoration-none">Estatísticas</a>
-                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline" onsubmit="return confirm('Tem a certeza?')">
-                        <button type="submit" class="px-4 py-2 rounded-full border border-error text-error font-bold text-sm hover:bg-error hover:text-white transition-colors">Eliminar</button>
-                    </form>
-                </div>
+            <div class="flex gap-3">
+                <a asp-action="Pool" class="px-5 py-2.5 rounded-full bg-surface-container text-secondary font-bold text-sm no-underline hover:bg-surface-container-high">Pool de Perguntas</a>
+                <a asp-action="Create" class="px-5 py-2.5 rounded-full bg-primary text-white font-bold text-sm no-underline hover:opacity-90">Novo Quiz</a>
             </div>
         }
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach (var quiz in Model.Where(q => q.Ativo))
+        {
+            var nivelLabel = (int)quiz.Nivel switch { 0 => "Básico", 1 => "Intermédio", _ => "Avançado" };
+            <article class="bg-surface-container-lowest rounded-3xl p-8 ambient-shadow hover:ambient-shadow transition-all group">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-tertiary">quiz</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-tertiary">@quiz.Tema</span>
+                </div>
+                <h3 class="font-headline font-bold text-xl text-primary mb-3 group-hover:text-primary-container transition-colors">@quiz.Titulo</h3>
+                <div class="flex flex-wrap gap-3 text-sm text-stone-500 mb-6">
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">signal_cellular_alt</span> @nivelLabel</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">help</span> @quiz.TotalPerguntas perguntas</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">timer</span> @quiz.TempoLimiteSeg s</span>
+                </div>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-action="Jogar" asp-route-id="@quiz.Id" class="flex items-center justify-center gap-2 w-full bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-full font-bold no-underline hover:opacity-90 transition-opacity">
+                        <span class="material-symbols-outlined text-sm">play_arrow</span>
+                        Iniciar Quiz
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Auth" asp-action="Login" class="flex items-center justify-center gap-2 w-full bg-surface-container text-secondary py-3 rounded-full font-bold no-underline">
+                        Login para jogar
+                    </a>
+                }
+                @if (isAdmin)
+                {
+                    <div class="flex gap-2 mt-3">
+                        <a asp-action="Stats" asp-route-id="@quiz.Id" class="flex-1 text-center text-xs text-primary font-bold py-2 no-underline hover:underline">Stats</a>
+                        <a asp-action="Edit" asp-route-id="@quiz.Id" class="flex-1 text-center text-xs text-primary font-bold py-2 no-underline hover:underline">Editar</a>
+                        <form asp-action="Delete" asp-route-id="@quiz.Id" method="post" class="flex-1" onsubmit="return confirm('Eliminar quiz?')">
+                            <button type="submit" class="w-full text-xs text-error font-bold py-2">Eliminar</button>
+                        </form>
+                    </div>
+                }
+            </article>
+        }
     </section>
+
+    @if (!Model.Any(q => q.Ativo))
+    {
+        <div class="text-center py-16 text-stone-500">
+            <span class="material-symbols-outlined text-5xl mb-4 block">quiz</span>
+            Nenhum quiz disponível no momento.
+        </div>
+    }
 </div>

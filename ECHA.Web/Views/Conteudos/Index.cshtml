@@ -1,24 +1,34 @@
 @model IEnumerable<EconomiaComHistoria.Core.DTOs.ConteudoResponseDto>
 @{
-    ViewData["Title"] = "Explorar Conteúdos";
+    ViewData["Title"] = "Explorar Conteúdos - Economia com História – Angola";
     var queryParams = Context.Request.Query;
+    var currentTipo = queryParams["tipo"].ToString();
+    var currentJindungo = queryParams["jindungo"].ToString();
+    var currentNivel = queryParams["nivel"].ToString();
+    var currentEstado = queryParams["estado"].ToString();
 }
 
-<div class="max-w-7xl mx-auto px-6">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-            @TempData["SuccessMessage"]
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 text-sm font-medium shadow-sm animate-fade-in">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-600">check_circle</span>
+            <span>@TempData["SuccessMessage"]</span>
         </div>
-    }
+    </div>
+}
+
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-20 px-6 max-w-7xl mx-auto">
     <!-- Search and Title Section -->
     <section class="mb-12">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">Explorar Conteúdos</h1>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary font-headline tracking-tight">Explorar Conteúdos</h1>
+            
             @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
             {
-                <a asp-action="Create" class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium hover:bg-surface-container-high transition-all decoration-none">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
+                <a asp-action="Create" class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:shadow-md transition-all transform hover:-translate-y-0.5 no-underline">
+                    <span class="material-symbols-outlined text-sm">add</span>
                     Novo Conteúdo
                 </a>
             }
@@ -26,97 +36,71 @@
         
         <form method="get" class="relative max-w-2xl">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
-            <input name="tema" value="@queryParams["tema"]" class="w-full pl-12 pr-6 py-4 bg-surface-container-low border-none rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400" placeholder="Pesquisar por tema..." type="text"/>
+            <input name="tema" value="@queryParams["tema"]" class="w-full pl-12 pr-6 py-4 bg-surface-container-low border-none rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400" placeholder="Pesquisar arquivos, vídeos ou lições..." type="text" />
             @foreach (var key in queryParams.Keys.Where(k => k != "tema"))
             {
                 <input type="hidden" name="@key" value="@queryParams[key]" />
             }
         </form>
     </section>
-
+    
     <!-- Dynamic Filters -->
     <section class="flex flex-wrap gap-3 mb-12">
-        @{
-            string GetFilterClass(string type) => 
-                (queryParams["tipo"] == type || (string.IsNullOrEmpty(type) && string.IsNullOrEmpty(queryParams["tipo"]))) 
-                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
-            
-            string GetJindungoClass() => 
-                (queryParams["jindungo"] == "true") 
-                ? "bg-tertiary-container text-on-tertiary-container shadow-md" : "bg-surface-container text-secondary hover:bg-surface-container-high";
-        }
-
-        <a asp-action="Index" class="px-6 py-2.5 rounded-full font-semibold flex items-center gap-2 transition-all transform hover:-translate-y-0.5 decoration-none @GetFilterClass(null)">
+        <a href="@Url.Action("Index")" class="px-6 py-2.5 rounded-full bg-primary text-white font-semibold flex items-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-0.5 no-underline">
             <span class="material-symbols-outlined text-[18px]">apps</span>
             Todos
         </a>
-        <a asp-action="Index" asp-route-tipo="Vídeo" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Vídeo")">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">play_circle</span>
+        <a href="@Url.Action("Index", new { tipo = "Vídeo", tema = queryParams["tema"], nivel = currentNivel, estado = currentEstado })" class="px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium hover:bg-surface-container-high transition-all no-underline flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">play_circle</span>
             Vídeos
         </a>
-        <a asp-action="Index" asp-route-tipo="Texto" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Texto")">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">article</span>
+        <a href="@Url.Action("Index", new { tipo = "Texto", tema = queryParams["tema"], nivel = currentNivel, estado = currentEstado })" class="px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium hover:bg-surface-container-high transition-all no-underline flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">article</span>
             Textos
         </a>
-        <a asp-action="Index" asp-route-tipo="Podcast" class="px-6 py-2.5 rounded-full font-medium transition-all decoration-none @GetFilterClass("Podcast")">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">mic</span>
+        <a href="@Url.Action("Index", new { tipo = "Podcast", tema = queryParams["tema"], nivel = currentNivel, estado = currentEstado })" class="px-6 py-2.5 rounded-full bg-surface-container text-secondary font-medium hover:bg-surface-container-high transition-all no-underline flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">mic</span>
             Podcasts
         </a>
-        <a asp-action="Index" asp-route-jindungo="true" class="px-6 py-2.5 rounded-full font-semibold transition-all decoration-none @GetJindungoClass()">
-            <span class="material-symbols-outlined text-[18px] align-middle mr-1">local_fire_department</span>
+        <a href="@Url.Action("Index", new { jindungo = "true", tema = queryParams["tema"], nivel = currentNivel, estado = currentEstado })" class="px-6 py-2.5 rounded-full bg-tertiary-container text-on-tertiary-container font-semibold hover:shadow-md transition-all no-underline flex items-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
             Textos com Jindungo
         </a>
     </section>
 
-    <!-- Additional Filters: Nivel and Estado -->
-    <section class="flex flex-wrap gap-3 mb-12">
-        @{
-            string GetNivelClass(string nivel) =>
-                (queryParams["nivel"] == nivel)
-                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+    <!-- Level and State Filters -->
+    <section class="flex flex-wrap gap-6 text-xs text-on-surface-variant font-medium items-center mb-12">
+        <div class="flex items-center gap-2">
+            <span>Nível:</span>
+            <div class="inline-flex rounded-lg bg-surface-container p-0.5">
+                <a href="@Url.Action("Index", new { nivel = "", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], estado = currentEstado })" class="px-3 py-1 rounded-md no-underline @(string.IsNullOrEmpty(currentNivel) ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Todos</a>
+                <a href="@Url.Action("Index", new { nivel = "Basico", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], estado = currentEstado })" class="px-3 py-1 rounded-md no-underline @(currentNivel == "Basico" ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Básico</a>
+                <a href="@Url.Action("Index", new { nivel = "Intermedio", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], estado = currentEstado })" class="px-3 py-1 rounded-md no-underline @(currentNivel == "Intermedio" ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Interm.</a>
+                <a href="@Url.Action("Index", new { nivel = "Avancado", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], estado = currentEstado })" class="px-3 py-1 rounded-md no-underline @(currentNivel == "Avancado" ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Avançado</a>
+            </div>
+        </div>
 
-            string GetEstadoClass(string estado) =>
-                (queryParams["estado"] == estado)
-                ? "bg-primary text-white" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+        @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
+        {
+            <div class="flex items-center gap-2">
+                <span>Estado:</span>
+                <div class="inline-flex rounded-lg bg-surface-container p-0.5">
+                    <a href="@Url.Action("Index", new { estado = "", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], nivel = currentNivel })" class="px-3 py-1 rounded-md no-underline @(string.IsNullOrEmpty(currentEstado) ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Todos</a>
+                    <a href="@Url.Action("Index", new { estado = "Rascunho", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], nivel = currentNivel })" class="px-3 py-1 rounded-md no-underline @(currentEstado == "Rascunho" ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Rascunho</a>
+                    <a href="@Url.Action("Index", new { estado = "EmRevisao", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], nivel = currentNivel })" class="px-3 py-1 rounded-md no-underline @(currentEstado == "EmRevisao" ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Em Revisão</a>
+                    <a href="@Url.Action("Index", new { estado = "Publicado", tipo = currentTipo, jindungo = currentJindungo, tema = queryParams["tema"], nivel = currentNivel })" class="px-3 py-1 rounded-md no-underline @(currentEstado == "Publicado" ? "bg-white text-primary font-bold shadow-sm" : "text-stone-500 hover:text-stone-800")">Publicado</a>
+                </div>
+            </div>
         }
-
-        <div>
-            <span class="mr-2">Nível:</span>
-            <a asp-action="Index" asp-route-nivel="Basico" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Basico")">
-                Básico
-            </a>
-            <a asp-action="Index" asp-route-nivel="Intermedio" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Intermedio")">
-                Intermediário
-            </a>
-            <a asp-action="Index" asp-route-nivel="Avancado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetNivelClass("Avancado")">
-                Avançado
-            </a>
-        </div>
-
-        <div class="mt-2">
-            <span class="mr-2">Estado:</span>
-            <a asp-action="Index" asp-route-estado="Rascunho" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Rascunho")">
-                Rascunho
-            </a>
-            <a asp-action="Index" asp-route-estado="EmRevisao" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("EmRevisao")">
-                Em Revisão
-            </a>
-            <a asp-action="Index" asp-route-estado="Publicado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Publicado")">
-                Publicado
-            </a>
-            <a asp-action="Index" asp-route-estado="Arquivado" class="px-3 py-1.5 rounded-full font-medium transition-all decoration-none @GetEstadoClass("Arquivado")">
-                Arquivado
-            </a>
-        </div>
     </section>
 
-    <!-- Bento Grid Content -->
+    <!-- Content Grid (Bento Style) -->
     <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
         @if (!Model.Any())
         {
-            <div class="col-span-12 py-20 text-center">
-                <span class="material-symbols-outlined text-6xl text-stone-200 mb-4">search_off</span>
-                <p class="text-secondary">Nenhum conteúdo encontrado para os filtros selecionados.</p>
+            <div class="col-span-12 py-20 text-center bg-surface-container-low rounded-[20px]">
+                <span class="material-symbols-outlined text-6xl text-stone-300 mb-4">search_off</span>
+                <p class="text-secondary font-medium">Nenhum conteúdo encontrado para os filtros selecionados.</p>
             </div>
         }
         else
@@ -124,9 +108,10 @@
             var items = Model.ToList();
             var featured = items.FirstOrDefault();
             var others = items.Skip(1);
+            var jindungoItem = others.FirstOrDefault(x => x.IsJindungo);
 
-            <!-- Featured Card -->
-            <a asp-action="Details" asp-route-id="@featured.Id" class="md:col-span-8 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-lg relative decoration-none">
+            <!-- Featured Card: First Content -->
+            <div class="md:col-span-8 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_24px_-4px_rgba(26,28,28,0.06)] relative">
                 <div class="aspect-video w-full overflow-hidden">
                     @if (!string.IsNullOrEmpty(featured.ThumbnailUrl))
                     {
@@ -135,52 +120,99 @@
                     else
                     {
                         <div class="w-full h-full bg-stone-200 flex items-center justify-center">
-                             <span class="material-symbols-outlined text-stone-400 text-6xl">image</span>
+                            <span class="material-symbols-outlined text-stone-400 text-6xl">image</span>
                         </div>
                     }
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 </div>
                 <div class="absolute bottom-0 left-0 p-8 w-full">
-                    <div class="flex gap-2 mb-3">
-                        <span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full uppercase">@featured.Tipo</span>
-                        @if (featured.IsJindungo)
-                        {
-                            <span class="px-3 py-1 bg-tertiary text-white text-xs font-bold rounded-full uppercase">Jindungo</span>
-                        }
-                    </div>
-                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">@featured.Titulo</h3>
-                    <p class="text-white/80 line-clamp-2 max-w-2xl">@featured.Resumo</p>
+                    <span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full mb-3 inline-block">@featured.Tipo</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-2 font-headline">@featured.Titulo</h3>
+                    <p class="text-stone-200 text-sm max-w-lg">@featured.Resumo</p>
                 </div>
-            </a>
+            </div>
 
-            foreach (var item in others)
+            <!-- Side Card: Second Content if exists -->
+            @if (others.Any())
             {
-                <a asp-action="Details" asp-route-id="@item.Id" class="md:col-span-4 bg-surface-container-lowest rounded-[20px] overflow-hidden soft-elevation hover:-translate-y-1 transition-all duration-300 group decoration-none">
-                    <div class="aspect-[4/3] w-full overflow-hidden relative">
-                        @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
-                        {
-                            <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                        }
-                        else
-                        {
-                            <div class="w-full h-full bg-stone-100 flex items-center justify-center">
-                                 <span class="material-symbols-outlined text-stone-300 text-4xl">image</span>
+                var second = others.First();
+                <div class="md:col-span-4 group cursor-pointer bg-surface-container-lowest rounded-[20px] p-6 transition-all duration-300 hover:shadow-[0_8px_24px_-4px_rgba(26,28,28,0.06)] flex flex-col justify-between border border-outline-variant/10">
+                    <div>
+                        <div class="w-12 h-12 bg-tertiary-container/20 rounded-xl flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-tertiary">@(second.Tipo == EconomiaComHistoria.Core.Enums.TipoConteudo.Podcast ? "mic" : second.Tipo == EconomiaComHistoria.Core.Enums.TipoConteudo.Video ? "play_circle" : "article")</span>
+                        </div>
+                        <span class="text-[10px] tracking-widest font-bold text-tertiary uppercase mb-2 block">@second.Tipo • Leitura de 5 min</span>
+                        <h3 class="text-xl font-bold text-on-surface mb-4 font-headline">@second.Titulo</h3>
+                        <p class="text-secondary text-sm leading-relaxed">@second.Resumo</p>
+                    </div>
+                    <div class="mt-6 flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-stone-200 overflow-hidden flex items-center justify-center">
+                            <span class="text-xs font-bold text-stone-600">@((second.EditorNome ?? "C").Substring(0,1).ToUpper())</span>
+                        </div>
+                        <span class="text-xs font-semibold text-on-surface">@(second.EditorNome ?? "Curador")</span>
+                    </div>
+                </div>
+            }
+
+            <!-- Rest of the content cards -->
+            @foreach (var item in others.Skip(jindungoItem != null ? 0 : 1))
+            {
+                if (item.IsJindungo)
+                {
+                    <!-- High Impact Card: Jindungo -->
+                    <a href="@Url.Action("Details", new { id = item.Id })" class="md:col-span-6 lg:col-span-8 group cursor-pointer bg-primary-container rounded-[20px] p-8 transition-all duration-300 hover:shadow-[0_8px_24px_-4px_rgba(77,7,11,0.2)] flex flex-col md:flex-row gap-8 items-center border border-white/5 no-underline">
+                        <div class="flex-1 order-2 md:order-1">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-[10px] font-black rounded-full uppercase">JINDUNGO</span>
+                                <span class="text-white/60 text-xs">Leitura de 5 min</span>
                             </div>
-                        }
-                        <div class="absolute top-4 left-4 flex gap-2">
-                             <span class="px-2 py-1 bg-white/90 backdrop-blur-sm text-primary text-[10px] font-bold rounded-md uppercase">@item.Tipo</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 font-headline">@item.Titulo</h3>
+                            <p class="text-on-primary-container text-base leading-relaxed mb-6">@item.Resumo</p>
+                            <span class="bg-white text-primary px-6 py-2 rounded-full font-bold text-sm hover:bg-surface-container-lowest transition-colors inline-flex items-center gap-2">
+                                Abrir Texto <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </span>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-headline font-bold text-lg text-on-surface mb-2 group-hover:text-primary transition-colors">@item.Titulo</h3>
-                        <p class="text-secondary text-sm line-clamp-2">@item.Resumo</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-stone-400 text-xs font-medium uppercase">@item.Tema</span>
-                            <span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                        <div class="w-full md:w-64 h-48 md:h-full rounded-xl overflow-hidden order-1 md:order-2">
+                            @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                            {
+                                <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover" />
+                            }
+                            else
+                            {
+                                <div class="w-full h-full bg-white/10 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white text-6xl">image</span>
+                                </div>
+                            }
                         </div>
-                    </div>
-                </a>
+                    </a>
+                }
+                else
+                {
+                    <!-- Standard Card -->
+                    <a href="@Url.Action("Details", new { id = item.Id })" class="md:col-span-6 lg:col-span-4 group cursor-pointer bg-surface-container-lowest rounded-[20px] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_24px_-4px_rgba(26,28,28,0.06)] border border-outline-variant/10 no-underline">
+                        <div class="h-48 overflow-hidden">
+                            @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
+                            {
+                                <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                            }
+                            else
+                            {
+                                <div class="w-full h-full bg-stone-200 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-stone-400 text-5xl">image</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="p-6">
+                            <span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded-full mb-3 inline-block uppercase">@item.Tipo</span>
+                            <h3 class="text-lg font-bold text-on-surface mb-2 font-headline">@item.Titulo</h3>
+                            <p class="text-secondary text-sm mb-4">@item.Resumo</p>
+                            <div class="flex items-center text-primary text-sm font-bold group-hover:gap-2 transition-all">
+                                Ler artigo <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                            </div>
+                        </div>
+                    </a>
+                }
             }
         }
     </section>
-</div>
+</main>

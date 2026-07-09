@@ -1,0 +1,55 @@
+@model EconomiaComHistoria.Core.DTOs.RelatorioStatusDto
+@{
+    ViewData["Title"] = "Estado do Relatório";
+    var estado = Model.Estado.ToString();
+}
+
+<div class="max-w-2xl mx-auto">
+    <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-8 hover:underline no-underline">
+        <span class="material-symbols-outlined">arrow_back</span> Voltar aos relatórios
+    </a>
+
+    <div class="bg-surface-container-lowest rounded-3xl p-10 ambient-shadow text-center">
+        @if (estado == "Concluido" || estado == "Completo")
+        {
+            <span class="material-symbols-outlined text-6xl text-green-600 mb-4" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <h1 class="text-2xl font-headline font-extrabold text-primary mb-2">Relatório Pronto</h1>
+        }
+        else if (estado == "Erro" || estado == "Falhou")
+        {
+            <span class="material-symbols-outlined text-6xl text-error mb-4">error</span>
+            <h1 class="text-2xl font-headline font-extrabold text-primary mb-2">Erro na Geração</h1>
+        }
+        else
+        {
+            <span class="material-symbols-outlined text-6xl text-amber-500 mb-4 animate-pulse">hourglass_top</span>
+            <h1 class="text-2xl font-headline font-extrabold text-primary mb-2">A processar...</h1>
+        }
+
+        <p class="text-on-surface-variant mb-6">@Model.Titulo</p>
+
+        <div class="grid grid-cols-2 gap-4 text-left mb-8">
+            <div class="bg-surface-container-low rounded-2xl p-4">
+                <p class="text-xs font-bold text-stone-500 uppercase">Estado</p>
+                <p class="font-bold text-primary">@estado</p>
+            </div>
+            <div class="bg-surface-container-low rounded-2xl p-4">
+                <p class="text-xs font-bold text-stone-500 uppercase">Solicitado em</p>
+                <p class="font-bold text-primary">@Model.DataSolicitacao.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.DownloadUrl))
+        {
+            <a href="@Model.DownloadUrl" class="inline-flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-full font-bold no-underline hover:opacity-90">
+                <span class="material-symbols-outlined">download</span>
+                Descarregar Relatório
+            </a>
+        }
+        else if (estado != "Concluido" && estado != "Completo")
+        {
+            <p class="text-sm text-stone-500">O relatório está a ser gerado. Actualize esta página em alguns momentos.</p>
+            <button onclick="location.reload()" class="mt-4 px-6 py-3 rounded-full bg-surface-container text-secondary font-bold">Actualizar</button>
+        }
+    </div>
+</div>

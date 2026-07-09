@@ -1,0 +1,95 @@
+@model IEnumerable<EconomiaComHistoria.Core.DTOs.TopicoForumDto>
+@{
+    ViewData["Title"] = "Fórum de Discussão";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="mb-8 flex items-center gap-4 bg-green-50 text-green-800 px-6 py-4 rounded-xl">
+        <span class="material-symbols-outlined text-green-600">check_circle</span>
+        <p class="font-medium">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<div class="max-w-5xl mx-auto">
+    <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight mb-4 font-headline">Fórum de Discussão</h1>
+            <p class="text-on-surface-variant max-w-2xl text-lg leading-relaxed">
+                Participe no debate académico sobre a evolução económica de Angola.
+            </p>
+        </div>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-action="Criar" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-full font-bold shadow-md flex items-center gap-2 hover:opacity-90 no-underline">
+                <span class="material-symbols-outlined">add</span>
+                Criar novo tópico
+            </a>
+        }
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <section class="lg:col-span-8 space-y-6">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-stone-400 mb-4 font-headline">Discussões Recentes</h3>
+
+            @if (!Model.Any())
+            {
+                <div class="py-12 text-center bg-surface-container-low rounded-xl">
+                    <span class="material-symbols-outlined text-5xl text-stone-300 mb-4">forum</span>
+                    <p class="text-secondary font-medium">Ainda não há discussões. Seja o primeiro a participar!</p>
+                </div>
+            }
+            else
+            {
+                foreach (var topico in Model)
+                {
+                    <a asp-action="Details" asp-route-id="@topico.Id" class="block bg-surface-container-lowest p-6 rounded-xl hover:bg-surface-container-high transition-all group no-underline">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-semibold">@topico.CategoriaNome</span>
+                            <span class="text-xs text-stone-400 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">schedule</span>
+                                @topico.CriadoEm.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-primary mb-2 group-hover:text-primary-container transition-colors font-headline">@topico.Titulo</h2>
+                        <p class="text-stone-600 mb-6 line-clamp-2">@topico.Descricao</p>
+                        <div class="flex items-center justify-between text-stone-400 text-sm">
+                            <div class="flex items-center gap-4">
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg">visibility</span> @topico.Visualizacoes</span>
+                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg">person</span> @topico.AutorNome</span>
+                            </div>
+                            <span class="flex items-center gap-1 text-primary font-bold">
+                                Ver tópico <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                            </span>
+                        </div>
+                    </a>
+                }
+            }
+        </section>
+
+        <aside class="lg:col-span-4 space-y-8">
+            <section class="bg-stone-50 p-8 rounded-3xl">
+                <h3 class="text-xl font-bold text-primary mb-4 font-headline">Participar</h3>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <p class="text-stone-600 text-sm mb-4">Crie um novo tópico para iniciar um debate académico.</p>
+                    <a asp-action="Criar" class="block w-full text-center bg-tertiary-container text-white font-bold py-4 rounded-full hover:opacity-90 no-underline">
+                        Criar Tópico
+                    </a>
+                }
+                else
+                {
+                    <p class="text-stone-600 mb-4">Precisa de fazer login para participar.</p>
+                    <a asp-controller="Auth" asp-action="Login" class="text-primary font-bold hover:underline">Fazer Login</a>
+                }
+            </section>
+
+            <section class="relative overflow-hidden rounded-3xl h-64 bg-primary p-8 flex flex-col justify-end">
+                <div class="relative z-10">
+                    <h4 class="text-white text-lg font-bold mb-2 font-headline">Preserve a Memória</h4>
+                    <p class="text-red-200 text-sm">Todas as discussões são arquivadas para fins de investigação académica.</p>
+                </div>
+            </section>
+        </aside>
+    </div>
+</div>

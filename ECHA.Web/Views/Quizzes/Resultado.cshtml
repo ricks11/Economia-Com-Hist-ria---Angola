@@ -1,0 +1,53 @@
+@model EconomiaComHistoria.Core.DTOs.QuizSubmissionResponseDto
+@{
+    ViewData["Title"] = "Resultado do Quiz";
+    var corretas = Model.Respostas.Count(r => r.Correta);
+    var total = Model.Respostas.Count;
+}
+
+<div class="max-w-3xl mx-auto text-center">
+    <div class="bg-surface-container-lowest rounded-3xl p-12 ambient-shadow mb-8">
+        @if (Model.Percentagem >= 70)
+        {
+            <span class="material-symbols-outlined text-6xl text-green-600 mb-4" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+            <h1 class="text-3xl font-headline font-extrabold text-primary mb-2">Excelente!</h1>
+        }
+        else if (Model.Percentagem >= 40)
+        {
+            <span class="material-symbols-outlined text-6xl text-amber-500 mb-4">thumb_up</span>
+            <h1 class="text-3xl font-headline font-extrabold text-primary mb-2">Bom trabalho!</h1>
+        }
+        else
+        {
+            <span class="material-symbols-outlined text-6xl text-stone-400 mb-4">school</span>
+            <h1 class="text-3xl font-headline font-extrabold text-primary mb-2">Continua a aprender!</h1>
+        }
+
+        <div class="text-6xl font-headline font-extrabold text-primary my-6">@Model.Percentagem.ToString("F0")%</div>
+        <p class="text-on-surface-variant mb-2">@corretas de @total respostas correctas</p>
+        <p class="text-2xl font-bold text-tertiary">@Model.Pontuacao pontos</p>
+    </div>
+
+    <section class="text-left space-y-4 mb-10">
+        <h2 class="text-xl font-headline font-bold text-primary">Revisão das Respostas</h2>
+        @foreach (var r in Model.Respostas)
+        {
+            <div class="bg-surface-container-low rounded-2xl p-6 @(r.Correta ? "border-l-4 border-green-500" : "border-l-4 border-error")">
+                <p class="font-bold text-sm mb-2 @(r.Correta ? "text-green-700" : "text-error")">
+                    @(r.Correta ? "✓ Correcto" : "✗ Incorrecto")
+                </p>
+                <p class="font-medium text-primary mb-2">@r.Enunciado</p>
+                <p class="text-sm text-stone-600">A tua resposta: @r.TextoOpcaoEscolhida</p>
+                @if (!string.IsNullOrEmpty(r.Explicacao))
+                {
+                    <p class="text-sm text-on-surface-variant mt-2 italic">@r.Explicacao</p>
+                }
+            </div>
+        }
+    </section>
+
+    <div class="flex gap-4 justify-center">
+        <a asp-action="Index" class="px-8 py-3 rounded-full bg-surface-container text-secondary font-bold no-underline hover:bg-surface-container-high">Ver Mais Quizzes</a>
+        <a asp-controller="Rankings" asp-action="Index" class="px-8 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-bold no-underline hover:opacity-90">Ver Ranking</a>
+    </div>
+</div>

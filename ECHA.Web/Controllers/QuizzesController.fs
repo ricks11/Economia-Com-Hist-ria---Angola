@@ -8,7 +8,6 @@ open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
 open ECHA.Web.Services
 
-[<Authorize(Roles = "Editor,Admin")>]
 type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
@@ -17,6 +16,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         if isNull claim then null else claim.Value
 
     [<HttpGet>]
+    [<AllowAnonymous>]
     member this.Index (nivel: string, tema: string) =
         task {
             try
@@ -29,6 +29,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin")>]
     member this.Stats (id: int) =
         task {
             let token = this.GetToken()
@@ -46,6 +47,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize>]
     member this.Pool (tema: string, nivel: System.Nullable<int>) =
         task {
             let token = this.GetToken()
@@ -57,10 +59,12 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin")>]
     member this.Create () =
         this.View()
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin")>]
     member this.Create (request: CreateQuizDto) =
         task {
             let token = this.GetToken()
@@ -81,6 +85,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin")>]
     member this.Edit (id: int) =
         task {
             let token = this.GetToken()
@@ -98,6 +103,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin")>]
     member this.Edit (id: int, request: UpdateQuizDto) =
         task {
             let token = this.GetToken()
@@ -118,6 +124,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin")>]
     member this.Delete (id: int) =
         task {
             let token = this.GetToken()
@@ -134,4 +141,64 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
                 with
                 | :? ApiClientException ->
                     return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpGet>]
+    [<Authorize>]
+    member this.Jogar (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    let! quizzes = apiClient.ListQuizzesAsync()
+                    let quizInfo = quizzes |> List.tryFind (fun q -> q.Id = id)
+                    let! session = apiClient.StartQuizAsync(id, t)
+                    match session, quizInfo with
+                    | Some s, Some q ->
+                        this.ViewData.["Quiz"] <- q
+                        return this.View(s) :> IActionResult
+                    | _, _ ->
+                        this.TempData["ErrorMessage"] <- "Não foi possível iniciar o quiz. Tente novamente mais tarde."
+                        return this.RedirectToAction("Index") :> IActionResult
+                with
+                | :? ApiClientException ->
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpPost>]
+    [<Authorize>]
+    member this.Submeter (request: SubmitTentativaDto) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    let! result = apiClient.SubmitQuizAsync(request, t)
+                    match result with
+                    | Some r ->
+                        this.TempData["QuizResult"] <- System.Text.Json.JsonSerializer.Serialize(r)
+                        return this.RedirectToAction("Resultado") :> IActionResult
+                    | None ->
+                        this.TempData["ErrorMessage"] <- "Falha ao submeter o quiz."
+                        return this.RedirectToAction("Index") :> IActionResult
+                with
+                | :? ApiClientException ->
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpGet>]
+    [<Authorize>]
+    member this.Resultado () =
+        task {
+            match this.TempData["QuizResult"] with
+            | null ->
+                return this.RedirectToAction("Index") :> IActionResult
+            | :? string as json ->
+                let result = System.Text.Json.JsonSerializer.Deserialize<QuizSubmissionResponseDto>(json)
+                return this.View(result) :> IActionResult
+            | _ ->
+                return this.RedirectToAction("Index") :> IActionResult
         }

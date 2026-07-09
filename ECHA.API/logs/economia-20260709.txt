@@ -1,0 +1,370 @@
+2026-07-09 11:09:17.284 +01:00 [INF] Executed DbCommand (231ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 11:09:17.585 +01:00 [INF] User profile is available. Using 'C:\Users\guilh\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 11:09:18.028 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 11:09:18.039 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 11:09:18.047 +01:00 [INF] Hosting environment: Development
+2026-07-09 11:09:18.049 +01:00 [INF] Content root path: C:\Users\guilh\Music\Projecto Final\Economia-Com-Hist-ria---Angola\ECHA.API
+2026-07-09 11:09:34.778 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.html - null null
+2026-07-09 11:09:35.036 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.html - 200 null text/html;charset=utf-8 260.4751ms
+2026-07-09 11:09:35.215 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.js - null null
+2026-07-09 11:09:35.243 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.js - 200 null application/javascript;charset=utf-8 30.1768ms
+2026-07-09 11:09:36.164 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - null null
+2026-07-09 11:09:36.785 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 620.8268ms
+2026-07-09 11:10:00.441 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.html - null null
+2026-07-09 11:10:00.460 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.html - 200 null text/html;charset=utf-8 19.3718ms
+2026-07-09 11:10:00.641 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/index.js - null null
+2026-07-09 11:10:00.794 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/index.js - 200 null application/javascript;charset=utf-8 152.2148ms
+2026-07-09 11:10:01.000 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - null null
+2026-07-09 11:10:01.173 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 173.4145ms
+2026-07-09 11:10:03.032 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger - null null
+2026-07-09 11:10:03.075 +01:00 [WRN] Failed to determine the https port for redirect.
+2026-07-09 11:10:03.172 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:10:03.376 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:10:03.382 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger - 404 0 null 350.1659ms
+2026-07-09 11:10:03.440 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5194/swagger, Response status code: 404
+2026-07-09 11:11:42.466 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 11:11:42.496 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:11:42.537 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 11:11:46.699 +01:00 [INF] Executed DbCommand (887ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 11:11:55.416 +01:00 [INF] Executed DbCommand (687ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 11:11:57.516 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 11:11:57.565 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 15018.175ms
+2026-07-09 11:11:57.567 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:11:57.574 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 200 null application/json; charset=utf-8 15107.96ms
+2026-07-09 11:22:12.019 +01:00 [INF] Executed DbCommand (305ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 11:22:12.387 +01:00 [INF] User profile is available. Using 'C:\Users\guilh\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 11:22:13.326 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 11:22:13.344 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 11:22:13.359 +01:00 [INF] Hosting environment: Development
+2026-07-09 11:22:13.385 +01:00 [INF] Content root path: C:\Users\guilh\Music\Projecto Final\Economia-Com-Hist-ria---Angola\ECHA.API
+2026-07-09 11:23:34.365 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/swagger - null null
+2026-07-09 11:23:34.476 +01:00 [WRN] Failed to determine the https port for redirect.
+2026-07-09 11:23:34.571 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:23:34.785 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:23:34.822 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/swagger - 404 0 null 462.4668ms
+2026-07-09 11:23:34.948 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5194/swagger, Response status code: 404
+2026-07-09 11:23:35.031 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/favicon.ico - null null
+2026-07-09 11:23:35.112 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:23:35.142 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:23:35.160 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/favicon.ico - 404 0 null 129.9023ms
+2026-07-09 11:23:35.185 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5194/favicon.ico, Response status code: 404
+2026-07-09 11:27:15.393 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/admin/seed - null null
+2026-07-09 11:27:15.409 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:27:15.446 +01:00 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2026-07-09 11:27:15.449 +01:00 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2026-07-09 11:27:15.451 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:27:15.453 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/admin/seed - 405 0 null 60.2516ms
+2026-07-09 11:27:28.993 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/admin/seed - application/json 6
+2026-07-09 11:27:29.024 +01:00 [INF] Executing endpoint 'ECHA.API.Controllers.AdminController.Seed (ECHA.API)'
+2026-07-09 11:27:29.109 +01:00 [INF] Route matched with {action = "Seed", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Seed() on controller ECHA.API.Controllers.AdminController (ECHA.API).
+2026-07-09 11:27:32.176 +01:00 [INF] Executed DbCommand (283ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Quizzes` AS `q`
+2026-07-09 11:27:34.202 +01:00 [INF] Executed DbCommand (244ms) [Parameters=[@p0='?' (DbType = Boolean), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Size = 4000), @p6='?' (DbType = Int32), @p7='?' (DbType = Boolean), @p8='?' (DbType = Int32), @p9='?' (DbType = Int32), @p10='?' (Size = 4000), @p11='?' (DbType = Int32), @p12='?' (Size = 4000), @p13='?' (DbType = Int32), @p14='?' (DbType = Boolean), @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?' (Size = 4000), @p18='?' (DbType = Int32), @p19='?' (Size = 4000), @p20='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `Quizzes` (`Ativo`, `ConteudoId`, `Nivel`, `Tema`, `TempoLimiteSeg`, `Titulo`, `TotalPerguntas`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING `Id`;
+INSERT INTO `Quizzes` (`Ativo`, `ConteudoId`, `Nivel`, `Tema`, `TempoLimiteSeg`, `Titulo`, `TotalPerguntas`)
+VALUES (@p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING `Id`;
+INSERT INTO `Quizzes` (`Ativo`, `ConteudoId`, `Nivel`, `Tema`, `TempoLimiteSeg`, `Titulo`, `TotalPerguntas`)
+VALUES (@p14, @p15, @p16, @p17, @p18, @p19, @p20)
+RETURNING `Id`;
+2026-07-09 11:27:34.443 +01:00 [INF] Executed DbCommand (206ms) [Parameters=[@p21='?' (DbType = Int32), @p22='?' (DbType = DateTime), @p23='?' (DbType = Int32), @p24='?' (Size = 4000), @p25='?' (DbType = Int32), @p26='?' (Size = 4000), @p27='?' (DbType = Int32), @p28='?' (DbType = Int32), @p29='?' (DbType = Int32), @p30='?' (Size = 4000), @p31='?' (DbType = Int32), @p32='?' (DbType = DateTime), @p33='?' (DbType = Int32), @p34='?' (Size = 4000), @p35='?' (DbType = Int32), @p36='?' (Size = 4000), @p37='?' (DbType = Int32), @p38='?' (DbType = Int32), @p39='?' (DbType = Int32), @p40='?' (Size = 4000), @p41='?' (DbType = Int32), @p42='?' (DbType = DateTime), @p43='?' (DbType = Int32), @p44='?' (Size = 4000), @p45='?' (DbType = Int32), @p46='?' (Size = 4000), @p47='?' (DbType = Int32), @p48='?' (DbType = Int32), @p49='?' (DbType = Int32), @p50='?' (Size = 4000), @p51='?' (DbType = Int32), @p52='?' (DbType = DateTime), @p53='?' (DbType = Int32), @p54='?' (Size = 4000), @p55='?' (DbType = Int32), @p56='?' (Size = 4000), @p57='?' (DbType = Int32), @p58='?' (DbType = Int32), @p59='?' (DbType = Int32), @p60='?' (Size = 4000), @p61='?' (DbType = Int32), @p62='?' (DbType = DateTime), @p63='?' (DbType = Int32), @p64='?' (Size = 4000), @p65='?' (DbType = Int32), @p66='?' (Size = 4000), @p67='?' (DbType = Int32), @p68='?' (DbType = Int32), @p69='?' (DbType = Int32), @p70='?' (Size = 4000), @p71='?' (DbType = Int32), @p72='?' (DbType = DateTime), @p73='?' (DbType = Int32), @p74='?' (Size = 4000), @p75='?' (DbType = Int32), @p76='?' (Size = 4000), @p77='?' (DbType = Int32), @p78='?' (DbType = Int32), @p79='?' (DbType = Int32), @p80='?' (Size = 4000), @p81='?' (DbType = Int32), @p82='?' (DbType = DateTime), @p83='?' (DbType = Int32), @p84='?' (Size = 4000), @p85='?' (DbType = Int32), @p86='?' (Size = 4000), @p87='?' (DbType = Int32), @p88='?' (DbType = Int32), @p89='?' (DbType = Int32), @p90='?' (Size = 4000), @p91='?' (DbType = Int32), @p92='?' (DbType = DateTime), @p93='?' (DbType = Int32), @p94='?' (Size = 4000), @p95='?' (DbType = Int32), @p96='?' (Size = 4000), @p97='?' (DbType = Int32), @p98='?' (DbType = Int32), @p99='?' (DbType = Int32), @p100='?' (Size = 4000), @p101='?' (DbType = Int32), @p102='?' (DbType = DateTime), @p103='?' (DbType = Int32), @p104='?' (Size = 4000), @p105='?' (DbType = Int32), @p106='?' (Size = 4000), @p107='?' (DbType = Int32), @p108='?' (DbType = Int32), @p109='?' (DbType = Int32), @p110='?' (Size = 4000), @p111='?' (DbType = Int32), @p112='?' (DbType = DateTime), @p113='?' (DbType = Int32), @p114='?' (Size = 4000), @p115='?' (DbType = Int32), @p116='?' (Size = 4000), @p117='?' (DbType = Int32), @p118='?' (DbType = Int32), @p119='?' (DbType = Int32), @p120='?' (Size = 4000), @p121='?' (DbType = Int32), @p122='?' (DbType = DateTime), @p123='?' (DbType = Int32), @p124='?' (Size = 4000), @p125='?' (DbType = Int32), @p126='?' (Size = 4000), @p127='?' (DbType = Int32), @p128='?' (DbType = Int32), @p129='?' (DbType = Int32), @p130='?' (Size = 4000), @p131='?' (DbType = Int32), @p132='?' (DbType = DateTime), @p133='?' (DbType = Int32), @p134='?' (Size = 4000), @p135='?' (DbType = Int32), @p136='?' (Size = 4000), @p137='?' (DbType = Int32), @p138='?' (DbType = Int32), @p139='?' (DbType = Int32), @p140='?' (Size = 4000), @p141='?' (DbType = Int32), @p142='?' (DbType = DateTime), @p143='?' (DbType = Int32), @p144='?' (Size = 4000), @p145='?' (DbType = Int32), @p146='?' (Size = 4000), @p147='?' (DbType = Int32), @p148='?' (DbType = Int32), @p149='?' (DbType = Int32), @p150='?' (Size = 4000), @p151='?' (DbType = Int32), @p152='?' (DbType = DateTime), @p153='?' (DbType = Int32), @p154='?' (Size = 4000), @p155='?' (DbType = Int32), @p156='?' (Size = 4000), @p157='?' (DbType = Int32), @p158='?' (DbType = Int32), @p159='?' (DbType = Int32), @p160='?' (Size = 4000), @p161='?' (DbType = Int32), @p162='?' (DbType = DateTime), @p163='?' (DbType = Int32), @p164='?' (Size = 4000), @p165='?' (DbType = Int32), @p166='?' (Size = 4000), @p167='?' (DbType = Int32), @p168='?' (DbType = Int32), @p169='?' (DbType = Int32), @p170='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49, @p50)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59, @p60)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69, @p70)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79, @p80)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89, @p90)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99, @p100)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109, @p110)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119, @p120)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129, @p130)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139, @p140)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p141, @p142, @p143, @p144, @p145, @p146, @p147, @p148, @p149, @p150)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159, @p160)
+RETURNING `Id`;
+INSERT INTO `Perguntas` (`AutorId`, `CriadaEm`, `Dificuldade`, `Enunciado`, `Estado`, `Explicacao`, `NumVezesErrada`, `Pontos`, `QuizId`, `Tema`)
+VALUES (@p161, @p162, @p163, @p164, @p165, @p166, @p167, @p168, @p169, @p170)
+RETURNING `Id`;
+2026-07-09 11:27:34.683 +01:00 [INF] Executed DbCommand (204ms) [Parameters=[@p171='?' (Size = 4000), @p172='?' (DbType = Boolean), @p173='?' (DbType = Int32), @p174='?' (Size = 4000), @p175='?' (Size = 4000), @p176='?' (DbType = Boolean), @p177='?' (DbType = Int32), @p178='?' (Size = 4000), @p179='?' (Size = 4000), @p180='?' (DbType = Boolean), @p181='?' (DbType = Int32), @p182='?' (Size = 4000), @p183='?' (Size = 4000), @p184='?' (DbType = Boolean), @p185='?' (DbType = Int32), @p186='?' (Size = 4000), @p187='?' (Size = 4000), @p188='?' (DbType = Boolean), @p189='?' (DbType = Int32), @p190='?' (Size = 4000), @p191='?' (Size = 4000), @p192='?' (DbType = Boolean), @p193='?' (DbType = Int32), @p194='?' (Size = 4000), @p195='?' (Size = 4000), @p196='?' (DbType = Boolean), @p197='?' (DbType = Int32), @p198='?' (Size = 4000), @p199='?' (Size = 4000), @p200='?' (DbType = Boolean), @p201='?' (DbType = Int32), @p202='?' (Size = 4000), @p203='?' (Size = 4000), @p204='?' (DbType = Boolean), @p205='?' (DbType = Int32), @p206='?' (Size = 4000), @p207='?' (Size = 4000), @p208='?' (DbType = Boolean), @p209='?' (DbType = Int32), @p210='?' (Size = 4000), @p211='?' (Size = 4000), @p212='?' (DbType = Boolean), @p213='?' (DbType = Int32), @p214='?' (Size = 4000), @p215='?' (Size = 4000), @p216='?' (DbType = Boolean), @p217='?' (DbType = Int32), @p218='?' (Size = 4000), @p219='?' (Size = 4000), @p220='?' (DbType = Boolean), @p221='?' (DbType = Int32), @p222='?' (Size = 4000), @p223='?' (Size = 4000), @p224='?' (DbType = Boolean), @p225='?' (DbType = Int32), @p226='?' (Size = 4000), @p227='?' (Size = 4000), @p228='?' (DbType = Boolean), @p229='?' (DbType = Int32), @p230='?' (Size = 4000), @p231='?' (Size = 4000), @p232='?' (DbType = Boolean), @p233='?' (DbType = Int32), @p234='?' (Size = 4000), @p235='?' (Size = 4000), @p236='?' (DbType = Boolean), @p237='?' (DbType = Int32), @p238='?' (Size = 4000), @p239='?' (Size = 4000), @p240='?' (DbType = Boolean), @p241='?' (DbType = Int32), @p242='?' (Size = 4000), @p243='?' (Size = 4000), @p244='?' (DbType = Boolean), @p245='?' (DbType = Int32), @p246='?' (Size = 4000), @p247='?' (Size = 4000), @p248='?' (DbType = Boolean), @p249='?' (DbType = Int32), @p250='?' (Size = 4000), @p251='?' (Size = 4000), @p252='?' (DbType = Boolean), @p253='?' (DbType = Int32), @p254='?' (Size = 4000), @p255='?' (Size = 4000), @p256='?' (DbType = Boolean), @p257='?' (DbType = Int32), @p258='?' (Size = 4000), @p259='?' (Size = 4000), @p260='?' (DbType = Boolean), @p261='?' (DbType = Int32), @p262='?' (Size = 4000), @p263='?' (Size = 4000), @p264='?' (DbType = Boolean), @p265='?' (DbType = Int32), @p266='?' (Size = 4000), @p267='?' (Size = 4000), @p268='?' (DbType = Boolean), @p269='?' (DbType = Int32), @p270='?' (Size = 4000), @p271='?' (Size = 4000), @p272='?' (DbType = Boolean), @p273='?' (DbType = Int32), @p274='?' (Size = 4000), @p275='?' (Size = 4000), @p276='?' (DbType = Boolean), @p277='?' (DbType = Int32), @p278='?' (Size = 4000), @p279='?' (Size = 4000), @p280='?' (DbType = Boolean), @p281='?' (DbType = Int32), @p282='?' (Size = 4000), @p283='?' (Size = 4000), @p284='?' (DbType = Boolean), @p285='?' (DbType = Int32), @p286='?' (Size = 4000), @p287='?' (Size = 4000), @p288='?' (DbType = Boolean), @p289='?' (DbType = Int32), @p290='?' (Size = 4000), @p291='?' (Size = 4000), @p292='?' (DbType = Boolean), @p293='?' (DbType = Int32), @p294='?' (Size = 4000), @p295='?' (Size = 4000), @p296='?' (DbType = Boolean), @p297='?' (DbType = Int32), @p298='?' (Size = 4000), @p299='?' (Size = 4000), @p300='?' (DbType = Boolean), @p301='?' (DbType = Int32), @p302='?' (Size = 4000), @p303='?' (Size = 4000), @p304='?' (DbType = Boolean), @p305='?' (DbType = Int32), @p306='?' (Size = 4000), @p307='?' (Size = 4000), @p308='?' (DbType = Boolean), @p309='?' (DbType = Int32), @p310='?' (Size = 4000), @p311='?' (Size = 4000), @p312='?' (DbType = Boolean), @p313='?' (DbType = Int32), @p314='?' (Size = 4000), @p315='?' (Size = 4000), @p316='?' (DbType = Boolean), @p317='?' (DbType = Int32), @p318='?' (Size = 4000), @p319='?' (Size = 4000), @p320='?' (DbType = Boolean), @p321='?' (DbType = Int32), @p322='?' (Size = 4000), @p323='?' (Size = 4000), @p324='?' (DbType = Boolean), @p325='?' (DbType = Int32), @p326='?' (Size = 4000), @p327='?' (Size = 4000), @p328='?' (DbType = Boolean), @p329='?' (DbType = Int32), @p330='?' (Size = 4000), @p331='?' (Size = 4000), @p332='?' (DbType = Boolean), @p333='?' (DbType = Int32), @p334='?' (Size = 4000), @p335='?' (Size = 4000), @p336='?' (DbType = Boolean), @p337='?' (DbType = Int32), @p338='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p171, @p172, @p173, @p174)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p175, @p176, @p177, @p178)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p179, @p180, @p181, @p182)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p183, @p184, @p185, @p186)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p187, @p188, @p189, @p190)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p191, @p192, @p193, @p194)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p195, @p196, @p197, @p198)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p199, @p200, @p201, @p202)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p203, @p204, @p205, @p206)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p207, @p208, @p209, @p210)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p211, @p212, @p213, @p214)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p215, @p216, @p217, @p218)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p219, @p220, @p221, @p222)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p223, @p224, @p225, @p226)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p227, @p228, @p229, @p230)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p231, @p232, @p233, @p234)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p235, @p236, @p237, @p238)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p239, @p240, @p241, @p242)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p243, @p244, @p245, @p246)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p247, @p248, @p249, @p250)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p251, @p252, @p253, @p254)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p255, @p256, @p257, @p258)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p259, @p260, @p261, @p262)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p263, @p264, @p265, @p266)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p267, @p268, @p269, @p270)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p271, @p272, @p273, @p274)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p275, @p276, @p277, @p278)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p279, @p280, @p281, @p282)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p283, @p284, @p285, @p286)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p287, @p288, @p289, @p290)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p291, @p292, @p293, @p294)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p295, @p296, @p297, @p298)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p299, @p300, @p301, @p302)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p303, @p304, @p305, @p306)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p307, @p308, @p309, @p310)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p311, @p312, @p313, @p314)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p315, @p316, @p317, @p318)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p319, @p320, @p321, @p322)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p323, @p324, @p325, @p326)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p327, @p328, @p329, @p330)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p331, @p332, @p333, @p334)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p335, @p336, @p337, @p338)
+RETURNING `Id`;
+2026-07-09 11:27:34.923 +01:00 [INF] Executed DbCommand (216ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = Boolean), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (DbType = Boolean), @p6='?' (DbType = Int32), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (DbType = Boolean), @p10='?' (DbType = Int32), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (DbType = Boolean), @p14='?' (DbType = Int32), @p15='?' (Size = 4000), @p16='?' (Size = 4000), @p17='?' (DbType = Boolean), @p18='?' (DbType = Int32), @p19='?' (Size = 4000), @p20='?' (Size = 4000), @p21='?' (DbType = Boolean), @p22='?' (DbType = Int32), @p23='?' (Size = 4000), @p24='?' (Size = 4000), @p25='?' (DbType = Boolean), @p26='?' (DbType = Int32), @p27='?' (Size = 4000), @p28='?' (Size = 4000), @p29='?' (DbType = Boolean), @p30='?' (DbType = Int32), @p31='?' (Size = 4000), @p32='?' (Size = 4000), @p33='?' (DbType = Boolean), @p34='?' (DbType = Int32), @p35='?' (Size = 4000), @p36='?' (Size = 4000), @p37='?' (DbType = Boolean), @p38='?' (DbType = Int32), @p39='?' (Size = 4000), @p40='?' (Size = 4000), @p41='?' (DbType = Boolean), @p42='?' (DbType = Int32), @p43='?' (Size = 4000), @p44='?' (Size = 4000), @p45='?' (DbType = Boolean), @p46='?' (DbType = Int32), @p47='?' (Size = 4000), @p48='?' (Size = 4000), @p49='?' (DbType = Boolean), @p50='?' (DbType = Int32), @p51='?' (Size = 4000), @p52='?' (Size = 4000), @p53='?' (DbType = Boolean), @p54='?' (DbType = Int32), @p55='?' (Size = 4000), @p56='?' (Size = 4000), @p57='?' (DbType = Boolean), @p58='?' (DbType = Int32), @p59='?' (Size = 4000), @p60='?' (Size = 4000), @p61='?' (DbType = Boolean), @p62='?' (DbType = Int32), @p63='?' (Size = 4000), @p64='?' (Size = 4000), @p65='?' (DbType = Boolean), @p66='?' (DbType = Int32), @p67='?' (Size = 4000), @p68='?' (Size = 4000), @p69='?' (DbType = Boolean), @p70='?' (DbType = Int32), @p71='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p0, @p1, @p2, @p3)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p4, @p5, @p6, @p7)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p8, @p9, @p10, @p11)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p12, @p13, @p14, @p15)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p16, @p17, @p18, @p19)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p20, @p21, @p22, @p23)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p24, @p25, @p26, @p27)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p28, @p29, @p30, @p31)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p32, @p33, @p34, @p35)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p36, @p37, @p38, @p39)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p40, @p41, @p42, @p43)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p44, @p45, @p46, @p47)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p48, @p49, @p50, @p51)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p52, @p53, @p54, @p55)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p56, @p57, @p58, @p59)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p60, @p61, @p62, @p63)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p64, @p65, @p66, @p67)
+RETURNING `Id`;
+INSERT INTO `OpcoesResposta` (`Explicacao`, `IsCorrecta`, `PerguntaId`, `Texto`)
+VALUES (@p68, @p69, @p70, @p71)
+RETURNING `Id`;
+2026-07-09 11:27:35.231 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-09 11:27:35.562 +01:00 [INF] Executed action ECHA.API.Controllers.AdminController.Seed (ECHA.API) in 6436.2014ms
+2026-07-09 11:27:35.573 +01:00 [INF] Executed endpoint 'ECHA.API.Controllers.AdminController.Seed (ECHA.API)'
+2026-07-09 11:27:35.605 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/admin/seed - 200 null application/json; charset=utf-8 6611.6748ms
+2026-07-09 11:27:50.531 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/quizzes - null null
+2026-07-09 11:27:50.685 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:27:50.697 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:27:50.724 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 11:27:52.516 +01:00 [INF] Executed DbCommand (202ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 11:27:52.549 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 11:27:52.610 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1881.514ms
+2026-07-09 11:27:52.614 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:27:52.618 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:27:52.622 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/quizzes - 200 null application/json; charset=utf-8 2090.8284ms
+2026-07-09 11:34:20.501 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-09 11:34:20.534 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:34:20.561 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-09 11:34:23.730 +01:00 [INF] Executed DbCommand (204ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-09 11:34:25.160 +01:00 [INF] Executed DbCommand (297ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-09 11:34:25.234 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-09 11:34:25.247 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 4678.0472ms
+2026-07-09 11:34:25.256 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-09 11:34:25.260 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 200 null application/json; charset=utf-8 4759.7507ms
+2026-07-09 11:34:29.191 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/quizzes? - null null
+2026-07-09 11:34:29.201 +01:00 [INF] No cached response available for this request.
+2026-07-09 11:34:29.207 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:34:29.208 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-09 11:34:30.689 +01:00 [INF] Executed DbCommand (264ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-09 11:34:30.702 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-09 11:34:30.710 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 1493.3789ms
+2026-07-09 11:34:30.731 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-09 11:34:30.736 +01:00 [INF] The response could not be cached for this request.
+2026-07-09 11:34:30.738 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/quizzes? - 200 null application/json; charset=utf-8 1547.6203ms
+2026-07-09 11:40:10.051 +01:00 [INF] Executed DbCommand (224ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-09 11:40:10.162 +01:00 [INF] User profile is available. Using 'C:\Users\guilh\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-09 11:40:10.305 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-09 11:40:10.310 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-09 11:40:10.314 +01:00 [INF] Hosting environment: Development
+2026-07-09 11:40:10.315 +01:00 [INF] Content root path: C:\Users\guilh\Music\Projecto Final\Economia-Com-Hist-ria---Angola\ECHA.API

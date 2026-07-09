@@ -18,7 +18,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
 
     [<HttpGet>]
     [<AllowAnonymous>]
-    member this.Index (tema: string, nivel: string, regiao: string, tipo: string, estado: string, pagina: int) =
+    member this.Index (tema: string, nivel: string, regiao: string, tipo: string, estado: string, pagina: int, jindungo: bool option) =
         task {
             try
                 let p = if pagina = 0 then 1 else pagina
@@ -27,6 +27,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
                                                                ?regiao = (if String.IsNullOrEmpty regiao then None else Some regiao),
                                                                ?tipo = (if String.IsNullOrEmpty tipo then None else Some tipo),
                                                                ?estado = (if String.IsNullOrEmpty estado then None else Some estado),
+                                                               ?jindungo = jindungo,
                                                                pagina = p)
                 return this.View(conteudos) :> IActionResult
             with
@@ -39,13 +40,39 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     member this.Details (id: int) =
         task {
             try
-                let! conteudo = apiClient.GetConteudoAsync(id)
+                let token = this.GetToken()
+                let tokenOpt = if token = null then None else Some token
+                let! conteudo = apiClient.GetConteudoAsync(id, ?token = tokenOpt)
                 match conteudo with
-                | Some c -> return this.View(c) :> IActionResult
+                | Some c ->
+                    if token <> null then
+                        let! status = apiClient.GetSolicitacaoStatusAsync(id, token)
+                        this.ViewData.["SolicitacaoStatus"] <- status |> Option.defaultValue "Nenhuma"
+                    return this.View(c) :> IActionResult
                 | None -> return this.NotFound() :> IActionResult
             with
             | :? ApiClientException ->
                 return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpPost>]
+    [<Authorize>]
+    member this.SolicitarAcesso (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    let! success = apiClient.SolicitarAcessoJindungoAsync(id, t)
+                    if success then
+                        this.TempData["SuccessMessage"] <- "Pedido de acesso enviado. Aguarde aprovação."
+                    else
+                        this.TempData["ErrorMessage"] <- "Não foi possível solicitar acesso."
+                    return this.RedirectToAction("Details", {| id = id |}) :> IActionResult
+                with
+                | :? ApiClientException ->
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
         }
 
     [<HttpGet>]

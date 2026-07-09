@@ -1,0 +1,103 @@
+@model EconomiaComHistoria.Core.DTOs.TopicoForumDetalheDto
+@{
+    ViewData["Title"] = Model.Titulo;
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="mb-6 flex items-center gap-3 bg-green-50 text-green-800 px-6 py-4 rounded-xl">
+        <span class="material-symbols-outlined">check_circle</span>
+        <p>@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<div class="max-w-4xl mx-auto">
+    <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-8 hover:underline no-underline">
+        <span class="material-symbols-outlined">arrow_back</span> Voltar ao fórum
+    </a>
+
+    <article class="bg-surface-container-lowest rounded-3xl p-8 mb-8 ambient-shadow">
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-semibold">@Model.CategoriaNome</span>
+            @if (Model.Fixado)
+            {
+                <span class="bg-tertiary-container/20 text-tertiary px-3 py-1 rounded-full text-xs font-bold">Fixado</span>
+            }
+            <span class="text-xs text-stone-400 ml-auto">@Model.CriadoEm.ToString("dd/MM/yyyy HH:mm")</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-headline font-extrabold text-primary mb-4">@Model.Titulo</h1>
+        <p class="text-on-surface-variant text-lg leading-relaxed mb-6">@Model.Descricao</p>
+        <div class="flex items-center gap-4 text-sm text-stone-500">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> @Model.AutorNome</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">visibility</span> @Model.Visualizacoes visualizações</span>
+        </div>
+    </article>
+
+    <section class="mb-12">
+        <h2 class="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
+            <span class="material-symbols-outlined">forum</span>
+            Respostas (@Model.Respostas.Count)
+        </h2>
+
+        @if (!Model.Respostas.Any())
+        {
+            <div class="bg-surface-container-low rounded-2xl p-8 text-center text-stone-500">
+                Ainda não há respostas. Sê o primeiro a participar!
+            </div>
+        }
+        else
+        {
+            @foreach (var resposta in Model.Respostas)
+            {
+                <div class="bg-surface-container-lowest rounded-2xl p-6 mb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold shrink-0">
+                            @(resposta.AutorNome?.Substring(0, Math.Min(1, resposta.AutorNome?.Length ?? 1)) ?? "?")
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="font-bold text-sm">@resposta.AutorNome</span>
+                                <span class="text-xs text-stone-400">@resposta.DataCriacao.ToString("dd/MM/yyyy HH:mm")</span>
+                                @if (resposta.IsSolucao)
+                                {
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-bold">Solução</span>
+                                }
+                            </div>
+                            <p class="text-on-surface leading-relaxed">@resposta.Conteudo</p>
+                            @foreach (var filha in resposta.RespostasFilhas)
+                            {
+                                <div class="mt-4 ml-6 pl-4 border-l-2 border-outline-variant/30">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="font-bold text-sm">@filha.AutorNome</span>
+                                        <span class="text-xs text-stone-400">@filha.DataCriacao.ToString("dd/MM/yyyy HH:mm")</span>
+                                    </div>
+                                    <p class="text-sm text-on-surface-variant">@filha.Conteudo</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </section>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <section class="bg-stone-50 rounded-3xl p-8">
+            <h3 class="text-lg font-headline font-bold text-primary mb-4">Adicionar Resposta</h3>
+            <form asp-action="Responder" method="post">
+                <input type="hidden" name="topicoId" value="@Model.Id" />
+                <textarea name="conteudo" rows="4" required class="w-full bg-white border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20 mb-4" placeholder="Partilhe a sua perspectiva académica..."></textarea>
+                <button type="submit" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-3 rounded-full font-bold hover:opacity-90 transition-opacity">
+                    Publicar Resposta
+                </button>
+            </form>
+        </section>
+    }
+    else
+    {
+        <div class="text-center py-8">
+            <a asp-controller="Auth" asp-action="Login" class="text-primary font-bold hover:underline">Faça login</a> para participar na discussão.
+        </div>
+    }
+</div>

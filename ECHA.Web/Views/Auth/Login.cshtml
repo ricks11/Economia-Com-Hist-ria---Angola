@@ -1,94 +1,131 @@
 @model EconomiaComHistoria.Core.DTOs.LoginRequestDto
-
 @{
-    ViewData["Title"] = "Login & Registo";
+    ViewData["Title"] = "Autenticação - The Sovereign Archive";
 }
+
 @if (TempData["SuccessMessage"] != null)
 {
-<div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 text-sm font-medium text-center shadow-sm">
-    @TempData["SuccessMessage"]
-</div>
+    <div class="fixed top-20 right-6 z-50 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 text-sm font-medium shadow-lg max-w-md animate-fade-in-down">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-600">check_circle</span>
+            <span>@TempData["SuccessMessage"]</span>
+        </div>
+    </div>
 }
 
-<section class="flex min-h-[80vh] items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md bg-surface-container-lowest rounded-[2rem] p-8 md:p-10 shadow-xl shadow-stone-200/50 border border-stone-100/50">
-
-        <div class="flex justify-center gap-8 mb-8 border-b border-stone-200/60 pb-3 relative">
-            <button id="loginTab" class="text-lg font-headline font-bold text-primary border-b-2 border-primary pb-3 transition-all duration-300 focus:outline-none">
-                Entrar
-            </button>
-            <button id="registerTab" class="text-lg font-headline font-bold text-stone-400 pb-3 transition-all duration-300 focus:outline-none hover:text-stone-600">
-                Criar conta
-            </button>
+<div class="flex w-full h-[calc(100vh-4rem)] overflow-hidden">
+    <!-- Left Panel: Visual/Brand Anchor (Hidden on Mobile) -->
+    <div class="hidden lg:flex lg:w-1/2 bg-surface-container relative flex-col justify-between p-12 overflow-hidden border-r border-surface-variant/30">
+        <!-- Subtle Watermark Background -->
+        <div class="absolute inset-0 z-0 opacity-20 mix-blend-multiply" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDA_nLOnGmydzBs1xC1lg8E65URPTYEbjSY96jDiEgUXm-5M6IFM1wuroVPIILy5O9y1sZvRYf3uQlRVnioSek55ShH0lmmn35r1IPjeidvCISdrVGohz2pgtBnt1TnlugExPWFf49DqJ_g-p-VE-6cOBJ8syDf3My9gvUmc6w-wjG_SqaFz-XQb5HoXCr6RBYzIuRuRuEdwf6vVN8PxMcBBk_qHyKnK2o2-Qx0rn--AiWj7kkh2Jbh_zRY6k4JNpQ8pGqmDx-Ez0Qk'); background-size: cover; background-position: center;">
         </div>
-
-        <form id="loginForm" asp-action="Login" method="post" class="space-y-6 transition-all duration-300">
-            <div asp-validation-summary="ModelOnly" class="text-error text-sm font-medium bg-error/10 p-3 rounded-xl"></div>
-
-            <div class="space-y-1">
-                <label asp-for="Email" class="text-xs font-bold text-stone-500 tracking-wide uppercase ml-1">Email académico</label>
-                <input asp-for="Email" type="email"
-                       class="w-full bg-surface-container-low border border-transparent rounded-2xl p-4 transition-all duration-200 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder-stone-400 text-stone-800"
-                       placeholder="nome@universidade.ao">
-                <span asp-validation-for="Email" class="text-error text-xs font-medium ml-1 block mt-1"></span>
-            </div>
-
-            <div class="space-y-1">
-                <label asp-for="Password" class="text-xs font-bold text-stone-500 tracking-wide uppercase ml-1">Palavra‑passe</label>
-                <input asp-for="Password" type="password"
-                       class="w-full bg-surface-container-low border border-transparent rounded-2xl p-4 transition-all duration-200 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder-stone-400"
-                       placeholder="••••••••">
-                <span asp-validation-for="Password" class="text-error text-xs font-medium ml-1 block mt-1"></span>
-            </div>
-
-            <div class="pt-2">
-                <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 tracking-wide">
-                    Aceder ao Arquivo
-                </button>
-            </div>
-
-            <p class="text-center text-sm pt-2">
-                <a asp-action="ForgotPassword" asp-controller="Auth" class="text-tertiary font-medium hover:underline transition-all">Esqueceu a palavra‑passe?</a>
+        <!-- Graphic Overlay Map Element -->
+        <div class="absolute -right-24 top-1/4 w-96 h-96 bg-surface-dim rounded-full blur-3xl opacity-40 z-0 pointer-events-none"></div>
+        <div class="absolute -left-12 bottom-1/4 w-64 h-64 bg-surface-variant rounded-full blur-2xl opacity-50 z-0 pointer-events-none"></div>
+        
+        <div class="relative z-10">
+            <h1 class="font-headline font-black text-3xl tracking-tighter text-primary">The Sovereign Archive</h1>
+        </div>
+        <div class="relative z-10 max-w-md">
+            <h2 class="font-headline font-bold text-5xl tracking-tight text-on-surface leading-tight mb-6">The Digital<br/>Curator</h2>
+            <p class="font-body text-lg text-on-surface-variant leading-relaxed">
+                A premium pedagogical journey through the economic history and cultural heritage of Angola. Access restricted institutional records and curated modules.
             </p>
-        </form>
+        </div>
+        <div class="relative z-10 flex items-center space-x-2 text-on-surface-variant text-sm font-medium">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+            <span>Portal de Controlo Institucional</span>
+        </div>
+    </div>
 
-        <form id="registerForm" asp-action="Register" method="post" class="space-y-6 hidden opacity-0 transition-all duration-300">
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-stone-500 tracking-wide uppercase ml-1">Nome completo</label>
-                <input type="text" name="Nome" required
-                       class="w-full bg-surface-container-low border border-transparent rounded-2xl p-4 transition-all duration-200 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder-stone-400 text-stone-800"
-                       placeholder="Maria da Silva">
-            </div>
-
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-stone-500 tracking-wide uppercase ml-1">Email</label>
-                <input type="email" name="Email" required
-                       class="w-full bg-surface-container-low border border-transparent rounded-2xl p-4 transition-all duration-200 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder-stone-400 text-stone-800"
-                       placeholder="m.silva@academia.ao">
-            </div>
-
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-stone-500 tracking-wide uppercase ml-1">Telemóvel</label>
-                <input type="tel" name="Telemovel"
-                       class="w-full bg-surface-container-low border border-transparent rounded-2xl p-4 transition-all duration-200 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder-stone-400 text-stone-800"
-                       placeholder="9XXXXXXXX">
-            </div>
-
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-stone-500 tracking-wide uppercase ml-1">Palavra-passe</label>
-                <input type="password" name="Password" required
-                       class="w-full bg-surface-container-low border border-transparent rounded-2xl p-4 transition-all duration-200 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none placeholder-stone-400 text-stone-800"
-                       placeholder="••••••••">
-            </div>
-
-            <div class="pt-2">
-                <button type="submit" class="w-full bg-tertiary text-white font-bold py-4 rounded-2xl shadow-lg shadow-tertiary/20 hover:shadow-xl hover:shadow-tertiary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 tracking-wide">
-                    Registar como Investigador
+    <!-- Right Panel: Authentication Form -->
+    <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 py-12 md:px-20 xl:px-32 bg-surface overflow-y-auto">
+        <div class="w-full max-w-md mx-auto lg:mx-0">
+            <!-- Tabs -->
+            <div class="flex space-x-8 mb-10 border-b border-surface-variant/30 pb-1">
+                <button id="loginTab" class="font-headline text-3xl font-bold text-primary tracking-tight pb-2 border-b-2 border-primary focus:outline-none transition-all">
+                    Login
+                </button>
+                <button id="registerTab" class="font-headline text-3xl font-medium text-on-surface-variant tracking-tight pb-2 opacity-50 hover:opacity-100 focus:outline-none transition-all">
+                    Cadastro
                 </button>
             </div>
-        </form>
+
+            <!-- Login Form -->
+            <form id="loginForm" asp-action="Login" method="post" class="flex flex-col space-y-6 transition-all duration-300">
+                <div asp-validation-summary="ModelOnly" class="text-error text-sm font-medium bg-error/10 p-3 rounded-xl"></div>
+                
+                <div class="flex flex-col space-y-2">
+                    <label asp-for="Email" class="font-label text-sm font-bold text-on-surface">Endereço de E-mail</label>
+                    <input asp-for="Email" type="email" required class="bg-surface-container-high border-none border-b-2 border-surface-dim focus:border-primary rounded-t-md px-4 py-3 outline-none focus:ring-0 text-on-surface font-body placeholder:text-on-surface-variant/30" placeholder="arquivista@instituicao.ao"/>
+                    <span asp-validation-for="Email" class="text-error text-xs font-medium mt-1"></span>
+                </div>
+
+                <div class="flex flex-col space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label asp-for="Password" class="font-label text-sm font-bold text-on-surface">Palavra-passe</label>
+                        <a asp-action="ForgotPassword" asp-controller="Auth" class="font-label text-xs font-bold text-primary hover:text-primary-container">Esqueceu a palavra-passe?</a>
+                    </div>
+                    <input asp-for="Password" type="password" required class="bg-surface-container-high border-none border-b-2 border-surface-dim focus:border-primary rounded-t-md px-4 py-3 outline-none focus:ring-0 text-on-surface font-body placeholder:text-on-surface-variant/30" placeholder="••••••••••••"/>
+                    <span asp-validation-for="Password" class="text-error text-xs font-medium mt-1"></span>
+                </div>
+
+                <div class="pt-2 flex flex-col space-y-4">
+                    <button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-lg rounded-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] hover:opacity-95 flex items-center justify-center space-x-2 transition-all duration-200" type="submit">
+                        <span>Aceder ao Arquivo</span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                    
+                    <div class="py-2 flex justify-center">
+                        <span class="font-body text-xs font-bold text-on-surface-variant uppercase tracking-widest">Ou explore livremente</span>
+                    </div>
+                    
+                    <a href="@Url.Action("Index", "Home")" class="w-full py-4 bg-surface-container-highest text-on-surface font-headline font-bold text-base rounded-md hover:bg-surface-variant flex items-center justify-center space-x-2 no-underline text-center">
+                        <span class="material-symbols-outlined text-sm">public</span>
+                        <span>Continuar como Convidado</span>
+                    </a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" asp-action="Register" method="post" class="flex flex-col space-y-6 hidden opacity-0 transition-all duration-300">
+                <div class="flex flex-col space-y-2">
+                    <label class="font-label text-sm font-bold text-on-surface">Nome Completo</label>
+                    <input type="text" name="Nome" required class="bg-surface-container-high border-none border-b-2 border-surface-dim focus:border-primary rounded-t-md px-4 py-3 outline-none focus:ring-0 text-on-surface font-body placeholder:text-on-surface-variant/30" placeholder="Maria da Silva"/>
+                </div>
+
+                <div class="flex flex-col space-y-2">
+                    <label class="font-label text-sm font-bold text-on-surface">Endereço de E-mail</label>
+                    <input type="email" name="Email" required class="bg-surface-container-high border-none border-b-2 border-surface-dim focus:border-primary rounded-t-md px-4 py-3 outline-none focus:ring-0 text-on-surface font-body placeholder:text-on-surface-variant/30" placeholder="m.silva@academia.ao"/>
+                </div>
+
+                <div class="flex flex-col space-y-2">
+                    <label class="font-label text-sm font-bold text-on-surface">Telemóvel</label>
+                    <input type="tel" name="Telemovel" class="bg-surface-container-high border-none border-b-2 border-surface-dim focus:border-primary rounded-t-md px-4 py-3 outline-none focus:ring-0 text-on-surface font-body placeholder:text-on-surface-variant/30" placeholder="9XXXXXXXX"/>
+                </div>
+
+                <div class="flex flex-col space-y-2">
+                    <label class="font-label text-sm font-bold text-on-surface">Palavra-passe</label>
+                    <input type="password" name="Password" required class="bg-surface-container-high border-none border-b-2 border-surface-dim focus:border-primary rounded-t-md px-4 py-3 outline-none focus:ring-0 text-on-surface font-body placeholder:text-on-surface-variant/30" placeholder="••••••••••••"/>
+                </div>
+
+                <div class="pt-2 flex flex-col space-y-4">
+                    <button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-lg rounded-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] hover:opacity-95 flex items-center justify-center space-x-2 transition-all duration-200" type="submit">
+                        <span>Criar Conta</span>
+                        <span class="material-symbols-outlined text-sm">person_add</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Footer text -->
+            <div class="mt-12 text-center lg:text-left">
+                <p class="font-body text-xs text-on-surface-variant">
+                    Ao continuar, concorda com as <a class="text-primary font-bold hover:underline" href="#">Diretrizes do Arquivo</a> e <a class="text-primary font-bold hover:underline" href="#">Política de Privacidade</a>.
+                </p>
+            </div>
+        </div>
     </div>
-</section>
+</div>
 
 @section Scripts {
 <script>
@@ -98,7 +135,6 @@
     const registerForm = document.getElementById('registerForm');
 
     function switchTab(activeTab, inactiveTab, showForm, hideForm) {
-        // Form Handling com opacidade para transição mais suave
         hideForm.classList.add('hidden');
         hideForm.classList.remove('opacity-100');
 
@@ -107,18 +143,16 @@
             showForm.classList.add('opacity-100');
         }, 50);
 
-        // Tab Handling
-        activeTab.classList.add('border-primary', 'text-primary', 'border-b-2');
-        activeTab.classList.remove('text-stone-400');
+        activeTab.classList.add('border-primary', 'text-primary', 'border-b-2', 'font-bold');
+        activeTab.classList.remove('opacity-50');
 
-        inactiveTab.classList.remove('border-primary', 'text-primary', 'border-b-2');
-        inactiveTab.classList.add('text-stone-400');
+        inactiveTab.classList.remove('border-primary', 'text-primary', 'border-b-2', 'font-bold');
+        inactiveTab.classList.add('opacity-50');
     }
 
     loginTab.onclick = () => switchTab(loginTab, registerTab, loginForm, registerForm);
     registerTab.onclick = () => switchTab(registerTab, loginTab, registerForm, loginForm);
 
-    // Se o servidor indicar que o erro veio do registo, ativa a aba de registo imediatamente no reload
     @if (ViewData["ActiveTab"]?.ToString() == "register") {
         <text>
             switchTab(registerTab, loginTab, registerForm, loginForm);

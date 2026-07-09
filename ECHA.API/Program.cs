@@ -167,6 +167,7 @@ builder.Services.AddScoped<IValidadorSincronizacao, ValidadorSincronizacao>();
 builder.Services.AddScoped<IConteudoCacheExportService, ConteudoCacheExportService>();
 builder.Services.AddScoped<IAuditoriaService, AuditoriaService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ISeedService, SeedService>();
 
 builder.Services.AddAuthorization(options =>
 {

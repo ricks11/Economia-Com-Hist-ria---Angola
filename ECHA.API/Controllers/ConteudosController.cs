@@ -104,7 +104,7 @@ public class ConteudosController : ControllerBase
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
-    [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "tema", "nivel", "tipo", "regiao", "pagina", "tamanho", "estado" })]
+    [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "tema", "nivel", "tipo", "regiao", "pagina", "tamanho", "estado", "jindungo" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResult<ConteudoResponseDto>>> ListConteudos(
         [FromQuery] string? tema,
@@ -112,6 +112,7 @@ public class ConteudosController : ControllerBase
         [FromQuery] TipoConteudo? tipo,
         [FromQuery] string? regiao,
         [FromQuery] EstadoConteudo? estado,
+        [FromQuery] bool? jindungo,
         [FromQuery] int pagina = 1,
         [FromQuery] int tamanho = 20,
         CancellationToken cancellationToken = default)
@@ -139,6 +140,7 @@ public class ConteudosController : ControllerBase
         if (nivel.HasValue) query = query.Where(c => c.Nivel == nivel.Value);
         if (tipo.HasValue) query = query.Where(c => c.Tipo == tipo.Value);
         if (!string.IsNullOrEmpty(regiao)) query = query.Where(c => c.Regiao == regiao);
+        if (jindungo.HasValue) query = query.Where(c => c.IsJindungo == jindungo.Value);
     
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -186,8 +188,68 @@ public class ConteudosController : ControllerBase
         var isFavorito = userId > 0 && await _dbContext.Favoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
-        var response = MapToResponseDto(conteudo, isFavorito);
+        bool temAcessoJindungo = true;
+        if (conteudo.IsJindungo)
+        {
+            var isEditorOrAdmin = User.Identity?.IsAuthenticated == true && (User.IsInRole("Admin") || User.IsInRole("Editor"));
+            if (!isEditorOrAdmin)
+            {
+                temAcessoJindungo = userId > 0 && await _dbContext.SolicitacoesAcesso
+                    .AnyAsync(s => s.ConteudoId == id && s.UtilizadorId == userId && s.Status == "Aprovado", cancellationToken);
+            }
+        }
+
+        var response = MapToResponseDto(conteudo, isFavorito, temAcessoJindungo);
         return Ok(response);
+    }
+
+    [HttpPost("{id:int}/solicitar-acesso")]
+    [Authorize]
+    public async Task<IActionResult> SolicitarAcesso(int id, CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
+        if (userId <= 0) return Unauthorized();
+
+        var jaExiste = await _dbContext.SolicitacoesAcesso
+            .AnyAsync(s => s.ConteudoId == id && s.UtilizadorId == userId, cancellationToken);
+
+        if (jaExiste)
+        {
+            return BadRequest(new { message = "Já existe uma solicitação para este conteúdo." });
+        }
+
+        var solicitacao = new SolicitacaoAcesso
+        {
+            ConteudoId = id,
+            UtilizadorId = userId,
+            DataSolicitacao = DateTime.UtcNow,
+            Status = "Pendente"
+        };
+
+        _dbContext.SolicitacoesAcesso.Add(solicitacao);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(new { message = "Solicitação de acesso enviada com sucesso!" });
+    }
+
+    [HttpGet("{id:int}/solicitacao-status")]
+    [Authorize]
+    public async Task<IActionResult> GetSolicitacaoStatus(int id, CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
+        if (userId <= 0) return Unauthorized();
+
+        var solicitacao = await _dbContext.SolicitacoesAcesso
+            .FirstOrDefaultAsync(s => s.ConteudoId == id && s.UtilizadorId == userId, cancellationToken);
+
+        if (solicitacao is null)
+        {
+            return Ok(new { status = "Nenhuma" });
+        }
+
+        return Ok(new { status = solicitacao.Status });
     }
 
     [HttpPost("{id:int}/traducoes")]
@@ -492,13 +554,13 @@ public class ConteudosController : ControllerBase
         }
     }
 
-    private static ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito)
+    private static ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito, bool temAcessoJindungo = true)
     {
         return new ConteudoResponseDto(
             conteudo.Id,
             conteudo.Titulo,
             conteudo.Resumo,
-            conteudo.CorpoTexto,
+            temAcessoJindungo ? conteudo.CorpoTexto : null,
             conteudo.VideoUrl,
             conteudo.AudioUrl,
             conteudo.ThumbnailUrl,

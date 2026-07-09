@@ -1,67 +1,133 @@
 @model EconomiaComHistoria.Core.DTOs.ConteudoResponseDto
 @{
     ViewData["Title"] = Model.Titulo;
+    var solicitacaoStatus = ViewData["SolicitacaoStatus"] as string ?? "Nenhuma";
+    var temAcesso = !Model.IsJindungo || !string.IsNullOrEmpty(Model.CorpoTexto);
 }
 
-<main class="pt-12 pb-20 px-6 max-w-4xl mx-auto">
-    <!-- Article Header -->
+<main class="max-w-4xl mx-auto">
     <header class="mb-12">
         <div class="flex items-center gap-3 mb-6">
             <span class="px-3 py-1 bg-tertiary/10 text-tertiary text-xs font-bold rounded-full uppercase">@Model.Tema</span>
             <span class="text-secondary text-sm">@Model.Nivel</span>
+            @if (Model.IsJindungo)
+            {
+                <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">record_voice_over</span> Jindungo
+                </span>
+            }
         </div>
-        <h1 class="font-headline font-extrabold text-4xl md:text-6xl text-primary leading-tight mb-8">@Model.Titulo</h1>
-        
-        <div class="flex items-center gap-4 p-6 bg-stone-50 rounded-2xl border border-stone-100">
-            <div class="w-12 h-12 bg-stone-200 rounded-full flex items-center justify-center">
+        <h1 class="font-headline font-extrabold text-4xl md:text-5xl text-primary leading-tight mb-8">@Model.Titulo</h1>
+
+        <div class="flex items-center gap-4 p-6 bg-surface-container-low rounded-2xl">
+            <div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center">
                 <span class="material-symbols-outlined text-stone-500">person</span>
             </div>
             <div>
-                <p class="font-bold text-primary">@Model.AutorNome</p>
-                <p class="text-xs text-secondary">Publicado em @Model.DataPublicacao.ToString("dd/MM/yyyy") • @Model.Visualizacoes visualizações</p>
+                <p class="font-bold text-primary">@(Model.EditorNome ?? "Editor")</p>
+                <p class="text-xs text-secondary">@(Model.DataPublicacao?.ToString("dd/MM/yyyy") ?? "—") · @Model.Visualizacoes visualizações</p>
             </div>
         </div>
     </header>
 
     @if (Model.IsJindungo)
     {
-        <div class="mb-12 p-6 bg-tertiary-container/10 border-l-4 border-tertiary-container rounded-r-2xl">
+        <div class="mb-12 p-6 bg-tertiary-container/10 rounded-2xl">
             <div class="flex items-start gap-4">
-                <span class="material-symbols-outlined text-tertiary text-2xl">warning</span>
+                <span class="material-symbols-outlined text-tertiary text-2xl">record_voice_over</span>
                 <div>
-                    <h4 class="font-bold text-tertiary">Conteúdo de Opinião (Jindungo)</h4>
-                    <p class="text-sm text-secondary">As opiniões expressas neste artigo são de cariz crítico.</p>
+                    <h4 class="font-bold text-tertiary font-headline">Conteúdo Jindungo — Opinião Crítica</h4>
+                    <p class="text-sm text-secondary mt-1">Este texto expressa uma perspectiva interpretativa sobre a narrativa económica angolana.</p>
                 </div>
             </div>
         </div>
     }
 
-    <!-- Featured Image -->
-    @if (!string.IsNullOrEmpty(Model.ImagemCapa))
+    @if (!temAcesso)
     {
-        <figure class="mb-12">
-            <img src="@Model.ImagemCapa" class="w-full h-[400px] object-cover rounded-[2.5rem] shadow-xl" alt="@Model.Titulo">
-        </figure>
+        <section class="bg-surface-container-lowest rounded-3xl p-10 ambient-shadow text-center mb-12">
+            <span class="material-symbols-outlined text-5xl text-primary mb-4">lock</span>
+            <h2 class="text-2xl font-headline font-extrabold text-primary mb-3">Acesso Restrito</h2>
+            <p class="text-on-surface-variant mb-2 max-w-md mx-auto">Este conteúdo Jindungo requer aprovação editorial antes de ser visualizado.</p>
+            @if (!string.IsNullOrEmpty(Model.Resumo))
+            {
+                <p class="text-sm text-stone-500 italic mb-6">"@Model.Resumo"</p>
+            }
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                @if (solicitacaoStatus == "Pendente")
+                {
+                    <div class="inline-flex items-center gap-2 bg-amber-50 text-amber-800 px-6 py-3 rounded-full font-bold">
+                        <span class="material-symbols-outlined">hourglass_top</span>
+                        Pedido pendente de aprovação
+                    </div>
+                }
+                else if (solicitacaoStatus == "Aprovado")
+                {
+                    <p class="text-green-700 font-bold">Acesso aprovado — actualize a página.</p>
+                }
+                else
+                {
+                    <form asp-action="SolicitarAcesso" asp-route-id="@Model.Id" method="post">
+                        <button type="submit" class="bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-opacity">
+                            Solicitar Acesso ao Texto
+                        </button>
+                    </form>
+                }
+            }
+            else
+            {
+                <a asp-controller="Auth" asp-action="Login" class="inline-block bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-full font-bold no-underline hover:opacity-90">
+                    Iniciar Sessão para Solicitar Acesso
+                </a>
+            }
+        </section>
+    }
+    else
+    {
+        @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
+        {
+            <figure class="mb-12">
+                <img src="@Model.ThumbnailUrl" class="w-full h-[400px] object-cover rounded-3xl ambient-shadow" alt="@Model.Titulo">
+            </figure>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Resumo))
+        {
+            <p class="text-xl text-on-surface-variant leading-relaxed mb-8 font-medium">@Model.Resumo</p>
+        }
+
+        <article class="prose prose-stone prose-lg max-w-none text-stone-700 leading-relaxed space-y-6 mb-12">
+            @if (!string.IsNullOrEmpty(Model.CorpoTexto))
+            {
+                @Html.Raw(Model.CorpoTexto)
+            }
+        </article>
+
+        @if (!string.IsNullOrEmpty(Model.VideoUrl))
+        {
+            <div class="mb-12 aspect-video rounded-3xl overflow-hidden ambient-shadow">
+                <iframe src="@Model.VideoUrl" class="w-full h-full" allowfullscreen></iframe>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ReferenciaFactual))
+        {
+            <aside class="bg-surface-container-low rounded-2xl p-6 mb-12">
+                <p class="text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">Referência Factual</p>
+                <p class="text-sm text-on-surface-variant">@Model.ReferenciaFactual</p>
+            </aside>
+        }
     }
 
-    <!-- Article Content -->
-    <article class="prose prose-stone prose-lg max-w-none text-stone-700 leading-relaxed space-y-8">
-        <div class="content-text">
-            @Html.Raw(Model.Texto)
-        </div>
-    </article>
-
-    <!-- Navigation Footer -->
-    <footer class="mt-20 pt-12 border-t border-stone-100 flex justify-between gap-6">
-        <a asp-action="Index" class="flex items-center gap-2 text-primary font-bold hover:underline">
-            <span class="material-symbols-outlined">arrow_back</span> Voltar à lista
+    <footer class="pt-8 flex justify-between gap-6">
+        <a asp-action="Index" class="flex items-center gap-2 text-primary font-bold hover:underline no-underline">
+            <span class="material-symbols-outlined">arrow_back</span> Voltar ao arquivo
         </a>
         @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
         {
-            <div class="flex gap-3">
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all">Editar</a>
-            </div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="px-6 py-3 rounded-full bg-primary text-white font-bold no-underline hover:opacity-90">Editar</a>
         }
     </footer>
 </main>
-
