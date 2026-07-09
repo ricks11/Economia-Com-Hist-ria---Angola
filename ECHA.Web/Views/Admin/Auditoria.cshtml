@@ -1,0 +1,53 @@
+﻿@model List<EconomiaComHistoria.Core.DTOs.AuditoriaLogDto>
+    @{
+    ViewData["Title"] = "Log de Auditoria";
+    }
+
+    <div class="max-w-7xl mx-auto px-6 pt-12">
+        <header class="mb-10">
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Log de Auditoria</h1>
+            <p class="text-secondary mt-2">Registo completo e imutável de ações críticas na plataforma.</p>
+        </header>
+
+        <form method="get" class="flex flex-wrap gap-3 mb-8">
+            <input type="number" name="utilizadorId" placeholder="ID do utilizador" class="px-4 py-2 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary/20" />
+            <input type="text" name="acao" placeholder="Ação (ex: AlterarRole)" class="px-4 py-2 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary/20" />
+            <input type="date" name="inicio" class="px-4 py-2 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary/20" />
+            <input type="date" name="fim" class="px-4 py-2 bg-surface-container-low rounded-xl border-none focus:ring-2 focus:ring-primary/20" />
+            <button type="submit" class="px-6 py-2 rounded-xl bg-primary text-white font-bold">Filtrar</button>
+        </form>
+
+        <div class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm">
+            <table class="w-full text-sm">
+                <thead class="bg-surface-container-high text-left">
+                    <tr>
+                        <th class="px-4 py-3">Data/Hora</th>
+                        <th class="px-4 py-3">Utilizador</th>
+                        <th class="px-4 py-3">Ação</th>
+                        <th class="px-4 py-3">Entidade</th>
+                        <th class="px-4 py-3">Antes</th>
+                        <th class="px-4 py-3">Depois</th>
+                        <th class="px-4 py-3">IP</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-100">
+                    @if (!Model.Any())
+                    {
+                    <tr><td colspan="7" class="px-4 py-8 text-center text-stone-400">Nenhum registo encontrado.</td></tr>
+                    }
+                    @foreach (var log in Model)
+                    {
+                    <tr>
+                        <td class="px-4 py-3 whitespace-nowrap">@log.Timestamp.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="px-4 py-3">@(log.UtilizadorNome ?? log.UtilizadorId?.ToString() ?? "—")</td>
+                        <td class="px-4 py-3"><span class="px-3 py-1 bg-secondary-container rounded-full text-xs font-bold">@log.Acao</span></td>
+                        <td class="px-4 py-3">@log.EntidadeAfetada @(log.IdEntidade.HasValue ? $"#{log.IdEntidade}" : "")</td>
+                        <td class="px-4 py-3 text-stone-500">@log.ValorAntes</td>
+                        <td class="px-4 py-3 text-stone-500">@log.ValorDepois</td>
+                        <td class="px-4 py-3 text-stone-400 text-xs">@log.Ip</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

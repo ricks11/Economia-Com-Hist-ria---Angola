@@ -475,16 +475,16 @@ public class ConteudosController : ControllerBase
             conteudo.DataPublicacao);
     }
 
-    public async Task IncrementarVisitaAsync(int id)
+    [HttpPost("{id}/incrementar-visita")]
+    [AllowAnonymous]
+    public async Task<IActionResult> IncrementarVisitaAsync(int id, CancellationToken cancellationToken)
     {
-        // 1. Busca através do repositório
         var conteudo = await _conteudoRepository.GetByIdAsync(id);
-        if (conteudo == null) throw new Exception("Conteúdo não encontrado");
+        if (conteudo is null) return NotFound(new { message = "Conteúdo não encontrado" });
 
-        // 2. Incrementa
         conteudo.Visualizacoes += 1;
-
-        // 3. Persiste através do repositório
         await _conteudoRepository.UpdateAsync(conteudo);
+
+        return NoContent();
     }
 }

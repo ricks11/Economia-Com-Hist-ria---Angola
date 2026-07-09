@@ -15,14 +15,26 @@ public class AuditoriaService : IAuditoriaService
     }
 
     public async Task RegistarAsync(
-        int utilizadorId,
-        string acao,
-        string recurso,
-        int? idRecurso = null,
-        string? dadosAntes = null,
-        string? dadosDepois = null,
-        HttpContext? httpContext = null)
+    int utilizadorId,
+    string acao,
+    string recurso,
+    int? idRecurso = null,
+    string? dadosAntes = null,
+    string? dadosDepois = null,
+    HttpContext? httpContext = null)
     {
+        string? sessaoToken = null;
+        string? sessaoHash = null;
+
+        var authHeader = httpContext?.Request.Headers["Authorization"].ToString();
+        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+        {
+            var token = authHeader.Substring("Bearer ".Length);
+            sessaoToken = token.Length > 50 ? token[..50] + "..." : token; // truncado, evita guardar o token inteiro
+            sessaoHash = Convert.ToHexString(
+                System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(token)));
+        }
+
         var log = new AuditoriaLog
         {
             UtilizadorId = utilizadorId,
@@ -33,7 +45,8 @@ public class AuditoriaService : IAuditoriaService
             DadosDepois = dadosDepois,
             Ip = httpContext?.Connection.RemoteIpAddress?.ToString(),
             UserAgent = httpContext?.Request.Headers["User-Agent"].ToString(),
-            Sessao = httpContext?.Session.Id
+            Sessao = sessaoToken,
+            SessaoHash = sessaoHash
         };
 
         await _auditoriaRepo.AddAsync(log);

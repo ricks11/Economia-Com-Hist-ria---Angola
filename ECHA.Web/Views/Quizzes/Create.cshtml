@@ -3,151 +3,189 @@
     ViewData["Title"] = "Criar Novo Quiz";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
 
-<form asp-action="Create" id="quizForm">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Configurações Gerais</h5>
+    <header class="mb-10 flex items-center justify-between border-b border-stone-100 pb-6">
+        <div>
+            <h1 class="text-3xl font-black text-primary tracking-tight">@ViewData["Title"]</h1>
+            <p class="text-sm text-stone-500 mt-1">Configure as regras gerais e as perguntas do novo desafio.</p>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Titulo" class="form-label">Título do Quiz</label>
-                    <input asp-for="Titulo" class="form-control" required />
+        <a asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2 bg-stone-50 text-secondary border border-stone-200/60 rounded-xl text-sm font-semibold hover:bg-stone-100 transition-colors decoration-none">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Voltar
+        </a>
+    </header>
+
+    <form asp-action="Create" id="quizForm" class="space-y-8">
+        <div asp-validation-summary="ModelOnly" class="p-4 bg-red-50 border-l-4 border-error text-error text-sm rounded-r-xl"></div>
+
+        <div class="bg-surface-container-lowest border border-stone-100 rounded-3xl p-6 shadow-sm">
+            <div class="flex items-center gap-2 text-primary font-bold text-lg mb-6 pb-2 border-b border-stone-50">
+                <span class="material-symbols-outlined text-primary">settings</span>
+                <h2>Configurações Gerais</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div>
+                    <label asp-for="Titulo" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Título do Quiz</label>
+                    <input asp-for="Titulo" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" placeholder="Ex: Introdução à Macroeconomia" required />
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Tema" class="form-label">Tema</label>
-                    <input asp-for="Tema" class="form-control" required />
+                <div>
+                    <label asp-for="Tema" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tema</label>
+                    <input asp-for="Tema" id="quizTema" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" placeholder="Ex: Historiografia" required />
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label asp-for="NivelDificuldade" class="form-label">Nível de Dificuldade (1-5)</label>
-                    <input asp-for="NivelDificuldade" type="number" min="1" max="5" class="form-control" required />
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div>
+                    <label asp-for="Nivel" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Nível de Dificuldade</label>
+                    <select asp-for="Nivel" id="quizNivel" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" asp-items="Html.GetEnumSelectList<EconomiaComHistoria.Core.Enums.NivelDificuldade>()" required></select>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="NumeroPerguntas" class="form-label">Nº de Perguntas (Exibidas)</label>
-                    <input asp-for="NumeroPerguntas" type="number" min="1" class="form-control" required />
+                <div>
+                    <label asp-for="TotalPerguntas" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Nº de Perguntas (por sessão)</label>
+                    <input asp-for="TotalPerguntas" type="number" min="1" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" required />
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="TempoPorPerguntaSegundos" class="form-label">Tempo por Pergunta (seg)</label>
-                    <input asp-for="TempoPorPerguntaSegundos" type="number" min="5" class="form-control" required />
+                <div>
+                    <label asp-for="TempoLimiteSeg" class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tempo Limite (segundos)</label>
+                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" required />
                 </div>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Descricao" class="form-label">Descrição (Opcional)</label>
-                <textarea asp-for="Descricao" class="form-control" rows="2"></textarea>
             </div>
         </div>
-    </div>
 
-    <div id="perguntasContainer">
-        <!-- Perguntas serão adicionadas aqui -->
-    </div>
+        <div id="perguntasContainer" class="space-y-6"></div>
 
-    <div class="mb-4">
-        <button type="button" class="btn btn-outline-primary" onclick="addPergunta()">Adicionar Pergunta</button>
-    </div>
+        <div class="text-center py-4 bg-stone-50 border border-dashed border-stone-200 rounded-2xl">
+            <button type="button" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-all shadow-sm" onclick="addPergunta()">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                Adicionar Pergunta
+            </button>
+        </div>
 
-    <div class="form-group mt-4 mb-5">
-        <button type="submit" class="btn btn-success btn-lg">Guardar Quiz</button>
-        <a asp-action="Index" class="btn btn-secondary btn-lg">Cancelar</a>
-    </div>
-</form>
+        <div class="flex items-center gap-3 pt-6 border-t border-stone-100">
+            <button type="submit" class="px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-95 shadow-md shadow-primary/10 transition-all">
+                Guardar Quiz
+            </button>
+            <a asp-action="Index" class="px-6 py-3 rounded-xl bg-stone-100 text-secondary font-bold text-sm hover:bg-stone-200/70 transition-colors decoration-none">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
 
 <template id="perguntaTemplate">
-    <div class="card mb-4 pergunta-card shadow-sm border-info" data-index="{pIdx}">
-        <div class="card-header d-flex justify-content-between align-items-center bg-info text-white">
-            <h5 class="mb-0">Pergunta #{displayIdx}</h5>
-            <button type="button" class="btn btn-sm btn-danger" onclick="removePergunta(this)">Remover</button>
+    <div class="bg-surface-container-lowest border border-stone-200/60 rounded-3xl p-6 shadow-sm pergunta-card relative group transition-all" data-index="{pIdx}">
+
+        <div class="flex items-center justify-between mb-5 pb-3 border-b border-stone-50">
+            <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-black">#</span>
+                <h3 class="font-bold text-primary text-base label-display-idx">Pergunta #{displayIdx}</h3>
+            </div>
+            <button type="button" class="inline-flex items-center justify-center w-8 h-8 rounded-xl text-stone-400 hover:text-error hover:bg-error/5 transition-colors" onclick="removePergunta(this)" title="Remover Pergunta">
+                <span class="material-symbols-outlined text-[20px]">delete</span>
+            </button>
         </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <label class="form-label">Texto da Pergunta</label>
-                <input name="Perguntas[{pIdx}].Texto" class="form-control" required />
+
+        <div class="space-y-5">
+            <div>
+                <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Enunciado da Pergunta</label>
+                <input name="Perguntas[{pIdx}].Enunciado" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none text-sm transition-all text-on-surface" placeholder="Qual é a questão principal?" required />
             </div>
-            <div class="mb-3">
-                <label class="form-label">Tempo Limite (seg)</label>
-                <input name="Perguntas[{pIdx}].TempoLimiteSegundos" type="number" class="form-control" value="30" required />
-            </div>
-            
-            <h6 class="mt-4">Opções (Exatamente 4, selecione a correta)</h6>
-            <div class="row">
-                @for (int i = 0; i < 4; i++)
-                {
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group">
-                            <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="radio" name="Perguntas[{pIdx}].CorrectOption" value="@i" required>
-                                <input type="hidden" name="Perguntas[{pIdx}].Opcoes[@i].IsCorrecta" value="false">
-                            </div>
-                            <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="form-control" placeholder="Opção @(i + 1)" required />
+
+            <input type="hidden" name="Perguntas[{pIdx}].Tema" class="pergunta-tema-hidden" />
+            <input type="hidden" name="Perguntas[{pIdx}].Dificuldade" class="pergunta-dificuldade-hidden" />
+            <input type="hidden" name="Perguntas[{pIdx}].Explicacao" value="" />
+
+            <div>
+                <h4 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Opções de Resposta (Marque a correta)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @for (int i = 0; i < 4; i++)
+                    {
+                    <div class="p-4 bg-stone-50/50 border border-stone-100 rounded-2xl space-y-2">
+                        <div class="flex items-center gap-3">
+                            <label class="relative flex items-center cursor-pointer">
+                                <input type="radio" name="Perguntas[{pIdx}].CorrectOption" value="@i" class="w-4 h-4 text-primary bg-white border-stone-300 focus:ring-primary/30 focus:ring-2" required>
+                            </label>
+                            <input type="hidden" name="Perguntas[{pIdx}].Opcoes[@i].IsCorrecta" value="false">
+                            <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-xs transition-all" placeholder="Texto da Opção @(i + 1)" required />
                         </div>
-                        <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="form-control mt-1 form-control-sm" placeholder="Explicação (opcional)" />
+                        <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="w-full px-3 py-1.5 bg-white/60 border border-stone-200/60 rounded-lg focus:ring-2 focus:ring-primary/10 outline-none text-[11px] placeholder:text-stone-400" placeholder="Justificação/Explicação caso escolha esta (opcional)" />
                     </div>
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 @section Scripts {
-    <script>
-        let perguntaCount = 0;
+<script>
+    let perguntaCount = 0;
 
-        function addPergunta() {
-            const container = document.getElementById('perguntasContainer');
-            const template = document.getElementById('perguntaTemplate').innerHTML;
-            
-            const html = template
-                .replace(/{pIdx}/g, perguntaCount)
-                .replace(/{displayIdx}/g, perguntaCount + 1);
-            
-            const div = document.createElement('div');
-            div.innerHTML = html;
-            container.appendChild(div.firstElementChild);
-            perguntaCount++;
-        }
+    function addPergunta() {
+        const container = document.getElementById('perguntasContainer');
+        const template = document.getElementById('perguntaTemplate').innerHTML;
 
-        function removePergunta(btn) {
-            btn.closest('.pergunta-card').remove();
-            reorderPerguntas();
-        }
+        const html = template
+            .replace(/{pIdx}/g, perguntaCount)
+            .replace(/{displayIdx}/g, perguntaCount + 1);
 
-        function reorderPerguntas() {
-            const cards = document.querySelectorAll('.pergunta-card');
-            perguntaCount = 0;
-            cards.forEach((card, idx) => {
-                const display = card.querySelector('h5');
-                display.innerText = `Pergunta #${idx + 1}`;
-                
-                // Update names
-                const inputs = card.querySelectorAll('input, textarea, select');
-                inputs.forEach(input => {
-                    if (input.name) {
-                        input.name = input.name.replace(/Perguntas\[\d+\]/, `Perguntas[${idx}]`);
-                    }
-                });
-                perguntaCount = idx + 1;
-            });
-        }
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        container.appendChild(div.firstElementChild);
+        perguntaCount++;
+    }
 
-        // Before submit, ensure radio buttons set the hidden IsCorrecta field
-        document.getElementById('quizForm').onsubmit = function() {
-            const cards = document.querySelectorAll('.pergunta-card');
-            cards.forEach((card, pIdx) => {
-                const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
-                if (radio) {
-                    const correctIdx = radio.value;
-                    card.querySelector(`input[name="Perguntas[${pIdx}].Opcoes[${correctIdx}].IsCorrecta"]`).value = "true";
+    function removePergunta(btn) {
+        btn.closest('.pergunta-card').remove();
+        reorderPerguntas();
+    }
+
+    function reorderPerguntas() {
+        const cards = document.querySelectorAll('.pergunta-card');
+        perguntaCount = 0;
+
+        cards.forEach((card, idx) => {
+            const display = card.querySelector('.label-display-idx');
+            if (display) display.innerText = `Pergunta #${idx + 1}`;
+
+            const inputs = card.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                if (input.name) {
+                    // Trata a reordenação correta dos índices multidimensionais do Razor para o ModelBinder
+                    input.name = input.name.replace(/Perguntas\[\d+\]/, `Perguntas[${idx}]`);
+                }
+
+                // Reajusta também o atributo name dos seletores radio correspondentes
+                if (input.type === 'radio') {
+                    input.name = `Perguntas[${idx}].CorrectOption`;
                 }
             });
-            return true;
-        };
+            perguntaCount = idx + 1;
+        });
+    }
 
-        // Add first question automatically
-        addPergunta();
-    </script>
+    // Interceção da submissão do formulário para tratamento prévio de metadados relacionais
+    document.getElementById('quizForm').onsubmit = function () {
+        const temaValor = document.getElementById('quizTema').value;
+        const nivelValor = document.getElementById('quizNivel').value;
+
+        const cards = document.querySelectorAll('.pergunta-card');
+        cards.forEach((card, pIdx) => {
+            // Sincroniza a propriedade booleana correta baseada no radio button selecionado
+            const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
+            if (radio) {
+                const correctIdx = radio.value;
+                card.querySelector(`input[name="Perguntas[${pIdx}].Opcoes[${correctIdx}].IsCorrecta"]`).value = "true";
+            }
+
+            // Distribui os metadados globais para os campos escondidos exigidos por pergunta
+            card.querySelector('.pergunta-tema-hidden').value = temaValor;
+            card.querySelector('.pergunta-dificuldade-hidden').value = nivelValor;
+        });
+        return true;
+    };
+
+    // Inicia automaticamente o formulário exibindo uma pergunta
+    addPergunta();
+</script>
 }

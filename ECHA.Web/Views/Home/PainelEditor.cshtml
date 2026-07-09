@@ -1,0 +1,122 @@
+@{
+    ViewData["Title"] = "Painel do Editor";
+}
+
+<main class="pt-12 pb-12 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <!-- Sidebar Admin -->
+        <aside class="md:col-span-3 bg-surface-container-lowest rounded-3xl p-6 h-fit sticky top-24">
+            <nav class="space-y-2">
+                <a asp-controller="Home" asp-action="PainelEditor" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold decoration-none">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+                <a asp-controller="Conteudos" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">article</span> Conteúdos
+                </a>
+                <a asp-controller="Quizzes" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">quiz</span> Gerir Quizzes
+                </a>
+                <a asp-controller="Moderacao" asp-action="Fila" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">rate_review</span> Comentários
+                </a>
+                <a asp-controller="Escolas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">school</span> Escolas
+                </a>
+                <a asp-controller="Relatorios" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">bar_chart</span> Relatórios
+                </a>
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                <div class="pt-2 mt-2 border-t border-stone-200/60">
+                    <a asp-controller="Admin" asp-action="Auditoria" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                        <span class="material-symbols-outlined">history</span> Auditoria
+                    </a>
+                    <a asp-controller="Admin" asp-action="Utilizadores" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                        <span class="material-symbols-outlined">admin_panel_settings</span> Gestão de Roles
+                    </a>
+                </div>
+                }
+            </nav>
+        </aside>
+
+        <!-- Conteúdo principal do dashboard -->
+        <div class="md:col-span-9 space-y-8">
+            <!-- KPI cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-surface-container-lowest rounded-2xl p-6">
+                    <div class="flex justify-between items-start">
+                        <span class="material-symbols-outlined text-primary/60">visibility</span>
+                        <span class="text-2xl font-headline font-bold">1,284</span>
+                    </div>
+                    <p class="text-secondary text-sm mt-2">Visualizações (semana)</p>
+                </div>
+                <div class="bg-surface-container-lowest rounded-2xl p-6">
+                    <div class="flex justify-between items-start">
+                        <span class="material-symbols-outlined text-primary/60">forum</span>
+                        <span class="text-2xl font-headline font-bold">47</span>
+                    </div>
+                    <p class="text-secondary text-sm mt-2">Comentários pendentes</p>
+                </div>
+                <div class="bg-surface-container-lowest rounded-2xl p-6">
+                    <div class="flex justify-between items-start">
+                        <span class="material-symbols-outlined text-primary/60">edit_note</span>
+                        <span class="text-2xl font-headline font-bold">12</span>
+                    </div>
+                    <p class="text-secondary text-sm mt-2">Rascunhos</p>
+                </div>
+                <div class="bg-surface-container-lowest rounded-2xl p-6">
+                    <div class="flex justify-between items-start">
+                        <span class="material-symbols-outlined text-primary/60">school</span>
+                        <span class="text-2xl font-headline font-bold">8</span>
+                    </div>
+                    <p class="text-secondary text-sm mt-2">Instituições registadas</p>
+                </div>
+            </div>
+
+            <!-- Últimos conteúdos editáveis -->
+            <div class="bg-surface-container-lowest rounded-3xl p-6">
+                <h2 class="text-xl font-headline font-bold text-primary mb-4">Conteúdos recentes</h2>
+                <div class="divide-y divide-stone-100">
+                    <div class="py-4 flex flex-wrap justify-between items-center gap-3">
+                        <div>
+                            <span class="text-sm font-bold">Inflação em Angola</span>
+                            <span class="text-xs text-stone-400 ml-3">Publicado 12/05/2024</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 rounded-full bg-secondary-container text-sm font-medium">Editar</button>
+                            <button class="px-4 py-2 rounded-full bg-tertiary-container/20 text-sm font-medium">Arquivar</button>
+                        </div>
+                    </div>
+                    <div class="py-4 flex flex-wrap justify-between items-center gap-3">
+                        <div>
+                            <span class="text-sm font-bold">Mulheres nos negócios (Podcast)</span>
+                            <span class="text-xs text-stone-400 ml-3">Rascunho</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 rounded-full bg-secondary-container text-sm font-medium">Continuar</button>
+                            <button class="px-4 py-2 rounded-full bg-error-container/20 text-sm font-medium">Excluir</button>
+                        </div>
+                    </div>
+                </div>
+                <a asp-controller="Conteudos" asp-action="Create" class="mt-6 w-full py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2 decoration-none">
+                    <span class="material-symbols-outlined">add</span> Criar novo conteúdo
+                </a>
+            </div>
+
+            <!-- Utilizadores recentes -->
+            <div class="bg-surface-container-lowest rounded-3xl p-6">
+                <h2 class="text-xl font-headline font-bold text-primary mb-4">Novos investigadores</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span><span class="font-medium">Drª. Esperança Costa</span> <span class="text-xs text-stone-400">(UAN)</span></span>
+                        <button class="text-xs bg-tertiary-container text-white px-3 py-1 rounded-full">Aprovar perfil</button>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span><span class="font-medium">Mário Neto</span> <span class="text-xs text-stone-400">(UCAN)</span></span>
+                        <button class="text-xs bg-tertiary-container text-white px-3 py-1 rounded-full">Aprovar perfil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

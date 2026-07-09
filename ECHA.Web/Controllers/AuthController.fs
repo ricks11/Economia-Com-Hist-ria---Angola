@@ -10,7 +10,7 @@ open System
 type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
-    // Definimos uma constante local para evitar repetir a string mágica
+    // Constante local correspondente ao esquema configurado no Program.fs do projeto Web
     [<Literal>]
     let AuthScheme = "CookieAuthentication"
 
@@ -28,14 +28,25 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                     [| Claim(ClaimTypes.Name, response.Email)
                        Claim(ClaimTypes.Role, response.Tipo)
                        Claim("AccessToken", response.AccessToken) |]
-                // Mudado aqui para usar o "CookieAuthentication" definido no Program.fs
-                let claimsIdentity = ClaimsIdentity(claims, AuthScheme)
+                
+                // Mapeamento explícito de Name e Role para o Cookie ler corretamente as permissões
+                let claimsIdentity = ClaimsIdentity(claims, AuthScheme, ClaimTypes.Name, ClaimTypes.Role)
                 let claimsPrincipal = ClaimsPrincipal(claimsIdentity)
                 
-                do! this.HttpContext.SignInAsync(AuthScheme, claimsPrincipal)
+                // Configuração das propriedades de autenticação para armazenar o token JWT no Cookie
+                let authProperties = AuthenticationProperties()
+                authProperties.StoreTokens([
+                    AuthenticationToken(Name = "access_token", Value = response.AccessToken)
+                ])
+                
+                // Define se o cookie deve persistir se o utilizador quiser (opcional)
+                authProperties.IsPersistent <- true 
+
+                // CORREÇÃO: Passar authProperties como parâmetro para persistir o token
+                do! this.HttpContext.SignInAsync(AuthScheme, claimsPrincipal, authProperties)
                 return this.RedirectToAction("Index", "Home") :> IActionResult
             | None ->
-                this.ModelState.AddModelError("", "Login failed")
+                this.ModelState.AddModelError("", "Falha no início de sessão. Verifique as suas credenciais.")
                 return this.View(request) :> IActionResult
         }
 
@@ -49,17 +60,26 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                     [| Claim(ClaimTypes.Name, response.Email)
                        Claim(ClaimTypes.Role, response.Tipo)
                        Claim("AccessToken", response.AccessToken) |]
-                // Mudado aqui também para o registo automático
-                let claimsIdentity = ClaimsIdentity(claims, AuthScheme)
-                let claimsPrincipal = ClaimsPrincipal(claimsIdentity)
                 
-                do! this.HttpContext.SignInAsync(AuthScheme, claimsPrincipal)
+                // CORREÇÃO: Aplicado o mesmo mapeamento de Roles para o registo automático
+                let claimsIdentity = ClaimsIdentity(claims, AuthScheme, ClaimTypes.Name, ClaimTypes.Role)
+                let claimsPrincipal = ClaimsPrincipal(claimsIdentity)
+
+                // Configuração das propriedades de autenticação para armazenar o token JWT no Cookie
+                let authProperties = AuthenticationProperties()
+                authProperties.StoreTokens([
+                    AuthenticationToken(Name = "access_token", Value = response.AccessToken)
+                ])
+                authProperties.IsPersistent <- true
+
+                // CORREÇÃO: Passar authProperties como parâmetro para persistir o token no registo
+                do! this.HttpContext.SignInAsync(AuthScheme, claimsPrincipal, authProperties)
                 return this.RedirectToAction("Index", "Home") :> IActionResult
             | None ->
                 this.ModelState.AddModelError("", "Falha ao criar conta. Verifique os dados ou se o email já existe.")
                 this.ViewData["ActiveTab"] <- "register"
                 return this.View("Login") :> IActionResult
-            }
+        }
 
     [<HttpGet>]
     member this.ForgotPassword() =
@@ -76,30 +96,30 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                 if success then
                     return this.View("ForgotPasswordConfirmation") :> IActionResult
                 else
-                    this.ModelState.AddModelError("", "A API backend falhou ao processar o pedido.")
+                    this.ModelState.AddModelError("", "A API backend falhou ao processar o pedido de recuperação.")
                     return this.View() :> IActionResult
         }
 
     [<HttpPost>]
     member this.Logout() =
         task {
-            // Garante que o SignOut também limpa o cookie correto
+            // Limpa o cookie de autenticação local de forma segura
             do! this.HttpContext.SignOutAsync(AuthScheme)
             return this.RedirectToAction("Index", "Home") :> IActionResult
         }
 
     [<HttpGet>]
     member this.ResetPassword() =
-        // Lemos diretamente os parâmetros da Query String do pedido HTTP
+        // Captura direta de parâmetros via Query String de forma segura
         let query = this.Request.Query
         let token = if query.ContainsKey("token") then query.["token"].ToString() else ""
         let email = if query.ContainsKey("email") then query.["email"].ToString() else ""
 
         if String.IsNullOrWhiteSpace(token) || String.IsNullOrWhiteSpace(email) then
-            // Se o link vier sem parâmetros válidos, manda de volta para o Login
+            // Se o link de redefinição for inválido, redireciona para o Login
             this.RedirectToAction("Login") :> IActionResult
         else
-            // Injeta os valores na ViewData para serem renderizados no HTML
+            // Disponibiliza as variáveis na ViewData para renderização nas tags do formulário HTML
             this.ViewData["Token"] <- token
             this.ViewData["Email"] <- email
             this.View() :> IActionResult
@@ -107,7 +127,7 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
     [<HttpPost>]
     member this.ResetPassword(form: Microsoft.AspNetCore.Http.IFormCollection) =
         task {
-            // Capturamos os valores vindos do formulário HTML de forma explícita
+            // Captura explícita dos campos vindos do formulário HTML
             let email = form.["Email"].ToString()
             let token = form.["Token"].ToString()
             let newPassword = form.["NewPassword"].ToString()
@@ -116,8 +136,8 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                 this.ModelState.AddModelError("", "Dados de recuperação inválidos.")
                 return this.View() :> IActionResult
             else
-                // Instanciamos o DTO explicitamente com os valores capturados
-                let dto = EconomiaComHistoria.Core.DTOs.ResetPasswordRequestDto(email, token, newPassword)
+                // Criação estruturada do DTO de redefinição
+                let dto = ResetPasswordRequestDto(email, token, newPassword)
             
                 let! success = apiClient.ResetPasswordAsync(dto)
                 if success then

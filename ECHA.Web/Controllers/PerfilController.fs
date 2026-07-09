@@ -1,26 +1,37 @@
-namespace ECHA.Web.Controllers
+namespace EconomiaComHistoria.Web.Controllers
 
 open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Authorization
+open Microsoft.AspNetCore.Authentication
 open System.Threading.Tasks
 open ECHA.Web.Services
 
-[<Authorize>]
-type PerfilController (apiClient: ApiClient) =
+type PerfilController(apiClient: ApiClient) =
     inherit Controller()
 
-    member private this.GetToken() =
-        let claim = this.User.FindFirst("AccessToken")
-        if isNull claim then null else claim.Value
-
     [<HttpGet>]
-    member this.Index () =
+    member this.Index() =
         task {
-            let token = this.GetToken()
-            match token with
-            | null -> return this.Unauthorized() :> IActionResult
-            | t ->
-                // Assuming we get user details via API call based on token
-                // Adjust based on actual API implementation
-                return this.View() :> IActionResult
+            // Vai buscar a claim onde guardaste o JWT
+            let tokenClaim = this.User.FindFirst("AccessToken")
+            
+            if isNull tokenClaim || System.String.IsNullOrEmpty(tokenClaim.Value) then
+                return this.RedirectToAction("Login", "Auth") :> IActionResult
+            else
+                // REMOVE POSSÍVEIS ASPAS EMBUTIDAS QUE FAZEM O BEARER FALHAR
+                let token = tokenClaim.Value.Trim().Replace("\"", "")
+                
+                try
+                    // Faz o pedido à API através do ApiClient
+                    let! perfilResult = apiClient.GetPerfilAsync(token)
+                    
+                    match perfilResult with
+                    | Some perfil -> 
+                        return this.View(perfil) :> IActionResult
+                    | None -> 
+                        return this.NotFound("Não foi possível encontrar os dados do perfil.") :> IActionResult
+                with
+                | :? ApiClientException as ex when (int ex.StatusCode = 401) ->
+                    // Se a API disser que o token é inválido/expirou, manda de volta para o Login
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
         }

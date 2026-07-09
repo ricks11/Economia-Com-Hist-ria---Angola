@@ -10,12 +10,16 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
 
 open ECHA.Web.Models
+open Microsoft.AspNetCore.Authorization
 
 type HomeController (logger : ILogger<HomeController>) =
     inherit Controller()
 
     member this.Index () =
-        this.View()
+        if this.User.IsInRole("Editor") || this.User.IsInRole("Admin") || this.User.IsInRole("SuperAdmin") then
+            this.RedirectToAction("PainelEditor") :> IActionResult
+        else
+            this.View() :> IActionResult
 
     member this.Privacy () =
         this.View()
@@ -29,3 +33,7 @@ type HomeController (logger : ILogger<HomeController>) =
                 Activity.Current.Id
 
         this.View({ RequestId = reqId })
+
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
+    member this.PainelEditor () =
+        this.View()

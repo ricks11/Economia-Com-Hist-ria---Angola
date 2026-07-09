@@ -1,0 +1,58 @@
+﻿@using EconomiaComHistoria.Core.Enums
+@model List<EconomiaComHistoria.Core.DTOs.UtilizadorModeracaoDto>
+
+    @{
+    ViewData["Title"] = "Gestão de Roles";
+    }
+
+    <div class="max-w-6xl mx-auto px-6 pt-12">
+        <header class="mb-10">
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Gestão de Roles</h1>
+            <p class="text-secondary mt-2">Área restrita: Apenas SuperAdmin pode alterar permissões.</p>
+        </header>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+        <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-xl shadow-sm">@TempData["SuccessMessage"]</div>
+        }
+
+        <div class="bg-surface-container-lowest border border-stone-100 rounded-3xl overflow-hidden shadow-sm">
+            <table class="w-full text-sm">
+                <thead class="bg-stone-50 text-left border-b border-stone-100">
+                    <tr>
+                        <th class="px-6 py-4 font-bold text-secondary uppercase tracking-wider text-[11px]">Utilizador</th>
+                        <th class="px-6 py-4 font-bold text-secondary uppercase tracking-wider text-[11px]">Email</th>
+                        <th class="px-6 py-4 font-bold text-secondary uppercase tracking-wider text-[11px]">Role Atual</th>
+                        <th class="px-6 py-4 font-bold text-secondary uppercase tracking-wider text-[11px]">Nova Role</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-100">
+                    @foreach (var user in Model)
+                    {
+                    <tr class="hover:bg-stone-50/50 transition-colors">
+                        <td class="px-6 py-4 font-semibold text-primary">@user.Nome</td>
+                        <td class="px-6 py-4 text-stone-500">@user.Email</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[11px] font-bold tracking-wide uppercase">
+                                @user.Tipo
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <form asp-action="AlterarRole" asp-route-id="@user.Id" method="post" class="flex items-center gap-3">
+                                <select name="novaRole" class="px-3 py-1.5 bg-white border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none">
+                                    @foreach (var role in Enum.GetValues(typeof(TipoUtilizador)))
+                                    {
+                                    <option value="@role" selected="@(user.Tipo.ToString() == role.ToString())">@role</option>
+                                    }
+                                </select>
+                                <button type="submit" class="px-4 py-2 rounded-xl bg-primary text-white text-[11px] font-bold uppercase tracking-wider hover:bg-primary/90 transition-all shadow-sm">
+                                    Alterar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

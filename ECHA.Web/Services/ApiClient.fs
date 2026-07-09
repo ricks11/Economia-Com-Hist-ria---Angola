@@ -185,8 +185,10 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
-    member this.ListQuizzesAsync(?nivel, ?tema) : Task<QuizResponseDto list> =
+    // CORREÇÃO: Adicionado o parâmetro 'token: string' obrigatório na assinatura para embutir o Bearer Header
+    member this.ListQuizzesAsync(token: string, ?nivel: string, ?tema: string) : Task<QuizResponseDto list> =
         task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let mutable url = "/api/quizzes?"
             nivel |> Option.iter (fun v -> url <- url + "nivel=" + v + "&")
             tema |> Option.iter (fun v -> url <- url + "tema=" + v + "&")
@@ -536,12 +538,12 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
-    member this.GetPerfilAsync(token: string) : Task<PerfilDto option> =
+    member this.GetPerfilAsync(token: string) : Task<PerfilResponseDto option> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.GetAsync("/api/perfil")
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<PerfilDto>()
+                let! result = response.Content.ReadFromJsonAsync<PerfilResponseDto>()
                 return Some result
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -549,10 +551,41 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
-    member this.UpdatePerfilAsync(request: UpdatePerfilDtos, token: string) : Task<bool> =
+    member this.UpdatePerfilAsync(request: UpdatePerfilDto, token: string) : Task<bool> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.PutAsJsonAsync("/api/perfil", request)
+            if response.IsSuccessStatusCode then
+                return true
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return false
+        }
+
+    member this.GetAuditoriaAsync(token: string, ?utilizadorId: int, ?acao: string, ?inicio: DateTime, ?fim: DateTime) : Task<AuditoriaLogDto list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let mutable url = "/api/admin/auditoria?"
+            utilizadorId |> Option.iter (fun v -> url <- url + "utilizadorId=" + string v + "&")
+            acao |> Option.iter (fun v -> url <- url + "acao=" + v + "&")
+            inicio |> Option.iter (fun (v: DateTime) -> url <- url + "inicio=" + v.ToString("o") + "&")
+            fim |> Option.iter (fun (v: DateTime) -> url <- url + "fim=" + v.ToString("o") + "&")
+
+            let! response = httpClient.GetAsync(url)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<AuditoriaLogDto list>()
+                return result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return []
+        }
+
+    member this.AlterarRoleAsync(id: int, request: RoleChangeDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/admin/utilizadores/{id}/role", request)
             if response.IsSuccessStatusCode then
                 return true
             else if (int response.StatusCode = 401) then
