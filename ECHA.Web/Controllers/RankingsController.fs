@@ -24,15 +24,9 @@ type RankingsController(apiClient: ApiClient) =
             | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
             | t ->
                 try
-                    let tipoEnum = 
-                        match Enum.TryParse<TipoRanking>(if String.IsNullOrEmpty tipo then "Nacional" else tipo) with
-                        | true, t -> t
-                        | false, _ -> TipoRanking.Nacional
-                    let periodoEnum =
-                        match Enum.TryParse<PeriodoRanking>(if String.IsNullOrEmpty periodo then "Semanal" else periodo) with
-                        | true, p -> p
-                        | false, _ -> PeriodoRanking.Semanal
-                    let! ranking = apiClient.GetRankingAsync(tipoEnum, periodoEnum, token = t)
+                    let tipoParam = if String.IsNullOrEmpty tipo then "Geral" else tipo
+                    let periodoParam = if String.IsNullOrEmpty periodo then "Semanal" else periodo
+                    let! ranking = apiClient.GetRankingAsync(tipoParam, periodoParam, t)
                     match ranking with
                     | Some r -> return this.View(r) :> IActionResult
                     | None -> return this.View() :> IActionResult
@@ -40,3 +34,4 @@ type RankingsController(apiClient: ApiClient) =
                 | :? ApiClientException ->
                     return this.RedirectToAction("Login", "Auth") :> IActionResult
         }
+

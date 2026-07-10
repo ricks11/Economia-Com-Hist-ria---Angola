@@ -1,66 +1,68 @@
 @model EconomiaComHistoria.Core.DTOs.CriarTopicoForumDto
 @{
     ViewData["Title"] = "Criar Novo Tópico";
-    var categorias = ViewData["Categorias"] as List<(int Id, string Nome)> ?? new();
-}
+    var categorias = ViewData["Categorias"] as List<(int Id, string Nome)>
+    ?? new List<(int Id, string Nome)>
+        ();
+        }
 
-<div class="max-w-3xl mx-auto">
-    <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-8 hover:underline no-underline">
-        <span class="material-symbols-outlined">arrow_back</span> Voltar ao fórum
-    </a>
+        <div class="max-w-3xl mx-auto">
+            <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-8 hover:underline no-underline">
+                <span class="material-symbols-outlined">arrow_back</span> Voltar ao fórum
+            </a>
 
-    <header class="mb-10">
-        <h1 class="text-4xl font-headline font-extrabold text-primary mb-3">Criar Novo Tópico</h1>
-        <p class="text-on-surface-variant">Inicie um debate académico sobre a economia e história de Angola.</p>
-    </header>
+            <header class="mb-10">
+                <h1 class="text-4xl font-headline font-extrabold text-primary mb-3">Criar Novo Tópico</h1>
+                <p class="text-on-surface-variant">Inicie um debate académico sobre a economia e história de Angola.</p>
+            </header>
 
-    <div class="bg-surface-container-lowest rounded-3xl p-8 ambient-shadow">
-        <form asp-action="Criar" method="post" class="space-y-6">
-            <div>
-                <label class="block text-sm font-bold text-stone-600 mb-2">Visibilidade</label>
-                <div class="flex gap-4">
-                    <label class="flex items-center gap-2 px-4 py-3 bg-surface-container-low rounded-xl cursor-pointer">
-                        <input type="radio" name="visibilidade" value="publico" checked class="text-primary" />
-                        <span class="material-symbols-outlined text-sm">public</span>
-                        <span class="text-sm font-medium">Público</span>
-                    </label>
-                    <label class="flex items-center gap-2 px-4 py-3 bg-surface-container-low rounded-xl cursor-pointer">
-                        <input type="radio" name="visibilidade" value="privado" class="text-primary" />
-                        <span class="material-symbols-outlined text-sm">lock</span>
-                        <span class="text-sm font-medium">Privado (moderação)</span>
-                    </label>
-                </div>
+            <div class="bg-surface-container-lowest rounded-3xl p-8 ambient-shadow">
+                <form asp-action="Criar" method="post" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-stone-600 mb-2">Visibilidade</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 px-4 py-3 bg-surface-container-low rounded-xl cursor-pointer">
+                                <input type="radio" name="visibilidade" value="publico" checked class="text-primary" />
+                                <span class="material-symbols-outlined text-sm">public</span>
+                                <span class="text-sm font-medium">Público</span>
+                            </label>
+                            <label class="flex items-center gap-2 px-4 py-3 bg-surface-container-low rounded-xl cursor-pointer">
+                                <input type="radio" name="visibilidade" value="privado" class="text-primary" />
+                                <span class="material-symbols-outlined text-sm">lock</span>
+                                <span class="text-sm font-medium">Privado (moderação)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label asp-for="CategoriaId" class="block text-sm font-bold text-stone-600 mb-2">Categoria</label>
+                        <select asp-for="CategoriaId" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20">
+                            @foreach (var cat in categorias)
+                            {
+                            <option value="@cat.Id">@cat.Nome</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div>
+                        <label asp-for="Titulo" class="block text-sm font-bold text-stone-600 mb-2">Título</label>
+                        <input asp-for="Titulo" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Ex: Impacto do petróleo na economia angolana" />
+                        <span asp-validation-for="Titulo" class="text-error text-sm"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Descricao" class="block text-sm font-bold text-stone-600 mb-2">Descrição / Contexto</label>
+                        <textarea asp-for="Descricao" rows="6" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Explique a sua tese ou questão de investigação..."></textarea>
+                        <span asp-validation-for="Descricao" class="text-error text-sm"></span>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-full font-bold hover:opacity-90 transition-opacity">
+                        Publicar Tópico
+                    </button>
+                </form>
             </div>
+        </div>
 
-            <div>
-                <label asp-for="CategoriaId" class="block text-sm font-bold text-stone-600 mb-2">Categoria</label>
-                <select asp-for="CategoriaId" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20">
-                    @foreach (var cat in categorias)
-                    {
-                        <option value="@cat.Id">@cat.Nome</option>
-                    }
-                </select>
-            </div>
-
-            <div>
-                <label asp-for="Titulo" class="block text-sm font-bold text-stone-600 mb-2">Título</label>
-                <input asp-for="Titulo" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Ex: Impacto do petróleo na economia angolana" />
-                <span asp-validation-for="Titulo" class="text-error text-sm"></span>
-            </div>
-
-            <div>
-                <label asp-for="Descricao" class="block text-sm font-bold text-stone-600 mb-2">Descrição / Contexto</label>
-                <textarea asp-for="Descricao" rows="6" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Explique a sua tese ou questão de investigação..."></textarea>
-                <span asp-validation-for="Descricao" class="text-error text-sm"></span>
-            </div>
-
-            <button type="submit" class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-full font-bold hover:opacity-90 transition-opacity">
-                Publicar Tópico
-            </button>
-        </form>
-    </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        }

@@ -16,10 +16,12 @@ type ForumController(apiClient: ApiClient) =
 
     [<HttpGet>]
     [<AllowAnonymous>]
-    member this.Index(categoriaId: int option, ordem: string option) =
+    member this.Index(categoriaId: Nullable<int>, ordem: string) =
         task {
             try
-                let! topicos = apiClient.ListTopicosAsync(categoriaId, ordem)
+                let categoriaIdOpt = if categoriaId.HasValue then Some categoriaId.Value else None
+                let ordemOpt = if String.IsNullOrEmpty ordem then None else Some ordem
+                let! topicos = apiClient.ListTopicosAsync(?categoriaId = categoriaIdOpt, ?ordem = ordemOpt)
                 return this.View(topicos) :> IActionResult
             with
             | :? ApiClientException ->
