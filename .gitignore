@@ -1,53 +1,266 @@
-# Build outputs
-bin/
-obj/
-Debug/
-Release/
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
 
-# Visual Studio
+# Visual Studio 2015/2017 cache/options directory
 .vs/
+.vscode/
+.idea/
 *.user
-*.suo
 *.userosscache
 *.sln.docstates
-*.cache
-*.nupkg
-*.snupkg
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# Build results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Chutzpah Test files
+_Chutzpah*
+
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
 *.opendb
+*.opensdf
+*.sdf
+*.cachefile
 *.VC.db
 *.VC.VC.opendb
 
-# Rider/VS Code
-.idea/
-.vscode/
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
 
-# NuGet
-packages/
+# Visual Studio Trace Files
+*.e2e
+
+# TFS 2012 Local Workspace
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper is a .NET coding add-in
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JustCode is a .NET coding add-in
+.JustCode
+
+# TeamCity is a build add-in
+_TeamCity*
+
+# DotCover is a Code Coverage Tool
+*.dotCover
+
+# AxoCover is a Code Coverage Tool
+.axoCover/*
+!.axoCover/settings.json
+
+# Visual Studio code coverage results
+*.coverage
+*.coveragexml
+*.cobertura.xml
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
 *.nuget.props
 *.nuget.targets
 
-# Test results
-TestResults/
+# NuGet Symbol Packages
+*.snupkg
 
-# Logs
-*.log
+# Microsoft Azure Build Output
+csx/
+*.build.csdef
 
-# OS
+# Microsoft Azure Emulator
+ecf/
+rcf/
+
+# Windows Store app package directories
+AppPackages/
+BundleArtifacts/
+
+# NuGet Symbol Cache
+*.symbols.nupkg
+
+# NuGet personal access token (read from environment variable)
+nuget.config
+
+# NuGet v3 Credentials
+https://api.nuget.org/v3/index.json
+
+# NuGet temporary cache
+*.nuget.props
+*.nuget.targets
+
+# Visual Studio Cache
+.vs/
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+
+# .NET Core Tools
+*.csproj.user
+*.swp
+
+# Paket
+.paket/
+paket-files/
+paket.lock
+
+# Fake
+.fake/
+
+# Cake
+build.cake
+
+# Ruby
+*.gem
+*.rbc
+
+# Xamarin Studio
+*.userprefs
+
+# MonoDevelop
+*.userprefs
+*.user
+
+# XCode
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.moved-aside
+*.xcuserstate
+*.xcuserstate*
+*.xcbkptlist
+*.xccheckout
+
+# MacOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# ASP.NET Core
-appsettings.*.json
-!appsettings.json
-secrets.json
+# Android Studio
+*.iml
+.gradle
+local.properties
+.idea/
+*.log
+*.nav
+*.apk
+*.ap_
+*.aab
+*.dex
 
-# EF Core migrations snapshots
-*.db
-*.db-shm
-*.db-wal
+# Android
+bin/
+gen/
+out/
+.gradle/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+*.apk
+*.aab
+*.ap_
+*.apks
+*.dex
+*.class
 
-# Azure/Local Settings
-local.settings.json
+# iOS
+*.ipa
+*.xcarchive
+*.dSYM.zip
+*.dSYM
 
 # MAUI
 **/Platforms/Android/obj/
@@ -58,26 +271,88 @@ local.settings.json
 **/Platforms/MacCatalyst/bin/
 **/Platforms/Windows/obj/
 **/Platforms/Windows/bin/
-*.ipa
-*.apk
-*.aab
-*.appx
-*.appxbundle
+*.msix
+*.msixbundle
 
-# User secrets
+# ASP.NET Core
+appsettings.*.json
+!appsettings.json
+!appsettings.*.example.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
 secrets.json
+*.db
+*.db-shm
+*.db-wal
+local.settings.json
 
-# Publish artifacts
-publish/
-**/AppPackages/
+# EF Core Migrations
+Migrations/*.cs
+!Migrations/*.Designer.cs
 
-# Coverage
-coverage/
+# Test results
+TestResults/
+[Rr]elease[Tt]est/
+[Dd]ebug[Tt]est/
+*_TestResult.xml
+*.trx
 *.coverage
 *.coveragexml
+*.cobertura.xml
 
-# Temporary
+# Package Files
+*.zip
+*.tar.gz
+*.rar
+
+# Temporary Files
 *.tmp
 *.temp
 *.bak
 *.swp
+*~
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# User secrets
+secrets.json
+appsettings.secrets.json
+appsettings.*.secrets.json
+
+# Logs
+*.log
+logs/
+log/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# MAUI specific
+*.apk
+*.aab
+*.ipa
+*.msix
+*.msixbundle
+
+# Editor specific
+*.swp
+*.swo
+*~
+
+# Publish
+publish/
+app.publish/
+
+# End of .gitignore
