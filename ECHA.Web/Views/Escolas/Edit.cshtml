@@ -1,0 +1,49 @@
+@model EconomiaComHistoria.Core.DTOs.EscolaResponseDto
+@{
+    ViewData["Title"] = "Editar Escola";
+}
+
+<div class="max-w-4xl mx-auto px-6 pt-12">
+    <!-- Header -->
+    <header class="mb-12 flex justify-between items-center flex-wrap gap-4">
+        <div>
+            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Editar Escola</h1>
+            <p class="text-secondary mt-2">Atualizar as informações da instituição de ensino.</p>
+        </div>
+        <a asp-action="Index" class="px-6 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-colors decoration-none">
+            Voltar
+        </a>
+    </header>
+
+    <!-- Form -->
+    <section class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="space-y-6">
+            <div>
+                <label asp-for="Nome" class="block font-bold text-on-surface mb-2">Nome da Instituição</label>
+                <input asp-for="Nome" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" required />
+            </div>
+            <div>
+                <label asp-for="CodigoMEC" class="block font-bold text-on-surface mb-2">Código MEC (Opcional)</label>
+                <input asp-for="CodigoMEC" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label asp-for="Provincia" class="block font-bold text-on-surface mb-2">Província</label>
+                    <input asp-for="Provincia" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+                <div>
+                    <label asp-for="Localizacao" class="block font-bold text-on-surface mb-2">Município/Localidade</label>
+                    <input asp-for="Localizacao" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+            </div>
+            <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all">
+                    Salvar Alterações
+                </button>
+                <a asp-action="Index" class="flex-1 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-colors text-center decoration-none">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </section>
+</div>

@@ -3,48 +3,74 @@
     ViewData["Title"] = "Gestão de Escolas";
 }
 
-<div class="max-w-7xl mx-auto px-6 pt-12">
-    <!-- Header -->
-    <header class="mb-12 flex justify-between items-center flex-wrap gap-4">
-        <div>
-            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Instituições de Ensino</h1>
-            <p class="text-secondary mt-2">Gerir acessos, turmas e estatísticas de uso pedagógico.</p>
-        </div>
-        <a asp-action="Create" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none flex items-center gap-2">
-            <span class="material-symbols-outlined text-sm">add</span> Nova escola
-        </a>
-    </header>
+<main class="pt-12 pb-12 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <aside class="md:col-span-3 bg-surface-container-lowest rounded-3xl p-6 h-fit sticky top-24">
+            <nav class="space-y-2">
+                <a asp-controller="Home" asp-action="PainelEditor" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">dashboard</span> Painel
+                </a>
+                <a asp-controller="Gamificacao" asp-action="DashboardAdmin" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">military_tech</span> Gamificação
+                </a>
+                <a asp-controller="Escolas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold decoration-none">
+                    <span class="material-symbols-outlined">school</span> Escolas
+                </a>
+                <a asp-controller="Turmas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">group</span> Turmas
+                </a>
+                <a asp-controller="Relatorios" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">bar_chart</span> Relatórios
+                </a>
+            </nav>
+        </aside>
 
-    <!-- Escolas Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach (var item in Model)
-        {
-            <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 class="font-headline font-bold text-xl text-primary">@item.Nome</h3>
-                    <span class="text-xs bg-tertiary-container/20 px-3 py-1 rounded-full text-on-tertiary-container font-medium uppercase">Verificada</span>
+        <div class="md:col-span-9 space-y-8">
+            <header class="flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <h1 class="text-3xl font-headline font-extrabold text-primary tracking-tight">Instituições de Ensino</h1>
+                    <p class="text-secondary mt-2">Gerir acessos, turmas e estatísticas de uso pedagógico.</p>
                 </div>
-                <p class="text-secondary text-sm mb-6">@item.Provincia - @item.Localizacao</p>
-                
-                <div class="flex gap-6 text-sm mb-6 border-t border-stone-200/50 pt-4">
-                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">group</span> @item.TotalAlunos alunos</span>
-                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">menu_book</span> @item.TotalTurmas turmas</span>
-                </div>
+                <a asp-action="Create" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">add</span> Nova escola
+                </a>
+            </header>
 
-                @if (!string.IsNullOrEmpty(item.CodigoConvite)) {
-                    <div class="bg-surface-container-low p-4 rounded-xl mb-6 text-center">
-                        <small class="text-secondary block mb-1">Código de Convite:</small>
-                        <strong class="text-lg font-bold">@item.CodigoConvite</strong>
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach (var item in Model)
+                {
+                    <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="font-headline font-bold text-xl text-primary">@item.Nome</h3>
+                            <span class="text-xs bg-tertiary-container/20 px-3 py-1 rounded-full text-on-tertiary-container font-medium uppercase">Verificada</span>
+                        </div>
+                        <p class="text-secondary text-sm mb-6">@item.Provincia - @item.Localizacao</p>
+                        
+                        <div class="flex gap-6 text-sm mb-6 border-t border-stone-200/50 pt-4">
+                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">group</span> @item.TotalAlunos alunos</span>
+                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">menu_book</span> @item.TotalTurmas turmas</span>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.CodigoConvite)) {
+                            <div class="bg-surface-container-low p-4 rounded-xl mb-6 text-center">
+                                <small class="text-secondary block mb-1">Código de Convite:</small>
+                                <strong class="text-lg font-bold">@item.CodigoConvite</strong>
+                            </div>
+                        }
+
+                        <div class="flex gap-2 flex-wrap">
+                            <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="flex-1 min-w-[100px] py-2 rounded-full bg-surface-container text-secondary font-bold text-sm hover:bg-surface-container-high transition-colors text-center decoration-none">Ver Turmas</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="flex-1 min-w-[100px] py-2 rounded-full bg-surface-container text-secondary font-bold text-sm hover:bg-surface-container-high transition-colors text-center decoration-none">Editar</a>
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="flex-1 min-w-[100px]">
+                                <button type="submit" class="w-full py-2 rounded-full bg-danger-container text-danger font-bold text-sm hover:bg-danger-container/80 transition-colors" onclick="return confirm('Tem certeza que deseja eliminar esta escola?');">Eliminar</button>
+                            </form>
+                            <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post" class="flex-1 min-w-[100px]">
+                                <button type="submit" class="w-full py-2 rounded-full bg-primary/5 text-primary font-bold text-sm hover:bg-primary/10 transition-colors">Novo Código</button>
+                            </form>
+                        </div>
                     </div>
                 }
-
-                <div class="flex gap-2">
-                    <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="flex-1 py-2 rounded-full bg-surface-container text-secondary font-bold text-sm hover:bg-surface-container-high transition-colors text-center decoration-none">Ver Turmas</a>
-                    <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post" class="flex-1">
-                        <button type="submit" class="w-full py-2 rounded-full bg-primary/5 text-primary font-bold text-sm hover:bg-primary/10 transition-colors">Novo Código</button>
-                    </form>
-                </div>
-            </div>
-        }
-    </section>
-</div>
+            </section>
+        </div>
+    </div>
+</main>

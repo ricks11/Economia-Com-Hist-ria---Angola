@@ -3,30 +3,60 @@
     ViewData["Title"] = "Gestão de Turmas";
 }
 
-<div class="max-w-7xl mx-auto px-6 pt-12">
-    <header class="mb-12 flex justify-between items-center">
-        <div>
-            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Gestão de Turmas</h1>
-            <p class="text-secondary mt-2">Visualize e gerencie as turmas ativas nas escolas parceiras.</p>
-        </div>
-        @if (Context.Request.Query.ContainsKey("escolaId")) {
-            <a asp-action="Create" asp-route-escolaId="@Context.Request.Query["escolaId"]" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none">Nova Turma</a>
-        }
-    </header>
+<main class="pt-12 pb-12 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <aside class="md:col-span-3 bg-surface-container-lowest rounded-3xl p-6 h-fit sticky top-24">
+            <nav class="space-y-2">
+                <a asp-controller="Home" asp-action="PainelEditor" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">dashboard</span> Painel
+                </a>
+                <a asp-controller="Gamificacao" asp-action="DashboardAdmin" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">military_tech</span> Gamificação
+                </a>
+                <a asp-controller="Escolas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">school</span> Escolas
+                </a>
+                <a asp-controller="Turmas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold decoration-none">
+                    <span class="material-symbols-outlined">group</span> Turmas
+                </a>
+                <a asp-controller="Relatorios" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">bar_chart</span> Relatórios
+                </a>
+            </nav>
+        </aside>
 
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach (var item in Model)
-        {
-            <div class="bg-surface-container-lowest p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow">
-                <h3 class="font-headline font-bold text-xl text-primary mb-4">@item.Nome</h3>
-                <div class="space-y-2 text-sm text-secondary mb-6">
-                    <p><strong>Ano:</strong> @item.Ano</p>
-                    <p><strong>Escola:</strong> @item.EscolaNome</p>
-                    <p><strong>Professor:</strong> @item.ProfessorNome</p>
-                    <p><strong>Alunos:</strong> @item.TotalAlunos</p>
+        <div class="md:col-span-9 space-y-8">
+            <header class="flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <h1 class="text-3xl font-headline font-extrabold text-primary tracking-tight">Gestão de Turmas</h1>
+                    <p class="text-secondary mt-2">Visualize e gerencie as turmas ativas nas escolas parceiras.</p>
                 </div>
-                <a asp-action="Details" asp-route-id="@item.Id" class="block w-full py-2 rounded-full border border-primary text-primary font-bold text-sm text-center hover:bg-primary hover:text-white transition-colors decoration-none">Ver Progresso</a>
-            </div>
-        }
-    </section>
-</div>
+                @if (Context.Request.Query.ContainsKey("escolaId")) {
+                    <a asp-action="Create" asp-route-escolaId="@Context.Request.Query["escolaId"]" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none">Nova Turma</a>
+                }
+            </header>
+
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach (var item in Model)
+                {
+                    <div class="bg-surface-container-lowest p-6 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                        <h3 class="font-headline font-bold text-xl text-primary mb-4">@item.Nome</h3>
+                        <div class="space-y-2 text-sm text-secondary mb-6">
+                            <p><strong>Ano:</strong> @item.Ano</p>
+                            <p><strong>Escola:</strong> @item.EscolaNome</p>
+                            <p><strong>Professor:</strong> @item.ProfessorNome</p>
+                            <p><strong>Alunos:</strong> @item.TotalAlunos</p>
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="flex-1 min-w-[100px] py-2 rounded-full border border-primary text-primary font-bold text-sm text-center hover:bg-primary hover:text-white transition-colors decoration-none">Ver Progresso</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="flex-1 min-w-[100px] py-2 rounded-full bg-surface-container text-secondary font-bold text-sm text-center hover:bg-surface-container-high transition-colors decoration-none">Editar</a>
+                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-escolaId="@item.EscolaId" method="post" class="flex-1 min-w-[100px]">
+                                <button type="submit" class="w-full py-2 rounded-full bg-danger-container text-danger font-bold text-sm hover:bg-danger-container/80 transition-colors" onclick="return confirm('Tem certeza que deseja eliminar esta turma?');">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+</main>

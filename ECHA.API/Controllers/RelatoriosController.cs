@@ -37,9 +37,9 @@ public class RelatoriosController : ControllerBase
     }
 
     [HttpGet("{id}/download")]
-    public IActionResult Download(int id)
+    public async Task<IActionResult> Download(int id, CancellationToken ct)
     {
-        // Mock download logic
+        // TODO: Implement actual download logic
         return Ok(new { message = "Download starting..." });
     }
 }

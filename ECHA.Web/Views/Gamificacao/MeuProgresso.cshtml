@@ -3,81 +3,84 @@
     ViewData["Title"] = "Meu Progresso";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <!-- Barra de Progresso e Nível -->
-        <div class="col-md-12 mb-4">
-            <div class="card shadow-sm border-0 bg-light">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <h2 class="mb-0">Nível @Model.Nivel</h2>
-                            <p class="text-muted">@Model.PontosTotais pontos totais</p>
-                        </div>
-                        <div class="text-end">
-                            <span class="badge bg-warning text-dark p-2">
-                                <i class="bi bi-fire"></i> @Model.StreakAtual Dias de Streak
-                            </span>
-                        </div>
+<main class="pt-12 pb-12 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <aside class="md:col-span-3 bg-surface-container-lowest rounded-3xl p-6 h-fit sticky top-24">
+            <nav class="space-y-2">
+                <a asp-controller="Home" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">home</span> Início
+                </a>
+                <a asp-controller="Gamificacao" asp-action="MeuProgresso" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold decoration-none">
+                    <span class="material-symbols-outlined">military_tech</span> Meu Progresso
+                </a>
+                <a asp-controller="Perfil" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
+                    <span class="material-symbols-outlined">person</span> Perfil
+                </a>
+            </nav>
+        </aside>
+
+        <div class="md:col-span-9 space-y-8">
+            <div class="bg-surface-container-lowest rounded-3xl p-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-headline font-bold text-primary">Nível @Model.Nivel</h2>
+                        <p class="text-secondary text-sm">@Model.PontosTotais pontos totais</p>
                     </div>
-                    <div class="progress" style="height: 25px;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
-                             role="progressbar" 
-                             style="width: @Model.PercentagemNivel.ToString("F0")%" 
-                             aria-valuenow="@Model.PercentagemNivel" aria-valuemin="0" aria-valuemax="100">
-                            @Model.PercentagemNivel.ToString("F0")%
-                        </div>
+                    <div class="flex items-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full">
+                        <span class="material-symbols-outlined">local_fire_department</span>
+                        <span class="font-bold">@Model.StreakAtual Dias de Streak</span>
                     </div>
-                    <p class="mt-2 text-center small text-muted">Faltam @Model.PontosParaProximoNivel pontos para o nível @(Model.Nivel + 1)</p>
                 </div>
+                <div class="w-full bg-surface-container-highest rounded-full h-6">
+                    <div class="bg-primary h-6 rounded-full transition-all duration-500" style="width: @Model.PercentagemNivel.ToString("F0")%"></div>
+                </div>
+                <p class="text-center text-sm text-stone-500 mt-2">Faltam @Model.PontosParaProximoNivel pontos para o nível @(Model.Nivel + 1)</p>
             </div>
-        </div>
 
-        <!-- Badges Conquistados -->
-        <div class="col-md-8">
-            <h3 class="mb-3">Minhas Conquistas</h3>
-            <div class="row">
-                @if (!Model.Badges.Any())
-                {
-                    <div class="col-12">
-                        <div class="alert alert-info">Ainda não conquistaste nenhum badge. Continua a explorar!</div>
-                    </div>
-                }
-                @foreach (var badge in Model.Badges)
-                {
-                    <div class="col-md-4 mb-3 text-center">
-                        <div class="card h-100 border-0 shadow-sm pt-3">
-                            <div class="badge-icon mb-2">
-                                @if (!string.IsNullOrEmpty(badge.Icone)) {
-                                    <i class="bi @badge.Icone" style="font-size: 3rem; color: #ffc107;"></i>
-                                } else {
-                                    <i class="bi bi-award" style="font-size: 3rem; color: #ffc107;"></i>
-                                }
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">@badge.Nome</h5>
-                                <p class="card-text small text-muted">@badge.Descricao</p>
-                                <hr />
-                                <p class="small mb-0">Conquistado em: @badge.DataConquista.ToString("dd/MM/yyyy")</p>
-                            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-surface-container-lowest rounded-3xl p-6">
+                    <h3 class="text-xl font-headline font-bold text-primary mb-6">Minhas Conquistas</h3>
+                    @if (!Model.Badges.Any())
+                    {
+                        <div class="text-center py-8 text-secondary">
+                            <span class="material-symbols-outlined text-5xl mb-4 text-stone-300">emoji_events</span>
+                            <p>Ainda não conquistaste nenhum badge. Continua a explorar!</p>
                         </div>
-                    </div>
-                }
-            </div>
-        </div>
+                    }
+                    else
+                    {
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @foreach (var badge in Model.Badges)
+                            {
+                                <div class="border border-stone-200 rounded-2xl p-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-yellow-600">emoji_events</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-bold text-primary">@badge.Nome</h4>
+                                            <p class="text-sm text-secondary mb-2">@badge.Descricao</p>
+                                            <p class="text-xs text-stone-500">Conquistado em @badge.DataConquista.ToString("dd/MM/yyyy")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
 
-        <!-- Plano de Estudo -->
-        <div class="col-md-4">
-            <div class="card border-primary mb-3">
-                <div class="card-header bg-primary text-white">Plano de Estudo</div>
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Melhore seu desempenho!</h5>
-                    <p class="card-text">Nosso algoritmo analisa seus acertos nos quizzes e sugere conteúdos específicos para você reforçar seus conhecimentos.</p>
-                    <form asp-action="GerarPlanoEstudo" method="post">
-                        <button type="submit" class="btn btn-outline-primary w-100">Gerar Novo Plano</button>
-                    </form>
+                <div class="lg:col-span-1">
+                    <div class="bg-surface-container-lowest rounded-3xl p-6 border-2 border-primary">
+                        <h4 class="text-lg font-headline font-bold text-primary mb-4">Plano de Estudo</h4>
+                        <p class="text-sm text-secondary mb-6">O nosso algoritmo analisa os teus acertos nos quizzes e sugere conteúdos específicos para reforçares os teus conhecimentos.</p>
+                        <form asp-action="GerarPlanoEstudo" method="post">
+                            <button type="submit" class="w-full py-3 rounded-full bg-primary text-white font-bold flex items-center justify-center gap-2 decoration-none transition hover:opacity-90">
+                                <span class="material-symbols-outlined">refresh</span> Gerar Novo Plano
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>

@@ -2,6 +2,7 @@ using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
+using EconomiaComHistoria.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +16,13 @@ public class ModeracaoController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly INotificacaoService _notificacaoService;
+    private readonly IGamificacaoService _gamificacaoService;
 
-    public ModeracaoController(AppDbContext dbContext, INotificacaoService notificacaoService)
+    public ModeracaoController(AppDbContext dbContext, INotificacaoService notificacaoService, IGamificacaoService gamificacaoService)
     {
         _dbContext = dbContext;
         _notificacaoService = notificacaoService;
+        _gamificacaoService = gamificacaoService;
     }
 
     [HttpGet("pendentes")]
@@ -204,5 +207,30 @@ public class ModeracaoController : ControllerBase
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet("badges")]
+    public async Task<ActionResult<List<BadgeAdminDto>>> GetBadges(CancellationToken cancellationToken)
+    {
+        var badges = await _dbContext.Badges
+            .Include(b => b.Conquistado)
+            .Select(b => new BadgeAdminDto(
+                b.Id,
+                b.Nome,
+                b.Descricao,
+                b.IconeUrl,
+                b.CriterioTipo,
+                b.CriterioValor,
+                b.Conquistado.Count
+            ))
+            .ToListAsync(cancellationToken);
+        return Ok(badges);
+    }
+
+    [HttpGet("metricas-engajamento")]
+    public async Task<ActionResult<object>> GetMetricasEngajamento(CancellationToken cancellationToken)
+    {
+        var metricas = await _gamificacaoService.GetMetricasEngajamentoAsync(cancellationToken);
+        return Ok(metricas);
     }
 }

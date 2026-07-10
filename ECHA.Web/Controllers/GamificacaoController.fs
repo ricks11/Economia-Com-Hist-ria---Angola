@@ -40,7 +40,7 @@ type GamificacaoController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
-    [<Authorize(Roles = "Admin")>]
+    [<Authorize(Roles = "Admin,Editor,SuperAdmin")>]
     member this.DashboardAdmin () =
         task {
             let token = this.GetToken()

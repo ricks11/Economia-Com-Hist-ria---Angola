@@ -56,7 +56,7 @@ public class TurmasController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin,Editor")]
-    public async Task<ActionResult> CreateTurma([FromBody] CreateTurmaDto dto, CancellationToken ct)
+    public async Task<ActionResult<TurmaResponseDto>> CreateTurma([FromBody] CreateTurmaDto dto, CancellationToken ct)
     {
         var turma = new Turma
         {
@@ -69,7 +69,40 @@ public class TurmasController : ControllerBase
         _context.Turmas.Add(turma);
         await _context.SaveChangesAsync(ct);
 
-        return CreatedAtAction(nameof(GetTurma), new { id = turma.Id }, turma);
+        return CreatedAtAction(nameof(GetTurma), new { id = turma.Id }, new TurmaResponseDto(
+            turma.Id, turma.Nome, ParseAno(turma.Ano), turma.EscolaId, null, turma.ProfessorId, null, 0
+        ));
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,Editor")]
+    public async Task<ActionResult<TurmaResponseDto>> UpdateTurma(int id, [FromBody] UpdateTurmaDto dto, CancellationToken ct)
+    {
+        var turma = await _context.Turmas.FindAsync(new object[] { id }, ct);
+        if (turma == null) return NotFound();
+
+        turma.Nome = dto.Nome;
+        turma.Ano = dto.Ano?.ToString() ?? string.Empty;
+        turma.ProfessorId = dto.ProfessorId;
+
+        await _context.SaveChangesAsync(ct);
+
+        return Ok(new TurmaResponseDto(
+            turma.Id, turma.Nome, ParseAno(turma.Ano), turma.EscolaId, null, turma.ProfessorId, null, turma.Alunos.Count
+        ));
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin,Editor")]
+    public async Task<IActionResult> DeleteTurma(int id, CancellationToken ct)
+    {
+        var turma = await _context.Turmas.FindAsync(new object[] { id }, ct);
+        if (turma == null) return NotFound();
+
+        _context.Turmas.Remove(turma);
+        await _context.SaveChangesAsync(ct);
+
+        return NoContent();
     }
 
     [HttpPost("{id}/alunos")]

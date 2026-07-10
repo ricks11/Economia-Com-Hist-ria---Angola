@@ -28,6 +28,28 @@ public class EscolasController : ControllerBase
         return Ok(escolas);
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<EscolaResponseDto>> GetEscola(int id, CancellationToken ct)
+    {
+        var escola = await _context.Escolas
+            .Include(e => e.Turmas)
+            .FirstOrDefaultAsync(e => e.Id == id, ct);
+        
+        if (escola == null) return NotFound();
+
+        return Ok(new EscolaResponseDto(
+            escola.Id, 
+            escola.Nome, 
+            null, 
+            escola.Provincia, 
+            escola.Municipio, 
+            null, 
+            null, 
+            escola.Turmas.Sum(t => t.Alunos.Count), 
+            escola.Turmas.Count
+        ));
+    }
+
     [HttpPost]
     public async Task<ActionResult<EscolaResponseDto>> CreateEscola([FromBody] CreateEscolaDto dto, CancellationToken ct)
     {
@@ -41,8 +63,37 @@ public class EscolasController : ControllerBase
         _context.Escolas.Add(escola);
         await _context.SaveChangesAsync(ct);
 
-        return CreatedAtAction(nameof(GetEscolas), new { id = escola.Id }, new EscolaResponseDto(
+        return CreatedAtAction(nameof(GetEscola), new { id = escola.Id }, new EscolaResponseDto(
             escola.Id, escola.Nome, null, escola.Provincia, escola.Municipio, null, null, 0, 0));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<EscolaResponseDto>> UpdateEscola(int id, [FromBody] CreateEscolaDto dto, CancellationToken ct)
+    {
+        var escola = await _context.Escolas.FindAsync(new object[] { id }, ct);
+        if (escola == null) return NotFound();
+
+        escola.Nome = dto.Nome;
+        escola.Provincia = dto.Provincia ?? string.Empty;
+        escola.Municipio = dto.Localizacao;
+
+        await _context.SaveChangesAsync(ct);
+
+        return Ok(new EscolaResponseDto(
+            escola.Id, escola.Nome, null, escola.Provincia, escola.Municipio, null, null, 0, 0
+        ));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteEscola(int id, CancellationToken ct)
+    {
+        var escola = await _context.Escolas.FindAsync(new object[] { id }, ct);
+        if (escola == null) return NotFound();
+
+        _context.Escolas.Remove(escola);
+        await _context.SaveChangesAsync(ct);
+
+        return NoContent();
     }
 
     [HttpPost("{id}/convite")]

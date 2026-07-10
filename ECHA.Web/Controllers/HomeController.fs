@@ -7,6 +7,7 @@ open System.Threading.Tasks
 open System.Diagnostics
 
 open Microsoft.AspNetCore.Mvc
+open Microsoft.AspNetCore.Authorization
 open Microsoft.Extensions.Logging
 
 open ECHA.Web.Models
@@ -18,6 +19,10 @@ type HomeController (logger : ILogger<HomeController>) =
         this.View()
 
     member this.Privacy () =
+        this.View()
+
+    [<Authorize(Roles = "Admin,Editor,SuperAdmin")>]
+    member this.PainelEditor () =
         this.View()
 
     [<ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)>]

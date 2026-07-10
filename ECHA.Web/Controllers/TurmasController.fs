@@ -55,3 +55,42 @@ type TurmasController (apiClient: ECHA.Web.Services.ApiClient) =
                 if success then return this.RedirectToAction("Index", {| escolaId = request.EscolaId |}) :> IActionResult
                 else return this.View(request) :> IActionResult
         }
+
+    [<HttpGet>]
+    member this.Edit (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! turma = apiClient.GetTurmaDetalheAsync(id, t)
+                match turma with
+                | Some t -> 
+                    let updateDto = new UpdateTurmaDto(t.Nome, t.Ano, t.ProfessorId)
+                    return this.View(updateDto) :> IActionResult
+                | None -> return this.NotFound() :> IActionResult
+        }
+
+    [<HttpPost>]
+    member this.Edit (id: int, request: UpdateTurmaDto) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! result = apiClient.UpdateTurmaAsync(id, request, t)
+                match result with
+                | Some r -> return this.RedirectToAction("Index", {| escolaId = r.EscolaId |}) :> IActionResult
+                | None -> return this.View(request) :> IActionResult
+        }
+
+    [<HttpPost>]
+    member this.Delete (id: int, escolaId: System.Nullable<int>) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! success = apiClient.DeleteTurmaAsync(id, t)
+                return this.RedirectToAction("Index", {| escolaId = escolaId |}) :> IActionResult
+        }

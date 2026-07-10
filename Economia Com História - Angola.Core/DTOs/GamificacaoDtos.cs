@@ -12,3 +12,13 @@ public record UserStatsDto(
     List<BadgeConquistadoDto> Badges,
     List<ProgressoProvinciaDto> ProgressoProvincias
 );
+
+public record BadgeAdminDto(
+    int Id,
+    string Nome,
+    string Descricao,
+    string? Icone,
+    string CriterioTipo,
+    int CriterioValor,
+    int TotalConquistados
+);

@@ -42,6 +42,42 @@ type EscolasController (apiClient: ECHA.Web.Services.ApiClient) =
                 else return this.View(request) :> IActionResult
         }
 
+    [<HttpGet>]
+    member this.Edit (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! escola = apiClient.GetEscolaAsync(id, t)
+                match escola with
+                | Some e -> return this.View(e) :> IActionResult
+                | None -> return this.NotFound() :> IActionResult
+        }
+
+    [<HttpPost>]
+    member this.Edit (id: int, request: CreateEscolaDto) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! result = apiClient.UpdateEscolaAsync(id, request, t)
+                if result.IsSome then return this.RedirectToAction("Index") :> IActionResult
+                else return this.View(request) :> IActionResult
+        }
+
+    [<HttpPost>]
+    member this.Delete (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                let! success = apiClient.DeleteEscolaAsync(id, t)
+                return this.RedirectToAction("Index") :> IActionResult
+        }
+
     [<HttpPost>]
     member this.GerarConvite (id: int) =
         task {

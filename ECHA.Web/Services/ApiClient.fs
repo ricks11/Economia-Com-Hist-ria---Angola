@@ -393,12 +393,12 @@ type ApiClient(httpClient: HttpClient) =
                 return false
         }
 
-    member this.GetBadgesAsync(token: string) : Task<BadgeConquistadoDto list> =
+    member this.GetBadgesAsync(token: string) : Task<BadgeAdminDto list> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.GetAsync("/api/moderacao/badges")
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<BadgeConquistadoDto list>()
+                let! result = response.Content.ReadFromJsonAsync<BadgeAdminDto list>(JsonOpts.options)
                 return result
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -572,6 +572,69 @@ type ApiClient(httpClient: HttpClient) =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.PutAsJsonAsync($"/api/admin/utilizadores/{id}/role", request)
+            if response.IsSuccessStatusCode then
+                return true
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return false
+        }
+
+    member this.GetEscolaAsync(id: int, token: string) : Task<EscolaResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/escolas/{id}")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<EscolaResponseDto>()
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
+    member this.UpdateEscolaAsync(id: int, request: CreateEscolaDto, token: string) : Task<EscolaResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/escolas/{id}", request)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<EscolaResponseDto>()
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
+    member this.DeleteEscolaAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.DeleteAsync($"/api/escolas/{id}")
+            if response.IsSuccessStatusCode then
+                return true
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return false
+        }
+
+    member this.UpdateTurmaAsync(id: int, request: UpdateTurmaDto, token: string) : Task<TurmaResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PutAsJsonAsync($"/api/turmas/{id}", request)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<TurmaResponseDto>()
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
+    member this.DeleteTurmaAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.DeleteAsync($"/api/turmas/{id}")
             if response.IsSuccessStatusCode then
                 return true
             else if (int response.StatusCode = 401) then
