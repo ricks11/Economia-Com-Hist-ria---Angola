@@ -20,19 +20,27 @@ public class PerfilController : ControllerBase
         _dbContext = dbContext;
     }
 
+    private bool TryGetUserId(out int userId)
+    {
+        var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                     ?? User.FindFirst("sub")?.Value;
+
+        return int.TryParse(userIdStr, out userId);
+    }
+
     [HttpGet("progresso")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public async Task<ActionResult<ProgressoUtilizadorDto>> GetProgresso(CancellationToken ct)
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId)) return Unauthorized();
+        if (!TryGetUserId(out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var user = await _dbContext.Utilizadores
             .Include(u => u.BadgesConquistados)
             .ThenInclude(bc => bc.Badge)
             .FirstOrDefaultAsync(u => u.Id == userId, ct);
 
-        if (user == null) return NotFound();
+        if (user == null) return NotFound(new { message = "Utilizador não encontrado" });
 
         // Lógica simples de nível: cada 1000 pontos = 1 nível
         int nivel = (user.PontosTotais / 1000) + 1;
@@ -69,8 +77,7 @@ public class PerfilController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PerfilResponseDto>> GetPerfil(CancellationToken cancellationToken)
     {
-        var userIdClaim = User.FindFirst("sub")?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
+        if (!TryGetUserId(out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var utilizador = await _dbContext.Utilizadores
@@ -98,8 +105,7 @@ public class PerfilController : ControllerBase
         [FromBody] UpdatePerfilDto request,
         CancellationToken cancellationToken)
     {
-        var userIdClaim = User.FindFirst("sub")?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
+        if (!TryGetUserId(out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var utilizador = await _dbContext.Utilizadores
@@ -162,8 +168,7 @@ public class PerfilController : ControllerBase
         if (pagina < 1) pagina = 1;
         if (tamanho < 1 || tamanho > 100) tamanho = 20;
 
-        var userIdClaim = User.FindFirst("sub")?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
+        if (!TryGetUserId(out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var totalCount = await _dbContext.Favoritos

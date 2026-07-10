@@ -119,7 +119,7 @@ type ApiClient(httpClient: HttpClient) =
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.PutAsJsonAsync($"/api/conteudos/{id}", request)
             if response.IsSuccessStatusCode then
-                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>()
+                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)  // <- adicionar options
                 return Some conteudo
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -147,7 +147,7 @@ type ApiClient(httpClient: HttpClient) =
             content.Add(fileContent, "imagem", fileName)
             let! response = httpClient.PostAsync($"/api/conteudos/{id}/imagem", content)
             if response.IsSuccessStatusCode then
-                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>()
+                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)  // <- adicionar options
                 return Some conteudo
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -370,13 +370,13 @@ type ApiClient(httpClient: HttpClient) =
     // Gamification & Study Plan Methods
     member this.GetProgressoAsync(token: string) : Task<ProgressoUtilizadorDto option> =
         task {
-            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.GetAsync("/api/perfil/progresso")
+            use request = new HttpRequestMessage(HttpMethod.Get, "/api/perfil/progresso")
+            request.Headers.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+        
+            let! response = httpClient.SendAsync(request)
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<ProgressoUtilizadorDto>()
+                let! result = response.Content.ReadFromJsonAsync<ProgressoUtilizadorDto>(JsonOpts.options)
                 return Some result
-            else if (int response.StatusCode = 401) then
-                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
             else
                 return None
         }
@@ -503,7 +503,7 @@ type ApiClient(httpClient: HttpClient) =
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.PostAsJsonAsync("/api/relatorios/gerar", request)
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>()
+                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>(JsonOpts.options)  // <- adicionar options
                 return Some result
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -516,7 +516,7 @@ type ApiClient(httpClient: HttpClient) =
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
             let! response = httpClient.GetAsync($"/api/relatorios/{id}/status")
             if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>()
+                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>(JsonOpts.options)  // <- adicionar options
                 return Some result
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
@@ -526,8 +526,11 @@ type ApiClient(httpClient: HttpClient) =
 
     member this.GetPerfilAsync(token: string) : Task<PerfilResponseDto option> =
         task {
-            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.GetAsync("/api/perfil")
+            use request = new HttpRequestMessage(HttpMethod.Get, "/api/perfil")
+            request.Headers.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+        
+            let! response = httpClient.SendAsync(request)
+        
             if response.IsSuccessStatusCode then
                 let! result = response.Content.ReadFromJsonAsync<PerfilResponseDto>(JsonOpts.options)
                 return Some result
@@ -695,6 +698,19 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
+    member this.GetRankingAsync(tipo: string, periodo: string, token: string) : Task<RankingResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/ranking?tipo={tipo}&periodo={periodo}")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RankingResponseDto>(JsonOpts.options)
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
     member this.AdicionarRespostaAsync(topicoId: int, request: CriarRespostaForumDto, token: string) : Task<bool> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
@@ -705,18 +721,4 @@ type ApiClient(httpClient: HttpClient) =
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
             else
                 return false
-        }
-
-    // Ranking Methods
-    member this.GetRankingAsync(tipo: string, periodo: string, token: string) : Task<RankingEntradaDto list> =
-        task {
-            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.GetAsync($"/api/ranking?tipo={tipo}&periodo={periodo}")
-            if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<RankingEntradaDto list>(JsonOpts.options)
-                return result
-            else if (int response.StatusCode = 401) then
-                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
-            else
-                return []
         }
