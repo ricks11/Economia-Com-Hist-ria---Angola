@@ -642,3 +642,81 @@ type ApiClient(httpClient: HttpClient) =
             else
                 return false
         }
+
+    // Forum Methods
+    member this.ListCategoriasForumAsync() : Task<CategoriaForumDto list> =
+        task {
+            let! response = httpClient.GetAsync("/api/forum/categorias")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<CategoriaForumDto list>(JsonOpts.options)
+                return result
+            else
+                return []
+        }
+
+    member this.ListTopicosAsync(?categoriaId: int, ?ordem: string) : Task<TopicoForumDto list> =
+        task {
+            let mutable url = "/api/forum/topicos?"
+            categoriaId |> Option.iter (fun v -> url <- url + "categoriaId=" + string v + "&")
+            ordem |> Option.iter (fun v -> url <- url + "ordem=" + v + "&")
+
+            let! response = httpClient.GetAsync(url)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<TopicoForumDto list>(JsonOpts.options)
+                return result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return []
+        }
+
+    member this.GetTopicoAsync(id: int) : Task<TopicoForumDetalheDto option> =
+        task {
+            let! response = httpClient.GetAsync($"/api/forum/topicos/{id}")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<TopicoForumDetalheDto>(JsonOpts.options)
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
+    member this.CriarTopicoAsync(request: CriarTopicoForumDto, token: string) : Task<TopicoForumDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/forum/topicos", request)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<TopicoForumDto>(JsonOpts.options)
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
+    member this.AdicionarRespostaAsync(topicoId: int, request: CriarRespostaForumDto, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync($"/api/forum/topicos/{topicoId}/respostas", request)
+            if response.IsSuccessStatusCode then
+                return true
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return false
+        }
+
+    // Ranking Methods
+    member this.GetRankingAsync(tipo: string, periodo: string, token: string) : Task<RankingEntradaDto list> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/ranking?tipo={tipo}&periodo={periodo}")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RankingEntradaDto list>(JsonOpts.options)
+                return result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return []
+        }

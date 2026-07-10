@@ -1,0 +1,299 @@
+2026-07-10 08:39:41.128 +01:00 [INF] Executed DbCommand (435ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-10 08:39:41.220 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-10 08:39:41.557 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-10 08:39:41.558 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-10 08:39:41.720 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-10 08:39:41.722 +01:00 [INF] Hosting environment: Development
+2026-07-10 08:39:41.724 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-10 09:22:11.327 +01:00 [INF] Executed DbCommand (451ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-10 09:22:11.574 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-10 09:22:12.281 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-10 09:22:12.286 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-10 09:22:12.571 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-10 09:22:12.574 +01:00 [INF] Hosting environment: Development
+2026-07-10 09:22:12.576 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-10 09:32:27.077 +01:00 [INF] Executed DbCommand (446ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-10 09:32:27.268 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-10 09:32:28.001 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-10 09:32:28.006 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-10 09:32:28.302 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-10 09:32:28.305 +01:00 [INF] Hosting environment: Development
+2026-07-10 09:32:28.308 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-10 09:32:57.995 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:32:58.083 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 307 0 null 112.1315ms
+2026-07-10 09:32:58.139 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:32:58.550 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:32:58.619 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-10 09:33:04.016 +01:00 [INF] Executed DbCommand (573ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-10 09:33:06.392 +01:00 [INF] Executed DbCommand (427ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-10 09:33:06.507 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-10 09:33:06.555 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 7923.552ms
+2026-07-10 09:33:06.560 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:33:06.580 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 8441.2878ms
+2026-07-10 09:33:06.655 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - null null
+2026-07-10 09:33:06.667 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - 307 0 null 11.8595ms
+2026-07-10 09:33:06.670 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
+2026-07-10 09:33:06.699 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:33:06.705 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:33:06.708 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 404 0 null 37.4572ms
+2026-07-10 09:33:06.719 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7275/api/moderacao/utilizadores, Response status code: 404
+2026-07-10 09:33:21.394 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/conteudos?pagina=1& - null null
+2026-07-10 09:33:21.402 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/conteudos?pagina=1& - 307 0 null 8.291ms
+2026-07-10 09:33:21.404 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-10 09:33:21.421 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:33:21.432 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-10 09:33:21.458 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-10 09:33:23.670 +01:00 [INF] Executed DbCommand (509ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE `c`.`Estado` = 2
+2026-07-10 09:33:23.774 +01:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-10 09:33:23.780 +01:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-10 09:33:25.516 +01:00 [INF] Executed DbCommand (925ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE `c`.`Estado` = 2
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-10 09:33:25.568 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-10 09:33:25.672 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 4208.1405ms
+2026-07-10 09:33:25.678 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-10 09:33:25.682 +01:00 [INF] The response has been cached.
+2026-07-10 09:33:25.686 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 4281.6234ms
+2026-07-10 09:33:31.558 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/conteudos?pagina=1& - null null
+2026-07-10 09:33:31.566 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/conteudos?pagina=1& - 307 0 null 8.4815ms
+2026-07-10 09:33:31.568 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-10 09:33:31.588 +01:00 [INF] Serving response from cache.
+2026-07-10 09:33:31.591 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 23.1696ms
+2026-07-10 09:33:34.249 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/quizzes? - null null
+2026-07-10 09:33:34.259 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/quizzes? - 307 0 null 9.9641ms
+2026-07-10 09:33:34.261 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/quizzes? - null null
+2026-07-10 09:33:34.277 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:33:34.286 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-10 09:33:34.300 +01:00 [INF] Route matched with {action = "GetQuizzes", controller = "Quizzes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EconomiaComHistoria.Core.DTOs.QuizResponseDto]]] GetQuizzes(System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.String) on controller EconomiaComHistoria.API.Controllers.QuizzesController (ECHA.API).
+2026-07-10 09:33:37.063 +01:00 [INF] Executed DbCommand (491ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `q`.`Id`, `q`.`Ativo`, `q`.`ConteudoId`, `q`.`Nivel`, `q`.`Tema`, `q`.`TempoLimiteSeg`, `q`.`Titulo`, `q`.`TotalPerguntas`
+FROM `Quizzes` AS `q`
+WHERE `q`.`Ativo`
+2026-07-10 09:33:37.154 +01:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[EconomiaComHistoria.Core.DTOs.QuizResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-10 09:33:37.165 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API) in 2859.0868ms
+2026-07-10 09:33:37.170 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.QuizzesController.GetQuizzes (ECHA.API)'
+2026-07-10 09:33:37.176 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:33:37.179 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/quizzes? - 200 null application/json; charset=utf-8 2917.9048ms
+2026-07-10 09:33:49.728 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil - null null
+2026-07-10 09:33:49.736 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil - 307 0 null 7.5417ms
+2026-07-10 09:33:49.737 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
+2026-07-10 09:33:49.750 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:33:49.761 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:33:49.772 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:33:49.776 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:33:49.778 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 401 0 null 41.2659ms
+2026-07-10 09:34:09.351 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil - null null
+2026-07-10 09:34:09.371 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil - 307 0 null 19.3126ms
+2026-07-10 09:34:09.373 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
+2026-07-10 09:34:09.395 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:34:09.401 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:34:09.404 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:34:09.408 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:34:09.410 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 401 0 null 36.7698ms
+2026-07-10 09:34:25.696 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/ranking?tipo=Nacional&periodo=Semanal - null null
+2026-07-10 09:34:25.704 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/ranking?tipo=Nacional&periodo=Semanal - 307 0 null 8.1909ms
+2026-07-10 09:34:25.706 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/ranking?tipo=Nacional&periodo=Semanal - null null
+2026-07-10 09:34:25.721 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:34:25.724 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:34:25.727 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:34:25.730 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:34:25.733 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/ranking?tipo=Nacional&periodo=Semanal - 401 0 null 27.3265ms
+2026-07-10 09:34:28.534 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:34:28.542 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 307 0 null 8.1219ms
+2026-07-10 09:34:28.549 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:34:28.566 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:34:28.570 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-10 09:34:31.004 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-10 09:34:31.987 +01:00 [INF] Executed DbCommand (217ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-10 09:34:32.008 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-10 09:34:32.016 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 3440.0672ms
+2026-07-10 09:34:32.022 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:34:32.032 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 3482.2697ms
+2026-07-10 09:34:32.048 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - null null
+2026-07-10 09:34:32.059 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - 307 0 null 11.3415ms
+2026-07-10 09:34:32.061 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
+2026-07-10 09:34:32.077 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:34:32.080 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:34:32.083 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 404 0 null 22.4158ms
+2026-07-10 09:34:32.094 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7275/api/moderacao/utilizadores, Response status code: 404
+2026-07-10 09:34:36.479 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/ranking?tipo=Nacional&periodo=Semanal - null null
+2026-07-10 09:34:36.501 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/ranking?tipo=Nacional&periodo=Semanal - 307 0 null 22.2406ms
+2026-07-10 09:34:36.503 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/ranking?tipo=Nacional&periodo=Semanal - null null
+2026-07-10 09:34:36.521 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:34:36.523 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:34:36.526 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:34:36.529 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:34:36.531 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/ranking?tipo=Nacional&periodo=Semanal - 401 0 null 28.3664ms
+2026-07-10 09:35:09.963 +01:00 [INF] Executed DbCommand (246ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'u288106130_ECHA'
+2026-07-10 09:35:10.176 +01:00 [INF] User profile is available. Using 'C:\Users\HP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-10 09:35:10.823 +01:00 [INF] Now listening on: https://localhost:7275
+2026-07-10 09:35:10.827 +01:00 [INF] Now listening on: http://localhost:5194
+2026-07-10 09:35:11.119 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-10 09:35:11.125 +01:00 [INF] Hosting environment: Development
+2026-07-10 09:35:11.129 +01:00 [INF] Content root path: C:\Users\HP\ISPTEC\3 Year\2 Semester\Engenharia de Software II\ECHA\ECHA.API
+2026-07-10 09:35:25.706 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil - null null
+2026-07-10 09:35:25.781 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil - 307 0 null 97.6232ms
+2026-07-10 09:35:25.860 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
+2026-07-10 09:35:25.982 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:35:26.306 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:35:26.318 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:35:26.323 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:35:26.337 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 401 0 null 476.8072ms
+2026-07-10 09:35:35.146 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil/progresso - null null
+2026-07-10 09:35:35.154 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil/progresso - 307 0 null 8.6408ms
+2026-07-10 09:35:35.158 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil/progresso - null null
+2026-07-10 09:35:35.175 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:35:35.185 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:35:35.189 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:35:35.192 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:35:35.195 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil/progresso - 401 0 null 37.8678ms
+2026-07-10 09:35:40.623 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil - null null
+2026-07-10 09:35:40.632 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil - 307 0 null 8.8924ms
+2026-07-10 09:35:40.634 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
+2026-07-10 09:35:40.648 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:35:40.656 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:35:40.660 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:35:40.663 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:35:40.666 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 401 0 null 31.9025ms
+2026-07-10 09:35:43.395 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:35:43.404 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 307 0 null 8.5614ms
+2026-07-10 09:35:43.406 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:35:43.429 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:35:43.493 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-10 09:35:46.883 +01:00 [INF] Executed DbCommand (258ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-10 09:35:48.872 +01:00 [INF] Executed DbCommand (315ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-10 09:35:48.985 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-10 09:35:49.015 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 5508.9466ms
+2026-07-10 09:35:49.021 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:35:49.040 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 5634.2627ms
+2026-07-10 09:35:49.073 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - null null
+2026-07-10 09:35:49.080 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - 307 0 null 7.3139ms
+2026-07-10 09:35:49.084 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
+2026-07-10 09:35:49.102 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:35:49.105 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:35:49.107 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 404 0 null 23.408ms
+2026-07-10 09:35:49.120 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7275/api/moderacao/utilizadores, Response status code: 404
+2026-07-10 09:35:51.683 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil - null null
+2026-07-10 09:35:51.702 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil - 307 0 null 18.6636ms
+2026-07-10 09:35:51.705 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
+2026-07-10 09:35:51.732 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:35:51.739 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:35:51.744 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:35:51.749 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:35:51.753 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 401 0 null 48.8699ms
+2026-07-10 09:36:04.707 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/conteudos?pagina=1& - null null
+2026-07-10 09:36:04.726 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/conteudos?pagina=1& - 307 0 null 19.1505ms
+2026-07-10 09:36:04.729 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - null null
+2026-07-10 09:36:04.761 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:36:04.765 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-10 09:36:04.789 +01:00 [INF] Route matched with {action = "ListConteudos", controller = "Conteudos"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.Helpers.PagedResult`1[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto]]] ListConteudos(System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.NivelDificuldade], System.Nullable`1[EconomiaComHistoria.Core.Enums.TipoConteudo], System.String, System.Nullable`1[EconomiaComHistoria.Core.Enums.EstadoConteudo], System.Nullable`1[System.Boolean], Int32, Int32, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.ConteudosController (ECHA.API).
+2026-07-10 09:36:06.933 +01:00 [INF] Executed DbCommand (219ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM `Conteudos` AS `c`
+WHERE `c`.`Estado` = 2
+2026-07-10 09:36:06.987 +01:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-10 09:36:06.990 +01:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-10 09:36:07.614 +01:00 [INF] Executed DbCommand (237ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT `c0`.`Id`, `c0`.`AlertaOpiniao`, `c0`.`AtualizadoEm`, `c0`.`AudioUrl`, `c0`.`AutorOpiniao`, `c0`.`ComentariosDesativados`, `c0`.`CorpoTexto`, `c0`.`CriadoEm`, `c0`.`DataAgendada`, `c0`.`DataPublicacao`, `c0`.`DisponiveOffline`, `c0`.`DuracaoMinutos`, `c0`.`EditorId`, `c0`.`Estado`, `c0`.`IsJindungo`, `c0`.`Nivel`, `c0`.`ReferenciaFactual`, `c0`.`Regiao`, `c0`.`Resumo`, `c0`.`Tema`, `c0`.`ThumbnailUrl`, `c0`.`Tipo`, `c0`.`Titulo`, `c0`.`VersaoAtual`, `c0`.`VideoUrl`, `c0`.`Visibilidade`, `c0`.`Visualizacoes`, `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM (
+    SELECT `c`.`Id`, `c`.`AlertaOpiniao`, `c`.`AtualizadoEm`, `c`.`AudioUrl`, `c`.`AutorOpiniao`, `c`.`ComentariosDesativados`, `c`.`CorpoTexto`, `c`.`CriadoEm`, `c`.`DataAgendada`, `c`.`DataPublicacao`, `c`.`DisponiveOffline`, `c`.`DuracaoMinutos`, `c`.`EditorId`, `c`.`Estado`, `c`.`IsJindungo`, `c`.`Nivel`, `c`.`ReferenciaFactual`, `c`.`Regiao`, `c`.`Resumo`, `c`.`Tema`, `c`.`ThumbnailUrl`, `c`.`Tipo`, `c`.`Titulo`, `c`.`VersaoAtual`, `c`.`VideoUrl`, `c`.`Visibilidade`, `c`.`Visualizacoes`
+    FROM `Conteudos` AS `c`
+    WHERE `c`.`Estado` = 2
+    LIMIT @__p_1 OFFSET @__p_0
+) AS `c0`
+LEFT JOIN `Utilizadores` AS `u` ON `c0`.`EditorId` = `u`.`Id`
+ORDER BY `c0`.`DataPublicacao` DESC
+2026-07-10 09:36:07.642 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.Helpers.PagedResult`1[[EconomiaComHistoria.Core.DTOs.ConteudoResponseDto, ECHA.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-10 09:36:07.721 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API) in 2925.8027ms
+2026-07-10 09:36:07.726 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.ConteudosController.ListConteudos (ECHA.API)'
+2026-07-10 09:36:07.734 +01:00 [INF] The response has been cached.
+2026-07-10 09:36:07.738 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/conteudos?pagina=1& - 200 null application/json; charset=utf-8 3009.3013ms
+2026-07-10 09:36:17.300 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5194/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:36:17.308 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5194/api/auth/login - 307 0 null 7.9298ms
+2026-07-10 09:36:17.311 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7275/api/auth/login - application/json; charset=utf-8 null
+2026-07-10 09:36:17.328 +01:00 [INF] Executing endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:36:17.331 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EconomiaComHistoria.Core.DTOs.AuthResponseDto]] Login(EconomiaComHistoria.Core.DTOs.LoginRequestDto, System.Threading.CancellationToken) on controller EconomiaComHistoria.API.Controllers.AuthController (ECHA.API).
+2026-07-10 09:36:20.971 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@__request_Email_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT `u`.`Id`, `u`.`Ativo`, `u`.`AvatarConfig`, `u`.`DataRegisto`, `u`.`Email`, `u`.`EscolaId`, `u`.`IpUltimoLogin`, `u`.`Municipio`, `u`.`Nome`, `u`.`NumeroPublicacoes`, `u`.`PasswordHash`, `u`.`PontosTotais`, `u`.`Provincia`, `u`.`StreakAtual`, `u`.`StreakRecorde`, `u`.`SuspensoAte`, `u`.`Telemovel`, `u`.`TempoEstudoMinutos`, `u`.`Tipo`, `u`.`TurmaId`, `u`.`TwoFactorAtivo`, `u`.`TwoFactorSegredo`, `u`.`UltimoAcesso`
+FROM `Utilizadores` AS `u`
+WHERE `u`.`Email` = @__request_Email_0
+LIMIT 1
+2026-07-10 09:36:21.855 +01:00 [INF] Executed DbCommand (215ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Utilizadores` SET `UltimoAcesso` = @p0
+WHERE `Id` = @p1;
+SELECT ROW_COUNT();
+2026-07-10 09:36:21.863 +01:00 [INF] Executing OkObjectResult, writing value of type 'EconomiaComHistoria.Core.DTOs.AuthResponseDto'.
+2026-07-10 09:36:21.868 +01:00 [INF] Executed action EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API) in 4532.4333ms
+2026-07-10 09:36:21.872 +01:00 [INF] Executed endpoint 'EconomiaComHistoria.API.Controllers.AuthController.Login (ECHA.API)'
+2026-07-10 09:36:21.876 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7275/api/auth/login - 200 null application/json; charset=utf-8 4565.5342ms
+2026-07-10 09:36:21.891 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - null null
+2026-07-10 09:36:21.900 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/moderacao/utilizadores - 307 0 null 8.7532ms
+2026-07-10 09:36:21.902 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - null null
+2026-07-10 09:36:21.919 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:36:21.922 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:36:21.925 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/moderacao/utilizadores - 404 0 null 23.0805ms
+2026-07-10 09:36:21.935 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7275/api/moderacao/utilizadores, Response status code: 404
+2026-07-10 09:36:24.582 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5194/api/perfil - null null
+2026-07-10 09:36:24.598 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5194/api/perfil - 307 0 null 16.0563ms
+2026-07-10 09:36:24.601 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7275/api/perfil - null null
+2026-07-10 09:36:24.628 +01:00 [INF] No cached response available for this request.
+2026-07-10 09:36:24.633 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2026-07-10 09:36:24.637 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2026-07-10 09:36:24.640 +01:00 [INF] The response could not be cached for this request.
+2026-07-10 09:36:24.644 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7275/api/perfil - 401 0 null 43.826ms

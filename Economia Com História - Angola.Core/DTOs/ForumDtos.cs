@@ -18,6 +18,8 @@ public class CriarTopicoForumDto
     public int CategoriaId { get; set; }
 }
 
+public record CategoriaForumDto(int Id, string Nome, string? Descricao, string? Icone);
+
 public record TopicoForumDto(
     int Id,
     string Titulo,

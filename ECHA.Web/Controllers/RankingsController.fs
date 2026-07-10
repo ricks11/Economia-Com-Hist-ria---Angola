@@ -25,9 +25,7 @@ type RankingsController(apiClient: ApiClient) =
                     let tipoParam = if String.IsNullOrEmpty tipo then "Nacional" else tipo
                     let periodoParam = if String.IsNullOrEmpty periodo then "Semanal" else periodo
                     let! ranking = apiClient.GetRankingAsync(tipoParam, periodoParam, t)
-                    match ranking with
-                    | Some r -> return this.View(r) :> IActionResult
-                    | None -> return this.View() :> IActionResult
+                    return this.View(ranking) :> IActionResult
                 with
                 | :? ApiClientException ->
                     return this.RedirectToAction("Login", "Auth") :> IActionResult
