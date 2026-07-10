@@ -89,6 +89,24 @@ public class ModeracaoController : ControllerBase
         return Ok(topicos);
     }
 
+    [HttpGet("utilizadores")]
+    public async Task<ActionResult<IEnumerable<UtilizadorModeracaoDto>>> GetUtilizadores(CancellationToken cancellationToken)
+    {
+        var utilizadores = await _dbContext.Utilizadores
+            .Select(x => new UtilizadorModeracaoDto(
+                x.Id,
+                x.Nome,
+                x.Email,
+                x.Tipo.ToString(),
+                x.Suspenso,
+                x.SuspensoAte,
+                x.SuspensaoPermanente
+            ))
+            .ToListAsync(cancellationToken);
+
+        return Ok(utilizadores);
+    }
+
     [HttpPut("topicos/{id:int}/aprovar")]
     public async Task<IActionResult> AprovarTopico(int id, CancellationToken cancellationToken)
     {

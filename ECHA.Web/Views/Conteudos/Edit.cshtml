@@ -30,9 +30,9 @@
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="Texto" class="control-label">Texto</label>
-                <textarea asp-for="Texto" class="form-control" id="TextoEditor"></textarea>
-                <span asp-validation-for="Texto" class="text-danger"></span>
+                <label asp-for="CorpoTexto" class="control-label">Texto</label>
+                <textarea asp-for="CorpoTexto" class="form-control" id="TextoEditor"></textarea>
+                <span asp-validation-for="CorpoTexto" class="text-danger"></span>
             </div>
 
             <div class="row">
@@ -111,9 +111,15 @@
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="UrlMedia" class="control-label">URL de Media (Vídeo/Áudio Embed)</label>
-                <input asp-for="UrlMedia" class="form-control" placeholder="https://youtube.com/embed/..." />
-                <span asp-validation-for="UrlMedia" class="text-danger"></span>
+                <label asp-for="VideoUrl" class="control-label">URL de Vídeo (Embed)</label>
+                <input asp-for="VideoUrl" class="form-control" placeholder="https://youtube.com/embed/..." />
+                <span asp-validation-for="VideoUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="AudioUrl" class="control-label">URL de Áudio (Embed)</label>
+                <input asp-for="AudioUrl" class="form-control" placeholder="https://soundcloud.com/..." />
+                <span asp-validation-for="AudioUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">

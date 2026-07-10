@@ -3,40 +3,68 @@
     ViewData["Title"] = $"Detalhes da Turma: {Model.Nome}";
 }
 
-<div class="mb-4">
-    <h1>@ViewData["Title"]</h1>
-    <p class="lead text-muted">@Model.EscolaNome - Professor: @(Model.ProfessorNome ?? "Não atribuído")</p>
-    <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="btn btn-secondary btn-sm">Voltar</a>
-</div>
+<main class="pt-12 pb-12 px-6 max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="mb-8 flex justify-between items-start flex-wrap gap-4">
+        <div>
+            <h1 class="text-3xl font-headline font-extrabold text-primary tracking-tight">@Model.Nome</h1>
+            <p class="text-stone-500 text-sm mt-1">
+                @Model.EscolaNome • Professor: <span class="font-semibold text-stone-700">@(Model.ProfessorNome ?? "Não atribuído")</span>
+            </p>
+        </div>
+        <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="px-5 py-2.5 rounded-full bg-stone-100 text-stone-600 font-bold hover:bg-stone-200 transition-colors decoration-none flex items-center gap-2 text-sm">
+            <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
+        </a>
+    </header>
 
-<div class="card shadow-sm mb-4">
-    <div class="card-header bg-dark text-white">Lista de Alunos e Desempenho</div>
-    <div class="table-responsive">
-        <table class="table table-hover mb-0">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th class="text-center">Pontos Totais</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var aluno in Model.Alunos)
-                {
-                    <tr>
-                        <td>@aluno.Nome</td>
-                        <td>@aluno.Email</td>
-                        <td class="text-center"><strong>@aluno.PontosTotais</strong></td>
-                        <td><span class="badge bg-success">Ativo</span></td>
+    <!-- Students Performance Card & Table -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 border border-stone-200/60 shadow-sm overflow-hidden">
+        <h2 class="text-lg font-headline font-bold text-stone-800 mb-6 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">groups</span>
+            Desempenho dos Alunos
+        </h2>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-stone-100 table-fixed sm:table-auto">
+                <thead>
+                    <tr class="text-stone-400 text-xs font-bold uppercase tracking-wider">
+                        <th class="px-6 py-4 text-left w-2/5">Nome</th>
+                        <th class="px-6 py-4 text-left w-2/5">Email</th>
+                        <th class="px-6 py-4 text-center w-1/5">Pontos Totais</th>
+                        <th class="px-6 py-4 text-center w-1/5">Estado</th>
                     </tr>
-                }
-                @if (!Model.Alunos.Any()) {
-                    <tr>
-                        <td colspan="4" class="text-center py-4 text-muted">Nenhum aluno associado a esta turma.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-stone-100 text-stone-700">
+                    @foreach (var aluno in Model.Alunos)
+                    {
+                        <tr class="hover:bg-stone-50/50 transition">
+                            <td class="px-6 py-4 font-medium text-stone-900 truncate">
+                                @aluno.Nome
+                            </td>
+                            <td class="px-6 py-4 text-sm text-stone-500 truncate">
+                                @aluno.Email
+                            </td>
+                            <td class="px-6 py-4 text-center text-sm font-bold text-primary">
+                                @aluno.PontosTotais PTS
+                            </td>
+                            <td class="px-6 py-4 text-center text-sm">
+                                <span class="bg-green-50 text-green-700 border border-green-100 text-xs px-2.5 py-1 rounded-full font-medium inline-block">
+                                    Ativo
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Alunos.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-10 text-stone-400">
+                                <span class="material-symbols-outlined text-4xl block mb-2 opacity-50">group_off</span>
+                                Nenhum aluno associado a esta turma.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</main>

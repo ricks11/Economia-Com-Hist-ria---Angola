@@ -70,10 +70,8 @@ type ForumController(apiClient: ApiClient) =
     [<AllowAnonymous>]
     member this.Details(id: int) =
         task {
-            let token = this.GetToken()
-            let tokenOpt = if isNull token then None else Some token
             try
-                let! topico = apiClient.GetTopicoAsync(id, ?token = tokenOpt)
+                let! topico = apiClient.GetTopicoAsync(id)
                 match topico with
                 | Some t -> return this.View(t) :> IActionResult
                 | None -> return this.NotFound() :> IActionResult
@@ -93,7 +91,7 @@ type ForumController(apiClient: ApiClient) =
                 try
                     let request = CriarRespostaForumDto(Conteudo = conteudo, RespostaPaiId = Option.toNullable respostaPaiId)
                     let! result = apiClient.AdicionarRespostaAsync(topicoId, request, t)
-                    if result.IsSome then
+                    if result then
                         this.TempData["SuccessMessage"] <- "Resposta publicada com sucesso!"
                     else
                         this.TempData["ErrorMessage"] <- "Não foi possível publicar a resposta."

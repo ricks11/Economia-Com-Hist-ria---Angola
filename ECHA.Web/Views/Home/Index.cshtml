@@ -8,7 +8,7 @@
         <section class="col-span-12 lg:col-span-8 space-y-8">
             <div class="relative overflow-hidden bg-surface-container-lowest p-10 rounded-xl shadow-sm">
                 <div class="relative z-10 max-w-lg">
-                    <h2 class="text-4xl font-extrabold text-primary tracking-tight mb-2 font-headline">Bem-vindo, Explorador.</h2>
+                    <h2 class="text-4xl font-extrabold text-primary tracking-tight mb-2 font-headline">Bem-vindo, @(ViewData["Perfil"] != null ? ((EconomiaComHistoria.Core.DTOs.PerfilResponseDto)ViewData["Perfil"]).Nome : "Explorador").</h2>
                     <p class="text-on-surface-variant text-lg leading-relaxed font-light mb-6">
                         Explore o rico tapeçário da economia angolana através dos séculos. Hoje, o arquivo destaca a transição monetária da era colonial para a independência.
                     </p>
@@ -33,25 +33,25 @@
                     <p class="text-sm text-on-surface-variant line-clamp-2">Descubra como o sal moldou as primeiras rotas comerciais e alianças estratégicas no território...</p>
                 </div>
                 <!-- Bento Card: Economic Data -->
-                <div class="bg-tertiary-container text-white p-6 rounded-xl flex flex-col justify-between">
+                <div class="bg-tertiary-container text-white p-6 rounded-xl flex flex-col justify-between shadow-sm">
                     <div class="flex justify-between items-start mb-8">
                         <div>
-                            <span class="text-xs opacity-70 block mb-1">Crescimento do Arquivo</span>
-                            <p class="text-3xl font-black font-headline">+24.8%</p>
+                            <span class="text-xs opacity-70 block mb-1">Os Seus Pontos</span>
+                            <p class="text-3xl font-black font-headline">@(ViewData["Progresso"] != null ? ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).PontosTotais : 0) PTS</p>
                         </div>
                         <span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">trending_up</span>
                     </div>
                     <div class="space-y-4">
                         <div class="flex justify-between text-sm border-b border-white/10 pb-2">
-                            <span class="opacity-80 font-light">Documentos Digitalizados</span>
-                            <span class="font-bold">12,402</span>
+                            <span class="opacity-80 font-light">Nível Atual</span>
+                            <span class="font-bold">@(ViewData["Progresso"] != null ? ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).Nivel : 1)</span>
                         </div>
                         <div class="flex justify-between text-sm border-b border-white/10 pb-2">
-                            <span class="opacity-80 font-light">Moedas Raras Catalogadas</span>
-                            <span class="font-bold">843</span>
+                            <span class="opacity-80 font-light">Streak de Acesso</span>
+                            <span class="font-bold">@(ViewData["Progresso"] != null ? ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).StreakAtual : 0) dias 🔥</span>
                         </div>
                     </div>
-                    <a href="@Url.Action("Index", "Conteudos")" class="mt-6 w-full py-2 bg-white/10 rounded-lg text-xs font-bold hover:bg-white/20 transition-colors uppercase tracking-widest text-center no-underline inline-block">Ver Painel Completo</a>
+                    <a href="@Url.Action("MeuProgresso", "Gamificacao")" class="mt-6 w-full py-2 bg-white/10 rounded-lg text-xs font-bold hover:bg-white/20 transition-colors uppercase tracking-widest text-center no-underline inline-block">Ver Meu Progresso</a>
                 </div>
             </div>
         </section>
@@ -88,40 +88,57 @@
             <div class="bg-surface-container-low p-6 rounded-xl">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-sm font-bold uppercase tracking-widest text-on-surface font-headline">Progresso Rápido</h3>
-                    <span class="text-xs font-bold text-primary bg-primary-fixed px-2 py-1 rounded">Nível 8</span>
+                    <span class="text-xs font-bold text-primary bg-primary-fixed px-2 py-1 rounded">Nível @(ViewData["Progresso"] != null ? ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).Nivel : 1)</span>
                 </div>
                 <div class="space-y-6">
                     <div class="space-y-2">
                         <div class="flex justify-between text-xs font-bold">
-                            <span class="text-on-surface-variant">Módulo de Exportação Colonial</span>
-                            <span>85%</span>
+                            <span class="text-on-surface-variant">Progresso do Nível Atual</span>
+                            <span>@((ViewData["Progresso"] != null ? ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).PercentagemNivel : 0.0).ToString("0"))%</span>
                         </div>
                         <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
-                            <div class="h-full bg-primary rounded-full" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-xs font-bold">
-                            <span class="text-on-surface-variant">Pesquisa de Macroeconomia</span>
-                            <span>42%</span>
-                        </div>
-                        <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
-                            <div class="h-full bg-tertiary rounded-full" style="width: 42%"></div>
+                            <div class="h-full bg-primary rounded-full" style="width: @((ViewData["Progresso"] != null ? ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).PercentagemNivel : 0.0).ToString("0"))%"></div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-8 p-4 bg-white/50 rounded-lg">
-                    <p class="text-[10px] uppercase font-black text-stone-400 mb-2">Próxima Conquista</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-accent-yellow/20 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-accent-yellow" style="font-variation-settings: 'FILL' 1;">military_tech</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold">Historiador de Luanda</p>
-                            <p class="text-[10px] text-stone-500">Conclua 3 capítulos sobre a capital</p>
+                @if (ViewData["Progresso"] != null && ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).Badges.Count > 0)
+                {
+                    var ultimoBadge = ((EconomiaComHistoria.Core.DTOs.ProgressoUtilizadorDto)ViewData["Progresso"]).Badges.Last();
+                    <div class="mt-8 p-4 bg-white/50 rounded-lg">
+                        <p class="text-[10px] uppercase font-black text-stone-400 mb-2">Último Distintivo Ganho</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-accent-yellow/20 flex items-center justify-center text-accent-yellow font-bold">
+                                @if (!string.IsNullOrEmpty(ultimoBadge.Icone))
+                                {
+                                    <span class="material-symbols-outlined">@ultimoBadge.Icone</span>
+                                }
+                                else
+                                {
+                                    <span class="material-symbols-outlined">military_tech</span>
+                                }
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold">@ultimoBadge.Nome</p>
+                                <p class="text-[10px] text-stone-500">@ultimoBadge.Descricao</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="mt-8 p-4 bg-white/50 rounded-lg">
+                        <p class="text-[10px] uppercase font-black text-stone-400 mb-2">Próxima Conquista</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-accent-yellow/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-accent-yellow" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold">Iniciante Histórico</p>
+                                <p class="text-[10px] text-stone-500">Conclua o primeiro módulo para ganhar o primeiro distintivo!</p>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
             <!-- Mini CTA Card -->
             <div class="relative h-40 rounded-xl overflow-hidden group cursor-pointer">

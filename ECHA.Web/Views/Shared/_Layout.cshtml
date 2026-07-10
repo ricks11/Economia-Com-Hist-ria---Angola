@@ -135,9 +135,13 @@
                     <span class="material-symbols-outlined">leaderboard</span>
                     <span class="text-sm font-semibold font-label">Ranking</span>
                 </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Gamificacao" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("MeuProgresso", "Gamificacao")">
-                    <span class="material-symbols-outlined">military_tech</span>
-                    <span class="text-sm font-semibold font-label">Conquistas</span>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Escolas" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Escolas")">
+                    <span class="material-symbols-outlined">school</span>
+                    <span class="text-sm font-semibold font-label">Escolas</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Turmas" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Turmas")">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="text-sm font-semibold font-label">Turmas</span>
                 </a>
                 <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Perfil" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Perfil")">
                     <span class="material-symbols-outlined">person</span>
@@ -157,13 +161,13 @@
                         <span class="material-symbols-outlined">manage_accounts</span>
                         <span class="text-sm font-semibold font-label">Utilizadores</span>
                     </a>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Moderacao" && ViewContext.RouteData.Values["action"]?.ToString() == "Denuncias" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Denuncias", "Moderacao")">
+                        <span class="material-symbols-outlined">report</span>
+                        <span class="text-sm font-semibold font-label">Denúncias</span>
+                    </a>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Relatorios" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Relatorios")">
                         <span class="material-symbols-outlined">assessment</span>
                         <span class="text-sm font-semibold font-label">Desempenho</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Editorial", "Admin")">
-                        <span class="material-symbols-outlined">edit_note</span>
-                        <span class="text-sm font-semibold font-label">Fila Editorial</span>
                     </a>
                 }
                 @if (User.IsInRole("SuperAdmin"))

@@ -30,9 +30,9 @@
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="Texto" class="control-label">Texto</label>
-                <textarea asp-for="Texto" class="form-control" id="TextoEditor"></textarea>
-                <span asp-validation-for="Texto" class="text-danger"></span>
+                <label asp-for="CorpoTexto" class="control-label">Texto</label>
+                <textarea asp-for="CorpoTexto" class="form-control" id="TextoEditor"></textarea>
+                <span asp-validation-for="CorpoTexto" class="text-danger"></span>
             </div>
 
             <div class="row">
@@ -96,7 +96,10 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <!-- We can leave this empty for now, or put something else -->
+                    <div class="form-check mb-3 mt-4">
+                        <input asp-for="IsJindungo" class="form-check-input" type="checkbox" id="IsJindungo" />
+                        <label asp-for="IsJindungo" class="form-check-label font-bold">É Jindungo? (Curiosidade picante)</label>
+                    </div>
                 </div>
             </div>
 
@@ -109,14 +112,24 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <!-- Empty for alignment -->
+                    <div class="form-group mb-3" id="ReferenciaFactualGroup" style="display: none;">
+                        <label asp-for="ReferenciaFactual" class="control-label">Referência Factual</label>
+                        <input asp-for="ReferenciaFactual" class="form-control" id="ReferenciaFactual" placeholder="Insira a fonte bibliográfica..." />
+                        <span asp-validation-for="ReferenciaFactual" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="UrlMedia" class="control-label">URL de Media (Vídeo/Áudio Embed)</label>
-                <input asp-for="UrlMedia" class="form-control" placeholder="https://youtube.com/embed/..." />
-                <span asp-validation-for="UrlMedia" class="text-danger"></span>
+                <label asp-for="VideoUrl" class="control-label">URL de Vídeo (Embed)</label>
+                <input asp-for="VideoUrl" class="form-control" placeholder="https://youtube.com/embed/..." />
+                <span asp-validation-for="VideoUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="AudioUrl" class="control-label">URL de Áudio (Embed)</label>
+                <input asp-for="AudioUrl" class="form-control" placeholder="https://soundcloud.com/..." />
+                <span asp-validation-for="AudioUrl" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
@@ -151,12 +164,6 @@
             selector: '#TextoEditor',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            height: 400
-        });
-    </script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-bullist indent outdent | emoticons charmap | removeformat',
             height: 400
         });
     </script>

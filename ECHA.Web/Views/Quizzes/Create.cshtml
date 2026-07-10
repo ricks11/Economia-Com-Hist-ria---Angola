@@ -24,16 +24,20 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label asp-for="NivelDificuldade" class="form-label">Nível de Dificuldade (1-5)</label>
-                    <input asp-for="NivelDificuldade" type="number" min="1" max="5" class="form-control" required />
+                    <label asp-for="Nivel" class="form-label">Nível de Dificuldade</label>
+                    <select asp-for="Nivel" class="form-control" id="Nivel" required>
+                        <option value="Basico">Básico</option>
+                        <option value="Intermedio">Intermédio</option>
+                        <option value="Avancado">Avançado</option>
+                    </select>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label asp-for="NumeroPerguntas" class="form-label">Nº de Perguntas (Exibidas)</label>
-                    <input asp-for="NumeroPerguntas" type="number" min="1" class="form-control" required />
+                    <label asp-for="TotalPerguntas" class="form-label">Nº de Perguntas (Exibidas)</label>
+                    <input asp-for="TotalPerguntas" type="number" min="1" class="form-control" required />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label asp-for="TempoPorPerguntaSegundos" class="form-label">Tempo por Pergunta (seg)</label>
-                    <input asp-for="TempoPorPerguntaSegundos" type="number" min="5" class="form-control" required />
+                    <label asp-for="TempoLimiteSeg" class="form-label">Tempo Limite Total (seg)</label>
+                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="form-control" required />
                 </div>
             </div>
             <div class="mb-3">
@@ -64,15 +68,19 @@
             <button type="button" class="btn btn-sm btn-danger" onclick="removePergunta(this)">Remover</button>
         </div>
         <div class="card-body">
+            <input type="hidden" name="Perguntas[{pIdx}].Tema" class="pergunta-tema" />
+            <input type="hidden" name="Perguntas[{pIdx}].Dificuldade" class="pergunta-dificuldade" />
+
             <div class="mb-3">
-                <label class="form-label">Texto da Pergunta</label>
-                <input name="Perguntas[{pIdx}].Texto" class="form-control" required />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Tempo Limite (seg)</label>
-                <input name="Perguntas[{pIdx}].TempoLimiteSegundos" type="number" class="form-control" value="30" required />
+                <label class="form-label">Texto da Pergunta (Enunciado)</label>
+                <input name="Perguntas[{pIdx}].Enunciado" class="form-control" required />
             </div>
             
+            <div class="mb-3">
+                <label class="form-label">Explicação da Resposta Correta</label>
+                <input name="Perguntas[{pIdx}].Explicacao" class="form-control" placeholder="Explicação histórica da resposta correta..." required />
+            </div>
+
             <h6 class="mt-4">Opções (Exatamente 4, selecione a correta)</h6>
             <div class="row">
                 @for (int i = 0; i < 4; i++)
@@ -85,7 +93,7 @@
                             </div>
                             <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="form-control" placeholder="Opção @(i + 1)" required />
                         </div>
-                        <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="form-control mt-1 form-control-sm" placeholder="Explicação (opcional)" />
+                        <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="form-control mt-1 form-control-sm" placeholder="Explicação da Opção (opcional)" />
                     </div>
                 }
             </div>
@@ -134,10 +142,19 @@
             });
         }
 
-        // Before submit, ensure radio buttons set the hidden IsCorrecta field
+        // Before submit, ensure radio buttons set the hidden IsCorrecta field and copy Tema/Dificuldade
         document.getElementById('quizForm').onsubmit = function() {
+            const quizTema = document.getElementById('Tema').value;
+            const quizNivel = document.getElementById('Nivel').value;
+            
             const cards = document.querySelectorAll('.pergunta-card');
             cards.forEach((card, pIdx) => {
+                // Set hidden Tema and Dificuldade inputs
+                const temaInput = card.querySelector(`input[name="Perguntas[${pIdx}].Tema"]`);
+                const dificInput = card.querySelector(`input[name="Perguntas[${pIdx}].Dificuldade"]`);
+                if (temaInput) temaInput.value = quizTema;
+                if (dificInput) dificInput.value = quizNivel;
+
                 const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
                 if (radio) {
                     const correctIdx = radio.value;
