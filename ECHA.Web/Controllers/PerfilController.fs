@@ -43,14 +43,12 @@ type PerfilController(apiClient: ApiClient) =
             | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
             | t ->
                 try
-                    let! perfil = apiClient.UpdatePerfilAsync(request, t)
-                    match perfil with
-                    | Some _ ->
+                    let! sucesso = apiClient.UpdatePerfilAsync(request, t)
+                    if sucesso then
                         this.TempData["SuccessMessage"] <- "Perfil actualizado com sucesso!"
-                        return this.RedirectToAction("Index") :> IActionResult
-                    | None ->
+                    else
                         this.TempData["ErrorMessage"] <- "Não foi possível actualizar o perfil."
-                        return this.RedirectToAction("Index") :> IActionResult
+                    return this.RedirectToAction("Index") :> IActionResult
                 with
                 | :? ApiClientException ->
                     return this.RedirectToAction("Login", "Auth") :> IActionResult
