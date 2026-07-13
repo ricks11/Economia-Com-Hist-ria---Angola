@@ -10,7 +10,7 @@ open ECHA.Web.Services
 open Microsoft.AspNetCore.Authentication // Necessário para o GetTokenAsync
 
 // Garante o esquema de autenticação correto por Cookie para evitar conflitos locais
-[<Authorize(AuthenticationSchemes = "CookieAuthentication", Roles = "Editor,Admin,SuperAdmin")>]
+[<Authorize(AuthenticationSchemes = "CookieAuthentication")>]
 type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
@@ -41,6 +41,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Stats (id: int) =
         task {
             let! token = this.GetTokenAsync()
@@ -58,6 +59,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Pool (tema: string, nivel: System.Nullable<int>) =
         task {
             let! token = this.GetTokenAsync()
@@ -77,10 +79,12 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Create () =
         this.View()
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Create (request: CreateQuizDto) =
         task {
             let! token = this.GetTokenAsync()
@@ -101,6 +105,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Edit (id: int) =
         task {
             let! token = this.GetTokenAsync()
@@ -118,6 +123,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Edit (id: int, request: UpdateQuizDto) =
         task {
             let! token = this.GetTokenAsync()
@@ -141,6 +147,7 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
     member this.Delete (id: int) =
         task {
             let! token = this.GetTokenAsync()
@@ -154,6 +161,53 @@ type QuizzesController (apiClient: ECHA.Web.Services.ApiClient) =
                         return this.RedirectToAction("Index") :> IActionResult
                     else
                         return this.BadRequest("Falha ao eliminar quiz") :> IActionResult
+                with
+                | :? ApiClientException ->
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpGet>]
+    member this.Jogar (id: int) =
+        task {
+            let! token = this.GetTokenAsync()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    // 1. Inicia o quiz na API (obtém as perguntas e o ID da tentativa)
+                    let! startData = apiClient.StartQuizAsync(id, t)
+                    match startData with
+                    | Some sd ->
+                        // 2. Procura os detalhes básicos do quiz para passar as informações de cabeçalho
+                        let! quizDetails = apiClient.GetQuizDetalheAsync(id, t)
+                        match quizDetails with
+                        | Some qd ->
+                            let qResponse = QuizResponseDto(qd.Id, qd.Titulo, qd.Tema, qd.Nivel, qd.TotalPerguntas, qd.TempoLimiteSeg, qd.Ativo)
+                            this.ViewData["Quiz"] <- qResponse
+                        | None -> ()
+                        
+                        return this.View(sd) :> IActionResult
+                    | None -> return this.NotFound() :> IActionResult
+                with
+                | :? ApiClientException ->
+                    return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpPost>]
+    member this.Submeter (dto: SubmitTentativaDto) =
+        task {
+            let! token = this.GetTokenAsync()
+            match token with
+            | null -> return this.Unauthorized() :> IActionResult
+            | t ->
+                try
+                    let! resultado = apiClient.SubmitQuizAsync(dto, t)
+                    match resultado with
+                    | Some res -> 
+                        // Retorna a View "Resultado" que exibe a pontuação final obtida
+                        return this.View("Resultado", res) :> IActionResult
+                    | None -> 
+                        return this.BadRequest("Erro ao processar o envio do quiz.") :> IActionResult
                 with
                 | :? ApiClientException ->
                     return this.RedirectToAction("Login", "Auth") :> IActionResult

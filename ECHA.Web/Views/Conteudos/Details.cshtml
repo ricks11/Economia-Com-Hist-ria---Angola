@@ -191,7 +191,7 @@
             <span class="material-symbols-outlined text-[18px]">arrow_back</span> Voltar ao arquivo principal
         </a>
 
-        @if (User.IsInRole("Editor") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+        @if (User.IsInRole("Editor") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Professor"))
         {
         <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button type="button" id="abrirDeleteModalBtn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-700 font-bold text-xs hover:bg-red-100 transition-colors">
@@ -236,46 +236,46 @@
 </div>
 
 @section Scripts {
-    <!-- ✅ Script que corrige o ícone de favorito ao carregar a página-->
-        <script>
-            (function() {
-            const conteudoId = @Model.Id;
-            // Procura o formulário do botão de favorito
-            const form = document.querySelector(`form[action$="ToggleFavorito"][action*="${conteudoId}"]`);
-            if (!form) return;
+<!-- ✅ Script que corrige o ícone de favorito ao carregar a página-->
+<script>
+    (function () {
+        const conteudoId = @Model.Id;
+        // Procura o formulário do botão de favorito
+        const form = document.querySelector(`form[action$="ToggleFavorito"][action*="${conteudoId}"]`);
+        if (!form) return;
 
-            const button = form.querySelector('button');
-            const icon = button?.querySelector('.material-symbols-outlined');
-            const textSpan = button?.childNodes[button.childNodes.length-1]; // último texto do botão
+        const button = form.querySelector('button');
+        const icon = button?.querySelector('.material-symbols-outlined');
+        const textSpan = button?.childNodes[button.childNodes.length - 1]; // último texto do botão
 
-            function aplicarEstado(favorito) {
-                if (favorito) {
+        function aplicarEstado(favorito) {
+            if (favorito) {
                 // Amarelo preenchido
                 button.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-700');
-            button.classList.remove('bg-white', 'border-stone-200', 'text-stone-600', 'hover:bg-stone-50');
-            icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
-            icon.classList.add('text-amber-500');
-            icon.classList.remove('text-stone-400');
-            if (textSpan) textSpan.textContent = ' Guardado';
-                } else {
+                button.classList.remove('bg-white', 'border-stone-200', 'text-stone-600', 'hover:bg-stone-50');
+                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
+                icon.classList.add('text-amber-500');
+                icon.classList.remove('text-stone-400');
+                if (textSpan) textSpan.textContent = ' Guardado';
+            } else {
                 // Cinza vazio
                 button.classList.add('bg-white', 'border-stone-200', 'text-stone-600', 'hover:bg-stone-50');
-            button.classList.remove('bg-amber-50', 'border-amber-300', 'text-amber-700');
-            icon.style.fontVariationSettings = "'FILL' 0";
-            icon.classList.add('text-stone-400');
-            icon.classList.remove('text-amber-500');
-            if (textSpan) textSpan.textContent = ' Guardar';
-                }
+                button.classList.remove('bg-amber-50', 'border-amber-300', 'text-amber-700');
+                icon.style.fontVariationSettings = "'FILL' 0";
+                icon.classList.add('text-stone-400');
+                icon.classList.remove('text-amber-500');
+                if (textSpan) textSpan.textContent = ' Guardar';
             }
+        }
 
-            // Chama a API com as credenciais do browser
-            fetch(`/api/conteudos/${conteudoId}`, {credentials: 'include' })
-                .then(res => res.json())
-                .then(data => {
+        // Chama a API com as credenciais do browser
+        fetch(`/api/conteudos/${conteudoId}`, { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
                 aplicarEstado(data.ehFavorito === true);
-                })
-                .catch(err => console.log('Falha ao verificar favorito:', err));
-        })();
+            })
+            .catch(err => console.log('Falha ao verificar favorito:', err));
+    })();
 </script>
 <script>
     const deleteModal = document.getElementById('deleteModal');

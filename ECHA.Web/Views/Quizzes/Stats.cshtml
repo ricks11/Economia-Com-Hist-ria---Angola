@@ -3,35 +3,132 @@
     ViewData["Title"] = $"Estatísticas: {Model.Titulo}";
 }
 
-<div class="mb-4">
-    <h1>@ViewData["Title"]</h1>
-    <p class="lead">Total de tentativas completas: <strong>@Model.TotalTentativas</strong></p>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-</div>
+<div class="max-w-6xl mr-auto w-full py-6">
+    <!-- Cabeçalho de Página -->
+    <header class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/60 pb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-1">
+                <span class="material-symbols-outlined text-[16px]">analytics</span>
+                Análise de Desempenho
+            </div>
+            <h1 class="text-3xl font-black text-rose-950 dark:text-rose-200 tracking-tight font-headline">@Model.Titulo</h1>
+            <p class="text-sm text-stone-500 mt-1">Dados analíticos coletados a partir de respostas reais submetidas na plataforma.</p>
+        </div>
+        <a asp-action="Index" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-stone-900 hover:bg-stone-50 text-stone-700 dark:text-stone-300 border border-stone-200/60 rounded-xl text-sm font-semibold shadow-sm transition-all no-underline shrink-0">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Voltar aos Quizzes
+        </a>
+    </header>
 
-<div class="row">
-    @foreach (var p in Model.Perguntas)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">@p.Texto</h5>
-                    <hr />
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <h6>Taxa de Acerto</h6>
-                            <h3 class="@(p.TaxaAcerto >= 70 ? "text-success" : p.TaxaAcerto >= 40 ? "text-warning" : "text-danger")">
-                                @p.TaxaAcerto.ToString("F1")%
-                            </h3>
-                        </div>
-                        <div class="col-6">
-                            <h6>Tempo Médio</h6>
-                            <h3>@((p.TempoMedioMs / 1000.0).ToString("F1"))s</h3>
+    <!-- Cartões de Resumo Geral -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+        <div class="bg-gradient-to-br from-primary to-primary-container text-white p-6 rounded-2xl shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white shrink-0">
+                <span class="material-symbols-outlined text-2xl">groups</span>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-white/70 uppercase tracking-wider font-headline">Total de Participações</p>
+                <h3 class="text-3xl font-black font-headline mt-1">@Model.TotalTentativas</h3>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-stone-900 border border-stone-200/60 p-6 rounded-2xl shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+                <span class="material-symbols-outlined text-2xl">auto_awesome</span>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider font-headline">Média de Acertos</p>
+                @{
+                var mediaGeral = Model.Perguntas.Any() ? Model.Perguntas.Average(p => p.TaxaAcerto) : 0.0;
+                var corMedia = mediaGeral >= 70 ? "text-emerald-600" : mediaGeral >= 40 ? "text-amber-500" : "text-rose-600";
+                }
+                <h3 class="text-3xl font-black font-headline mt-1 @corMedia">@mediaGeral.ToString("F1")%</h3>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-stone-900 border border-stone-200/60 p-6 rounded-2xl shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+                <span class="material-symbols-outlined text-2xl">timelapse</span>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider font-headline">Tempo Médio de Resposta</p>
+                @{
+                var tempoGeral = Model.Perguntas.Any() ? Model.Perguntas.Average(p => p.TempoMedioMs) / 1000.0 : 0.0;
+                }
+                <h3 class="text-3xl font-black font-headline mt-1 text-blue-600 dark:text-blue-400">@tempoGeral.ToString("F1")s</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Divisor com título da lista -->
+    <div class="mb-6">
+        <h2 class="text-xl font-bold text-rose-950 dark:text-rose-100 font-headline">Resultados Detalhados por Questão</h2>
+        <p class="text-xs text-stone-500">Métricas individuais para identificar as perguntas que oferecem maior dificuldade de compreensão.</p>
+    </div>
+
+    <!-- Grid de Perguntas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        @for (int i = 0; i < Model.Perguntas.Count; i++)
+        {
+        var p = Model.Perguntas[i];
+        var taxaAcerto = p.TaxaAcerto;
+        var corTexto = taxaAcerto >= 70 ? "text-emerald-600" : taxaAcerto >= 40 ? "text-amber-500" : "text-rose-600";
+        var corProgresso = taxaAcerto >= 70 ? "bg-emerald-500" : taxaAcerto >= 40 ? "bg-amber-500" : "bg-rose-500";
+        var bgProgresso = taxaAcerto >= 70 ? "bg-emerald-50 dark:bg-emerald-950/20" : taxaAcerto >= 40 ? "bg-amber-50 dark:bg-amber-950/20" : "bg-rose-50 dark:bg-rose-950/20";
+
+        <div class="bg-white dark:bg-stone-900 border border-stone-200/60 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div>
+                <!-- Contador e Respostas Totais -->
+                <div class="flex items-center justify-between mb-4">
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold text-xs">
+                        #@(i + 1)
+                    </span>
+                    <span class="text-xs text-stone-400 dark:text-stone-500 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">forum</span>
+                        @p.TotalTentativas respostas
+                    </span>
+                </div>
+
+                <!-- Enunciado -->
+                <h3 class="font-bold text-rose-950 dark:text-stone-100 text-sm leading-relaxed mb-6 font-headline">
+                    @p.Texto
+                </h3>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Barra de Progresso de Taxa de Acerto -->
+                <div>
+                    <div class="flex justify-between items-center text-xs font-semibold mb-1">
+                        <span class="text-stone-500 dark:text-stone-400">Taxa de Acertos</span>
+                        <span class="@corTexto font-bold text-sm">@taxaAcerto.ToString("F1")%</span>
+                    </div>
+                    <div class="h-2 w-full @bgProgresso rounded-full overflow-hidden">
+                        <div class="h-full @corProgresso rounded-full transition-all duration-500" style="width: @taxaAcerto%"></div>
+                    </div>
+                </div>
+
+                <!-- Métricas Secundárias -->
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-stone-100 dark:border-stone-800/60">
+                    <div class="bg-stone-50 dark:bg-stone-850/50 rounded-xl p-3 text-center">
+                        <div class="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 tracking-wider">Tempo Médio</div>
+                        <div class="text-sm font-black text-stone-700 dark:text-stone-300 font-headline mt-1 flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-[16px] text-stone-400">schedule</span>
+                            @((p.TempoMedioMs / 1000.0).ToString("F1"))s
                         </div>
                     </div>
-                    <p class="text-muted text-center mt-2 small">Baseado em @p.TotalTentativas respostas</p>
+                    <div class="bg-stone-50 dark:bg-stone-850/50 rounded-xl p-3 text-center">
+                        <div class="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 tracking-wider">Complexidade</div>
+                        @{
+                        var difLabel = taxaAcerto >= 70 ? "Fácil" : taxaAcerto >= 40 ? "Média" : "Alta";
+                        var difColor = taxaAcerto >= 70 ? "text-emerald-600" : taxaAcerto >= 40 ? "text-amber-500" : "text-rose-600";
+                        }
+                        <div class="text-sm font-black @difColor font-headline mt-1">
+                            @difLabel
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    }
+        }
+    </div>
 </div>

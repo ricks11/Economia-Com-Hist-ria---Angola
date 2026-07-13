@@ -4,52 +4,85 @@
     ViewData["Title"] = "Editar Quiz";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<form asp-action="Edit" asp-route-id="@Model.Id">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Configurações Gerais</h5>
+<div class="max-w-3xl mr-auto w-full py-6">
+    <!-- Cabeçalho -->
+    <header class="mb-8 border-b border-stone-200/60 dark:border-stone-850 pb-6">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-1">
+            <span class="material-symbols-outlined text-[16px]">edit_note</span>
+            Área de Gestão
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Titulo" class="form-label">Título do Quiz</label>
-                    <input asp-for="Titulo" class="form-control" required />
+        <h1 class="text-3xl font-black text-rose-950 dark:text-rose-200 tracking-tight font-headline">@ViewData["Title"]</h1>
+        <p class="text-sm text-stone-500 mt-1">Atualiza os parâmetros gerais e as restrições deste quiz na base de dados.</p>
+    </header>
+
+    <!-- Formulário -->
+    <form asp-action="Edit" asp-route-id="@Model.Id" class="space-y-6">
+        <div asp-validation-summary="ModelOnly" class="p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-xl text-sm mb-6"></div>
+
+        <!-- Card de Configurações -->
+        <div class="bg-white dark:bg-stone-900 border border-stone-200/60 rounded-3xl p-8 shadow-sm">
+            <h2 class="text-lg font-bold text-rose-950 dark:text-rose-100 font-headline mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">settings</span>
+                Configurações Gerais
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Título -->
+                <div>
+                    <label asp-for="Titulo" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Título do Quiz</label>
+                    <input asp-for="Titulo" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
+                    <span asp-validation-for="Titulo" class="text-xs text-error mt-1 block"></span>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Tema" class="form-label">Tema</label>
-                    <input asp-for="Tema" class="form-control" required />
+
+                <!-- Tema -->
+                <div>
+                    <label asp-for="Tema" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Tema</label>
+                    <input asp-for="Tema" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
+                    <span asp-validation-for="Tema" class="text-xs text-error mt-1 block"></span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label asp-for="Nivel" class="form-label">Nível de Dificuldade</label>
-                    <select asp-for="Nivel" class="form-control" required>
-                        <option value="Basico">Básico</option>
-                        <option value="Intermedio">Intermédio</option>
-                        <option value="Avancado">Avançado</option>
-                    </select>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Nível -->
+                <div>
+                    <label asp-for="Nivel" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Nível de Dificuldade</label>
+                    <div class="relative">
+                        <select asp-for="Nivel" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium appearance-none" required>
+                            <option value="Basico">Básico</option>
+                            <option value="Intermedio">Intermédio</option>
+                            <option value="Avancado">Avançado</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none text-[18px]">keyboard_arrow_down</span>
+                    </div>
+                    <span asp-validation-for="Nivel" class="text-xs text-error mt-1 block"></span>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="TotalPerguntas" class="form-label">Total de Perguntas</label>
-                    <input asp-for="TotalPerguntas" type="number" min="1" class="form-control" required />
+
+                <!-- Total de Perguntas -->
+                <div>
+                    <label asp-for="TotalPerguntas" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Total de Perguntas</label>
+                    <input asp-for="TotalPerguntas" type="number" min="1" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
+                    <span asp-validation-for="TotalPerguntas" class="text-xs text-error mt-1 block"></span>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="TempoLimiteSeg" class="form-label">Tempo Limite (seg)</label>
-                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="form-control" required />
+
+                <!-- Tempo Limite -->
+                <div>
+                    <label asp-for="TempoLimiteSeg" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Tempo Limite (segundos)</label>
+                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
+                    <span asp-validation-for="TempoLimiteSeg" class="text-xs text-error mt-1 block"></span>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Descricao" class="form-label">Descrição (Opcional)</label>
-                <textarea asp-for="Descricao" class="form-control" rows="2"></textarea>
             </div>
         </div>
-    </div>
 
-    <div class="form-group mt-4 mb-5">
-        <button type="submit" class="btn btn-success btn-lg">Salvar Alterações</button>
-        <a asp-action="Index" class="btn btn-secondary btn-lg">Cancelar</a>
-    </div>
-</form>
+        <!-- Botões de Ação -->
+        <div class="flex items-center gap-4 pt-4">
+            <button type="submit" class="px-6 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-bold text-sm shadow-sm hover:opacity-95 transition-opacity flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">save</span>
+                Guardar Alterações
+            </button>
+            <a asp-action="Index" class="px-6 py-3 rounded-full bg-surface-container hover:bg-surface-container-high text-secondary font-bold text-sm transition-colors text-center no-underline flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>

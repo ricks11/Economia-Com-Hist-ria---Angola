@@ -82,7 +82,7 @@ public class QuizzesController : ControllerBase
     }
 
     [HttpGet("{id}/stats")]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult<QuizStatsDto>> GetQuizStats(int id)
     {
         var quiz = await _quizRepository.GetByIdAsync(id);
@@ -107,12 +107,13 @@ public class QuizzesController : ControllerBase
     }
 
     [HttpGet("pool")]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult<List<PerguntaStartDto>>> GetQuestionPool([FromQuery] string? tema, [FromQuery] NivelDificuldade? nivel)
     {
         var query = _dbContext.Perguntas
             .Include(p => p.Opcoes)
             .Include(p => p.Quiz)
+            .Where(p => p.Quiz != null && p.Quiz.Ativo)
             .AsQueryable();
 
         if (!string.IsNullOrEmpty(tema))
@@ -122,18 +123,18 @@ public class QuizzesController : ControllerBase
             query = query.Where(p => p.Quiz.Nivel == nivel.Value);
 
         var perguntas = await query.ToListAsync();
-        
-        var response = perguntas.Select(p => new PerguntaStartDto(
+
+        var response = perguntas.Select(p => new PerguntaDetalheDto(
             p.Id,
             p.Enunciado,
-            p.Opcoes.Select(o => new OpcaoRespostaStartDto(o.Id, o.Texto)).ToList()
+            p.Opcoes.Select(o => new OpcaoRespostaDetalheDto(o.Id, o.Texto, o.IsCorrecta, o.Explicacao)).ToList()
         )).ToList();
 
         return Ok(response);
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult> CreateQuiz([FromBody] CreateQuizDto dto)
     {
         var quiz = new Quiz
@@ -156,11 +157,24 @@ public class QuizzesController : ControllerBase
         };
 
         await _quizRepository.CreateAsync(quiz);
-        return CreatedAtAction(nameof(GetQuizzes), new { id = quiz.Id }, quiz);
+
+        // CORREÇÃO: Criamos um DTO plano para a resposta, quebrando o ciclo de JSON
+        var responseDto = new QuizResponseDto(
+            quiz.Id,
+            quiz.Titulo,
+            quiz.Tema,
+            quiz.Nivel,
+            quiz.TotalPerguntas,
+            quiz.TempoLimiteSeg,
+            quiz.Ativo
+        );
+
+        // CORREÇÃO: Aponta para 'GetQuiz' (singular) que aceita o ID na rota
+        return CreatedAtAction(nameof(GetQuiz), new { id = quiz.Id }, responseDto);
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult> UpdateQuiz(int id, [FromBody] UpdateQuizDto dto)
     {
         var quiz = await _quizRepository.GetByIdAsync(id);
@@ -179,7 +193,7 @@ public class QuizzesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult> DeleteQuiz(int id)
     {
         var quiz = await _quizRepository.GetByIdAsync(id);
@@ -198,19 +212,17 @@ public class QuizzesController : ControllerBase
         var quiz = await _quizRepository.GetByIdAsync(tentativa.QuizId);
         if (quiz == null) return NotFound();
 
-        if (dto.Respostas.Count < quiz.TotalPerguntas)
-        {
-            return BadRequest(new { message = "All questions must be answered." });
-        }
-
         var respostasPersistidas = new List<RespostaPergunta>();
         var detalhada = new List<RespostaDetalhadaDto>();
 
         var perguntaIds = dto.Respostas.Select(r => r.PerguntaId).ToList();
-        var opcaoIds = dto.Respostas.Select(r => r.OpcaoRespostaId).ToList();
+
+        // Filtramos apenas os IDs maiores que zero para não buscar a opção '0' na BD
+        var opcaoIds = dto.Respostas.Where(r => r.OpcaoRespostaId > 0).Select(r => r.OpcaoRespostaId).ToList();
 
         var perguntas = await _dbContext.Perguntas
             .Where(p => perguntaIds.Contains(p.Id))
+            .Include(p => p.Opcoes) // Inclui as opções para o caso de precisarmos de um ID de fallback
             .ToDictionaryAsync(p => p.Id);
 
         var opcoes = await _dbContext.OpcoesResposta
@@ -222,32 +234,60 @@ public class QuizzesController : ControllerBase
             if (!perguntas.TryGetValue(r.PerguntaId, out var pergunta))
                 return BadRequest(new { message = $"Pergunta {r.PerguntaId} não encontrada." });
 
-            if (!opcoes.TryGetValue(r.OpcaoRespostaId, out var opcao))
-                return BadRequest(new { message = $"Opção {r.OpcaoRespostaId} não encontrada." });
-
-            var isCorrecta = opcao.IsCorrecta;
-            respostasPersistidas.Add(new RespostaPergunta
+            // SE o utilizador respondeu à pergunta (OpcaoRespostaId válido)
+            if (r.OpcaoRespostaId > 0)
             {
-                TentativaQuizId = (int)tentativa.Id,
-                PerguntaId = r.PerguntaId,
-                OpcaoRespostaId = r.OpcaoRespostaId,
-                TempoRespostaMs = r.TempoRespostaSeg * 1000,
-                IsCorrecta = isCorrecta
-            });
+                if (!opcoes.TryGetValue(r.OpcaoRespostaId, out var opcao))
+                    return BadRequest(new { message = $"Opção {r.OpcaoRespostaId} não encontrada." });
 
-            detalhada.Add(new RespostaDetalhadaDto(
-                pergunta.Id,
-                pergunta.Enunciado,
-                opcao.Id,
-                opcao.Texto,
-                isCorrecta,
-                opcao.Explicacao ?? string.Empty
-            ));
+                var isCorrecta = opcao.IsCorrecta;
+                respostasPersistidas.Add(new RespostaPergunta
+                {
+                    TentativaQuizId = (int)tentativa.Id,
+                    PerguntaId = r.PerguntaId,
+                    OpcaoRespostaId = r.OpcaoRespostaId,
+                    TempoRespostaMs = r.TempoRespostaSeg * 1000,
+                    IsCorrecta = isCorrecta
+                });
+
+                detalhada.Add(new RespostaDetalhadaDto(
+                    pergunta.Id,
+                    pergunta.Enunciado,
+                    opcao.Id,
+                    opcao.Texto,
+                    isCorrecta,
+                    opcao.Explicacao ?? string.Empty
+                ));
+            }
+            // SE o tempo acabou e esta pergunta ficou em branco (OpcaoRespostaId == 0)
+            else
+            {
+                // Para evitar erros de Chave Estrangeira (FK) se a tua BD não aceitar nulos,
+                // associamos temporariamente à primeira opção da pergunta, mas forçamos 'IsCorrecta = false'.
+                var fallbackOpcaoId = pergunta.Opcoes.FirstOrDefault()?.Id ?? 0;
+
+                respostasPersistidas.Add(new RespostaPergunta
+                {
+                    TentativaQuizId = (int)tentativa.Id,
+                    PerguntaId = r.PerguntaId,
+                    OpcaoRespostaId = fallbackOpcaoId,
+                    TempoRespostaMs = r.TempoRespostaSeg * 1000,
+                    IsCorrecta = false // Falhou por falta de tempo
+                });
+
+                detalhada.Add(new RespostaDetalhadaDto(
+                    pergunta.Id,
+                    pergunta.Enunciado,
+                    0,
+                    "Não respondida (Tempo Excedido)",
+                    false,
+                    "O tempo limite terminou antes de responderes a esta pergunta."
+                ));
+            }
         }
 
         await _quizRepository.AddRespostasAsync(respostasPersistidas);
 
-        // Calculate total score using the scoring service
         int pontuacao = _scoringService.CalcularPontuacao(tentativa, respostasPersistidas);
         tentativa.Pontuacao = pontuacao;
         tentativa.Completada = true;
@@ -283,7 +323,6 @@ public class QuizzesController : ControllerBase
     }
 
     [HttpGet("{id}/perguntas")]
-    [Authorize(Roles = "Admin,Editor")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<List<PerguntaStartDto>>> GetPerguntas(
@@ -338,7 +377,7 @@ public class QuizzesController : ControllerBase
     }
 
     [HttpGet("{id}/detalhe")]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<QuizDetalheDto>> GetQuizDetalhe(int id, CancellationToken cancellationToken)

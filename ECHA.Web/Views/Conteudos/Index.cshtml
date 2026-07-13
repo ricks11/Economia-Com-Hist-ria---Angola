@@ -68,7 +68,7 @@
                     <h1 class="text-3xl md:text-4xl font-black text-primary tracking-tight">Explorar Conteúdos</h1>
                     <p class="text-sm text-stone-500 mt-1">Descubra artigos, vídeos e podcasts sobre economia e história.</p>
                 </div>
-                @if (User.IsInRole("Editor") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                @if (User.IsInRole("Editor") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Professor"))
                 {
                 <a asp-action="Create" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-surface-container text-secondary font-semibold hover:bg-surface-container-high transition-all shadow-sm hover:shadow decoration-none shrink-0">
                     <span class="material-symbols-outlined text-[20px]">add</span>
@@ -104,17 +104,17 @@
                     Todos
                 </a>
 
-                <a asp-action="Index" asp-route-tipo="Video" asp-route-jindungo="" asp-route-nivel="@nivelAtual" asp-route-estado="@estadoAtual" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass("Video")">
+                <a asp-action="Index" asp-route-tipo="Video" asp-route-jindungo="" asp-route-nivel="@nivelAtual" asp-route-estado="@estadoAtual" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass(" Video")">
                     <span class="material-symbols-outlined text-[18px]">play_circle</span>
                     Vídeos
                 </a>
 
-                <a asp-action="Index" asp-route-tipo="Texto" asp-route-jindungo="false" asp-route-nivel="@nivelAtual" asp-route-estado="@estadoAtual" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass("Texto")">
+                <a asp-action="Index" asp-route-tipo="Texto" asp-route-jindungo="false" asp-route-nivel="@nivelAtual" asp-route-estado="@estadoAtual" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass(" Texto")">
                     <span class="material-symbols-outlined text-[18px]">article</span>
                     Textos
                 </a>
 
-                <a asp-action="Index" asp-route-tipo="Podcast" asp-route-jindungo="" asp-route-nivel="@nivelAtual" asp-route-estado="@estadoAtual" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass("Podcast")">
+                <a asp-action="Index" asp-route-tipo="Podcast" asp-route-jindungo="" asp-route-nivel="@nivelAtual" asp-route-estado="@estadoAtual" asp-route-tema="@temaAtual" class="px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 decoration-none @GetFilterClass(" Podcast")">
                     <span class="material-symbols-outlined text-[18px]">mic</span>
                     Podcasts
                 </a>
@@ -128,17 +128,17 @@
             <section class="flex flex-wrap items-center gap-3 text-xs">
                 <div class="flex items-center gap-1.5 bg-stone-50 p-1.5 rounded-2xl border border-stone-100">
                     <span class="font-bold text-stone-400 uppercase text-[10px] tracking-wider px-2">Nível:</span>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Basico" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass("Basico")">Básico</a>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Intermedio" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass("Intermedio")">Intermediário</a>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Avancado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass("Avancado")">Avançado</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Basico" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass(" Basico")">Básico</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Intermedio" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass(" Intermedio")">Intermediário</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Avancado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass(" Avancado")">Avançado</a>
                 </div>
 
                 <div class="flex items-center gap-1.5 bg-stone-50 p-1.5 rounded-2xl border border-stone-100">
                     <span class="font-bold text-stone-400 uppercase text-[10px] tracking-wider px-2">Estado:</span>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Rascunho" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass("Rascunho")">Rascunho</a>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="EmRevisao" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass("EmRevisao")">Em Revisão</a>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Publicado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass("Publicado")">Publicado</a>
-                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Arquivado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass("Arquivado")">Arquivado</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Rascunho" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass(" Rascunho")">Rascunho</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="EmRevisao" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass(" EmRevisao")">Em Revisão</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Publicado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass(" Publicado")">Publicado</a>
+                    <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Arquivado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass(" Arquivado")">Arquivado</a>
                 </div>
             </section>
         </div>

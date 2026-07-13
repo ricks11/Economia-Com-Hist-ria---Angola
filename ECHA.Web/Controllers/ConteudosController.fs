@@ -9,7 +9,7 @@ open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
 open ECHA.Web.Services
 
-[<Authorize(Roles = "Editor,Admin, SuperAdmin")>]
+[<Authorize(AuthenticationSchemes = "CookieAuthentication")>]
 type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
@@ -79,39 +79,62 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     member this.Details (id: int) =
         task {
             try
-                // Protege o incremento: se falhar, não crasha o carregamento da página
+                // Protege o incremento de visitas
                 try 
                     let! _ = apiClient.IncrementarVisitasAsync(id) |> Async.AwaitTask |> Async.StartChild 
                     ()
                 with _ -> () 
-            
-                 // 1. Obter o token do utilizador
+    
+                // 1. Tentar ler o ID do utilizador logado a partir dos Claims
+                let userIdClaim = this.User.FindFirst("sub")
+                let userIdClaim = 
+                    if isNull userIdClaim then 
+                        this.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)
+                    else 
+                        userIdClaim
+
+                let userIdOpt =
+                    if not (isNull userIdClaim) && not (System.String.IsNullOrEmpty(userIdClaim.Value)) then
+                        match System.Int32.TryParse(userIdClaim.Value) with
+                        | true, uid -> Some uid
+                        | _ -> None
+                    else 
+                        None
+
+                // 2. Recuperar o token para enviar ao backend (para validar Roles/Acessos)
                 let token = this.GetToken()
-            
-                // 2. Chamar a API passando o token (se existir)
+                let tokenOpt = if String.IsNullOrEmpty(token) then None else Some token
+
+                // 3. Chamar a API passando o ID, o token opcional e o userId opcional
                 let! conteudo = 
-                    if String.IsNullOrEmpty(token) then
-                        apiClient.GetConteudoAsync(id)
-                    else
-                        apiClient.GetConteudoAsync(id, token = token)
+                    match userIdOpt with
+                    | Some uid -> apiClient.GetConteudoAsync(id, ?token = tokenOpt, userId = uid)
+                    | None -> apiClient.GetConteudoAsync(id, ?token = tokenOpt)
+
                 match conteudo with
                 | Some c -> 
+                    // 4. Prioriza o TempData de clique recente, senão cai no estado real da BD
                     let estadoFavorito =
                         if this.TempData.ContainsKey("IsFavorito_" + string id) then
                             this.TempData.["IsFavorito_" + string id] :?> bool
                         else
-                            c.EhFavorito  // agora já virá correto se o token foi enviado
+                            c.EhFavorito 
 
                     this.ViewData["IsFavorito"] <- estadoFavorito
                     return this.View(c) :> IActionResult
+                | None -> 
+                    return this.NotFound() :> IActionResult
             with
-            | _ -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | _ -> 
+                return this.RedirectToAction("Login", "Auth") :> IActionResult
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin,Professor")>]
     member this.Create () = this.View()
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin,Professor")>]
     [<ValidateAntiForgeryToken>]
     member this.Create (request: CreateConteudoDto, imagemCapa: IFormFile) =
         task {
@@ -155,6 +178,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpGet>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin,Professor")>]
     member this.Edit (id: int) =
         task {
             try
@@ -167,6 +191,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
         }
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin,Professor")>]
     member this.Edit (id: int, imagemCapa: IFormFile) =
         task {
             let token = this.GetToken()
@@ -193,6 +218,7 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
         }   
 
     [<HttpPost>]
+    [<Authorize(Roles = "Editor,Admin,SuperAdmin,Professor")>]
     [<ValidateAntiForgeryToken>]
     member this.Delete (id: int) =
         task {
@@ -213,7 +239,6 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
 
     [<HttpPost>]
     [<ValidateAntiForgeryToken>]
-    [<Authorize>] 
     member this.ToggleFavorito (id: int) =
         task {
             let token = this.GetToken()

@@ -175,6 +175,7 @@ public class ConteudosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ConteudoResponseDto>> GetConteudo(
         int id,
+        [FromQuery] int? userIdContext,
         CancellationToken cancellationToken)
     {
         var conteudo = await _dbContext.Conteudos
@@ -185,7 +186,7 @@ public class ConteudosController : ControllerBase
             return NotFound(new { message = "Conteúdo não encontrado" });
 
         var userIdClaim = User.FindFirst("sub")?.Value;
-        var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
+        var userId = int.TryParse(userIdClaim, out var uid) ? uid : (userIdContext ?? 0);
 
         var isFavorito = userId > 0 && await _dbContext.Favoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
@@ -193,7 +194,7 @@ public class ConteudosController : ControllerBase
         bool temAcessoJindungo = true;
         if (conteudo.IsJindungo)
         {
-            var isEditorOrAdmin = User.Identity?.IsAuthenticated == true && (User.IsInRole("Admin") || User.IsInRole("Editor"));
+            var isEditorOrAdmin = User.Identity?.IsAuthenticated == true && (User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("SuperAdmin"));
             if (!isEditorOrAdmin)
             {
                 temAcessoJindungo = userId > 0 && await _dbContext.SolicitacoesAcesso

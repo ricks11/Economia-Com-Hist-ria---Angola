@@ -113,5 +113,12 @@ public class AppDbContext : DbContext
             .HasIndex(a => new { a.UtilizadorId, a.Timestamp });
         modelBuilder.Entity<VisualizacaoConteudo>()
             .HasIndex(v => new { v.UtilizadorId, v.ConteudoId });
+
+        // Apaga as perguntas se o quiz for apagado
+        modelBuilder.Entity<Pergunta>()
+            .HasOne(p => p.Quiz)
+            .WithMany(q => q.Perguntas)
+            .HasForeignKey(p => p.QuizId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

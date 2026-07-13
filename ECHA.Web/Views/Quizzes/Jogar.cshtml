@@ -30,40 +30,43 @@
         <div id="questions-container">
             @for (int i = 0; i < Model.Perguntas.Count; i++)
             {
-                var pergunta = Model.Perguntas[i];
-                <div class="question-panel @(i == 0 ? "" : "hidden") bg-surface-container-lowest rounded-3xl p-8 ambient-shadow" data-index="@i">
-                    <p class="text-xs font-bold uppercase tracking-widest text-tertiary mb-3">Pergunta @(i + 1)</p>
-                    <h2 class="text-xl font-headline font-bold text-primary mb-6">@pergunta.Enunciado</h2>
-                    <div class="space-y-3">
-                        @foreach (var opcao in pergunta.Opcoes)
-                        {
-                            <label class="flex items-center gap-4 p-4 bg-surface-container-low rounded-2xl cursor-pointer hover:bg-surface-container-high transition-colors has-[:checked]:bg-primary/10 has-[:checked]:ring-2 has-[:checked]:ring-primary/30">
-                                <input type="radio" name="Respostas[@i].OpcaoRespostaId" value="@opcao.Id" required class="text-primary" data-pergunta-id="@pergunta.Id" />
-                                <input type="hidden" name="Respostas[@i].PerguntaId" value="@pergunta.Id" />
-                                <input type="hidden" name="Respostas[@i].TempoRespostaSeg" value="0" class="tempo-input" />
-                                <span class="font-medium">@opcao.Texto</span>
-                            </label>
-                        }
-                    </div>
-                    <div class="flex justify-between mt-8">
-                        @if (i > 0)
-                        {
-                            <button type="button" class="prev-btn px-6 py-3 rounded-full bg-surface-container text-secondary font-bold" data-index="@i">Anterior</button>
-                        }
-                        else
-                        {
-                            <div></div>
-                        }
-                        @if (i < Model.Perguntas.Count - 1)
-                        {
-                            <button type="button" class="next-btn px-6 py-3 rounded-full bg-primary text-white font-bold" data-index="@i">Seguinte</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="px-8 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-bold">Submeter Quiz</button>
-                        }
-                    </div>
+            var pergunta = Model.Perguntas[i];
+            <div class="question-panel @(i == 0 ? " " : " hidden") bg-surface-container-lowest rounded-3xl p-8 ambient-shadow" data-index="@i">
+                <p class="text-xs font-bold uppercase tracking-widest text-tertiary mb-3">Pergunta @(i + 1)</p>
+                <h2 class="text-xl font-headline font-bold text-primary mb-6">@pergunta.Enunciado</h2>
+
+                <!-- CORREÇÃO: Colocados aqui para serem renderizados apenas UMA vez por pergunta -->
+                <input type="hidden" name="Respostas[@i].PerguntaId" value="@pergunta.Id" />
+                <input type="hidden" name="Respostas[@i].TempoRespostaSeg" value="0" class="tempo-input" />
+
+                <div class="space-y-3">
+                    @foreach (var opcao in pergunta.Opcoes)
+                    {
+                    <label class="flex items-center gap-4 p-4 bg-surface-container-low rounded-2xl cursor-pointer hover:bg-surface-container-high transition-colors has-[:checked]:bg-primary/10 has-[:checked]:ring-2 has-[:checked]:ring-primary/30">
+                        <input type="radio" name="Respostas[@i].OpcaoRespostaId" value="@opcao.Id" required class="text-primary" data-pergunta-id="@pergunta.Id" />
+                        <span class="font-medium">@opcao.Texto</span>
+                    </label>
+                    }
                 </div>
+                <div class="flex justify-between mt-8">
+                    @if (i > 0)
+                    {
+                    <button type="button" class="prev-btn px-6 py-3 rounded-full bg-surface-container text-secondary font-bold" data-index="@i">Anterior</button>
+                    }
+                    else
+                    {
+                    <div></div>
+                    }
+                    @if (i < Model.Perguntas.Count - 1)
+                    {
+                    <button type="button" class="next-btn px-6 py-3 rounded-full bg-primary text-white font-bold" data-index="@i">Seguinte</button>
+                    }
+                    else
+                    {
+                    <button type="submit" class="px-8 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-bold">Submeter Quiz</button>
+                    }
+                </div>
+            </div>
             }
         </div>
     </form>
@@ -116,6 +119,14 @@
         timerEl.textContent = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(interval);
+
+            // CORREÇÃO: Calcula e preenche o tempo gasto na pergunta atual antes do fecho forçado
+            const currentPanel = panels[currentIndex];
+            const tempoInput = currentPanel.querySelector('.tempo-input');
+            if (tempoInput) {
+                tempoInput.value = Math.round((Date.now() - questionStartTimes[currentIndex]) / 1000);
+            }
+
             document.getElementById('quiz-form').submit();
         }
     }, 1000);

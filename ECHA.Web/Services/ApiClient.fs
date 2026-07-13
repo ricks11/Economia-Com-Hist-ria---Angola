@@ -81,14 +81,20 @@ type ApiClient(httpClient: HttpClient) =
                 return EconomiaComHistoria.Core.Helpers.PagedResult<ConteudoResponseDto>() // Retorna uma instância de paginação vazia
         }
 
-    member this.GetConteudoAsync(id: int, ?token: string) : Task<ConteudoResponseDto option> =
+    member this.GetConteudoAsync(id: int, ?token: string, ?userId: int) : Task<ConteudoResponseDto option> =
         task {
+            let url = 
+                match userId with
+                | Some uid -> $"/api/conteudos/{id}?userIdContext={uid}"
+                | None -> $"/api/conteudos/{id}"
+
             // Se foi passado token, coloca-o no cabeçalho da requisição
             token |> Option.iter (fun t ->
                 httpClient.DefaultRequestHeaders.Authorization <-
                     System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", t))
 
-            let! response = httpClient.GetAsync($"/api/conteudos/{id}")
+            // ✅ CORREÇÃO: Usa a variável 'url' construída acima!
+            let! response = httpClient.GetAsync(url)
         
             // Limpa o cabeçalho depois para não afetar outras chamadas
             httpClient.DefaultRequestHeaders.Authorization <- null
@@ -269,6 +275,32 @@ type ApiClient(httpClient: HttpClient) =
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
             else
                 return false
+        }
+
+    member this.StartQuizAsync(id: int, token: string) : Task<QuizStartResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/quizzes/{id}/start")
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<QuizStartResponseDto>()
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
+    member this.SubmitQuizAsync(request: SubmitTentativaDto, token: string) : Task<QuizSubmissionResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/quizzes/tentativa", request)
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<QuizSubmissionResponseDto>()
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
         }
 
     // Moderation Methods
