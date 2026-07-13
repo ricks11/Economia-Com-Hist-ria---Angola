@@ -55,7 +55,7 @@ public class ConteudosController : ControllerBase
     /// Creates a new content item (Editor/Admin only)
     /// </summary>
     [HttpPost]
-    [Authorize(Roles = "Editor,Professor,Admin")]
+    [Authorize(Roles = "Editor,Professor,Admin,SuperAdmin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -68,8 +68,10 @@ public class ConteudosController : ControllerBase
         if (string.IsNullOrWhiteSpace(request.Titulo))
             return BadRequest(new { message = "Título é obrigatório" });
 
-        // Get current user ID from JWT
-        var userIdClaim = User.FindFirst("sub")?.Value;
+        // CORREÇÃO: Usar o fallback seguro para NameIdentifier tal como no PUT
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                       ?? User.FindFirst("sub")?.Value;
+
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
@@ -393,7 +395,8 @@ public class ConteudosController : ControllerBase
             return NotFound(new { message = "Conteúdo não encontrado" });
 
         // Get current user and check authorization
-        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                       ?? User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
@@ -517,41 +520,49 @@ public class ConteudosController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<object>> ToggleFavorito(
-        int id,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> ToggleFavorito(int id)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
-
-        if (conteudo is null)
-            return NotFound(new { message = "Conteúdo não encontrado" });
-
-        var userIdClaim = User.FindFirst("sub")?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
-            return Unauthorized(new { message = "Utilizador não autenticado" });
-
-        var favorito = await _dbContext.Favoritos
-            .FirstOrDefaultAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
-
-        if (favorito is not null)
+        // 1. Ir buscar o ID do utilizador logado através do Token
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                       ?? User.FindFirst("sub")?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
         {
-            _dbContext.Favoritos.Remove(favorito);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-            return Ok(new { adicionado = false, message = "Removido de favoritos" });
+            return Unauthorized(new { message = "Utilizador não identificado." });
+        }
+
+        // 2. Verificar se o conteúdo existe
+        var conteudoExiste = await _dbContext.Conteudos.AnyAsync(c => c.Id == id);
+        if (!conteudoExiste)
+        {
+            return NotFound(new { message = "Conteúdo não encontrado." });
+        }
+
+        // 3. Verificar se já é favorito (Usa ConteudoFavorito aqui)
+        var favoritoExistente = await _dbContext.Favoritos
+            .FirstOrDefaultAsync(f => f.UtilizadorId == userId && f.ConteudoId == id);
+
+        var resposta = new ToggleFavoritoResponseDto();
+
+        if (favoritoExistente != null)
+        {
+            // Se já existia, o utilizador quer remover
+            _dbContext.Favoritos.Remove(favoritoExistente);
+            resposta.Adicionado = false;
+            resposta.Message = "Removido dos favoritos com sucesso.";
         }
         else
         {
-            var novoFavorito = new ConteudoFavorito
-            {
-                ConteudoId = id,
-                UtilizadorId = userId,
-                DataAdicionado = DateTime.UtcNow
-            };
-
-            _dbContext.Favoritos.Add(novoFavorito);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-            return Ok(new { adicionado = true, message = "Adicionado a favoritos" });
+            // 👈 CORREÇÃO AQUI: Mudado de 'Favorito' para 'ConteudoFavorito'
+            var novoFavorito = new ConteudoFavorito { UtilizadorId = userId, ConteudoId = id };
+            await _dbContext.Favoritos.AddAsync(novoFavorito);
+            resposta.Adicionado = true;
+            resposta.Message = "Adicionado aos favoritos com sucesso.";
         }
+
+        await _dbContext.SaveChangesAsync();
+
+        // Devolvemos o DTO formal que criámos!
+        return Ok(resposta);
     }
 
     private static ConteudoResponseDto MapToResponseDto(Conteudo conteudo, bool ehFavorito, bool temAcessoJindungo = true)

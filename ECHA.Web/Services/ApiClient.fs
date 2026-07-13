@@ -81,9 +81,18 @@ type ApiClient(httpClient: HttpClient) =
                 return EconomiaComHistoria.Core.Helpers.PagedResult<ConteudoResponseDto>() // Retorna uma instância de paginação vazia
         }
 
-    member this.GetConteudoAsync(id: int) : Task<ConteudoResponseDto option> =
+    member this.GetConteudoAsync(id: int, ?token: string) : Task<ConteudoResponseDto option> =
         task {
+            // Se foi passado token, coloca-o no cabeçalho da requisição
+            token |> Option.iter (fun t ->
+                httpClient.DefaultRequestHeaders.Authorization <-
+                    System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", t))
+
             let! response = httpClient.GetAsync($"/api/conteudos/{id}")
+        
+            // Limpa o cabeçalho depois para não afetar outras chamadas
+            httpClient.DefaultRequestHeaders.Authorization <- null
+
             if response.IsSuccessStatusCode then
                 let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)
                 return Some conteudo
@@ -102,8 +111,10 @@ type ApiClient(httpClient: HttpClient) =
     member this.CreateConteudoAsync(request: CreateConteudoDto, token: string) : Task<ConteudoResponseDto option> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.PostAsJsonAsync("/api/conteudos", request)
-    
+        
+            // CORREÇÃO: Passar JsonOpts.options como terceiro parâmetro para garantir camelCase e Enums em String
+            let! response = httpClient.PostAsJsonAsync("/api/conteudos", request, JsonOpts.options)
+        
             if response.IsSuccessStatusCode then
                 let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)
                 return Some conteudo
@@ -118,12 +129,16 @@ type ApiClient(httpClient: HttpClient) =
     member this.UpdateConteudoAsync(id: int, request: UpdateConteudoDto, token: string) : Task<ConteudoResponseDto option> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.PutAsJsonAsync($"/api/conteudos/{id}", request)
+        
+            // CORREÇÃO: Passar JsonOpts.options também no PUT
+            let! response = httpClient.PutAsJsonAsync($"/api/conteudos/{id}", request, JsonOpts.options)
+        
             if response.IsSuccessStatusCode then
-                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)  // <- adicionar options
+                let! conteudo = response.Content.ReadFromJsonAsync<ConteudoResponseDto>(JsonOpts.options)
                 return Some conteudo
             else if (int response.StatusCode = 401) then
-                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+                let! errorContent = response.Content.ReadAsStringAsync()
+                return raise (ApiClientException(response.StatusCode, errorContent))
             else
                 return None
         }
@@ -720,6 +735,25 @@ type ApiClient(httpClient: HttpClient) =
                 return true
             else if (int response.StatusCode = 401) then
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return false
+        }
+
+
+
+    member this.ToggleFavoritoAsync(id: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- 
+                System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+        
+            let! response = httpClient.PostAsync($"/api/conteudos/{id}/favorito", null)
+        
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<ToggleFavoritoResponseDto>(JsonOpts.options)
+                // 👇 Alterado para "Adicionado" com letra maiúscula para bater com o C#
+                return result.Adicionado 
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Sessão expirada ou não autorizado."))
             else
                 return false
         }

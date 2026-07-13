@@ -1,14 +1,33 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+
+    // Extração segura de iniciais para o Avatar
+    var userName = User.Identity?.Name ?? "U";
+    var initials = userName.Contains(" ")
+        ? string.Join("", userName.Split(' ').Select(n => n.FirstOrDefault())).ToUpper()
+        : userName.Substring(0, Math.Min(2, userName.Length)).ToUpper();
+
+    // Função interna para limpar as classes de navegação ativa
+    string GetNavClass(string controller, string action = null) {
+        bool isActive = currentController == controller && (action == null || currentAction == action);
+        return isActive
+            ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500"
+            : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800";
+    }
+}
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Economia com História – Angola</title>
-    
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    
+
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -84,19 +103,23 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+
         body {
             background-color: theme('colors.background');
             color: theme('colors.on-background');
             font-family: theme('fontFamily.body');
         }
+
         h1, h2, h3, h4, h5, h6, .font-headline {
             font-family: theme('fontFamily.headline');
             letter-spacing: -0.02em;
         }
+
         .angola-watermark {
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
             opacity: 0.03;
         }
+
         .ambient-shadow {
             box-shadow: 0 8px 32px rgba(26, 28, 28, 0.06);
         }
@@ -107,162 +130,199 @@
 
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <!-- Sidebar Navigation (Logged In) -->
-        <aside class="fixed left-0 top-0 h-full w-64 bg-stone-50 dark:bg-stone-900 flex flex-col py-8 z-50 border-r-0">
-            <div class="px-6 mb-10">
-                <a href="@Url.Action("Index", "Home")" class="no-underline">
-                    <h1 class="text-rose-950 dark:text-rose-200 font-bold tracking-tighter text-2xl font-headline">Economia com História – Angola</h1>
-                </a>
-            </div>
-            <nav class="flex-1 space-y-1 px-3">
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Home")">
-                    <span class="material-symbols-outlined">home</span>
-                    <span class="text-sm font-semibold font-label">Início</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conteudos" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Conteudos")">
-                    <span class="material-symbols-outlined">menu_book</span>
-                    <span class="text-sm font-semibold font-label">Aprender</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Quizzes" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Quizzes")">
-                    <span class="material-symbols-outlined">sports_esports</span>
-                    <span class="text-sm font-semibold font-label">Jogar</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Forum" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Forum")">
-                    <span class="material-symbols-outlined">groups</span>
-                    <span class="text-sm font-semibold font-label">Participar</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Rankings" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Rankings")">
-                    <span class="material-symbols-outlined">leaderboard</span>
-                    <span class="text-sm font-semibold font-label">Ranking</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Escolas" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Escolas")">
-                    <span class="material-symbols-outlined">school</span>
-                    <span class="text-sm font-semibold font-label">Escolas</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Turmas" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Turmas")">
-                    <span class="material-symbols-outlined">group</span>
-                    <span class="text-sm font-semibold font-label">Turmas</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Perfil" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Perfil")">
-                    <span class="material-symbols-outlined">person</span>
-                    <span class="text-sm font-semibold font-label">Perfil</span>
-                </a>
+    <!-- Backdrop para fechar o menu mobile ao clicar fora -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-stone-900/40 z-40 hidden md:hidden transition-opacity"></div>
 
-                @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
-                {
-                    <div class="pt-4 border-t border-stone-200/50 mt-4 px-4 pb-2">
-                        <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest font-headline">Painel Administrativo</p>
-                    </div>
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Moderacao" && ViewContext.RouteData.Values["action"]?.ToString() == "Fila" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Fila", "Moderacao")">
-                        <span class="material-symbols-outlined">edit_note</span>
-                        <span class="text-sm font-semibold font-label">Fila de Revisão</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Moderacao" && ViewContext.RouteData.Values["action"]?.ToString() == "Utilizadores" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Utilizadores", "Moderacao")">
-                        <span class="material-symbols-outlined">manage_accounts</span>
-                        <span class="text-sm font-semibold font-label">Utilizadores</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Moderacao" && ViewContext.RouteData.Values["action"]?.ToString() == "Denuncias" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Denuncias", "Moderacao")">
-                        <span class="material-symbols-outlined">report</span>
-                        <span class="text-sm font-semibold font-label">Denúncias</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Relatorios" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Index", "Relatorios")">
-                        <span class="material-symbols-outlined">assessment</span>
-                        <span class="text-sm font-semibold font-label">Desempenho</span>
-                    </a>
-                }
-                @if (User.IsInRole("SuperAdmin"))
-                {
-                    <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Permissoes" ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500" : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800")" href="@Url.Action("Permissoes", "Admin")">
-                        <span class="material-symbols-outlined">admin_panel_settings</span>
-                        <span class="text-sm font-semibold font-label">Permissões</span>
-                    </a>
-                }
-            </nav>
-            <div class="px-6 mt-auto">
-                <form asp-controller="Auth" asp-action="Logout" method="post" class="w-full">
-                    <button type="submit" class="w-full bg-stone-200/50 hover:bg-stone-200 text-stone-700 py-3 rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-sm">logout</span>
-                        Sair
-                    </button>
-                </form>
-            </div>
-        </aside>
-
-        <!-- Top App Bar (Logged In) -->
-        <header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-white/80 dark:bg-stone-950/80 backdrop-blur-md flex items-center justify-between px-8 z-40 border-b border-stone-200/30">
-            <div class="flex items-center gap-4 flex-1 max-w-xl">
-                <div class="relative w-full">
-                    <input class="w-full bg-surface-container-high border-none rounded-full py-2 pl-10 text-sm focus:ring-2 focus:ring-accent-yellow" placeholder="Pesquisar arquivos, moedas ou eras..." type="text" />
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-lg">search</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-6">
-                <button class="text-stone-600 hover:text-yellow-500 transition-all">
-                    <span class="material-symbols-outlined">notifications</span>
-                </button>
-                <a href="@Url.Action("Index", "Perfil")" class="text-stone-600 hover:text-yellow-500 transition-all no-underline">
-                    <span class="material-symbols-outlined">settings</span>
-                </a>
-                <div class="flex items-center gap-3 pl-4 border-l border-stone-200">
-                    <div class="text-right">
-                        <p class="text-xs font-bold text-on-surface">@User.Identity.Name</p>
-                        <p class="text-[10px] text-stone-500 uppercase font-bold tracking-tighter">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
-                    </div>
-                    <div class="w-8 h-8 rounded-full border border-outline-variant/20 bg-primary/10 flex items-center justify-center text-primary font-bold">
-                        @User.Identity.Name.Substring(0, Math.Min(2, User.Identity.Name.Length)).ToUpper()
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content Area (Logged In) -->
-        <div class="ml-64 pt-16 flex-grow flex flex-col min-h-screen">
-            <main class="flex-grow p-8">
-                @RenderBody()
-            </main>
+    <!-- Sidebar Navigation (Responsiva) -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-stone-50 dark:bg-stone-900 flex flex-col py-8 z-50 border-r-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="px-6 mb-10 flex items-center justify-between">
+            <a href="@Url.Action("Index", "Home" )" class="no-underline">
+                <h1 class="text-rose-950 dark:text-rose-200 font-bold tracking-tighter text-2xl font-headline">Economia com História</h1>
+            </a>
+            <!-- Botão fechar (Apenas Mobile) -->
+            <button id="close-sidebar" class="md:hidden text-stone-500 hover:text-stone-800">
+                <span class="material-symbols-outlined">close</span>
+            </button>
         </div>
+        <nav class="flex-1 space-y-1 px-3 overflow-y-auto">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Home")" href="@Url.Action("Index", "Home" )">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm font-semibold font-label">Início</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Conteudos")" href="@Url.Action("Index", "Conteudos" )">
+                <span class="material-symbols-outlined">menu_book</span>
+                <span class="text-sm font-semibold font-label">Aprender</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Quizzes")" href="@Url.Action("Index", "Quizzes" )">
+                <span class="material-symbols-outlined">sports_esports</span>
+                <span class="text-sm font-semibold font-label">Jogar</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Forum")" href="@Url.Action("Index", "Forum" )">
+                <span class="material-symbols-outlined">groups</span>
+                <span class="text-sm font-semibold font-label">Participar</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Rankings")" href="@Url.Action("Index", "Rankings" )">
+                <span class="material-symbols-outlined">leaderboard</span>
+                <span class="text-sm font-semibold font-label">Ranking</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Escolas")" href="@Url.Action("Index", "Escolas" )">
+                <span class="material-symbols-outlined">school</span>
+                <span class="text-sm font-semibold font-label">Escolas</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Turmas")" href="@Url.Action("Index", "Turmas" )">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm font-semibold font-label">Turmas</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Perfil")" href="@Url.Action("Index", "Perfil" )">
+                <span class="material-symbols-outlined">person</span>
+                <span class="text-sm font-semibold font-label">Perfil</span>
+            </a>
+
+            @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
+            {
+            <div class="pt-4 border-t border-stone-200/50 mt-4 px-4 pb-2">
+                <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest font-headline">Painel Administrativo</p>
+            </div>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Fila" )" href="@Url.Action("Fila", "Moderacao" )">
+                <span class="material-symbols-outlined">edit_note</span>
+                <span class="text-sm font-semibold font-label">Fila de Revisão</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Utilizadores" )" href="@Url.Action("Utilizadores", "Moderacao" )">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                <span class="text-sm font-semibold font-label">Utilizadores</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Denuncias" )" href="@Url.Action("Denuncias", "Moderacao" )">
+                <span class="material-symbols-outlined">report</span>
+                <span class="text-sm font-semibold font-label">Denúncias</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Relatorios")" href="@Url.Action("Index", "Relatorios" )">
+                <span class="material-symbols-outlined">assessment</span>
+                <span class="text-sm font-semibold font-label">Desempenho</span>
+            </a>
+            }
+            @if (User.IsInRole("SuperAdmin"))
+            {
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Admin", "Permissoes" )" href="@Url.Action("Permissoes", "Admin" )">
+                <span class="material-symbols-outlined">admin_panel_settings</span>
+                <span class="text-sm font-semibold font-label">Permissões</span>
+            </a>
+            }
+        </nav>
+        <div class="px-6 mt-auto pt-4">
+            <form asp-controller="Auth" asp-action="Logout" method="post" class="w-full">
+                <button type="submit" class="w-full bg-stone-200/50 hover:bg-stone-200 text-stone-700 py-3 rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">logout</span>
+                    Sair
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Top App Bar (Responsiva) -->
+    <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 bg-white/80 dark:bg-stone-950/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 z-40 border-b border-stone-200/30">
+        <div class="flex items-center gap-4 flex-1 max-w-xl">
+            <!-- Hambúrguer Mobile -->
+            <button id="open-sidebar" class="md:hidden text-stone-600 hover:text-stone-900 focus:outline-none">
+                <span class="material-symbols-outlined text-2xl">menu</span>
+            </button>
+
+            <form action="@Url.Action("Pesquisar", "Conteudos" )" method="get" class="relative w-full">
+                <input name="q" class="w-full bg-surface-container-high border-none rounded-full py-2 pl-10 text-sm focus:ring-2 focus:ring-accent-yellow" placeholder="Pesquisar arquivos, moedas ou eras..." type="text" />
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-lg">search</span>
+            </form>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-6">
+            <button class="text-stone-600 hover:text-yellow-500 transition-all hidden sm:block">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <a href="@Url.Action("Index", "Perfil" )" class="text-stone-600 hover:text-yellow-500 transition-all no-underline hidden sm:block">
+                <span class="material-symbols-outlined">settings</span>
+            </a>
+            <div class="flex items-center gap-3 pl-2 md:pl-4 border-l border-stone-200">
+                <div class="text-right hidden lg:block">
+                    <p class="text-xs font-bold text-on-surface">@User.Identity.Name</p>
+                    <p class="text-[10px] text-stone-500 uppercase font-bold tracking-tighter">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
+                </div>
+                <div class="w-8 h-8 rounded-full border border-outline-variant/20 bg-primary/10 flex items-center justify-center text-primary font-bold text-xs" title="@User.Identity.Name">
+                    @initials
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area (Responsiva) -->
+    <div class="w-full md:ml-64 pt-16 flex-grow flex flex-col min-h-screen">
+        <main class="flex-grow p-4 md:p-8">
+            <!-- Div limitador adicionado aqui -->
+            <div class="max-w-6xl mr-auto w-full">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
     }
     else
     {
-        <!-- Top Navigation Bar (Anonymous) -->
-        <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] transition-all">
-            <div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
-                <div class="flex items-center gap-8">
-                    <a href="@Url.Action("Index", "Home")" class="no-underline">
-                        <span class="text-xl font-black tracking-tighter text-[#1a1c1c] dark:text-white font-headline">Economia com História – Angola</span>
-                    </a>
-                    <div class="hidden md:flex gap-6 items-center">
-                        <a class="text-[#800020] dark:text-[#ffb4ab] border-b-2 border-[#800020] dark:border-[#ffb4ab] pb-1 text-sm font-medium font-label scale-95 duration-200" href="@Url.Action("Index", "Home")">Explore</a>
-                        <a class="text-[#584141] dark:text-zinc-400 font-medium text-sm font-label hover:text-[#570013] dark:hover:text-white transition-colors" href="@Url.Action("Index", "Conteudos")">Arquivo</a>
-                        <a class="text-[#584141] dark:text-zinc-400 font-medium text-sm font-label hover:text-[#570013] dark:hover:text-white transition-colors" href="@Url.Action("Index", "Quizzes")">Quizzes</a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="@Url.Action("Login", "Auth")" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-md font-label text-sm font-bold shadow-[0_8px_32px_rgba(26,28,28,0.06)] hover:opacity-90 transition-opacity no-underline">
-                        Get Started
-                    </a>
+    <!-- Top Navigation Bar (Anonymous) -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] transition-all">
+        <div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="@Url.Action("Index", "Home" )" class="no-underline">
+                    <span class="text-xl font-black tracking-tighter text-[#1a1c1c] dark:text-white font-headline">Economia com História</span>
+                </a>
+                <div class="hidden md:flex gap-6 items-center">
+                    <a class="@(currentController == "Home" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label" href="@Url.Action("Index", "Home" )">Explore</a>
+                    <a class="@(currentController == "Conteudos" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Conteudos" )">Arquivo</a>
+                    <a class="@(currentController == "Quizzes" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Quizzes" )">Quizzes</a>
                 </div>
             </div>
-        </nav>
-
-        <!-- Main Content Area (Anonymous) -->
-        <main class="flex-grow pt-16">
-            @RenderBody()
-        </main>
-
-        <!-- Footer (Anonymous) -->
-        <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50 border-t border-stone-200/30 text-sm tracking-wide">
-            <div class="font-headline font-bold text-primary text-lg">Economia com História – Angola</div>
-            <div class="flex gap-8 text-stone-500">
-                <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Termos</a>
-                <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Privacidade</a>
-                <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Contacto</a>
-                <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Sobre o Projecto</a>
+            <div class="flex items-center gap-4">
+                <a href="@Url.Action("Login", "Auth" )" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-md font-label text-sm font-bold shadow-[0_8px_32px_rgba(26,28,28,0.06)] hover:opacity-90 transition-opacity no-underline">
+                    Entrar
+                </a>
             </div>
-            <p class="text-stone-500 opacity-80">© 2026 Economia com História – Angola. Preservando a narrativa económica.</p>
-        </footer>
+        </div>
+    </nav>
+
+    <!-- Main Content Area (Anonymous) -->
+    <main class="flex-grow pt-16">
+        @RenderBody()
+    </main>
+
+    <!-- Footer (Anonymous) -->
+    <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50 border-t border-stone-200/30 text-sm tracking-wide">
+        <div class="font-headline font-bold text-primary text-lg">Economia com História – Angola</div>
+        <div class="flex flex-wrap justify-center gap-6 text-stone-500">
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Termos</a>
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Privacidade</a>
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Contacto</a>
+            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Sobre o Projecto</a>
+        </div>
+        <p class="text-stone-500 opacity-80 text-center">© 2026 Economia com História – Angola. Preservando a narrativa económica.</p>
+    </footer>
     }
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Script Inline minimalista para controlo do Menu Mobile -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const openBtn = document.getElementById("open-sidebar");
+            const closeBtn = document.getElementById("close-sidebar");
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+
+            if (openBtn && sidebar) {
+                function toggleSidebar() {
+                    sidebar.classList.toggle("-translate-x-full");
+                    overlay.classList.toggle("hidden");
+                }
+
+                openBtn.addEventListener("click", toggleSidebar);
+                if (closeBtn) closeBtn.addEventListener("click", toggleSidebar);
+                if (overlay) overlay.addEventListener("click", toggleSidebar);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -3,98 +3,117 @@
     ViewData["Title"] = "Criar Novo Quiz";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="max-w-4xl mx-auto px-4">
+    <header class="mb-8">
+        <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-4 hover:underline no-underline">
+            <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar aos Quizzes
+        </a>
+        <h1 class="text-4xl font-headline font-extrabold text-primary mb-2">@ViewData["Title"]</h1>
+        <p class="text-on-surface-variant">Configure os parâmetros gerais e monte a árvore de perguntas académicas.</p>
+    </header>
 
-<form asp-action="Create" id="quizForm">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Configurações Gerais</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Titulo" class="form-label">Título do Quiz</label>
-                    <input asp-for="Titulo" class="form-control" required />
+    <form asp-action="Create" id="quizForm" class="space-y-8">
+        <div asp-validation-summary="ModelOnly" class="text-error text-sm font-medium mb-4"></div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 ambient-shadow border border-outline-variant/30">
+            <div class="flex items-center gap-2 text-primary mb-6">
+                <span class="material-symbols-outlined">settings</span>
+                <h3 class="text-xl font-bold font-headline">Configurações Gerais</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label asp-for="Titulo" class="block text-sm font-bold text-stone-600 mb-2">Título do Quiz</label>
+                    <input asp-for="Titulo" id="Titulo" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Ex: A Economia de Angola no Século XX" required />
+                    <span asp-validation-for="Titulo" class="text-error text-sm"></span>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Tema" class="form-label">Tema</label>
-                    <input asp-for="Tema" class="form-control" required />
+                <div>
+                    <label asp-for="Tema" class="block text-sm font-bold text-stone-600 mb-2">Tema</label>
+                    <input asp-for="Tema" id="Tema" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Ex: Ciclo do Café, Petróleo" required />
+                    <span asp-validation-for="Tema" class="text-error text-sm"></span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label asp-for="Nivel" class="form-label">Nível de Dificuldade</label>
-                    <select asp-for="Nivel" class="form-control" id="Nivel" required>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label asp-for="Nivel" class="block text-sm font-bold text-stone-600 mb-2">Nível de Dificuldade</label>
+                    <select asp-for="Nivel" id="Nivel" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" required>
                         <option value="Basico">Básico</option>
                         <option value="Intermedio">Intermédio</option>
                         <option value="Avancado">Avançado</option>
                     </select>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="TotalPerguntas" class="form-label">Nº de Perguntas (Exibidas)</label>
-                    <input asp-for="TotalPerguntas" type="number" min="1" class="form-control" required />
+                <div>
+                    <label asp-for="TotalPerguntas" class="block text-sm font-bold text-stone-600 mb-2">Nº de Perguntas (Exibidas)</label>
+                    <input asp-for="TotalPerguntas" type="number" min="1" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" required />
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="TempoLimiteSeg" class="form-label">Tempo Limite Total (seg)</label>
-                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="form-control" required />
+                <div>
+                    <label asp-for="TempoLimiteSeg" class="block text-sm font-bold text-stone-600 mb-2">Tempo Limite Total (seg)</label>
+                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" required />
                 </div>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Descricao" class="form-label">Descrição (Opcional)</label>
-                <textarea asp-for="Descricao" class="form-control" rows="2"></textarea>
             </div>
         </div>
-    </div>
 
-    <div id="perguntasContainer">
-        <!-- Perguntas serão adicionadas aqui -->
-    </div>
+        <div id="perguntasContainer" class="space-y-6">
+        </div>
 
-    <div class="mb-4">
-        <button type="button" class="btn btn-outline-primary" onclick="addPergunta()">Adicionar Pergunta</button>
-    </div>
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-outline-variant/20">
+            <button type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-primary text-primary px-6 py-3 rounded-full font-bold hover:bg-primary/5 transition-colors" onclick="addPergunta()">
+                <span class="material-symbols-outlined text-sm">add</span> Adicionar Pergunta
+            </button>
 
-    <div class="form-group mt-4 mb-5">
-        <button type="submit" class="btn btn-success btn-lg">Guardar Quiz</button>
-        <a asp-action="Index" class="btn btn-secondary btn-lg">Cancelar</a>
-    </div>
-</form>
+            <div class="flex items-center gap-4 w-full sm:w-auto">
+                <a asp-action="Index" class="w-1/2 sm:w-auto text-center px-6 py-3 rounded-full font-bold text-stone-600 hover:bg-surface-container-low transition-colors no-underline">Cancelar</a>
+                <button type="submit" class="w-1/2 sm:w-auto bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-3 rounded-full font-bold hover:opacity-90 transition-all ambient-shadow">
+                    Guardar Quiz
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <template id="perguntaTemplate">
-    <div class="card mb-4 pergunta-card shadow-sm border-info" data-index="{pIdx}">
-        <div class="card-header d-flex justify-content-between align-items-center bg-info text-white">
-            <h5 class="mb-0">Pergunta #{displayIdx}</h5>
-            <button type="button" class="btn btn-sm btn-danger" onclick="removePergunta(this)">Remover</button>
+    <div class="bg-surface-container-lowest rounded-3xl p-6 ambient-shadow border border-outline-variant/20 pergunta-card relative transition-all" data-index="{pIdx}">
+        <div class="flex justify-between items-center border-b border-outline-variant/20 pb-4 mb-6">
+            <div class="flex items-center gap-2 text-secondary">
+                <span class="material-symbols-outlined">quiz</span>
+                <h4 class="font-bold font-headline text-lg">Pergunta #{displayIdx}</h4>
+            </div>
+            <button type="button" class="inline-flex items-center gap-1 text-sm font-bold text-error hover:bg-error/5 px-3 py-1.5 rounded-xl transition-colors" onclick="removePergunta(this)">
+                <span class="material-symbols-outlined text-base">delete</span> Remover
+            </button>
         </div>
-        <div class="card-body">
-            <input type="hidden" name="Perguntas[{pIdx}].Tema" class="pergunta-tema" />
-            <input type="hidden" name="Perguntas[{pIdx}].Dificuldade" class="pergunta-dificuldade" />
 
-            <div class="mb-3">
-                <label class="form-label">Texto da Pergunta (Enunciado)</label>
-                <input name="Perguntas[{pIdx}].Enunciado" class="form-control" required />
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Explicação da Resposta Correta</label>
-                <input name="Perguntas[{pIdx}].Explicacao" class="form-control" placeholder="Explicação histórica da resposta correta..." required />
+        <input type="hidden" name="Perguntas[{pIdx}].Tema" class="pergunta-tema" />
+        <input type="hidden" name="Perguntas[{pIdx}].Dificuldade" class="pergunta-dificuldade" />
+
+        <div class="space-y-4 mb-6">
+            <div>
+                <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Texto da Pergunta (Enunciado)</label>
+                <input name="Perguntas[{pIdx}].Enunciado" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Insira o enunciado da questão..." required />
             </div>
 
-            <h6 class="mt-4">Opções (Exatamente 4, selecione a correta)</h6>
-            <div class="row">
+            <div>
+                <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Explicação da Resposta Correta (Feedback Histórico)</label>
+                <textarea name="Perguntas[{pIdx}].Explicacao" rows="2" class="w-full bg-surface-container-low border-0 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" placeholder="Explique os factos históricos que justificam a opção correta..." required></textarea>
+            </div>
+        </div>
+
+        <div>
+            <h5 class="text-sm font-bold text-stone-600 mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">checklist</span> Opções de Resposta <span class="text-xs font-normal text-stone-400">(Selecione exatamente 1 correta)</span>
+            </h5>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @for (int i = 0; i < 4; i++)
                 {
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group">
-                            <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="radio" name="Perguntas[{pIdx}].CorrectOption" value="@i" required>
-                                <input type="hidden" name="Perguntas[{pIdx}].Opcoes[@i].IsCorrecta" value="false">
-                            </div>
-                            <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="form-control" placeholder="Opção @(i + 1)" required />
-                        </div>
-                        <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="form-control mt-1 form-control-sm" placeholder="Explicação da Opção (opcional)" />
+                <div class="p-4 bg-surface-container-low rounded-2xl border border-outline-variant/10 space-y-2">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" name="Perguntas[{pIdx}].CorrectOption" value="@i" required class="w-5 h-5 text-primary bg-surface-container-lowest focus:ring-primary/20" />
+                        <input type="hidden" name="Perguntas[{pIdx}].Opcoes[@i].IsCorrecta" value="false" />
+                        <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="w-full bg-surface-container-lowest border-0 rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Opção @(i + 1)" required />
                     </div>
+                    <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="w-full bg-surface-container-lowest/50 border-0 rounded-xl p-2 text-xs text-stone-500 focus:ring-2 focus:ring-primary/20" placeholder="Explicação desta opção específica (opcional)" />
+                </div>
                 }
             </div>
         </div>
@@ -102,69 +121,76 @@
 </template>
 
 @section Scripts {
-    <script>
-        let perguntaCount = 0;
+<partial name="_ValidationScriptsPartial" />
+<script>
+    let perguntaCount = 0;
 
-        function addPergunta() {
-            const container = document.getElementById('perguntasContainer');
-            const template = document.getElementById('perguntaTemplate').innerHTML;
-            
-            const html = template
-                .replace(/{pIdx}/g, perguntaCount)
-                .replace(/{displayIdx}/g, perguntaCount + 1);
-            
-            const div = document.createElement('div');
-            div.innerHTML = html;
-            container.appendChild(div.firstElementChild);
-            perguntaCount++;
-        }
+    function addPergunta() {
+        const container = document.getElementById('perguntasContainer');
+        const template = document.getElementById('perguntaTemplate').innerHTML;
 
-        function removePergunta(btn) {
-            btn.closest('.pergunta-card').remove();
-            reorderPerguntas();
-        }
+        const html = template
+            .replace(/{pIdx}/g, perguntaCount)
+            .replace(/{displayIdx}/g, perguntaCount + 1);
 
-        function reorderPerguntas() {
-            const cards = document.querySelectorAll('.pergunta-card');
-            perguntaCount = 0;
-            cards.forEach((card, idx) => {
-                const display = card.querySelector('h5');
-                display.innerText = `Pergunta #${idx + 1}`;
-                
-                // Update names
-                const inputs = card.querySelectorAll('input, textarea, select');
-                inputs.forEach(input => {
-                    if (input.name) {
-                        input.name = input.name.replace(/Perguntas\[\d+\]/, `Perguntas[${idx}]`);
-                    }
-                });
-                perguntaCount = idx + 1;
-            });
-        }
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        container.appendChild(div.firstElementChild);
+        perguntaCount++;
+    }
 
-        // Before submit, ensure radio buttons set the hidden IsCorrecta field and copy Tema/Dificuldade
-        document.getElementById('quizForm').onsubmit = function() {
-            const quizTema = document.getElementById('Tema').value;
-            const quizNivel = document.getElementById('Nivel').value;
-            
-            const cards = document.querySelectorAll('.pergunta-card');
-            cards.forEach((card, pIdx) => {
-                // Set hidden Tema and Dificuldade inputs
-                const temaInput = card.querySelector(`input[name="Perguntas[${pIdx}].Tema"]`);
-                const dificInput = card.querySelector(`input[name="Perguntas[${pIdx}].Dificuldade"]`);
-                if (temaInput) temaInput.value = quizTema;
-                if (dificInput) dificInput.value = quizNivel;
+    function removePergunta(btn) {
+        btn.closest('.pergunta-card').remove();
+        reorderPerguntas();
+    }
 
-                const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
-                if (radio) {
-                    const correctIdx = radio.value;
-                    card.querySelector(`input[name="Perguntas[${pIdx}].Opcoes[${correctIdx}].IsCorrecta"]`).value = "true";
+    function reorderPerguntas() {
+        const cards = document.querySelectorAll('.pergunta-card');
+        perguntaCount = 0;
+        cards.forEach((card, idx) => {
+            const display = card.querySelector('h4');
+            if (display) display.innerText = `Pergunta #${idx + 1}`;
+
+            const inputs = card.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                if (input.name) {
+                    // Corrige os índices da lista principal de perguntas
+                    input.name = input.name.replace(/Perguntas\[\d+\]/, `Perguntas[${idx}]`);
+                    // Corrige os sub-índices de opções se existirem
+                    input.name = input.name.replace(/Opcoes\[(\d+)\]/, `Opcoes[$1]`);
                 }
             });
-            return true;
-        };
+            perguntaCount = idx + 1;
+        });
+    }
 
-        // Add first question automatically
-        addPergunta();
-    </script>
+    document.getElementById('quizForm').onsubmit = function () {
+        const quizTema = document.getElementById('Tema').value;
+        const quizNivel = document.getElementById('Nivel').value;
+
+        const cards = document.querySelectorAll('.pergunta-card');
+        cards.forEach((card, pIdx) => {
+            const temaInput = card.querySelector(`input[name="Perguntas[${pIdx}].Tema"]`);
+            const dificInput = card.querySelector(`input[name="Perguntas[${pIdx}].Dificuldade"]`);
+            if (temaInput) temaInput.value = quizTema;
+            if (dificInput) dificInput.value = quizNivel;
+
+            // Reset de todos os campos IsCorrecta para falso antes de aplicar o selecionado
+            card.querySelectorAll(`input[name^="Perguntas[${pIdx}].Opcoes"][name$=".IsCorrecta"]`).forEach(input => {
+                input.value = "false";
+            });
+
+            const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
+            if (radio) {
+                const correctIdx = radio.value;
+                const targetHidden = card.querySelector(`input[name="Perguntas[${pIdx}].Opcoes[${correctIdx}].IsCorrecta"]`);
+                if (targetHidden) targetHidden.value = "true";
+            }
+        });
+        return true;
+    };
+
+    // Adiciona a primeira questão por defeito
+    addPergunta();
+</script>
 }

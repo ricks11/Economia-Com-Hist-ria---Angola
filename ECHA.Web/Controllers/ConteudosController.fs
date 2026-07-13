@@ -14,8 +14,15 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
     member private this.GetToken() =
-        let claim = this.User.FindFirst("AccessToken")
-        if isNull claim then null else claim.Value
+        let authHeader = 
+            this.HttpContext.Request.Headers["Authorization"]
+            |> Seq.tryHead
+        match authHeader with
+        | Some header when header.StartsWith("Bearer ") -> header.Substring("Bearer ".Length)
+        | _ -> 
+            // fallback: tenta a claim antiga
+            let claim = this.User.FindFirst("AccessToken")
+            if isNull claim then null else claim.Value
 
     // Mapeador local auxiliar de propriedades da View para o Update/Create do Backend API
     member private this.PrepararUpdateDto (form: IFormCollection) =
@@ -72,13 +79,31 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     member this.Details (id: int) =
         task {
             try
-                // Dispara o incremento (não precisa esperar o resultado para exibir o conteúdo)
-                let _ = apiClient.IncrementarVisitasAsync(id) 
+                // Protege o incremento: se falhar, não crasha o carregamento da página
+                try 
+                    let! _ = apiClient.IncrementarVisitasAsync(id) |> Async.AwaitTask |> Async.StartChild 
+                    ()
+                with _ -> () 
             
-                let! conteudo = apiClient.GetConteudoAsync(id)
+                 // 1. Obter o token do utilizador
+                let token = this.GetToken()
+            
+                // 2. Chamar a API passando o token (se existir)
+                let! conteudo = 
+                    if String.IsNullOrEmpty(token) then
+                        apiClient.GetConteudoAsync(id)
+                    else
+                        apiClient.GetConteudoAsync(id, token = token)
                 match conteudo with
-                | Some c -> return this.View(c) :> IActionResult
-                | None -> return this.NotFound() :> IActionResult
+                | Some c -> 
+                    let estadoFavorito =
+                        if this.TempData.ContainsKey("IsFavorito_" + string id) then
+                            this.TempData.["IsFavorito_" + string id] :?> bool
+                        else
+                            c.EhFavorito  // agora já virá correto se o token foi enviado
+
+                    this.ViewData["IsFavorito"] <- estadoFavorito
+                    return this.View(c) :> IActionResult
             with
             | _ -> return this.RedirectToAction("Login", "Auth") :> IActionResult
         }
@@ -122,7 +147,6 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
                     if ex.StatusCode = System.Net.HttpStatusCode.Unauthorized then
                         return this.RedirectToAction("Login", "Auth") :> IActionResult
                     else
-                        // Aqui vai aparecer o JSON da API a dizer qual campo falhou!
                         this.ModelState.AddModelError("", sprintf "Erro de Validação da API: %s" ex.Message)
                         return this.View(request) :> IActionResult
                 | ex ->
@@ -167,3 +191,53 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
                 with
                 | :? ApiClientException -> return this.RedirectToAction("Login", "Auth") :> IActionResult
         }   
+
+    [<HttpPost>]
+    [<ValidateAntiForgeryToken>]
+    member this.Delete (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    let! sucesso = apiClient.DeleteConteudoAsync(id, t)
+                    if sucesso then
+                        this.TempData["SuccessMessage"] <- "Conteúdo arquivado com sucesso!"
+                    else
+                        this.TempData["ErrorMessage"] <- "Não foi possível eliminar o conteúdo."
+                    return this.RedirectToAction("Index") :> IActionResult
+                with
+                | :? ApiClientException -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+        }
+
+    [<HttpPost>]
+    [<ValidateAntiForgeryToken>]
+    [<Authorize>] 
+    member this.ToggleFavorito (id: int) =
+        task {
+            let token = this.GetToken()
+            match token with
+            | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+            | t ->
+                try
+                    // Executa a chamada à API Backend
+                    let! estadoFinalFavorito = apiClient.ToggleFavoritoAsync(id, t)
+                    
+                    // Guarda o estado final para a View ler imediatamente após o redirecionamento
+                    this.TempData.["IsFavorito_" + string id] <- estadoFinalFavorito
+                    
+                    if estadoFinalFavorito then
+                        this.TempData["SuccessMessage"] <- "Adicionado aos teus favoritos com sucesso."
+                    else
+                        this.TempData["SuccessMessage"] <- "Removido dos teus favoritos."
+                    
+                    return this.RedirectToAction("Details", {| id = id |}) :> IActionResult
+                with
+                | :? ApiClientException -> return this.RedirectToAction("Login", "Auth") :> IActionResult
+                | _ -> 
+                    this.TempData["ErrorMessage"] <- "Erro ao processar o favorito."
+                    return this.RedirectToAction("Details", {| id = id |}) :> IActionResult
+        }
+
+

@@ -3,169 +3,231 @@
     ViewData["Title"] = "Criar Conteúdo";
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-        @TempData["SuccessMessage"]
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+    <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-xl shadow-sm flex items-center gap-3">
+        <span class="material-symbols-outlined text-green-600">check_circle</span>
+        <span class="font-medium">@TempData["SuccessMessage"]</span>
     </div>
-}
+    }
 
-<h1>@ViewData["Title"]</h1>
+    <!-- Header -->
+    <header class="mb-8">
+        <h1 class="text-3xl font-black text-primary tracking-tight">@ViewData["Title"]</h1>
+        <p class="text-sm text-stone-500 mt-1">Preencha os campos abaixo para publicar um novo conteúdo na plataforma.</p>
+    </header>
 
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="form-group mb-3">
-                <label asp-for="Titulo" class="control-label">Título</label>
-                <input asp-for="Titulo" class="form-control" required />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
+    <!-- Main Card Form -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100">
+        <form asp-action="Create" enctype="multipart/form-data" class="space-y-6">
+            <div asp-validation-summary="ModelOnly" class="text-red-500 text-sm font-medium"></div>
+
+            <!-- Título -->
+            <div class="flex flex-col gap-1.5">
+                <label asp-for="Titulo" class="text-sm font-semibold text-secondary">Título do Conteúdo</label>
+                <input asp-for="Titulo" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none placeholder:text-stone-400" placeholder="Ex: A rota das especiarias e o impacto global" required />
+                <span asp-validation-for="Titulo" class="text-red-500 text-xs"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Resumo" class="control-label">Resumo</label>
-                <textarea asp-for="Resumo" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Resumo" class="text-danger"></span>
+            <!-- Resumo -->
+            <div class="flex flex-col gap-1.5">
+                <label asp-for="Resumo" class="text-sm font-semibold text-secondary">Resumo</label>
+                <textarea asp-for="Resumo" rows="2" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none placeholder:text-stone-400" placeholder="Uma breve introdução para capturar a atenção nas listagens..."></textarea>
+                <span asp-validation-for="Resumo" class="text-red-500 text-xs"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="CorpoTexto" class="control-label">Texto</label>
-                <textarea asp-for="CorpoTexto" class="form-control" id="TextoEditor"></textarea>
-                <span asp-validation-for="CorpoTexto" class="text-danger"></span>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="Tema" class="control-label">Tema</label>
-                        <input asp-for="Tema" class="form-control" required />
-                        <span asp-validation-for="Tema" class="text-danger"></span>
-                    </div>
+            <!-- Texto Completo (Editor) -->
+            <div class="flex flex-col gap-1.5">
+                <label asp-for="CorpoTexto" class="text-sm font-semibold text-secondary">Corpo do Texto</label>
+                <div class="rounded-xl overflow-hidden border border-stone-200">
+                    <textarea asp-for="CorpoTexto" id="TextoEditor"></textarea>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="Nivel" class="control-label">Nível</label>
-                        <select asp-for="Nivel" class="form-control" required>
-                            <option value="">Selecione...</option>
-                            <option value="Primário">Primário</option>
-                            <option value="Secundário">Secundário</option>
-                            <option value="Superior">Superior</option>
-                            <option value="Geral">Geral</option>
-                        </select>
-                        <span asp-validation-for="Nivel" class="text-danger"></span>
-                    </div>
-                </div>
+                <span asp-validation-for="CorpoTexto" class="text-red-500 text-xs"></span>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="Regiao" class="control-label">Região</label>
-                        <input asp-for="Regiao" class="form-control" required />
-                        <span asp-validation-for="Regiao" class="text-danger"></span>
-                    </div>
+            <!-- Grid: Tema e Nível -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-1.5">
+                    <label asp-for="Tema" class="text-sm font-semibold text-secondary">Tema / Categoria</label>
+                    <input asp-for="Tema" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none" placeholder="Ex: Macroeconomia" required />
+                    <span asp-validation-for="Tema" class="text-red-500 text-xs"></span>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="Tipo" class="control-label">Tipo</label>
-                        <select asp-for="Tipo" class="form-control" required>
-                            <option value="">Selecione...</option>
-                            <option value="Artigo">Artigo</option>
-                            <option value="Video">Vídeo</option>
-                            <option value="Audio">Áudio</option>
-                            <option value="Documento">Documento</option>
-                        </select>
-                        <span asp-validation-for="Tipo" class="text-danger"></span>
-                    </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label asp-for="Nivel" class="text-sm font-semibold text-secondary">Nível Académico</label>
+                    <select asp-for="Nivel" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none appearance-none" asp-items="Html.GetEnumSelectList<EconomiaComHistoria.Core.Enums.NivelDificuldade>()" required>
+                        <option value="">Selecione o nível...</option>
+                    </select>
+                    <span asp-validation-for="Nivel" class="text-red-500 text-xs"></span>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="Estado" class="control-label">Estado</label>
-                        <select asp-for="Estado" class="form-control" required>
-                            <option value="">Selecione...</option>
-                            <option value="Rascunho">Rascunho</option>
-                            <option value="EmRevisao">Em Revisão</option>
-                            <option value="Publicado">Publicado</option>
-                            <option value="Arquivado">Arquivado</option>
-                        </select>
-                        <span asp-validation-for="Estado" class="text-danger"></span>
-                    </div>
+            <!-- Grid: Região e Tipo -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-1.5">
+                    <label asp-for="Regiao" class="text-sm font-semibold text-secondary">Região Geográfica</label>
+                    <input asp-for="Regiao" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none" placeholder="Ex: Angola, Global, Europa" required />
+                    <span asp-validation-for="Regiao" class="text-red-500 text-xs"></span>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-check mb-3 mt-4">
-                        <input asp-for="IsJindungo" class="form-check-input" type="checkbox" id="IsJindungo" />
-                        <label asp-for="IsJindungo" class="form-check-label font-bold">É Jindungo? (Curiosidade picante)</label>
-                    </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label asp-for="Tipo" class="text-sm font-semibold text-secondary">Tipo de Formato</label>
+                    <select asp-for="Tipo" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none" asp-items="Html.GetEnumSelectList<EconomiaComHistoria.Core.Enums.TipoConteudo>()" required>
+                        <option value="">Selecione o formato...</option>
+                    </select>
+                    <span asp-validation-for="Tipo" class="text-red-500 text-xs"></span>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="DataAgendada" class="control-label">Data de Agendamento</label>
-                        <input asp-for="DataAgendada" type="date" class="form-control" />
-                        <span asp-validation-for="DataAgendada" class="text-danger"></span>
+            <!-- Jindungo Toggle Switch & Factual Reference -->
+            <div class="p-4 bg-stone-50 rounded-2xl border border-stone-200/60 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col">
+                        <label for="IsJindungo" class="text-sm font-semibold text-secondary flex items-center gap-1">
+                            <span class="material-symbols-outlined text-orange-500 text-[18px]">local_fire_department</span>
+                            Conteúdo com Jindungo?
+                        </label>
+                        <span class="text-xs text-stone-500">Ative se este artigo contiver análises picantes ou debates intensos.</span>
                     </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="IsJindungo" name="IsJindungo" value="true" class="sr-only peer">
+                        <div class="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-3" id="ReferenciaFactualGroup" style="display: none;">
-                        <label asp-for="ReferenciaFactual" class="control-label">Referência Factual</label>
-                        <input asp-for="ReferenciaFactual" class="form-control" id="ReferenciaFactual" placeholder="Insira a fonte bibliográfica..." />
-                        <span asp-validation-for="ReferenciaFactual" class="text-danger"></span>
-                    </div>
+
+                <!-- Campo Condicional Animado via JS -->
+                <div id="ReferenciaFactualGroup" style="display: none;" class="flex flex-col gap-1.5 pt-2 border-t border-stone-200/40">
+                    <label for="ReferenciaFactual" class="text-sm font-semibold text-secondary">Referência Factual / Fonte Histórica</label>
+                    <input type="text" id="ReferenciaFactual" name="ReferenciaFactual" class="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none text-sm" placeholder="Ex: Arquivo Nacional de Angola, Códice 412" />
                 </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="VideoUrl" class="control-label">URL de Vídeo (Embed)</label>
-                <input asp-for="VideoUrl" class="form-control" placeholder="https://youtube.com/embed/..." />
-                <span asp-validation-for="VideoUrl" class="text-danger"></span>
+            <!-- Grid: Estado e Agendamento -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-1.5">
+                    <label asp-for="Estado" class="text-sm font-semibold text-secondary">Estado de Publicação</label>
+                    <select asp-for="Estado" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none" asp-items="Html.GetEnumSelectList<EconomiaComHistoria.Core.Enums.EstadoConteudo>()" required>
+                        <option value="">Selecione o estado...</option>
+                    </select>
+                    <span asp-validation-for="Estado" class="text-red-500 text-xs"></span>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label asp-for="DataAgendada" class="text-sm font-semibold text-secondary">Data de Agendamento <span class="text-xs font-normal text-stone-400">(Opcional)</span></label>
+                    <input asp-for="DataAgendada" type="date" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none" />
+                    <span asp-validation-for="DataAgendada" class="text-red-500 text-xs"></span>
+                </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="AudioUrl" class="control-label">URL de Áudio (Embed)</label>
-                <input asp-for="AudioUrl" class="form-control" placeholder="https://soundcloud.com/..." />
-                <span asp-validation-for="AudioUrl" class="text-danger"></span>
+            <!-- Média Integrada -->
+            <div class="flex flex-col gap-1.5">
+                <label asp-for="VideoUrl" class="text-sm font-semibold text-secondary">URL de Media <span class="text-xs font-normal text-stone-400">(Embed de Vídeo ou Áudio)</span></label>
+                <input asp-for="VideoUrl" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-on-surface outline-none placeholder:text-stone-400" placeholder="https://youtube.com/embed/..." />
+                <span asp-validation-for="VideoUrl" class="text-red-500 text-xs"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label name="imagemCapa" class="control-label">Imagem de Capa</label>
-                <input type="file" name="imagemCapa" class="form-control" accept="image/*" />
+            <!-- Upload de Capa -->
+            <div class="flex flex-col gap-1.5">
+                <label name="imagemCapa" class="text-sm font-semibold text-secondary">Imagem de Capa</label>
+                <div class="flex items-center justify-center w-full">
+                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-stone-200 border-dashed rounded-xl cursor-pointer bg-stone-50 hover:bg-stone-100/50 transition-colors">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <span class="material-symbols-outlined text-stone-400 text-3xl mb-1">cloud_upload</span>
+                            <p class="text-xs text-stone-500 font-medium">Clique para carregar ou arraste a imagem</p>
+                            <p class="text-[10px] text-stone-400 mt-0.5">PNG, JPG ou WEBP</p>
+                        </div>
+                        <input type="file" name="imagemCapa" class="hidden" accept="image/*" />
+                    </label>
+                </div>
             </div>
 
-            <div class="form-group mt-4">
-                <input type="submit" value="Criar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-stone-100">
+                <a asp-action="Index" class="px-5 py-2.5 rounded-xl bg-stone-100 text-secondary font-semibold text-sm hover:bg-stone-200 transition-colors decoration-none">
+                    Cancelar
+                </a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm shadow-md shadow-primary/10 hover:opacity-95 transition-all">
+                    Criar Conteúdo
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        document.getElementById('IsJindungo').addEventListener('change', function() {
-            const group = document.getElementById('ReferenciaFactualGroup');
-            const input = document.getElementById('ReferenciaFactual');
-            if (this.checked) {
-                group.style.display = 'block';
-                input.setAttribute('required', 'required');
-            } else {
-                group.style.display = 'none';
-                input.removeAttribute('required');
-            }
-        });
+<!-- Modal de Aviso customizado Tailwind/Material 3 -->
+<div id="avisoModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-stone-900/40 backdrop-blur-sm transition-opacity duration-300">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full border border-stone-100 scale-95 transition-transform duration-300 ambient-shadow">
+        <div class="flex items-start gap-4">
+            <div class="p-3 bg-error/10 text-error rounded-2xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">warning</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-bold font-headline text-stone-900 mb-1">Conflito de Agendamento</h3>
+                <p class="text-sm text-stone-500 leading-relaxed">Não podes agendar uma data de publicação futura mantendo o estado como <span class="font-semibold text-stone-700">"Publicado"</span>.</p>
+                <p class="text-xs text-stone-400 mt-2">Por favor, altera o estado para "Rascunho" ou "Em Revisão" para prosseguir com o agendamento.</p>
+            </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-6 pt-4 border-t border-stone-100">
+            <button type="button" id="fecharModalBtn" class="px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-xl hover:opacity-95 transition-all">
+                Entendido, corrigir
+            </button>
+        </div>
+    </div>
+</div>
 
-        tinymce.init({
-            selector: '#TextoEditor',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            height: 400
-        });
-    </script>
+@section Scripts {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#TextoEditor',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        height: 400,
+        branding: false,
+        promotion: false
+    });
+</script>
+<script>
+    const modal = document.getElementById('avisoModal');
+    const fecharModalBtn = document.getElementById('fecharModalBtn');
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        // Obter os valores selecionados no momento do submit pelas classes/atributos gerados pelo ASP.NET Core
+        const estadoSelect = document.querySelector('select[name="Estado"]');
+        const estadoText = estadoSelect ? estadoSelect.options[estadoSelect.selectedIndex].text : '';
+        const dataAgendada = document.querySelector('[name="DataAgendada"]').value;
+
+        if (dataAgendada && estadoText.trim() === 'Publicado') {
+            e.preventDefault();
+
+            // Exibir o modal com animação flex
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    });
+
+    // Evento para fechar o modal
+    fecharModalBtn.addEventListener('click', function () {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    });
+
+    // Lógica condicional melhorada para o painel de Jindungo
+    document.getElementById('IsJindungo').addEventListener('change', function () {
+        const group = document.getElementById('ReferenciaFactualGroup');
+        const input = document.getElementById('ReferenciaFactual');
+        if (this.checked) {
+            group.style.display = 'flex';
+            input.setAttribute('required', 'required');
+        } else {
+            group.style.display = 'none';
+            input.removeAttribute('required');
+            input.value = '';
+        }
+    });
+</script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

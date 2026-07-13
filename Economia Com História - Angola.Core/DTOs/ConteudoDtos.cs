@@ -13,7 +13,6 @@ public record ConteudoResponseDto(
     string? AudioUrl,
     string? ThumbnailUrl,
 
-    // CORREÇÃO: Usar o prefixo 'property:' para records posicionais
     [property: JsonConverter(typeof(JsonStringEnumConverter))] TipoConteudo Tipo,
     [property: JsonConverter(typeof(JsonStringEnumConverter))] NivelDificuldade Nivel,
 
@@ -31,7 +30,7 @@ public record ConteudoResponseDto(
     DateTime? DataPublicacao
 );
 
-public class CreateConteudoDto
+public class CreateConteudoDto : IValidatableObject
 {
     [Required(ErrorMessage = "Título é obrigatório")]
     [StringLength(200, MinimumLength = 5, ErrorMessage = "Título deve ter entre 5 e 200 caracteres")]
@@ -76,9 +75,26 @@ public class CreateConteudoDto
 
     [DataType(DataType.Date)]
     public DateTime? DataAgendada { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (DataAgendada.HasValue && Estado == EstadoConteudo.Publicado)
+        {
+            yield return new ValidationResult(
+                "Não podes definir uma Data de Agendamento com o Estado já em 'Publicado'. Escolhe 'Rascunho' ou 'Em Revisão' para agendar.",
+                new[] { nameof(Estado), nameof(DataAgendada) });
+        }
+
+        if (DataAgendada.HasValue && DataAgendada.Value <= DateTime.UtcNow)
+        {
+            yield return new ValidationResult(
+                "A Data de Agendamento tem de ser no futuro.",
+                new[] { nameof(DataAgendada) });
+        }
+    }
 }
 
-public class UpdateConteudoDto
+public class UpdateConteudoDto : IValidatableObject
 {
     [StringLength(200, MinimumLength = 5, ErrorMessage = "Título deve ter entre 5 e 200 caracteres")]
     public string? Titulo { get; set; }
@@ -117,4 +133,20 @@ public class UpdateConteudoDto
 
     [DataType(DataType.Date)]
     public DateTime? DataAgendada { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (DataAgendada.HasValue && Estado == EstadoConteudo.Publicado)
+        {
+            yield return new ValidationResult(
+                "Não podes definir uma Data de Agendamento com o Estado já em 'Publicado'.",
+                new[] { nameof(Estado), nameof(DataAgendada) });
+        }
+    }
+}
+
+public class ToggleFavoritoResponseDto
+{
+    public bool Adicionado { get; set; }
+    public string Message { get; set; } = string.Empty;
 }
