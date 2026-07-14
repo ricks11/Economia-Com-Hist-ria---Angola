@@ -5,21 +5,19 @@
 }
 
 <div class="max-w-3xl mr-auto w-full py-6">
-    <!-- Cabeçalho -->
     <header class="mb-8 border-b border-stone-200/60 dark:border-stone-850 pb-6">
         <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-1">
             <span class="material-symbols-outlined text-[16px]">edit_note</span>
             Área de Gestão
         </div>
         <h1 class="text-3xl font-black text-rose-950 dark:text-rose-200 tracking-tight font-headline">@ViewData["Title"]</h1>
-        <p class="text-sm text-stone-500 mt-1">Atualiza os parâmetros gerais e as restrições deste quiz na base de dados.</p>
+        <p class="text-sm text-stone-500 mt-1">Atualiza os parâmetros gerais, e adiciona, edita ou remove perguntas deste quiz.</p>
     </header>
 
-    <!-- Formulário -->
-    <form asp-action="Edit" asp-route-id="@Model.Id" class="space-y-6">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" id="quizEditForm" class="space-y-6">
         <div asp-validation-summary="ModelOnly" class="p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-xl text-sm mb-6"></div>
 
-        <!-- Card de Configurações -->
+        <!-- Configurações Gerais -->
         <div class="bg-white dark:bg-stone-900 border border-stone-200/60 rounded-3xl p-8 shadow-sm">
             <h2 class="text-lg font-bold text-rose-950 dark:text-rose-100 font-headline mb-6 flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary text-[20px]">settings</span>
@@ -27,53 +25,87 @@
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <!-- Título -->
                 <div>
-                    <label asp-for="Titulo" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Título do Quiz</label>
-                    <input asp-for="Titulo" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
-                    <span asp-validation-for="Titulo" class="text-xs text-error mt-1 block"></span>
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2 block">Título do Quiz</label>
+                    <input name="Titulo" value="@Model.Titulo" class="w-full rounded-2xl border border-stone-200 bg-transparent px-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20" required />
                 </div>
-
-                <!-- Tema -->
                 <div>
-                    <label asp-for="Tema" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Tema</label>
-                    <input asp-for="Tema" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
-                    <span asp-validation-for="Tema" class="text-xs text-error mt-1 block"></span>
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2 block">Tema</label>
+                    <input name="Tema" value="@Model.Tema" class="w-full rounded-2xl border border-stone-200 bg-transparent px-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20" required />
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Nível -->
                 <div>
-                    <label asp-for="Nivel" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Nível de Dificuldade</label>
-                    <div class="relative">
-                        <select asp-for="Nivel" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium appearance-none" required>
-                            <option value="Basico">Básico</option>
-                            <option value="Intermedio">Intermédio</option>
-                            <option value="Avancado">Avançado</option>
-                        </select>
-                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none text-[18px]">keyboard_arrow_down</span>
-                    </div>
-                    <span asp-validation-for="Nivel" class="text-xs text-error mt-1 block"></span>
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2 block">Nível de Dificuldade</label>
+                    <select name="Nivel" class="w-full rounded-2xl border border-stone-200 bg-transparent px-4 py-3 text-sm font-medium" required>
+                        @foreach (var nivel in Enum.GetValues(typeof(EconomiaComHistoria.Core.Enums.NivelDificuldade)))
+                        {
+                        <option value="@nivel" selected="@(nivel.Equals(Model.Nivel))">@nivel</option>
+                        }
+                    </select>
                 </div>
-
-                <!-- Total de Perguntas -->
                 <div>
-                    <label asp-for="TotalPerguntas" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Total de Perguntas</label>
-                    <input asp-for="TotalPerguntas" type="number" min="1" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
-                    <span asp-validation-for="TotalPerguntas" class="text-xs text-error mt-1 block"></span>
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2 block">Total de Perguntas (exibidas)</label>
+                    <input name="TotalPerguntas" type="number" min="1" value="@Model.TotalPerguntas" class="w-full rounded-2xl border border-stone-200 bg-transparent px-4 py-3 text-sm font-medium" required />
                 </div>
-
-                <!-- Tempo Limite -->
                 <div>
-                    <label asp-for="TempoLimiteSeg" class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2 block">Tempo Limite (segundos)</label>
-                    <input asp-for="TempoLimiteSeg" type="number" min="5" class="w-full rounded-2xl border border-stone-200 dark:border-stone-800 bg-transparent px-4 py-3 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium" required />
-                    <span asp-validation-for="TempoLimiteSeg" class="text-xs text-error mt-1 block"></span>
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2 block">Tempo Limite (seg)</label>
+                    <input name="TempoLimiteSeg" type="number" min="5" value="@Model.TempoLimiteSeg" class="w-full rounded-2xl border border-stone-200 bg-transparent px-4 py-3 text-sm font-medium" required />
                 </div>
             </div>
         </div>
 
-        <!-- Botões de Ação -->
+        <!-- Perguntas -->
+        <div class="bg-white dark:bg-stone-900 border border-stone-200/60 rounded-3xl p-8 shadow-sm">
+            <h2 class="text-lg font-bold text-rose-950 font-headline mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[20px]">quiz</span>
+                Perguntas (@Model.Perguntas.Count)
+            </h2>
+
+            <div id="perguntasContainer">
+                @for (int pIdx = 0; pIdx < Model.Perguntas.Count; pIdx++)
+                {
+                var pergunta = Model.Perguntas[pIdx];
+                var indiceCorreta = pergunta.Opcoes.FindIndex(o => o.IsCorrecta);
+
+                <div class="border border-stone-200 rounded-2xl p-6 mb-4 pergunta-card" data-index="@pIdx">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs font-bold uppercase text-stone-400">Pergunta #@(pIdx + 1)</span>
+                        <button type="button" class="text-error text-xs font-bold hover:underline" onclick="removePergunta(this)">Remover</button>
+                    </div>
+
+                    <input type="hidden" name="Perguntas[@pIdx].Id" value="@pergunta.Id" />
+
+                    <div class="mb-4">
+                        <label class="text-xs font-bold uppercase text-stone-500 mb-1 block">Enunciado</label>
+                        <input name="Perguntas[@pIdx].Enunciado" value="@pergunta.Enunciado" class="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm" required />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        @for (int oIdx = 0; oIdx < pergunta.Opcoes.Count; oIdx++)
+                        {
+                        var opcao = pergunta.Opcoes[oIdx];
+                        <div class="border border-stone-100 rounded-xl p-3">
+                            <input type="hidden" name="Perguntas[@pIdx].Opcoes[@oIdx].Id" value="@opcao.Id" />
+                            <div class="flex items-center gap-2 mb-2">
+                                <input type="radio" name="Perguntas[@pIdx].CorrectOption" value="@oIdx" checked="@(oIdx == indiceCorreta)" />
+                                <input type="hidden" name="Perguntas[@pIdx].Opcoes[@oIdx].IsCorrecta" value="@(oIdx == indiceCorreta ? " true" : "false" )" />
+                                <input name="Perguntas[@pIdx].Opcoes[@oIdx].Texto" value="@opcao.Texto" class="flex-1 rounded-lg border border-stone-200 px-2 py-1.5 text-sm" placeholder="Texto da opção" required />
+                            </div>
+                            <input name="Perguntas[@pIdx].Opcoes[@oIdx].Explicacao" value="@opcao.Explicacao" class="w-full rounded-lg border border-stone-200 px-2 py-1.5 text-xs" placeholder="Explicação (opcional)" />
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+
+            <button type="button" class="mt-2 px-5 py-2.5 rounded-full border border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition-colors" onclick="addPergunta()">
+                + Adicionar Pergunta
+            </button>
+        </div>
+
         <div class="flex items-center gap-4 pt-4">
             <button type="submit" class="px-6 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-bold text-sm shadow-sm hover:opacity-95 transition-opacity flex items-center gap-2">
                 <span class="material-symbols-outlined text-[18px]">save</span>
@@ -86,3 +118,79 @@
         </div>
     </form>
 </div>
+
+<template id="perguntaTemplateNova">
+    <div class="border border-stone-200 rounded-2xl p-6 mb-4 pergunta-card" data-index="{pIdx}">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-xs font-bold uppercase text-stone-400">Pergunta #{displayIdx} (nova)</span>
+            <button type="button" class="text-error text-xs font-bold hover:underline" onclick="removePergunta(this)">Remover</button>
+        </div>
+
+        <div class="mb-4">
+            <label class="text-xs font-bold uppercase text-stone-500 mb-1 block">Enunciado</label>
+            <input name="Perguntas[{pIdx}].Enunciado" class="w-full rounded-xl border border-stone-200 px-3 py-2 text-sm" required />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            @for (int i = 0; i < 4; i++)
+            {
+            <div class="border border-stone-100 rounded-xl p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <input type="radio" name="Perguntas[{pIdx}].CorrectOption" value="@i" required />
+                    <input type="hidden" name="Perguntas[{pIdx}].Opcoes[@i].IsCorrecta" value="false" />
+                    <input name="Perguntas[{pIdx}].Opcoes[@i].Texto" class="flex-1 rounded-lg border border-stone-200 px-2 py-1.5 text-sm" placeholder="Opção @(i + 1)" required />
+                </div>
+                <input name="Perguntas[{pIdx}].Opcoes[@i].Explicacao" class="w-full rounded-lg border border-stone-200 px-2 py-1.5 text-xs" placeholder="Explicação (opcional)" />
+            </div>
+            }
+        </div>
+    </div>
+</template>
+
+@section Scripts {
+<script>
+        let perguntaCount = @Model.Perguntas.Count;
+
+        function addPergunta() {
+            const container = document.getElementById('perguntasContainer');
+            const template = document.getElementById('perguntaTemplateNova').innerHTML;
+            const html = template
+                .replace(/{pIdx}/g, perguntaCount)
+                .replace(/{displayIdx}/g, perguntaCount + 1);
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            container.appendChild(div.firstElementChild);
+            perguntaCount++;
+        }
+
+        function removePergunta(btn) {
+            btn.closest('.pergunta-card').remove();
+            reindexPerguntas();
+        }
+
+        function reindexPerguntas() {
+            const cards = document.querySelectorAll('.pergunta-card');
+            cards.forEach((card, idx) => {
+                const inputs = card.querySelectorAll('input');
+                inputs.forEach(input => {
+                    if (input.name) {
+                        input.name = input.name.replace(/Perguntas\[\d+\]/, `Perguntas[${idx}]`);
+                    }
+                });
+            });
+            perguntaCount = cards.length;
+        }
+
+        document.getElementById('quizEditForm').addEventListener('submit', function () {
+            document.querySelectorAll('.pergunta-card').forEach((card, pIdx) => {
+                const radio = card.querySelector(`input[name="Perguntas[${pIdx}].CorrectOption"]:checked`);
+                if (radio) {
+                    const correctIdx = radio.value;
+                    card.querySelectorAll('input[type="hidden"][name*=".IsCorrecta"]').forEach(h => h.value = "false");
+                    const alvo = card.querySelector(`input[name="Perguntas[${pIdx}].Opcoes[${correctIdx}].IsCorrecta"]`);
+                    if (alvo) alvo.value = "true";
+                }
+            });
+        });
+</script>
+}

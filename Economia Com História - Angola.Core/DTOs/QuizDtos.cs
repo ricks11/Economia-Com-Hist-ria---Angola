@@ -17,6 +17,17 @@ public record QuizDetalheDto(
     List<PerguntaDetalheDto> Perguntas
 );
 
+public record UpdateOpcaoRespostaDto(
+    int? Id,              // null = opção nova; preenchido = opção existente a actualizar
+    string Texto,
+    bool IsCorrecta,
+    string? Explicacao);
+
+public record UpdatePerguntaDto(
+    int? Id,              // null = pergunta nova; preenchido = pergunta existente a actualizar
+    string Enunciado,
+    List<UpdateOpcaoRespostaDto> Opcoes);
+
 public record CreateQuizDto(
     string Titulo,
     string Tema,
@@ -43,8 +54,8 @@ public record UpdateQuizDto(
     string Tema,
     NivelDificuldade Nivel,
     int TotalPerguntas,
-    int TempoLimiteSeg
-);
+    int TempoLimiteSeg,
+    List<UpdatePerguntaDto> Perguntas);
 
 public record QuizResponseDto(
     int Id,
