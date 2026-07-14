@@ -175,20 +175,78 @@ public class QuizzesController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(Roles = "Admin,Editor,SuperAdmin")]
-    public async Task<ActionResult> UpdateQuiz(int id, [FromBody] UpdateQuizDto dto)
+    public async Task<ActionResult> UpdateQuiz(int id, [FromBody] UpdateQuizDto dto, CancellationToken cancellationToken)
     {
-        var quiz = await _quizRepository.GetByIdAsync(id);
+        var quiz = await _dbContext.Quizzes
+            .Include(q => q.Perguntas)
+                .ThenInclude(p => p.Opcoes)
+            .FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
+
         if (quiz == null) return NotFound();
 
-        // In a real scenario, check if the current user is the author of the quiz
         quiz.Titulo = dto.Titulo;
         quiz.Tema = dto.Tema;
         quiz.Nivel = dto.Nivel;
-        quiz.Tema = dto.Tema;
         quiz.TotalPerguntas = dto.TotalPerguntas;
         quiz.TempoLimiteSeg = dto.TempoLimiteSeg;
 
-        await _quizRepository.UpdateAsync(quiz);
+        // Remove perguntas que já não vêm na lista enviada
+        var idsEnviados = dto.Perguntas.Where(p => p.Id.HasValue).Select(p => p.Id!.Value).ToHashSet();
+        var perguntasParaRemover = quiz.Perguntas.Where(p => !idsEnviados.Contains(p.Id)).ToList();
+        foreach (var pergunta in perguntasParaRemover)
+            _dbContext.Perguntas.Remove(pergunta);
+
+        foreach (var perguntaDto in dto.Perguntas)
+        {
+            if (perguntaDto.Id.HasValue)
+            {
+                var pergunta = quiz.Perguntas.FirstOrDefault(p => p.Id == perguntaDto.Id.Value);
+                if (pergunta == null) continue;
+
+                pergunta.Enunciado = perguntaDto.Enunciado;
+
+                var idsOpcoesEnviadas = perguntaDto.Opcoes.Where(o => o.Id.HasValue).Select(o => o.Id!.Value).ToHashSet();
+                var opcoesParaRemover = pergunta.Opcoes.Where(o => !idsOpcoesEnviadas.Contains(o.Id)).ToList();
+                foreach (var opcao in opcoesParaRemover)
+                    _dbContext.OpcoesResposta.Remove(opcao);
+
+                foreach (var opcaoDto in perguntaDto.Opcoes)
+                {
+                    if (opcaoDto.Id.HasValue)
+                    {
+                        var opcao = pergunta.Opcoes.FirstOrDefault(o => o.Id == opcaoDto.Id.Value);
+                        if (opcao == null) continue;
+                        opcao.Texto = opcaoDto.Texto;
+                        opcao.IsCorrecta = opcaoDto.IsCorrecta;
+                        opcao.Explicacao = opcaoDto.Explicacao;
+                    }
+                    else
+                    {
+                        pergunta.Opcoes.Add(new OpcaoResposta
+                        {
+                            Texto = opcaoDto.Texto,
+                            IsCorrecta = opcaoDto.IsCorrecta,
+                            Explicacao = opcaoDto.Explicacao
+                        });
+                    }
+                }
+            }
+            else
+            {
+                quiz.Perguntas.Add(new Pergunta
+                {
+                    Enunciado = perguntaDto.Enunciado,
+                    Opcoes = perguntaDto.Opcoes.Select(o => new OpcaoResposta
+                    {
+                        Texto = o.Texto,
+                        IsCorrecta = o.IsCorrecta,
+                        Explicacao = o.Explicacao
+                    }).ToList()
+                });
+            }
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
 
