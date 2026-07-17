@@ -122,7 +122,7 @@ public class ConteudosController : ControllerBase
         if (pagina < 1) pagina = 1;
         if (tamanho < 1 || tamanho > 100) tamanho = 20;
 
-        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : 0;
 
         var query = _dbContext.Conteudos.AsNoTracking();
@@ -185,7 +185,7 @@ public class ConteudosController : ControllerBase
         if (conteudo is null)
             return NotFound(new { message = "Conteúdo não encontrado" });
 
-        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = int.TryParse(userIdClaim, out var uid) ? uid : (userIdContext ?? 0);
 
         var isFavorito = userId > 0 && await _dbContext.Favoritos
@@ -256,7 +256,7 @@ public class ConteudosController : ControllerBase
     }
 
     [HttpPost("{id:int}/traducoes")]
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult<TraducaoResponseDto>> AdicionarTraducao(int id, [FromBody] CreateTraducaoDto request, CancellationToken cancellationToken)
     {
         var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken);
@@ -390,10 +390,12 @@ public class ConteudosController : ControllerBase
         int id,
         CancellationToken cancellationToken)
     {
-        var conteudo = await _dbContext.Conteudos.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
+        var conteudo = await _dbContext.Conteudos
+        .Include(c => c.Favoritos)   // ← inclui os favoritos
+        .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
         if (conteudo is null)
-            return NotFound(new { message = "Conteúdo não encontrado" });
+            return NotFound();
 
         // Get current user and check authorization
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
@@ -402,15 +404,16 @@ public class ConteudosController : ControllerBase
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
-        var isAdmin = roleClaim == "Admin";
+        var isAdmin = roleClaim is "Admin" or "SuperAdmin";
         var isAuthor = conteudo.EditorId == userId;
 
         if (!isAuthor && !isAdmin)
             return Forbid();
 
-        // Soft delete
-        conteudo.Estado = EstadoConteudo.Arquivado;
+        _dbContext.Favoritos.RemoveRange(conteudo.Favoritos);
         _dbContext.Conteudos.Update(conteudo);
+
+        conteudo.Estado = EstadoConteudo.Arquivado;
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return NoContent();
@@ -442,7 +445,7 @@ public class ConteudosController : ControllerBase
             return Unauthorized(new { message = "Utilizador não autenticado" });
 
         var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
-        var isAdmin = roleClaim == "Admin";
+        var isAdmin = roleClaim is "Admin" or "SuperAdmin";
         var isAuthor = conteudo.EditorId == userId;
 
         if (!isAuthor && !isAdmin)

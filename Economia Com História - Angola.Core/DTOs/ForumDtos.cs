@@ -45,6 +45,8 @@ public record TopicoForumDetalheDto(
     DateTime CriadoEm,
     bool Fixado,
     int Visualizacoes,
+    bool JaReagiu,       // <-- Adicionado
+    int TotalReacoes,    // <-- Adicionado
     IReadOnlyCollection<RespostaForumDto> Respostas);
 
 public class CriarRespostaForumDto
@@ -74,6 +76,9 @@ public record RespostaForumDto(
     DateTime? DataEdicao,
     int? RespostaPaiId,
     bool IsSolucao,
+    bool JaReagiu,
+    int TotalReacoes,
+    int TopicoId,  // <-- Adicionado
     IReadOnlyCollection<RespostaForumDto> RespostasFilhas);
 
 public class CriarReacaoDto : IValidatableObject

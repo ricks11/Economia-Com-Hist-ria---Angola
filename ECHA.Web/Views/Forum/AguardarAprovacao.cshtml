@@ -1,0 +1,51 @@
+﻿@using EconomiaComHistoria.Core.Enums
+@model EconomiaComHistoria.Core.DTOs.TopicoForumDetalheDto
+@{
+    ViewData["Title"] = Model.Estado == EstadoTopicoForum.Rejeitado ? "Tópico Rejeitado" : "Tópico em Revisão";
+}
+
+<div class="max-w-3xl mx-auto px-4 py-8 text-center">
+    <div class="bg-white dark:bg-stone-900 rounded-3xl p-8 md:p-12 border border-stone-200/70 dark:border-stone-800 shadow-lg">
+
+        @if (Model.Estado == EstadoTopicoForum.Pendente)
+        {
+        <div class="w-20 h-20 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl text-yellow-600 dark:text-yellow-400">hourglass_top</span>
+        </div>
+        <h1 class="text-3xl font-headline font-bold text-primary dark:text-rose-200 mb-4">Aguarde, o seu tópico está a ser revisto</h1>
+        <p class="text-stone-600 dark:text-stone-400 text-lg max-w-md mx-auto leading-relaxed">
+            A nossa equipa de moderação está a analisar o conteúdo do tópico <span class="font-semibold">“@Model.Titulo”</span> para garantir a qualidade académica.
+        </p>
+        <p class="text-sm text-stone-500 dark:text-stone-500 mt-2">Assim que for aprovado, será publicado publicamente e receberá uma notificação.</p>
+        }
+        else if (Model.Estado == EstadoTopicoForum.Rejeitado)
+        {
+        <div class="w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl text-red-600 dark:text-red-400">block</span>
+        </div>
+        <h1 class="text-3xl font-headline font-bold text-red-700 dark:text-red-400 mb-4">Tópico não aprovado</h1>
+        <p class="text-stone-600 dark:text-stone-400 text-lg max-w-md mx-auto leading-relaxed">
+            O tópico <span class="font-semibold">“@Model.Titulo”</span> não cumpriu os critérios de rigor científico ou de adequação ao fórum.
+        </p>
+        <p class="text-sm text-stone-500 dark:text-stone-500 mt-2">Pode consultar a notificação enviada para mais detalhes.</p>
+        }
+
+        <div class="mt-8 pt-6 border-t border-stone-200/50 dark:border-stone-800">
+            <a asp-action="Index" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity shadow-sm no-underline">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Voltar ao Fórum
+            </a>
+        </div>
+    </div>
+
+    <!-- Informação adicional do tópico (opcional) -->
+    <div class="mt-6 text-left bg-stone-50 dark:bg-stone-900/50 rounded-2xl p-6 border border-stone-200/40 dark:border-stone-800">
+        <h3 class="text-sm font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-2">Resumo do Tópico</h3>
+        <p class="text-stone-700 dark:text-stone-300 font-semibold">@Model.Titulo</p>
+        <p class="text-stone-500 dark:text-stone-400 text-sm mt-1">@Model.Descricao</p>
+        <div class="flex items-center gap-4 mt-3 text-xs text-stone-400">
+            <span>Categoria: @Model.CategoriaNome</span>
+            <span>Autor: @Model.AutorNome</span>
+        </div>
+    </div>
+</div>

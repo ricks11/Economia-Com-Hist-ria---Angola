@@ -2,13 +2,28 @@
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
 
-    // Extração segura de iniciais para o Avatar
-    var userName = User.Identity?.Name ?? "U";
-    var initials = userName.Contains(" ")
-        ? string.Join("", userName.Split(' ').Select(n => n.FirstOrDefault())).ToUpper()
-        : userName.Substring(0, Math.Min(2, userName.Length)).ToUpper();
+    // Obter o nome completo (tenta a claim "FullName", depois ClaimTypes.Name, fallback para email)
+    var fullName = User.FindFirst("Nome")?.Value
+                   ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value
+                   ?? User.Identity?.Name
+                   ?? "U";
 
-    // Função interna para limpar as classes de navegação ativa
+    // Calcular iniciais para o avatar (usa o fullName)
+    var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    string initials = parts.Length > 1
+        ? $"{parts.First()[0]}{parts.Last()[0]}".ToUpper()
+        : fullName.Substring(0, Math.Min(2, fullName.Length)).ToUpper();
+
+    // Função para extrair primeiro e último nome
+    string GetDisplayName(string name) {
+        if (string.IsNullOrWhiteSpace(name)) return "Utilizador";
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0) return "Utilizador";
+        if (parts.Length == 1) return parts[0];
+        return $"{parts.First()} {parts.Last()}";
+    }
+
+    // Função para as classes de navegação ativa
     string GetNavClass(string controller, string action = null) {
         bool isActive = currentController == controller && (action == null || currentAction == action);
         return isActive
@@ -241,7 +256,8 @@
             </a>
             <div class="flex items-center gap-3 pl-2 md:pl-4 border-l border-stone-200">
                 <div class="text-right hidden lg:block">
-                    <p class="text-xs font-bold text-on-surface">@User.Identity.Name</p>
+                    <!-- Aqui exibimos apenas o primeiro e último nome -->
+                    <p class="text-xs font-bold text-on-surface">@GetDisplayName(fullName)</p>
                     <p class="text-[10px] text-stone-500 uppercase font-bold tracking-tighter">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
                 </div>
                 <div class="w-8 h-8 rounded-full border border-outline-variant/20 bg-primary/10 flex items-center justify-center text-primary font-bold text-xs" title="@User.Identity.Name">

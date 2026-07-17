@@ -1,4 +1,6 @@
 using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.Core.Entities;
+using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Helpers;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -24,8 +26,18 @@ public class PerfilController : ControllerBase
     {
         var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                      ?? User.FindFirst("sub")?.Value;
-
         return int.TryParse(userIdStr, out userId);
+    }
+
+    private async Task<Utilizador?> GetCurrentUserWithIncludesAsync(CancellationToken ct)
+    {
+        if (!TryGetUserId(out var userId))
+            return null;
+
+        return await _dbContext.Utilizadores
+            .Include(u => u.Escola)
+            .Include(u => u.Turma)
+            .FirstOrDefaultAsync(u => u.Id == userId, ct);
     }
 
     [HttpGet("progresso")]
@@ -42,7 +54,6 @@ public class PerfilController : ControllerBase
 
         if (user == null) return NotFound(new { message = "Utilizador não encontrado" });
 
-        // Lógica simples de nível: cada 1000 pontos = 1 nível
         int nivel = (user.PontosTotais / 1000) + 1;
         int pontosNoNivelAtual = user.PontosTotais % 1000;
         double percentagemNivel = (double)pontosNoNivelAtual / 1000 * 100;
@@ -55,137 +66,143 @@ public class PerfilController : ControllerBase
             bc.DataConquista
         )).ToList();
 
-        var response = new ProgressoUtilizadorDto(
+        return Ok(new ProgressoUtilizadorDto(
             user.PontosTotais,
             nivel,
             1000 - pontosNoNivelAtual,
             percentagemNivel,
             user.StreakAtual,
             badges
-        );
-
-        return Ok(response);
+        ));
     }
 
-    /// <summary>
-    /// Gets the current authenticated user's profile
-    /// </summary>
     [HttpGet]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PerfilResponseDto>> GetPerfil(CancellationToken cancellationToken)
+    public async Task<ActionResult<PerfilResponseDto>> GetPerfil(CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
-            return Unauthorized(new { message = "Utilizador não autenticado" });
+        var utilizador = await GetCurrentUserWithIncludesAsync(ct);
+        if (utilizador == null)
+            return Unauthorized();
 
-        var utilizador = await _dbContext.Utilizadores
-            .Include(u => u.Escola)
-            .Include(u => u.Turma)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
-
-        if (utilizador is null)
-            return NotFound(new { message = "Utilizador não encontrado" });
-
-        var response = MapToPerfilResponseDto(utilizador);
-        return Ok(response);
+        return Ok(MapToPerfilResponseDto(utilizador));
     }
 
-    /// <summary>
-    /// Updates the current authenticated user's profile
-    /// </summary>
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PerfilResponseDto>> UpdatePerfil(
         [FromBody] UpdatePerfilDto request,
-        CancellationToken cancellationToken)
+        CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
-            return Unauthorized(new { message = "Utilizador não autenticado" });
+        var utilizador = await GetCurrentUserWithIncludesAsync(ct);
+        if (utilizador == null)
+            return Unauthorized();
 
-        var utilizador = await _dbContext.Utilizadores
-            .Include(u => u.Escola)
-            .Include(u => u.Turma)
-            .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
-
-        if (utilizador is null)
-            return NotFound(new { message = "Utilizador não encontrado" });
-
-        // Update optional fields
+        // Atualizar campos simples
         if (!string.IsNullOrEmpty(request.Nome))
             utilizador.Nome = request.Nome;
 
         if (!string.IsNullOrEmpty(request.Provincia))
             utilizador.Provincia = request.Provincia;
 
+        // ---- VALIDAÇÃO DE PERMISSÃO PARA ESCOLA ----
         if (request.EscolaId.HasValue)
         {
-            // Verify escola exists
-            var escolaExists = await _dbContext.Escolas
-                .AnyAsync(e => e.Id == request.EscolaId, cancellationToken);
+            var isAdmin = utilizador.Tipo == TipoUtilizador.Admin
+                       || utilizador.Tipo == TipoUtilizador.SuperAdmin;
 
-            if (!escolaExists)
-                return BadRequest(new { message = "Escola não encontrada" });
+            if (isAdmin)
+            {
+                // Admin pode definir qualquer escola (desde que exista)
+                var escolaExists = await _dbContext.Escolas
+                    .AnyAsync(e => e.Id == request.EscolaId.Value, ct);
+                if (!escolaExists)
+                    return BadRequest(new { message = "Escola não encontrada" });
 
-            utilizador.EscolaId = request.EscolaId;
+                utilizador.EscolaId = request.EscolaId;
+            }
+            else
+            {
+                // Utilizador comum: só pode manter a mesma escola ou remover (null)
+                if (utilizador.EscolaId.HasValue && utilizador.EscolaId != request.EscolaId)
+                {
+                    return BadRequest(new { message = "Não tem permissão para alterar a escola. Utilize o código de convite." });
+                }
+                // Se for null, permite remover
+                if (!request.EscolaId.HasValue)
+                    utilizador.EscolaId = null;
+                // Se for igual, não faz nada
+            }
+        }
+        else
+        {
+            // request.EscolaId é null → remover escola (permitido para todos)
+            utilizador.EscolaId = null;
         }
 
+        // ---- VALIDAÇÃO DE PERMISSÃO PARA TURMA ----
         if (request.TurmaId.HasValue)
         {
-            // Verify turma exists
-            var turmaExists = await _dbContext.Turmas
-                .AnyAsync(t => t.Id == request.TurmaId, cancellationToken);
+            var turma = await _dbContext.Turmas
+                .Include(t => t.Escola)
+                .FirstOrDefaultAsync(t => t.Id == request.TurmaId.Value, ct);
 
-            if (!turmaExists)
+            if (turma == null)
                 return BadRequest(new { message = "Turma não encontrada" });
+
+            var isAdmin = utilizador.Tipo == TipoUtilizador.Admin
+                       || utilizador.Tipo == TipoUtilizador.SuperAdmin;
+
+            if (!isAdmin)
+            {
+                // Utilizador comum: só pode definir turma se pertencer à sua escola
+                if (utilizador.EscolaId == null)
+                    return BadRequest(new { message = "Não tem escola associada para definir turma." });
+
+                if (turma.EscolaId != utilizador.EscolaId)
+                    return BadRequest(new { message = "Esta turma não pertence à sua escola." });
+            }
 
             utilizador.TurmaId = request.TurmaId;
         }
+        else
+        {
+            // Se o request enviar null, permite remover a turma
+            utilizador.TurmaId = null;
+        }
 
-        _dbContext.Utilizadores.Update(utilizador);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(ct);
 
         var response = MapToPerfilResponseDto(utilizador);
         return Ok(response);
     }
 
-    /// <summary>
-    /// Lists all favorite contents for the authenticated user
-    /// </summary>
     [HttpGet("favoritos")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<PagedResult<ConteudoResponseDto>>> GetFavoritos(
-        [FromQuery] int pagina = 1,
-        [FromQuery] int tamanho = 20,
-        CancellationToken cancellationToken = default)
+    [FromQuery] int pagina = 1,
+    [FromQuery] int tamanho = 20,
+    CancellationToken ct = default)
     {
         if (pagina < 1) pagina = 1;
         if (tamanho < 1 || tamanho > 100) tamanho = 20;
 
         if (!TryGetUserId(out var userId))
-            return Unauthorized(new { message = "Utilizador não autenticado" });
+            return Unauthorized();
 
-        var totalCount = await _dbContext.Favoritos
-            .Where(f => f.UtilizadorId == userId)
-            .CountAsync(cancellationToken);
+        // Junção explícita com a tabela Conteudos, filtrando apenas os não arquivados
+        var query = from f in _dbContext.Favoritos
+                    join c in _dbContext.Conteudos on f.ConteudoId equals c.Id
+                    where f.UtilizadorId == userId
+                       && c.Estado != EstadoConteudo.Arquivado   // ← filtro principal
+                    select c;
 
-        var favoritos = await _dbContext.Favoritos
-            .Where(f => f.UtilizadorId == userId)
-            .Where(f => f.Conteudo != null)
-            .Include(f => f.Conteudo)
-            .ThenInclude(c => c.Editor)
-            .OrderByDescending(f => f.DataAdicionado)
+        var totalCount = await query.CountAsync(ct);
+
+        var favoritos = await query
+            .Include(c => c.Editor)
+            .OrderByDescending(c => c.DataPublicacao) // ou use f.DataAdicionado se preferir a ordem de adição
             .Skip((pagina - 1) * tamanho)
             .Take(tamanho)
-            .Select(f => f.Conteudo!)
             .AsNoTracking()
-            .ToListAsync(cancellationToken);
+            .ToListAsync(ct);
 
         var response = favoritos.Select(c => new ConteudoResponseDto(
             c.Id,
@@ -203,7 +220,7 @@ public class PerfilController : ControllerBase
             c.EditorId,
             c.Editor?.Nome,
             c.Visualizacoes,
-            true,
+            true, // é favorito (vem da tabela de favoritos)
             c.IsJindungo,
             c.ReferenciaFactual,
             c.DataPublicacao)).ToList();
@@ -217,7 +234,7 @@ public class PerfilController : ControllerBase
         return Ok(pagedResult);
     }
 
-    private PerfilResponseDto MapToPerfilResponseDto(EconomiaComHistoria.Core.Entities.Utilizador utilizador)
+    private PerfilResponseDto MapToPerfilResponseDto(Utilizador utilizador)
     {
         return new PerfilResponseDto(
             utilizador.Id,

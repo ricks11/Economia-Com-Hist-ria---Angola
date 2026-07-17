@@ -15,7 +15,7 @@ public interface IAuthService
     /// <summary>
     /// Generates a JWT access token.
     /// </summary>
-    string GenerateAccessToken(int userId, string email, string role);
+    string GenerateAccessToken(int userId, string email, string role, string nome);
 
     /// <summary>
     /// Generates a refresh token (simple GUID-based token).

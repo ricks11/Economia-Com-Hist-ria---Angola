@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
         _dbContext.Utilizadores.Add(newUser);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var accessToken = _authService.GenerateAccessToken(newUser.Id, newUser.Email, newUser.Tipo.ToString());
+        var accessToken = _authService.GenerateAccessToken(newUser.Id, newUser.Email, newUser.Tipo.ToString(), newUser.Nome);
         var refreshToken = _authService.GenerateRefreshToken();
         RefreshTokenStore[refreshToken] = newUser.Id.ToString();
 
@@ -116,7 +116,7 @@ public class AuthController : ControllerBase
         user.UltimoAcesso = DateTime.UtcNow;
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var accessToken = _authService.GenerateAccessToken(user.Id, user.Email, user.Tipo.ToString());
+        var accessToken = _authService.GenerateAccessToken(user.Id, user.Email, user.Tipo.ToString(), user.Nome);
         var refreshToken = _authService.GenerateRefreshToken();
         RefreshTokenStore[refreshToken] = user.Id.ToString();
 
@@ -165,7 +165,7 @@ public class AuthController : ControllerBase
         }
 
         RefreshTokenStore.Remove(request.RefreshToken);
-        var newAccessToken = _authService.GenerateAccessToken(user.Id, user.Email, user.Tipo.ToString());
+        var newAccessToken = _authService.GenerateAccessToken(user.Id, user.Email, user.Tipo.ToString(), user.Nome);
         var newRefreshToken = _authService.GenerateRefreshToken();
         RefreshTokenStore[newRefreshToken] = user.Id.ToString();
 

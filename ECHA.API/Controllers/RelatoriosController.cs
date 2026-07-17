@@ -8,7 +8,7 @@ namespace ECHA.API.Controllers;
 
 [ApiController]
 [Route("api/relatorios")]
-[Authorize(Roles = "Admin,Editor")]
+[Authorize(Roles = "Admin,Editor,SuperAdmin")]
 public class RelatoriosController : ControllerBase
 {
     private readonly IRelatorioService _relatorioService;

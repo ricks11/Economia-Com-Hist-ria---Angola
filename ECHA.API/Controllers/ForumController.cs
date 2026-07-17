@@ -89,7 +89,7 @@ public class ForumController : ControllerBase
     [HttpGet("categorias")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<object>>> ListarCategorias(
+    public async Task<ActionResult<IEnumerable<CategoriaForumDto>>> ListarCategorias(
         CancellationToken cancellationToken)
     {
         var categorias = await _dbContext.CategoriasForum
@@ -111,22 +111,29 @@ public class ForumController : ControllerBase
             categorias = defaults.ToList();
         }
 
-        return Ok(categorias.Select(c => new { c.Id, c.Nome, c.Descricao, c.Icone }));
+        return Ok(categorias.Select(c => new CategoriaForumDto(c.Id, c.Nome, c.Descricao, c.Icone)));
     }
 
     [HttpGet("topicos")]
     [AllowAnonymous]
-    [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "categoriaId", "ordem" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "categoriaId", "ordem", "incluirArquivados" })]
     public async Task<ActionResult<IEnumerable<TopicoForumDto>>> ListarTopicos(
-        [FromQuery] int? categoriaId,
-        [FromQuery] string? ordem,
-        CancellationToken cancellationToken)
+    [FromQuery] int? categoriaId,
+    [FromQuery] string? ordem,
+    [FromQuery] bool incluirArquivados = false,
+    CancellationToken cancellationToken = default)
     {
+        var userId = GetUserId();
+
         var query = _dbContext.TopicosForum
             .Include(x => x.Autor)
             .Include(x => x.Categoria)
-            .Where(x => x.Estado == EstadoTopicoForum.Ativo)
+            .Where(x => x.Estado == EstadoTopicoForum.Ativo
+                || (userId.HasValue && x.AutorId == userId.Value && x.Estado == EstadoTopicoForum.Pendente)
+                || (incluirArquivados && userId.HasValue &&
+                    (x.Estado == EstadoTopicoForum.Arquivado || x.Estado == EstadoTopicoForum.Rejeitado) &&
+                    (x.AutorId == userId.Value || IsModerator())))
             .AsNoTracking();
 
         if (categoriaId.HasValue)
@@ -145,38 +152,56 @@ public class ForumController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TopicoForumDetalheDto>> GetTopico(
-        int id,
-        CancellationToken cancellationToken)
+    int id,
+    CancellationToken cancellationToken)
     {
+        var userId = GetUserId();
+
+        // 1. Carrega o tópico e inclui a coleção de Reações dele
         var topico = await _dbContext.TopicosForum
-            .Include(x => x.Autor)
-            .Include(x => x.Categoria)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id
-                && x.Estado == EstadoTopicoForum.Ativo, cancellationToken);
+        .Include(x => x.Autor)
+        .Include(x => x.Categoria)
+        .AsNoTracking()
+        .FirstOrDefaultAsync(x => x.Id == id
+            && (x.Estado == EstadoTopicoForum.Ativo
+                || (userId.HasValue && x.AutorId == userId.Value &&
+                    (x.Estado == EstadoTopicoForum.Pendente ||
+                     x.Estado == EstadoTopicoForum.Rejeitado ||
+                     x.Estado == EstadoTopicoForum.Arquivado))   // ← adicionado
+                || (userId.HasValue && IsModerator())),
+            cancellationToken);
 
         if (topico is null)
             return NotFound(new { message = "Tópico não encontrado" });
 
-        // Incrementa visualizações
-        var topicoTracked = await _dbContext.TopicosForum.FindAsync(
-            new object[] { id }, cancellationToken);
-        if (topicoTracked is not null)
+        if (topico.Estado == EstadoTopicoForum.Ativo)
         {
-            topicoTracked.Visualizacoes++;
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            var topicoTracked = await _dbContext.TopicosForum.FindAsync(new object[] { id }, cancellationToken);
+            if (topicoTracked is not null)
+            {
+                topicoTracked.Visualizacoes++;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
         }
 
+        // 2. CORREÇÃO DO BUG ANTERIOR: Carrega todas as respostas (sem filtrar PaiId == null na query)
         var respostas = await _dbContext.RespostasForum
             .Include(x => x.Autor)
-            .Include(x => x.RespostasFilhas)
-                .ThenInclude(x => x.Autor)
-            .Where(x => x.TopicoId == id
-                && x.EstadoResposta == EstadoComentario.Publicado
-                && x.RespostaPaiId == null)
+            .Where(x => x.TopicoId == id && (x.EstadoResposta == EstadoComentario.Publicado || x.EstadoResposta == EstadoComentario.Aprovada))
             .OrderBy(x => x.DataCriacao)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
+
+        // 3. Carrega as reações de todas as respostas deste tópico de uma só vez (Evita N+1 queries)
+        var respostaIds = respostas.Select(r => r.Id).ToList();
+        var reacoesDasRespostas = await _dbContext.Reacoes
+            .Where(x => x.RespostaForumId.HasValue && respostaIds.Contains(x.RespostaForumId.Value))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        // 4. Cálculos de reação do Tópico Principal
+        var totalReacoesTopico = topico.Reacoes.Count;
+        var jaReagiuAoTopico = userId.HasValue && topico.Reacoes.Any(r => r.UtilizadorId == userId.Value);
 
         return Ok(new TopicoForumDetalheDto(
             topico.Id,
@@ -190,7 +215,9 @@ public class ForumController : ControllerBase
             topico.CriadoEm,
             topico.Fixado,
             topico.Visualizacoes,
-            BuildRespostaTree(respostas, null, 2)));
+            jaReagiuAoTopico,      // Passa o bool calculado
+            totalReacoesTopico,    // Passa o total calculado
+            BuildRespostaTree(respostas, reacoesDasRespostas, userId, null, 2)));
     }
 
     [HttpDelete("topicos/{id:int}")]
@@ -219,9 +246,50 @@ public class ForumController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("topicos/{id:int}/desarquivar")]
+    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
+    public async Task<IActionResult> DesarquivarTopico(int id, CancellationToken cancellationToken)
+    {
+        var topico = await _dbContext.TopicosForum.FindAsync(new object[] { id }, cancellationToken);
+        if (topico is null)
+            return NotFound(new { message = "Tópico não encontrado" });
+
+        // Só pode desarquivar se estiver arquivado
+        if (topico.Estado != EstadoTopicoForum.Arquivado)
+            return BadRequest(new { message = "O tópico não está arquivado." });
+
+        topico.Estado = EstadoTopicoForum.Ativo; // ou Pendente, conforme regra de negócio
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return NoContent();
+    }
+
     // ─────────────────────────────────────────
     // RESPOSTAS
     // ─────────────────────────────────────────
+
+    [HttpGet("respostas/{id:int}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<RespostaForumDto>> GetResposta(int id, CancellationToken cancellationToken)
+    {
+        var resposta = await _dbContext.RespostasForum
+            .Include(x => x.Autor)
+            .FirstOrDefaultAsync(x => x.Id == id && x.EstadoResposta != EstadoComentario.Removido, cancellationToken);
+
+        if (resposta is null)
+            return NotFound(new { message = "Resposta não encontrada" });
+
+        // Buscar reações para esta resposta
+        var reacoes = await _dbContext.Reacoes
+            .Where(r => r.RespostaForumId == id)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        var totalReacoes = reacoes.Count;
+        var userId = GetUserId();
+        var jaReagiu = userId.HasValue && reacoes.Any(r => r.UtilizadorId == userId.Value);
+
+        return Ok(MapResposta(resposta, jaReagiu, totalReacoes, Array.Empty<RespostaForumDto>()));
+    }
 
     [HttpPost("topicos/{topicoId:int}/respostas")]
     [Authorize]
@@ -230,9 +298,9 @@ public class ForumController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RespostaForumDto>> AdicionarResposta(
-        int topicoId,
-        [FromBody] CriarRespostaForumDto request,
-        CancellationToken cancellationToken)
+    int topicoId,
+    [FromBody] CriarRespostaForumDto request,
+    CancellationToken cancellationToken)
     {
         if (!TryGetUserId(out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
@@ -279,12 +347,10 @@ public class ForumController : ControllerBase
 
         _dbContext.RespostasForum.Add(resposta);
 
-        // Incrementa publicações do utilizador para controlo de moderação
         utilizador.NumeroPublicacoes++;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        // Notifica autor do tópico se não for ele próprio a responder
         if (topico.AutorId != userId)
         {
             await _notificacaoService.EnviarPushAsync(
@@ -298,9 +364,10 @@ public class ForumController : ControllerBase
             .Reference(r => r.Autor)
             .LoadAsync(cancellationToken);
 
+        // CORREÇÃO: Passamos false (não reagiu) e 0 (total de reações) para a nova resposta
         return Created(
-            string.Empty,
-            MapResposta(resposta, Array.Empty<RespostaForumDto>()));
+                string.Empty,
+                MapResposta(resposta, false, 0, Array.Empty<RespostaForumDto>()));
     }
 
     [HttpPut("respostas/{id:int}")]
@@ -311,9 +378,9 @@ public class ForumController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RespostaForumDto>> EditarResposta(
-        int id,
-        [FromBody] AtualizarRespostaForumDto request,
-        CancellationToken cancellationToken)
+    int id,
+    [FromBody] AtualizarRespostaForumDto request,
+    CancellationToken cancellationToken)
     {
         if (!TryGetUserId(out var userId))
             return Unauthorized(new { message = "Utilizador não autenticado" });
@@ -335,7 +402,16 @@ public class ForumController : ControllerBase
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Ok(MapResposta(resposta, Array.Empty<RespostaForumDto>()));
+        // CORREÇÃO: Procuramos as reações existentes desta resposta para devolver o DTO atualizado
+        var reacoes = await _dbContext.Reacoes
+            .Where(x => x.RespostaForumId == id)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        var totalReacoes = reacoes.Count;
+        var jaReagiu = reacoes.Any(x => x.UtilizadorId == userId);
+
+        return Ok(MapResposta(resposta, jaReagiu, totalReacoes, Array.Empty<RespostaForumDto>()));
     }
 
     [HttpDelete("respostas/{id:int}")]
@@ -476,6 +552,13 @@ public class ForumController : ControllerBase
     // HELPERS PRIVADOS
     // ─────────────────────────────────────────
 
+    private int? GetUserId()
+    {
+        var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+        if (int.TryParse(claim, out var id)) return id;
+        return null;
+    }
+
     private bool TryGetUserId(out int userId)
     {
         var value = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
@@ -486,7 +569,8 @@ public class ForumController : ControllerBase
     private bool IsModerator() =>
         User.IsInRole("Admin")
         || User.IsInRole("Moderador")
-        || User.IsInRole("SuperAdmin");
+        || User.IsInRole("SuperAdmin")
+        || User.IsInRole("Editor"); // Incluído por consistência
 
     private static bool HasExactlyOneTarget(int? topicoId, int? respostaId) =>
         topicoId.HasValue ^ respostaId.HasValue;
@@ -506,9 +590,11 @@ public class ForumController : ControllerBase
             topico.Visualizacoes);
 
     private static IReadOnlyCollection<RespostaForumDto> BuildRespostaTree(
-        IReadOnlyCollection<RespostaForum> respostas,
-        int? respostaPaiId,
-        int profundidadeRestante)
+    IReadOnlyCollection<RespostaForum> respostas,
+    IReadOnlyCollection<Reacao> reacoesDasRespostas,
+    int? userId,
+    int? respostaPaiId,
+    int profundidadeRestante)
     {
         if (profundidadeRestante <= 0)
             return Array.Empty<RespostaForumDto>();
@@ -516,24 +602,37 @@ public class ForumController : ControllerBase
         return respostas
             .Where(x => x.RespostaPaiId == respostaPaiId)
             .OrderBy(x => x.DataCriacao)
-            .Select(x => MapResposta(
-                x,
-                BuildRespostaTree(respostas, x.Id, profundidadeRestante - 1)))
+            .Select(x => {
+                var reacoesDestaResposta = reacoesDasRespostas.Where(r => r.RespostaForumId == x.Id).ToList();
+                var totalReacoes = reacoesDestaResposta.Count;
+                var jaReagiu = userId.HasValue && reacoesDestaResposta.Any(r => r.UtilizadorId == userId.Value);
+
+                return MapResposta(
+                    x,
+                    jaReagiu,
+                    totalReacoes,
+                    BuildRespostaTree(respostas, reacoesDasRespostas, userId, x.Id, profundidadeRestante - 1));
+            })
             .ToList();
     }
 
     private static RespostaForumDto MapResposta(
-        RespostaForum resposta,
-        IReadOnlyCollection<RespostaForumDto> filhas) =>
-        new(
-            resposta.Id,
-            resposta.Conteudo,
-            resposta.AutorId,
-            resposta.Autor?.Nome,
-            resposta.EstadoResposta,
-            resposta.DataCriacao,
-            resposta.DataEdicao,
-            resposta.RespostaPaiId,
-            resposta.IsSolucao,
-            filhas);
+    RespostaForum resposta,
+    bool jaReagiu,
+    int totalReacoes,
+    IReadOnlyCollection<RespostaForumDto> filhas) =>
+    new(
+        resposta.Id,
+        resposta.Conteudo,
+        resposta.AutorId,
+        resposta.Autor?.Nome,
+        resposta.EstadoResposta,
+        resposta.DataCriacao,
+        resposta.DataEdicao,
+        resposta.RespostaPaiId,
+        resposta.IsSolucao,
+        jaReagiu,       // Mapeia para o DTO
+        totalReacoes,   // Mapeia para o DTO
+        resposta.TopicoId,
+        filhas);
 }

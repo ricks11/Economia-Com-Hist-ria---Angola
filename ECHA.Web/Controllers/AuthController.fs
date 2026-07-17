@@ -45,6 +45,8 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                         let claims =
                             [| Claim(ClaimTypes.Name, response.Email)
                                Claim(ClaimTypes.Role, response.Tipo)
+                               Claim(ClaimTypes.NameIdentifier, response.Id.ToString())
+                               Claim("Nome", response.Nome)
                                Claim("AccessToken", response.AccessToken) |]
                     
                         let claimsIdentity = ClaimsIdentity(claims, AuthScheme, ClaimTypes.Name, ClaimTypes.Role)
@@ -77,6 +79,8 @@ type AuthController(apiClient: ECHA.Web.Services.ApiClient) =
                 let claims =
                     [| Claim(ClaimTypes.Name, response.Email)
                        Claim(ClaimTypes.Role, response.Tipo)
+                       Claim(ClaimTypes.NameIdentifier, response.Id.ToString())
+                       Claim("Nome", response.Nome)
                        Claim("AccessToken", response.AccessToken) |]
                 // Mudado aqui também para o registo automático
                 let claimsIdentity = ClaimsIdentity(claims, AuthScheme)

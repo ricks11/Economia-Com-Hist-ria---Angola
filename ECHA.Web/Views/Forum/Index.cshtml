@@ -1,95 +1,289 @@
+@using EconomiaComHistoria.Core.Enums
 @model IEnumerable<EconomiaComHistoria.Core.DTOs.TopicoForumDto>
-@{
+    @{
     ViewData["Title"] = "Fórum de Discussão";
-}
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="mb-8 flex items-center gap-4 bg-green-50 text-green-800 px-6 py-4 rounded-xl">
-        <span class="material-symbols-outlined text-green-600">check_circle</span>
-        <p class="font-medium">@TempData["SuccessMessage"]</p>
-    </div>
-}
-
-<div class="max-w-5xl mx-auto">
-    <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight mb-4 font-headline">Fórum de Discussão</h1>
-            <p class="text-on-surface-variant max-w-2xl text-lg leading-relaxed">
-                Participe no debate académico sobre a evolução económica de Angola.
-            </p>
-        </div>
-        @if (User.Identity?.IsAuthenticated == true)
-        {
-            <a asp-action="Criar" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-full font-bold shadow-md flex items-center gap-2 hover:opacity-90 no-underline">
-                <span class="material-symbols-outlined">add</span>
-                Criar novo tópico
-            </a>
-        }
-    </header>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <section class="lg:col-span-8 space-y-6">
-            <h3 class="text-sm font-bold uppercase tracking-widest text-stone-400 mb-4 font-headline">Discussões Recentes</h3>
-
-            @if (!Model.Any())
-            {
-                <div class="py-12 text-center bg-surface-container-low rounded-xl">
-                    <span class="material-symbols-outlined text-5xl text-stone-300 mb-4">forum</span>
-                    <p class="text-secondary font-medium">Ainda não há discussões. Seja o primeiro a participar!</p>
-                </div>
+    var categorias = ViewData["Categorias"] as System.Collections.Generic.IEnumerable<EconomiaComHistoria.Core.DTOs.CategoriaForumDto>
+        ?? new System.Collections.Generic.List<EconomiaComHistoria.Core.DTOs.CategoriaForumDto>
+            ();
+            var categoriaAtiva = ViewData["CategoriaAtiva"] as int?;
+            var ordemAtiva = ViewData["OrdemAtiva"] as string ?? "";
+            var incluirArquivados = ViewData["IncluirArquivados"] as bool? ?? false;
+            var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             }
-            else
-            {
-                foreach (var topico in Model)
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+                <!-- Alertas de Feedback -->
+                @if (TempData["SuccessMessage"] != null)
                 {
-                    <a asp-action="Details" asp-route-id="@topico.Id" class="block bg-surface-container-lowest p-6 rounded-xl hover:bg-surface-container-high transition-all group no-underline">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-semibold">@topico.CategoriaNome</span>
-                            <span class="text-xs text-stone-400 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm">schedule</span>
-                                @topico.CriadoEm.ToString("dd/MM/yyyy HH:mm")
-                            </span>
+                <div class="mb-8 p-4 bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 text-green-800 dark:text-green-300 rounded-r-xl shadow-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined text-green-600">check_circle</span>
+                    <span class="font-medium">@TempData["SuccessMessage"]</span>
+                </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                <div class="mb-8 p-4 bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500 text-red-800 dark:text-red-300 rounded-r-xl shadow-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined text-red-600">error</span>
+                    <span class="font-medium">@TempData["ErrorMessage"]</span>
+                </div>
+                }
+
+                <!-- Cabeçalho -->
+                <header class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+                    <div>
+                        <h1 class="text-4xl md:text-5xl font-black text-primary dark:text-rose-200 tracking-tight mb-3 font-headline">Fórum de Discussão</h1>
+                        <p class="text-stone-500 dark:text-stone-400 max-w-xl text-base sm:text-lg leading-relaxed">
+                            Participe no debate académico sobre a evolução e os contextos da história económica de Angola.
+                        </p>
+                    </div>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                    <a asp-action="Criar" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md shadow-primary/10 hover:opacity-95 no-underline transition-all whitespace-nowrap self-start sm:self-auto">
+                        <span class="material-symbols-outlined text-[20px]">add</span>
+                        Criar novo tópico
+                    </a>
+                    }
+                </header>
+
+                <!-- Filtros -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-stone-200/60 dark:border-stone-800">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a asp-action="Index" asp-route-ordem="@ordemAtiva" asp-route-incluirArquivados="@incluirArquivados"
+                           class="px-4 py-2 rounded-xl text-xs font-bold transition-all no-underline border @(categoriaAtiva == null ? " bg-primary border-primary text-white shadow-sm" : "bg-stone-50 dark:bg-stone-900 border-stone-200/60 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800" )">
+                            Todas as Áreas
+                        </a>
+                        @foreach (var cat in categorias)
+                        {
+                        <a asp-action="Index" asp-route-categoriaId="@cat.Id" asp-route-ordem="@ordemAtiva" asp-route-incluirArquivados="@incluirArquivados"
+                           class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all no-underline border @(categoriaAtiva == cat.Id ? " bg-primary border-primary text-white shadow-sm" : "bg-stone-50 dark:bg-stone-900 border-stone-200/60 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800" )">
+                            @if (!string.IsNullOrEmpty(cat.Icone))
+                            {
+                            <span class="material-symbols-outlined text-[16px]">@cat.Icone</span>
+                            }
+                            @cat.Nome
+                        </a>
+                        }
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1 bg-stone-100 dark:bg-stone-900 p-1 rounded-xl self-start md:self-auto">
+                            <a asp-action="Index" asp-route-categoriaId="@categoriaAtiva" asp-route-ordem="" asp-route-incluirArquivados="@incluirArquivados"
+                               class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all no-underline @(string.IsNullOrEmpty(ordemAtiva) ? " bg-white dark:bg-stone-800 text-primary dark:text-yellow-400 shadow-sm" : "text-stone-500 hover:text-stone-800 dark:hover:text-stone-300" )">
+                                Recentes
+                            </a>
+                            <a asp-action="Index" asp-route-categoriaId="@categoriaAtiva" asp-route-ordem="activo" asp-route-incluirArquivados="@incluirArquivados"
+                               class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all no-underline @(ordemAtiva == "activo" ? "bg-white dark:bg-stone-800 text-primary dark:text-yellow-400 shadow-sm" : "text-stone-500 hover:text-stone-800 dark:hover:text-stone-300" )">
+                                Populares
+                            </a>
                         </div>
-                        <h2 class="text-2xl font-bold text-primary mb-2 group-hover:text-primary-container transition-colors font-headline">@topico.Titulo</h2>
-                        <p class="text-stone-600 mb-6 line-clamp-2">@topico.Descricao</p>
-                        <div class="flex items-center justify-between text-stone-400 text-sm">
-                            <div class="flex items-center gap-4">
-                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg">visibility</span> @topico.Visualizacoes</span>
-                                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg">person</span> @topico.AutorNome</span>
+
+                        <!-- Filtro de Arquivados (apenas para moderadores/admin/editores) -->
+                        @if (User.IsInRole("Admin") || User.IsInRole("Moderador") || User.IsInRole("Editor") || User.IsInRole("SuperAdmin"))
+                        {
+                        <a asp-action="Index" asp-route-categoriaId="@categoriaAtiva" asp-route-ordem="@ordemAtiva" asp-route-incluirArquivados="@(!incluirArquivados)"
+                           class="px-4 py-2 rounded-xl text-xs font-bold transition-all no-underline border @(incluirArquivados ? " bg-primary border-primary text-white shadow-sm" : "bg-stone-50 dark:bg-stone-900 border-stone-200/60 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800" )">
+                            @if (incluirArquivados)
+                            {
+                            <span>Ocultar Arquivados</span>
+                            }
+                            else
+                            {
+                            <span>Mostrar Arquivados</span>
+                            }
+                        </a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Lista de Tópicos -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <section class="lg:col-span-8 space-y-4">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-2">Tópicos Ativos</h3>
+
+                        @if (!Model.Any())
+                        {
+                        <div class="py-16 text-center bg-stone-50 dark:bg-stone-900/50 rounded-2xl border border-dashed border-stone-200 dark:border-stone-800">
+                            <span class="material-symbols-outlined text-5xl text-stone-300 dark:text-stone-700 mb-3">forum</span>
+                            <p class="text-stone-600 dark:text-stone-400 font-medium text-sm">Ainda não há discussões abertas nesta categoria.</p>
+                            <p class="text-stone-400 dark:text-stone-500 text-xs mt-1">Seja o primeiro a inaugurar o debate académico!</p>
+                        </div>
+                        }
+                        else
+                        {
+                        foreach (var topico in Model)
+                        {
+                        var isPendingForUser = topico.Estado == EstadoTopicoForum.Pendente && currentUserId != null && topico.AutorId.ToString() == currentUserId;
+                        var isArquivado = topico.Estado == EstadoTopicoForum.Arquivado || topico.Estado == EstadoTopicoForum.Rejeitado;
+                        var action = isPendingForUser ? "AguardarAprovacao" : "Details";
+
+                        // Permissão para apagar: moderadores, admins, editores ou o próprio autor
+                        var podeApagar = User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("SuperAdmin") ||
+                        (currentUserId != null && topico.AutorId.ToString() == currentUserId);
+
+                        <div class="block bg-white dark:bg-stone-900 p-6 rounded-2xl border border-stone-200/70 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 hover:shadow-md transition-all relative">
+                            <!-- Link principal (cobre quase todo o card) -->
+                            <a asp-action="@action" asp-route-id="@topico.Id" class="absolute inset-0 z-0 rounded-2xl" aria-hidden="true"></a>
+
+                            <div class="relative z-10 pointer-events-none">
+                                <div class="flex items-center justify-between gap-4 mb-3.5">
+                                    <span class="bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-2.5 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider border border-stone-200/30 dark:border-stone-700">
+                                        @topico.CategoriaNome
+                                    </span>
+                                    <span class="text-xs text-stone-400 flex items-center gap-1 font-mono pointer-events-auto">
+                                        <span class="material-symbols-outlined text-[16px]">schedule</span>
+                                        @topico.CriadoEm.ToString("dd/MM/yyyy HH:mm")
+                                    </span>
+                                </div>
+
+                                <div class="flex items-start justify-between">
+                                    <h2 class="text-xl font-bold text-primary dark:text-rose-300 mb-2 group-hover:text-primary-container dark:group-hover:text-rose-400 transition-colors font-headline leading-snug">
+                                        @topico.Titulo
+                                    </h2>
+                                    <div class="flex shrink-0 gap-1 ml-2 pointer-events-auto">
+                                        @if (topico.Estado == EstadoTopicoForum.Pendente)
+                                        {
+                                        <span class="bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-400 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                            Em revisão
+                                        </span>
+                                        }
+                                        @if (topico.Estado == EstadoTopicoForum.Arquivado)
+                                        {
+                                        <span class="bg-stone-400 dark:bg-stone-700 text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                            Arquivado
+                                        </span>
+                                        }
+                                        @if (topico.Estado == EstadoTopicoForum.Rejeitado)
+                                        {
+                                        <span class="bg-red-400 dark:bg-red-700 text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                            Rejeitado
+                                        </span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <p class="text-stone-600 dark:text-stone-400 text-sm mb-5 line-clamp-2 leading-relaxed">
+                                    @topico.Descricao
+                                </p>
+
+                                <div class="flex items-center justify-between text-stone-400 text-xs pt-3 border-t border-stone-100 dark:border-stone-800 pointer-events-auto">
+                                    <div class="flex items-center gap-4">
+                                        <span class="flex items-center gap-1 font-medium text-stone-500 dark:text-stone-400">
+                                            <span class="material-symbols-outlined text-[16px] text-stone-400">person</span>
+                                            @topico.AutorNome
+                                        </span>
+                                        <span class="flex items-center gap-1 font-mono">
+                                            <span class="material-symbols-outlined text-[16px]">visibility</span>
+                                            @topico.Visualizacoes
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <!-- Botão Apagar (visível apenas para autor ou moderadores) -->
+                                        @if (podeApagar)
+                                        {
+                                        <button type="button" onclick="openDeleteModal('@topico.Id', '@topico.Titulo')"
+                                                class="text-stone-400 hover:text-red-600 transition-colors p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20"
+                                                title="Apagar tópico">
+                                            <span class="material-symbols-outlined text-sm">delete</span>
+                                        </button>
+                                        }
+                                        <span class="flex items-center gap-1 text-primary dark:text-yellow-500 font-bold group-hover:translate-x-0.5 transition-transform">
+                                            @if (isPendingForUser)
+                                            {
+                                            <span>Ver estado</span>
+                                            }
+                                            else if (isArquivado)
+                                            {
+                                            <span>Ver arquivo</span>
+                                            }
+                                            else
+                                            {
+                                            <span>Entrar no debate</span>
+                                            }
+                                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <span class="flex items-center gap-1 text-primary font-bold">
-                                Ver tópico <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                            </span>
                         </div>
-                    </a>
-                }
-            }
-        </section>
+                        }
+                        }
+                    </section>
 
-        <aside class="lg:col-span-4 space-y-8">
-            <section class="bg-stone-50 p-8 rounded-3xl">
-                <h3 class="text-xl font-bold text-primary mb-4 font-headline">Participar</h3>
-                @if (User.Identity?.IsAuthenticated == true)
-                {
-                    <p class="text-stone-600 text-sm mb-4">Crie um novo tópico para iniciar um debate académico.</p>
-                    <a asp-action="Criar" class="block w-full text-center bg-tertiary-container text-white font-bold py-4 rounded-full hover:opacity-90 no-underline">
-                        Criar Tópico
-                    </a>
-                }
-                else
-                {
-                    <p class="text-stone-600 mb-4">Precisa de fazer login para participar.</p>
-                    <a asp-controller="Auth" asp-action="Login" class="text-primary font-bold hover:underline">Fazer Login</a>
-                }
-            </section>
+                    <!-- Sidebar -->
+                    <aside class="lg:col-span-4 space-y-6">
+                        <section class="bg-stone-50 dark:bg-stone-900 p-6 rounded-2xl border border-stone-200/60 dark:border-stone-800">
+                            <h3 class="text-lg font-bold text-primary dark:text-rose-300 mb-2 font-headline">Participar no Fórum</h3>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                            <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm mb-4 leading-relaxed">Tem alguma dúvida ou perspetiva nova sobre a história económica? Abra um debate com a comunidade.</p>
+                            <a asp-action="Criar" class="block w-full text-center bg-primary text-white font-bold py-3 rounded-xl hover:opacity-95 text-xs no-underline shadow-sm transition-all">
+                                Iniciar Nova Discussão
+                            </a>
+                            }
+                            else
+                            {
+                            <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm mb-4 leading-relaxed">É necessário autenticar a sua conta para poder responder ou criar novas linhas de discussão académica.</p>
+                            <a asp-controller="Auth" asp-action="Login" class="inline-flex items-center gap-1 text-primary dark:text-yellow-500 font-bold text-xs hover:underline no-underline">
+                                <span class="material-symbols-outlined text-[16px]">login</span> Iniciar Sessão Segura
+                            </a>
+                            }
+                        </section>
 
-            <section class="relative overflow-hidden rounded-3xl h-64 bg-primary p-8 flex flex-col justify-end">
-                <div class="relative z-10">
-                    <h4 class="text-white text-lg font-bold mb-2 font-headline">Preserve a Memória</h4>
-                    <p class="text-red-200 text-sm">Todas as discussões são arquivadas para fins de investigação académica.</p>
+                        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-container p-6 text-white shadow-sm">
+                            <div class="absolute -right-6 -bottom-6 text-white/5 pointer-events-none">
+                                <span class="material-symbols-outlined text-[120px] font-thin">history_edu</span>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center mb-3 border border-white/10">
+                                    <span class="material-symbols-outlined text-white text-[18px]">archive</span>
+                                </div>
+                                <h4 class="text-white text-base font-bold mb-1.5 font-headline">Preserve a Memória</h4>
+                                <p class="text-white/80 text-xs leading-relaxed">
+                                    Este espaço rege-se por rigor científico. Todas as intervenções e tópicos são integrados no arquivo digital para fins de investigação contínua.
+                                </p>
+                            </div>
+                        </section>
+                    </aside>
                 </div>
-            </section>
-        </aside>
-    </div>
-</div>
+            </div>
+
+            <!-- ===== MODAL DE CONFIRMAÇÃO DE ELIMINAÇÃO ===== -->
+            <dialog id="delete-dialog" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100 dark:border-stone-800">
+                        <h3 class="font-headline font-bold text-lg text-red-600 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined">delete</span> Apagar Tópico
+                        </h3>
+                        <button type="button" onclick="document.getElementById('delete-dialog').close()" class="text-stone-400 hover:text-stone-600">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <p class="text-sm text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">
+                        Tem a certeza de que deseja <strong class="text-red-600">apagar</strong> o tópico <span id="delete-topico-titulo" class="font-semibold text-primary dark:text-rose-300"></span>?
+                        <br><br>
+                        Esta ação é <strong class="text-red-600">irreversível</strong> e removerá o tópico permanentemente da plataforma.
+                    </p>
+
+                    <form id="delete-form" asp-action="ApagarTopico" method="post" class="flex justify-end gap-2">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="delete-topico-id" name="id" value="" />
+                        <button type="button" onclick="document.getElementById('delete-dialog').close()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors">
+                            <span class="material-symbols-outlined text-sm align-middle mr-1">delete</span>
+                            Confirmar Apagar
+                        </button>
+                    </form>
+                </div>
+            </dialog>
+
+            <script>
+    function openDeleteModal(id, titulo) {
+        document.getElementById('delete-topico-id').value = id;
+        document.getElementById('delete-topico-titulo').textContent = '"' + titulo + '"';
+        const dialog = document.getElementById('delete-dialog');
+        if (dialog) dialog.showModal();
+    }
+            </script>

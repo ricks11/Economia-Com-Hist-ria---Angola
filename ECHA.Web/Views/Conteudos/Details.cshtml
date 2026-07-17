@@ -1,11 +1,11 @@
-@model EconomiaComHistoria.Core.DTOs.ConteudoResponseDto
+@model EconomiaComHistoria.Web.Models.ConteudoDetailsViewModel
 @{
-    ViewData["Title"] = Model.Titulo;
-    var solicitacaoStatus = ViewData["SolicitacaoStatus"] as string ?? "Nenhuma";
-    var temAcesso = !Model.IsJindungo || !string.IsNullOrEmpty(Model.CorpoTexto);
+    ViewData["Title"] = Model.Conteudo.Titulo;
+    var solicitacaoStatus = Model.SolicitacaoStatus;
+    var temAcesso = !Model.Conteudo.IsJindungo || !string.IsNullOrEmpty(Model.Conteudo.CorpoTexto);
 
-    // Lê o estado real passado pelo Controller
-    var isFavorito = ViewData["IsFavorito"] as bool? ?? false;
+    // Lê o estado real já validado pelo Controller no servidor
+    var isFavorito = Model.IsFavorito;
 }
 
 <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
@@ -28,12 +28,12 @@
     <header class="mb-12">
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div class="flex flex-wrap items-center gap-2">
-                <span class="px-3 py-1 bg-tertiary/10 text-tertiary text-xs font-bold rounded-full uppercase tracking-wider">@Model.Tema</span>
-                <span class="px-3 py-1 bg-stone-100 text-secondary text-xs font-semibold rounded-full">@Model.Nivel</span>
+                <span class="px-3 py-1 bg-tertiary/10 text-tertiary text-xs font-bold rounded-full uppercase tracking-wider">@Model.Conteudo.Tema</span>
+                <span class="px-3 py-1 bg-stone-100 text-secondary text-xs font-semibold rounded-full">@Model.Conteudo.Nivel</span>
                 <span class="px-3 py-1 bg-stone-100 text-secondary text-xs font-semibold rounded-full flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">public</span> @Model.Regiao
+                    <span class="material-symbols-outlined text-sm">public</span> @Model.Conteudo.Regiao
                 </span>
-                @if (Model.IsJindungo)
+                @if (Model.Conteudo.IsJindungo)
                 {
                 <span class="px-3 py-1 bg-orange-50 text-orange-700 text-xs font-bold rounded-full uppercase flex items-center gap-1 border border-orange-200">
                     <span class="material-symbols-outlined text-sm">local_fire_department</span> Jindungo
@@ -41,10 +41,10 @@
                 }
             </div>
 
-            <!-- Botão de Favorito Rápido -->
+            <!-- Botão de Favorito Rápido (Renderizado de forma estática com o estado correto) -->
             @if (User.Identity?.IsAuthenticated == true)
             {
-            <form asp-action="ToggleFavorito" asp-route-id="@Model.Id" method="post" class="inline">
+            <form asp-action="ToggleFavorito" asp-route-id="@Model.Conteudo.Id" method="post" class="inline">
                 @Html.AntiForgeryToken()
                 <button type="submit"
                         class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all shadow-sm text-xs font-bold @(isFavorito ? " bg-amber-50 border-amber-300 text-amber-700" : "bg-white border-stone-200 text-stone-600 hover:bg-stone-50" )">
@@ -61,7 +61,7 @@
             }
         </div>
 
-        <h1 class="font-headline font-black text-3xl md:text-5xl text-primary leading-tight mb-8">@Model.Titulo</h1>
+        <h1 class="font-headline font-black text-3xl md:text-5xl text-primary leading-tight mb-8">@Model.Conteudo.Titulo</h1>
 
         <div class="flex items-center justify-between gap-4 p-5 bg-surface-container-low rounded-2xl border border-stone-100">
             <div class="flex items-center gap-4">
@@ -69,21 +69,21 @@
                     <span class="material-symbols-outlined text-stone-500">person</span>
                 </div>
                 <div>
-                    <p class="font-bold text-primary text-sm sm:text-base">@(Model.EditorNome ?? "Editor Editorial")</p>
+                    <p class="font-bold text-primary text-sm sm:text-base">@(Model.Conteudo.EditorNome ?? "Editor Editorial")</p>
                     <p class="text-xs text-secondary">
-                        @(Model.DataPublicacao?.ToString("dd \\de MMMM \\de yyyy") ?? "Rascunho")
-                        @if(Model.Estado.ToString() != "Publicado") { <span class="ml-1 px-1.5 py-0.5 bg-amber-100 text-amber-800 font-bold rounded text-[10px]">@Model.Estado</span> }
+                        @(Model.Conteudo.DataPublicacao?.ToString("dd \\de MMMM \\de yyyy") ?? "Rascunho")
+                        @if(Model.Conteudo.Estado.ToString() != "Publicado") { <span class="ml-1 px-1.5 py-0.5 bg-amber-100 text-amber-800 font-bold rounded text-[10px]">@Model.Conteudo.Estado</span> }
                     </p>
                 </div>
             </div>
             <div class="flex items-center gap-1 text-xs font-semibold text-stone-500 bg-stone-100 px-3 py-1.5 rounded-xl">
                 <span class="material-symbols-outlined text-[18px]">visibility</span>
-                <span>@Model.Visualizacoes <span class="hidden sm:inline">visitas</span></span>
+                <span>@Model.Conteudo.Visualizacoes <span class="hidden sm:inline">visitas</span></span>
             </div>
         </div>
     </header>
 
-    @if (Model.IsJindungo)
+    @if (Model.Conteudo.IsJindungo)
     {
     <div class="mb-12 p-5 bg-orange-50/40 border-l-4 border-orange-500 rounded-r-2xl">
         <div class="flex items-start gap-3.5">
@@ -105,10 +105,10 @@
         <h2 class="text-2xl font-headline font-black text-primary mb-2">Acesso Restrito</h2>
         <p class="text-sm text-stone-500 mb-6 max-w-md mx-auto leading-relaxed">Este debate com Jindungo requer uma credencial ou aprovação da equipa editorial antes de poder ler o ensaio na íntegra.</p>
 
-        @if (!string.IsNullOrEmpty(Model.Resumo))
+        @if (!string.IsNullOrEmpty(Model.Conteudo.Resumo))
         {
         <div class="bg-stone-50 p-4 rounded-xl max-w-xl mx-auto mb-8 border border-stone-200/40">
-            <p class="text-sm text-stone-600 italic font-medium">"@Model.Resumo"</p>
+            <p class="text-sm text-stone-600 italic font-medium">"@Model.Conteudo.Resumo"</p>
         </div>
         }
 
@@ -129,7 +129,7 @@
         }
         else
         {
-        <form asp-action="SolicitarAcesso" asp-route-id="@Model.Id" method="post">
+        <form asp-action="SolicitarAcesso" asp-route-id="@Model.Conteudo.Id" method="post">
             @Html.AntiForgeryToken()
             <button type="submit" class="bg-primary text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-95 shadow-md shadow-primary/10 transition-all">
                 Solicitar Acesso ao Ensaio Completo
@@ -147,40 +147,40 @@
     }
     else
     {
-    @if (!string.IsNullOrEmpty(Model.ThumbnailUrl))
+    @if (!string.IsNullOrEmpty(Model.Conteudo.ThumbnailUrl))
     {
     <figure class="mb-10 group overflow-hidden rounded-3xl border border-stone-100 shadow-sm">
-        <img src="@Model.ThumbnailUrl" class="w-full h-[240px] sm:h-[420px] object-cover transition-transform duration-500 group-hover:scale-[1.01]" alt="@Model.Titulo">
+        <img src="@Model.Conteudo.ThumbnailUrl" class="w-full h-[240px] sm:h-[420px] object-cover transition-transform duration-500 group-hover:scale-[1.01]" alt="@Model.Conteudo.Titulo">
     </figure>
     }
 
-    @if (!string.IsNullOrEmpty(Model.Resumo))
+    @if (!string.IsNullOrEmpty(Model.Conteudo.Resumo))
     {
-    <p class="text-lg sm:text-xl text-stone-600 leading-relaxed mb-8 font-medium border-l-2 border-stone-300 pl-4 sm:pl-6">@Model.Resumo</p>
+    <p class="text-lg sm:text-xl text-stone-600 leading-relaxed mb-8 font-medium border-l-2 border-stone-300 pl-4 sm:pl-6">@Model.Conteudo.Resumo</p>
     }
 
     <article class="prose prose-stone prose-base sm:prose-lg max-w-none text-stone-800 leading-relaxed space-y-6 mb-12 font-serif">
-        @if (!string.IsNullOrEmpty(Model.CorpoTexto))
+        @if (!string.IsNullOrEmpty(Model.Conteudo.CorpoTexto))
         {
-        @Html.Raw(Model.CorpoTexto)
+        @Html.Raw(Model.Conteudo.CorpoTexto)
         }
     </article>
 
-    @if (!string.IsNullOrEmpty(Model.VideoUrl))
+    @if (!string.IsNullOrEmpty(Model.Conteudo.VideoUrl))
     {
     <div class="mb-12 aspect-video rounded-3xl overflow-hidden shadow-sm border border-stone-200/60">
-        <iframe src="@Model.VideoUrl" class="w-full h-full border-0" allowfullscreen></iframe>
+        <iframe src="@Model.Conteudo.VideoUrl" class="w-full h-full border-0" allowfullscreen></iframe>
     </div>
     }
 
-    @if (!string.IsNullOrEmpty(Model.ReferenciaFactual))
+    @if (!string.IsNullOrEmpty(Model.Conteudo.ReferenciaFactual))
     {
     <aside class="bg-stone-50 border border-stone-200/60 rounded-2xl p-5 mb-12">
         <div class="flex items-center gap-2 text-stone-500 font-bold uppercase tracking-wider text-xs mb-2">
             <span class="material-symbols-outlined text-[16px]">menu_book</span>
             <span>Fundamentação de Fontes</span>
         </div>
-        <p class="text-sm text-stone-700 leading-relaxed font-mono">@Model.ReferenciaFactual</p>
+        <p class="text-sm text-stone-700 leading-relaxed font-mono">@Model.Conteudo.ReferenciaFactual</p>
     </aside>
     }
     }
@@ -198,7 +198,8 @@
                 Eliminar Artigo
             </button>
 
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs text-center no-underline hover:opacity-95 shadow-md shadow-primary/5 transition-all">
+            <!-- Correção aqui: fechando com </a> de forma correta -->
+            <a asp-action="Edit" asp-route-id="@Model.Conteudo.Id" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs text-center no-underline hover:opacity-95 shadow-md shadow-primary/5 transition-all">
                 Editar Dados
             </a>
         </div>
@@ -215,7 +216,7 @@
             </div>
             <div class="flex-1">
                 <h3 class="text-lg font-bold font-headline text-stone-900 mb-1">Arquivar Conteúdo?</h3>
-                <p class="text-sm text-stone-500 leading-relaxed">Tens a certeza de que desejas remover o artigo <span class="font-semibold text-stone-800">"@Model.Titulo"</span> do arquivo público?</p>
+                <p class="text-sm text-stone-500 leading-relaxed">Tens a certeza de que desejas remover o artigo <span class="font-semibold text-stone-800">"@Model.Conteudo.Titulo"</span> do arquivo público?</p>
                 <p class="text-xs text-stone-400 mt-2">Esta operação pode ser revertida apenas através do painel direto de auditoria da base de dados.</p>
             </div>
         </div>
@@ -225,7 +226,7 @@
                 Manter Artigo
             </button>
 
-            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="inline">
+            <form asp-action="Delete" asp-route-id="@Model.Conteudo.Id" method="post" class="inline">
                 @Html.AntiForgeryToken()
                 <button type="submit" class="px-4 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl hover:bg-red-700 shadow-md shadow-red-600/10 transition-all">
                     Sim, Confirmar Remoção
@@ -236,71 +237,33 @@
 </div>
 
 @section Scripts {
-<!-- ✅ Script que corrige o ícone de favorito ao carregar a página-->
-<script>
-    (function () {
-        const conteudoId = @Model.Id;
-        // Procura o formulário do botão de favorito
-        const form = document.querySelector(`form[action$="ToggleFavorito"][action*="${conteudoId}"]`);
-        if (!form) return;
-
-        const button = form.querySelector('button');
-        const icon = button?.querySelector('.material-symbols-outlined');
-        const textSpan = button?.childNodes[button.childNodes.length - 1]; // último texto do botão
-
-        function aplicarEstado(favorito) {
-            if (favorito) {
-                // Amarelo preenchido
-                button.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-700');
-                button.classList.remove('bg-white', 'border-stone-200', 'text-stone-600', 'hover:bg-stone-50');
-                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24";
-                icon.classList.add('text-amber-500');
-                icon.classList.remove('text-stone-400');
-                if (textSpan) textSpan.textContent = ' Guardado';
-            } else {
-                // Cinza vazio
-                button.classList.add('bg-white', 'border-stone-200', 'text-stone-600', 'hover:bg-stone-50');
-                button.classList.remove('bg-amber-50', 'border-amber-300', 'text-amber-700');
-                icon.style.fontVariationSettings = "'FILL' 0";
-                icon.classList.add('text-stone-400');
-                icon.classList.remove('text-amber-500');
-                if (textSpan) textSpan.textContent = ' Guardar';
-            }
-        }
-
-        // Chama a API com as credenciais do browser
-        fetch(`/api/conteudos/${conteudoId}`, { credentials: 'include' })
-            .then(res => res.json())
-            .then(data => {
-                aplicarEstado(data.ehFavorito === true);
-            })
-            .catch(err => console.log('Falha ao verificar favorito:', err));
-    })();
-</script>
+<!-- ✅ Apenas o controlo do modal de eliminação. O favorito agora é renderizado pelo servidor de forma segura! -->
 <script>
     const deleteModal = document.getElementById('deleteModal');
     const abrirBtn = document.getElementById('abrirDeleteModalBtn');
     const cancelarBtn = document.getElementById('cancelarDeleteBtn');
 
-    if (abrirBtn) {
+    if (abrirBtn && deleteModal) {
         abrirBtn.addEventListener('click', () => {
             deleteModal.classList.remove('hidden');
             deleteModal.classList.add('flex');
         });
     }
 
-    if (cancelarBtn) {
+    if (cancelarBtn && deleteModal) {
         cancelarBtn.addEventListener('click', () => {
             deleteModal.classList.remove('flex');
             deleteModal.classList.add('hidden');
         });
     }
 
-    deleteModal.addEventListener('click', (e) => {
-        if (e.target === deleteModal) {
-            deleteModal.classList.remove('flex');
-            deleteModal.classList.add('hidden');
-        }
-    });
+    if (deleteModal) {
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) {
+                deleteModal.classList.remove('flex');
+                deleteModal.classList.add('hidden');
+            }
+        });
+    }
 </script>
 }

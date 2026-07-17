@@ -5,6 +5,7 @@ open Microsoft.AspNetCore.Authorization
 open System
 open System.Net
 open System.Threading.Tasks
+open EconomiaComHistoria.Web.Models
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
 open ECHA.Web.Services
@@ -14,12 +15,12 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 
     member private this.GetToken() =
-        let authHeader = 
+        let authHeader =
             this.HttpContext.Request.Headers["Authorization"]
             |> Seq.tryHead
         match authHeader with
         | Some header when header.StartsWith("Bearer ") -> header.Substring("Bearer ".Length)
-        | _ -> 
+        | _ ->
             // fallback: tenta a claim antiga
             let claim = this.User.FindFirst("AccessToken")
             if isNull claim then null else claim.Value
@@ -120,8 +121,31 @@ type ConteudosController (apiClient: ECHA.Web.Services.ApiClient) =
                         else
                             c.EhFavorito 
 
-                    this.ViewData["IsFavorito"] <- estadoFavorito
-                    return this.View(c) :> IActionResult
+                    // 5. Lê o status de solicitação que possa estar no ViewData (ou assume "Nenhuma")
+                    let solicitacaoStatus =
+                        match this.ViewData.["SolicitacaoStatus"] with
+                        | null -> "Nenhuma"
+                        | status -> string status
+
+                    // 6. Calcula se o utilizador atual é um Administrador/Editor
+                    let isAdmin = 
+                        if isNull this.User || isNull this.User.Identity then false
+                        else 
+                            this.User.Identity.IsAuthenticated && 
+                            (this.User.IsInRole("Admin") || 
+                             this.User.IsInRole("Editor") || 
+                             this.User.IsInRole("SuperAdmin") || 
+                             this.User.IsInRole("Professor"))
+
+                    // 7. Monta a ViewModel robusta (qualificando o primeiro campo para ajudar o compilador)
+                    let viewModel = {
+                        ConteudoDetailsViewModel.Conteudo = c
+                        IsFavorito = estadoFavorito
+                        SolicitacaoStatus = solicitacaoStatus
+                        IsAdmin = isAdmin
+                    }
+
+                    return this.View(viewModel) :> IActionResult
                 | None -> 
                     return this.NotFound() :> IActionResult
             with

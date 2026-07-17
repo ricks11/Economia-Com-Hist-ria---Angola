@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Include="Models/ErrorViewModel.fs" />
+    <Compile Include="Models\ConteudoVM.fs" />
+    <Compile Include="Models\PerfilVM.fs" />
     <Compile Include="Services/ApiClient.fs" />
     <Compile Include="Controllers/HomeController.fs" />
     <Compile Include="Controllers/AuthController.fs" />

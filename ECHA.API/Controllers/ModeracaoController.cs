@@ -71,6 +71,7 @@ public class ModeracaoController : ControllerBase
     [HttpGet("denuncias")]
     public async Task<ActionResult<IEnumerable<DenunciaSummaryDto>>> GetDenuncias(CancellationToken cancellationToken)
     {
+        // Denúncias em Tópicos
         var topicos = await _dbContext.TopicosForum
             .Include(x => x.Autor)
             .Where(x => x.Denuncias.Any())
@@ -86,7 +87,24 @@ public class ModeracaoController : ControllerBase
             ))
             .ToListAsync(cancellationToken);
 
-        return Ok(topicos);
+        // Denúncias em Respostas
+        var respostas = await _dbContext.RespostasForum
+            .Include(x => x.Autor)
+            .Where(x => x.Denuncias.Any())
+            .OrderByDescending(x => x.Denuncias.Count)
+            .Select(x => new DenunciaSummaryDto(
+                x.Id,
+                "Resposta",
+                x.Conteudo,
+                x.AutorId,
+                x.Autor == null ? null : x.Autor.Nome,
+                x.Denuncias.Count,
+                x.Denuncias.Max(d => d.DataDenuncia)
+            ))
+            .ToListAsync(cancellationToken);
+
+        var todas = topicos.Concat(respostas).OrderByDescending(d => d.TotalDenuncias);
+        return Ok(todas);
     }
 
     [HttpGet("utilizadores")]

@@ -27,13 +27,14 @@ public class BCryptAuthService : IAuthService
         return BCrypt.Net.BCrypt.Verify(password, hash);
     }
 
-    public string GenerateAccessToken(int userId, string email, string role)
+    public string GenerateAccessToken(int userId, string email, string role, string nome)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, userId.ToString()),
             new(ClaimTypes.Email, email),
-            new(ClaimTypes.Role, role)
+            new(ClaimTypes.Role, role),
+            new Claim("Nome", nome)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));

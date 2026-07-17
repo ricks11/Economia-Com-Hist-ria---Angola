@@ -1,80 +1,355 @@
-@model EconomiaComHistoria.Core.DTOs.PerfilResponseDto
+@model ECHA.Web.Models.PerfilVM
 @{
     ViewData["Title"] = "Perfil - Economia com História – Angola";
+    var p = Model.Perfil;
+    var prog = Model.Progresso != null ? Model.Progresso.Value : null;
+    var isAdmin = User.IsInRole("Admin") || User.IsInRole("SuperAdmin");
 }
 
-<div class="max-w-6xl mx-auto min-h-screen flex flex-col pt-12">
+<div class="max-w-6xl mx-auto min-h-screen flex flex-col pt-12 pb-16">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+    <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-xl shadow-sm flex items-center gap-3">
+        <span class="material-symbols-outlined text-green-600">check_circle</span>
+        <span class="font-medium">@TempData["SuccessMessage"]</span>
+    </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+    <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-xl shadow-sm flex items-center gap-3">
+        <span class="material-symbols-outioned text-red-600">error</span>
+        <span class="font-medium">@TempData["ErrorMessage"]</span>
+    </div>
+    }
+
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <!-- Profile Header & Avatar Area -->
+
+        <!-- Cabeçalho / Avatar -->
         <section class="lg:col-span-5 bg-surface-container-lowest rounded-3xl p-8 shadow-sm flex flex-col items-center text-center border border-outline-variant/10">
             <div class="relative group mb-6">
                 <div class="w-40 h-40 rounded-full bg-stone-100 overflow-hidden ring-8 ring-surface-container-low shadow-inner">
-                    <img class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=@Model.Nome&background=random" alt="@Model.Nome">
+                    <img class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=@p.Nome&background=random" alt="@p.Nome">
                 </div>
             </div>
-            <h1 class="text-3xl font-headline font-extrabold text-primary mb-1">@Model.Nome</h1>
-            <p class="text-stone-500 font-medium mb-2 font-body">@Model.Email</p>
-            @if (!string.IsNullOrEmpty(Model.Telemovel))
+            <h1 class="text-3xl font-headline font-extrabold text-primary mb-1">@p.Nome</h1>
+            <p class="text-stone-500 font-medium mb-2 font-body">@p.Email</p>
+            @if (!string.IsNullOrEmpty(p.Telemovel))
             {
-                <p class="text-stone-400 text-sm font-body">@Model.Telemovel</p>
+            <p class="text-stone-400 text-sm font-body">@p.Telemovel</p>
             }
-            @if (!string.IsNullOrEmpty(Model.Provincia))
+            <span class="mt-3 px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full uppercase">@p.Tipo</span>
+
+            @if (prog != null)
             {
-                <p class="text-stone-400 text-sm font-body mt-1">@Model.Provincia</p>
+            <div class="w-full mt-8 pt-6 border-t border-stone-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-bold text-primary">Nível @prog.Nivel</span>
+                    <span class="text-xs text-stone-400">@prog.PontosParaProximoNivel pts para o próximo nível</span>
+                </div>
+                <div class="w-full h-3 bg-stone-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full transition-all" style="width: @(prog.PercentagemNivel)%"></div>
+                </div>
+                <div class="flex justify-between mt-3 text-xs text-stone-500">
+                    <span>@prog.PontosTotais pts totais</span>
+                    <span>🔥 @prog.StreakAtual dias seguidos</span>
+                </div>
+            </div>
             }
         </section>
 
-        <!-- Form Fields & Actions -->
+        <!-- Conteúdo principal com abas -->
         <section class="lg:col-span-7 space-y-6">
-            <!-- Profile Edit Form -->
-            <div class="bg-surface-container rounded-3xl p-8 border border-outline-variant/10">
+
+            <!-- Navegação de abas -->
+            <div class="flex gap-2 bg-surface-container-low p-1.5 rounded-2xl w-fit">
+                <button type="button" onclick="mostrarTab('perfil')" id="tabBtn-perfil" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Perfil</button>
+                <button type="button" onclick="mostrarTab('progresso')" id="tabBtn-progresso" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Progresso</button>
+                <button type="button" onclick="mostrarTab('favoritos')" id="tabBtn-favoritos" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Favoritos</button>
+            </div>
+
+            <!-- Aba: Perfil (formulário de edição) -->
+            <div id="tab-perfil" class="tab-content bg-surface-container rounded-3xl p-8 border border-outline-variant/10">
                 <h2 class="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined">person_edit</span>
-                    Informações do Perfil
+                    Editar Informações
                 </h2>
-                <div class="space-y-5">
+                <form asp-action="Atualizar" method="post" id="perfilForm" class="space-y-5">
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-stone-600 ml-2 font-body">Nome</label>
-                        <input class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body" readonly value="@Model.Nome"/>
+                        <input name="Nome" value="@p.Nome" class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20" />
                     </div>
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-stone-600 ml-2 font-body">Email</label>
-                        <input class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body" readonly value="@Model.Email"/>
+                        <input value="@p.Email" readonly class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body" />
+                        <p class="text-xs text-stone-400 ml-2">O email não pode ser alterado por aqui.</p>
                     </div>
-                    @if (!string.IsNullOrEmpty(Model.EscolaNome))
-                    {
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-stone-600 ml-2 font-body">Província</label>
+                        <input name="Provincia" value="@p.Provincia" class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20" />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Escola -->
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-stone-600 ml-2 font-body">Escola</label>
-                            <input class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body" readonly value="@Model.EscolaNome"/>
+                            @if (isAdmin)
+                            {
+                            <select id="escolaSelect" name="EscolaId" class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20">
+                                <option value="">— Nenhuma —</option>
+                                @foreach (var e in Model.Escolas)
+                                {
+                                <option value="@e.Id" selected="@(e.Id == p.EscolaId)">@e.Nome</option>
+                                }
+                            </select>
+                            }
+                            else
+                            {
+                            var escolaAtual = Model.Escolas.FirstOrDefault(e => e.Id == p.EscolaId);
+                            if (escolaAtual != null)
+                            {
+                            <input type="hidden" name="EscolaId" value="@escolaAtual.Id" />
+                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body">@escolaAtual.Nome</div>
+                            <p class="text-xs text-stone-400 ml-2">A escola só pode ser alterada através de código de convite.</p>
+                            }
+                            else
+                            {
+                            <input type="hidden" name="EscolaId" value="" />
+                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-400 font-body italic">Sem escola associada</div>
+                            <p class="text-xs text-stone-400 ml-2">Associe-se a uma escola usando o código de convite.</p>
+                            }
+                            }
                         </div>
-                    }
-                    @if (!string.IsNullOrEmpty(Model.TurmaNome))
-                    {
+
+                        <!-- Turma -->
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-stone-600 ml-2 font-body">Turma</label>
-                            <input class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body" readonly value="@Model.TurmaNome"/>
+                            @if (isAdmin)
+                            {
+                            <select id="turmaSelect" name="TurmaId" class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20">
+                                <option value="">— Selecione uma escola primeiro —</option>
+                            </select>
+                            }
+                            else
+                            {
+                            var turmaAtual = Model.Turmas.FirstOrDefault(t => t.Id == p.TurmaId);
+                            if (turmaAtual != null)
+                            {
+                            <input type="hidden" name="TurmaId" value="@turmaAtual.Id" />
+                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body">@turmaAtual.Nome</div>
+                            <p class="text-xs text-stone-400 ml-2">A turma deve pertencer à sua escola.</p>
+                            }
+                            else
+                            {
+                            <input type="hidden" name="TurmaId" value="" />
+                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-400 font-body italic">Sem turma associada</div>
+                            <p class="text-xs text-stone-400 ml-2">Associe-se a uma turma na sua escola.</p>
+                            }
+                            }
                         </div>
-                    }
-                </div>
+                    </div>
+
+                    <button type="submit" class="bg-primary text-white font-bold py-4 px-8 rounded-full shadow-md hover:shadow-lg transition-all">
+                        Guardar Alterações
+                    </button>
+                </form>
             </div>
-            
-            <!-- Stats Section -->
-            <div class="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10">
+
+            <!-- Aba: Progresso / Badges -->
+            <div id="tab-progresso" class="tab-content bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10 hidden">
                 <h3 class="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined">insights</span>
-                    Estatísticas
+                    Estatísticas e Badges
                 </h3>
-                <div class="grid grid-cols-2 gap-4">
+
+                @if (prog != null)
+                {
+                <div class="grid grid-cols-2 gap-4 mb-8">
                     <div class="p-6 bg-surface-container rounded-2xl text-center">
-                        <div class="text-3xl font-extrabold text-primary mb-1 font-headline">@Model.PontosTotais</div>
+                        <div class="text-3xl font-extrabold text-primary mb-1 font-headline">@prog.PontosTotais</div>
                         <div class="text-stone-500 text-sm font-medium font-body">Pontos Totais</div>
                     </div>
                     <div class="p-6 bg-surface-container rounded-2xl text-center">
-                        <div class="text-3xl font-extrabold text-primary mb-1 font-headline">@Model.StreakAtual</div>
+                        <div class="text-3xl font-extrabold text-primary mb-1 font-headline">@prog.StreakAtual</div>
                         <div class="text-stone-500 text-sm font-medium font-body">Dias consecutivos</div>
                     </div>
                 </div>
+
+                <h4 class="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Badges Conquistados (@prog.Badges.Count)</h4>
+                @if (!prog.Badges.Any())
+                {
+                <p class="text-stone-400 text-sm italic">Ainda não conquistaste nenhum badge. Continua a explorar conteúdos e quizzes!</p>
+                }
+                else
+                {
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    @foreach (var badge in prog.Badges)
+                    {
+                    <div class="p-4 bg-surface-container rounded-2xl text-center">
+                        @if (!string.IsNullOrEmpty(badge.Icone))
+                        {
+                        <img src="@badge.Icone" alt="@badge.Nome" class="w-12 h-12 mx-auto mb-2 object-contain" />
+                        }
+                        else
+                        {
+                        <span class="material-symbols-outlined text-3xl text-tertiary mb-2 block">military_tech</span>
+                        }
+                        <p class="font-bold text-sm text-primary">@badge.Nome</p>
+                        @if (!string.IsNullOrEmpty(badge.Descricao))
+                        {
+                        <p class="text-xs text-stone-400 mt-1">@badge.Descricao</p>
+                        }
+                        <p class="text-[10px] text-stone-300 mt-2">@badge.DataConquista.ToString("dd/MM/yyyy")</p>
+                    </div>
+                    }
+                </div>
+                }
+                }
+                else
+                {
+                <p class="text-stone-400 text-sm italic">Não foi possível carregar o teu progresso de momento.</p>
+                }
+            </div>
+
+            <!-- Aba: Favoritos -->
+            <div id="tab-favoritos" class="tab-content bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10 hidden">
+                <h3 class="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined">favorite</span>
+                    Conteúdos Favoritos
+                </h3>
+
+                @if (Model.Favoritos.Items == null || !Model.Favoritos.Items.Any())
+                {
+                <div class="py-12 text-center bg-stone-50 rounded-2xl border border-dashed border-stone-200">
+                    <span class="material-symbols-outlined text-4xl text-stone-300 mb-2">favorite_border</span>
+                    <p class="text-secondary text-sm">Ainda não tens conteúdos favoritos.</p>
+                </div>
+                }
+                else
+                {
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    @foreach (var item in Model.Favoritos.Items)
+                    {
+                    <a asp-controller="Conteudos" asp-action="Details" asp-route-id="@item.Id"
+                       class="bg-surface-container rounded-2xl p-4 hover:shadow-md transition-shadow decoration-none block">
+                        <span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-md uppercase">@item.Tipo</span>
+                        <h4 class="font-bold text-sm text-on-surface mt-2 mb-1 line-clamp-2">@item.Titulo</h4>
+                        <p class="text-xs text-stone-500 line-clamp-2">@item.Resumo</p>
+                    </a>
+                    }
+                </div>
+                }
             </div>
         </section>
     </div>
 </div>
+
+<style>
+    .tab-btn {
+        color: var(--color-secondary, #5f5e5e);
+    }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--color-primary, #4d070b);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+</style>
+
+@section Scripts {
+<script>
+    function mostrarTab(nome) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + nome).classList.remove('hidden');
+        document.getElementById('tabBtn-' + nome).classList.add('active');
+    }
+    mostrarTab('@Model.TabAtiva');
+
+    @if (isAdmin) {
+        <text>
+            const escolaSelect = document.getElementById('escolaSelect');
+            const turmaSelect = document.getElementById('turmaSelect');
+            let carregando = false;
+
+            // Obter token do claims do utilizador (armazenado durante o login)
+            const token = "@(User.FindFirst("AccessToken")?.Value ?? "")";
+
+            // Função para obter o token (para compatibilidade com o código existente)
+            function getToken() {
+                return token;
+            }
+
+            function carregarTurmas(escolaId) {
+                    if (!escolaId) {
+                turmaSelect.innerHTML = '<option value="">— Selecione uma escola primeiro —</option>';
+            return;
+                    }
+
+            carregando = true;
+            turmaSelect.innerHTML = '<option value="">Carregando turmas...</option>';
+            turmaSelect.disabled = true;
+
+            const currentToken = getToken();
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            if (currentToken) {
+                headers['Authorization'] = `Bearer ${currentToken}`;
+            }
+            fetch(`/api/turmas?escolaId=${escolaId}`, {
+                method: 'GET',
+                headers: headers,
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            window.location.href = '/Auth/Login';
+                            return;
+                        }
+                        throw new Error('Erro ao carregar turmas: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(turmas => {
+                turmaSelect.innerHTML = '<option value="">— Selecione uma turma —</option>';
+                    turmas.forEach(t => {
+                        const opt = document.createElement('option');
+                        opt.value = t.id;
+                        opt.textContent = t.nome;
+                        turmaSelect.appendChild(opt);
+                    });
+
+                    // Selecionar a turma atual (se for a mesma escola)
+                    const turmaAtualId = '@(p.TurmaId)';
+                    if (turmaAtualId && turmas.some(t => t.id == turmaAtualId)) {
+                        turmaSelect.value = turmaAtualId;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    turmaSelect.innerHTML = '<option value="">Erro ao carregar turmas</option>';
+                })
+                .finally(() => {
+                    carregando = false;
+                    turmaSelect.disabled = false;
+                });
+            }
+
+            // Quando a escola mudar, recarregar as turmas
+            escolaSelect.addEventListener('change', function () {
+                carregarTurmas(this.value);
+                });
+
+            // Carregar turmas iniciais se já houver escola selecionada
+            const escolaInicial = escolaSelect.value;
+            if (escolaInicial) {
+                carregarTurmas(escolaInicial);
+                } else {
+                turmaSelect.innerHTML = '<option value="">— Selecione uma escola primeiro —</option>';
+                }
+        </text>
+    }
+</script>
+}
