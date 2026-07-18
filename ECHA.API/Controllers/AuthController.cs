@@ -52,7 +52,7 @@ public class AuthController : ControllerBase
             Email = request.Email,
             Telemovel = request.Telemovel,
             PasswordHash = passwordHash,
-            Tipo = TipoUtilizador.Registado,
+            Tipo = TipoUtilizador.Aluno,
             DataRegisto = DateTime.UtcNow,
             PontosTotais = 0,
             StreakAtual = 0

@@ -1,6 +1,7 @@
 using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using EconomiaComHistoria.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,6 @@ public class EscolasController : ControllerBase
         _escolaService = escolaService;
     }
 
-    // Método auxiliar para obter o ID do utilizador autenticado
     private bool TryGetUserId(out int userId)
     {
         var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
@@ -32,50 +32,51 @@ public class EscolasController : ControllerBase
         return int.TryParse(userIdStr, out userId);
     }
 
-    // Método auxiliar para obter o utilizador atual (incluindo EscolaId e Tipo)
     private async Task<Utilizador?> GetCurrentUserAsync(CancellationToken ct)
     {
         if (!TryGetUserId(out var userId))
             return null;
-
         return await _context.Utilizadores
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Id == userId, ct);
     }
+
+    private bool IsAdmin(TipoUtilizador tipo) =>
+        tipo == TipoUtilizador.Admin || tipo == TipoUtilizador.SuperAdmin;
 
     [HttpGet]
     public async Task<ActionResult<List<EscolaResponseDto>>> GetEscolas(CancellationToken ct)
     {
         var currentUser = await GetCurrentUserAsync(ct);
         if (currentUser == null)
-            return Unauthorized(new { message = "Utilizador não autenticado" });
+            return Unauthorized();
 
-        // 1. Buscar todas as escolas (através do serviço existente)
-        var todasEscolas = await _escolaService.ListarEscolasAsync(ct);
+        var query = _context.Escolas
+            .Include(e => e.Turmas)
+                .ThenInclude(t => t.Alunos)
+            .AsNoTracking();
 
-        // 2. Aplicar filtros baseados no tipo de utilizador
-        var isAdmin = currentUser.Tipo == TipoUtilizador.Admin
-                   || currentUser.Tipo == TipoUtilizador.SuperAdmin;
-
-        if (isAdmin)
+        if (!IsAdmin(currentUser.Tipo))
         {
-            // Admin e SuperAdmin veem todas as escolas
-            return Ok(todasEscolas);
+            if (currentUser.EscolaId.HasValue)
+                query = query.Where(e => e.Id == currentUser.EscolaId.Value);
+            else
+                return Ok(new List<EscolaResponseDto>());
         }
 
-        // Para outros utilizadores (Estudante, Professor, Editor, Moderador, ClienteInstitucional)
-        // - Se tiver escola associada, vê apenas essa escola
-        // - Caso contrário, lista vazia
-        if (currentUser.EscolaId.HasValue)
-        {
-            var escolaDoUtilizador = todasEscolas
-                .Where(e => e.Id == currentUser.EscolaId.Value)
-                .ToList();
-            return Ok(escolaDoUtilizador);
-        }
+        var escolas = await query.ToListAsync(ct);
 
-        // Utilizador sem escola → lista vazia
-        return Ok(new List<EscolaResponseDto>());
+        return Ok(escolas.Select(e => new EscolaResponseDto(
+            e.Id,
+            e.Nome,
+            e.CodigoMEC,
+            e.Provincia,
+            e.Municipio,
+            e.CodigoConvite,
+            e.CodigoConviteExpiracao,
+            e.Turmas.Sum(t => t.Alunos.Count),
+            e.Turmas.Count
+        )));
     }
 
     [HttpGet("{id}")]
@@ -85,49 +86,38 @@ public class EscolasController : ControllerBase
         if (currentUser == null)
             return Unauthorized();
 
-        // Buscar a escola com detalhes (incluindo turmas)
         var escola = await _context.Escolas
             .Include(e => e.Turmas)
-            .ThenInclude(t => t.Alunos)  // Para contar alunos
+                .ThenInclude(t => t.Alunos)
             .FirstOrDefaultAsync(e => e.Id == id, ct);
 
         if (escola == null)
             return NotFound();
 
-        // Verificar permissão
-        var isAdmin = currentUser.Tipo == TipoUtilizador.Admin
-                   || currentUser.Tipo == TipoUtilizador.SuperAdmin;
+        if (!IsAdmin(currentUser.Tipo) && (currentUser.EscolaId == null || currentUser.EscolaId != id))
+            return Forbid();
 
-        if (!isAdmin)
-        {
-            // Utilizador comum só pode ver a sua própria escola
-            if (currentUser.EscolaId == null || currentUser.EscolaId != id)
-                return Forbid(); // Ou NotFound() para não expor existência
-        }
-
-        // Mapear para DTO
-        var response = new EscolaResponseDto(
+        return Ok(new EscolaResponseDto(
             escola.Id,
             escola.Nome,
-            null, // Imagem (não usada neste exemplo)
+            escola.CodigoMEC,
             escola.Provincia,
             escola.Municipio,
-            null, // Contacto
-            null, // Email
+            escola.CodigoConvite,
+            escola.CodigoConviteExpiracao,
             escola.Turmas.Sum(t => t.Alunos.Count),
             escola.Turmas.Count
-        );
-
-        return Ok(response);
+        ));
     }
 
     [HttpPost]
     [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<ActionResult<EscolaResponseDto>> CreateEscola([FromBody] CreateEscolaDto dto, CancellationToken ct)
     {
-        var escola = new EconomiaComHistoria.Core.Entities.Escola
+        var escola = new Escola
         {
             Nome = dto.Nome,
+            CodigoMEC = dto.CodigoMEC,
             Provincia = dto.Provincia ?? string.Empty,
             Municipio = dto.Localizacao
         };
@@ -135,8 +125,15 @@ public class EscolasController : ControllerBase
         _context.Escolas.Add(escola);
         await _context.SaveChangesAsync(ct);
 
+        // Gerar código de convite inicial
+        var invite = await _escolaService.GerarCodigoConviteAsync(escola.Id, 7, ct);
+        escola.CodigoConvite = invite.Codigo;
+        escola.CodigoConviteExpiracao = invite.ExpiraEm;
+        await _context.SaveChangesAsync(ct);
+
         return CreatedAtAction(nameof(GetEscola), new { id = escola.Id }, new EscolaResponseDto(
-            escola.Id, escola.Nome, null, escola.Provincia, escola.Municipio, null, null, 0, 0));
+            escola.Id, escola.Nome, escola.CodigoMEC, escola.Provincia, escola.Municipio,
+            escola.CodigoConvite, escola.CodigoConviteExpiracao, 0, 0));
     }
 
     [HttpPut("{id}")]
@@ -147,13 +144,22 @@ public class EscolasController : ControllerBase
         if (escola == null) return NotFound();
 
         escola.Nome = dto.Nome;
+        escola.CodigoMEC = dto.CodigoMEC;
         escola.Provincia = dto.Provincia ?? string.Empty;
         escola.Municipio = dto.Localizacao;
 
         await _context.SaveChangesAsync(ct);
 
+        var updated = await _context.Escolas
+            .Include(e => e.Turmas)
+                .ThenInclude(t => t.Alunos)
+            .FirstAsync(e => e.Id == id, ct);
+
         return Ok(new EscolaResponseDto(
-            escola.Id, escola.Nome, null, escola.Provincia, escola.Municipio, null, null, 0, 0
+            updated.Id, updated.Nome, updated.CodigoMEC, updated.Provincia, updated.Municipio,
+            updated.CodigoConvite, updated.CodigoConviteExpiracao,
+            updated.Turmas.Sum(t => t.Alunos.Count),
+            updated.Turmas.Count
         ));
     }
 
@@ -166,7 +172,6 @@ public class EscolasController : ControllerBase
 
         _context.Escolas.Remove(escola);
         await _context.SaveChangesAsync(ct);
-
         return NoContent();
     }
 
@@ -174,7 +179,28 @@ public class EscolasController : ControllerBase
     [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<ActionResult<InviteCodeResponseDto>> GerarConvite(int id, CancellationToken ct)
     {
+        var escola = await _context.Escolas.FindAsync(new object[] { id }, ct);
+        if (escola == null) return NotFound();
+
         var invite = await _escolaService.GerarCodigoConviteAsync(id, 7, ct);
+        escola.CodigoConvite = invite.Codigo;
+        escola.CodigoConviteExpiracao = invite.ExpiraEm;
+        await _context.SaveChangesAsync(ct);
+
         return Ok(invite);
+    }
+
+    [HttpDelete("{id}/convite")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    public async Task<IActionResult> RevogarConvite(int id, CancellationToken ct)
+    {
+        var escola = await _context.Escolas.FindAsync(new object[] { id }, ct);
+        if (escola == null) return NotFound();
+
+        escola.CodigoConvite = null;
+        escola.CodigoConviteExpiracao = null;
+        await _context.SaveChangesAsync(ct);
+
+        return NoContent();
     }
 }

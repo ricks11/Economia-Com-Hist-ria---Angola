@@ -7,7 +7,7 @@ open System.Threading.Tasks
 open EconomiaComHistoria.Core.DTOs
 open Microsoft.AspNetCore.Http
 
-[<Authorize(Roles = "Editor,Admin")>]
+[<Authorize(Roles = "Editor,Admin,SuperAdmin")>]
 type RelatoriosController (apiClient: ECHA.Web.Services.ApiClient) =
     inherit Controller()
 

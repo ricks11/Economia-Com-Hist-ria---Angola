@@ -1,51 +1,94 @@
+@using EconomiaComHistoria.Core.DTOs
 @model EconomiaComHistoria.Core.DTOs.CreateTurmaDto
-@{
-    ViewData["Title"] = "Criar Nova Turma";
+
+@if (TempData["SuccessMessage"] != null)
+{
+<div class="mb-4 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-xl shadow-sm flex items-center gap-3">
+    <span class="material-symbols-outlined text-green-600">check_circle</span>
+    <span class="font-medium">@TempData["SuccessMessage"]</span>
+</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+<div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-xl shadow-sm flex items-center gap-3">
+    <span class="material-symbols-outlined text-red-600">error</span>
+    <span class="font-medium">@TempData["ErrorMessage"]</span>
+</div>
 }
 
-<div class="max-w-4xl mx-auto px-6 pt-12">
-    <!-- Header -->
-    <header class="mb-12 flex justify-between items-center flex-wrap gap-4">
-        <div>
-            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Criar Nova Turma</h1>
-            <p class="text-secondary mt-2">Adicionar uma nova turma para a escola parceira.</p>
-        </div>
-        <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="px-6 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-colors decoration-none">
-            Voltar
-        </a>
-    </header>
+@{
+    ViewData["Title"] = "Criar Nova Turma";
+    var professores = ViewData["Professores"] as IEnumerable<UtilizadorModeracaoDto>
+    ?? new List<UtilizadorModeracaoDto>
+        ();
+        var semProfessores = !professores.Any();
+        }
 
-    <!-- Form -->
-    <section class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm border border-stone-200/60">
-        <form asp-action="Create" method="post" class="space-y-6">
-            <input type="hidden" asp-for="EscolaId" />
-            
-            <div>
-                <label asp-for="Nome" class="block font-bold text-on-surface mb-2">Nome da Turma</label>
-                <input asp-for="Nome" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Ex: 10ª Classe - Turma A" required />
-                <span asp-validation-for="Nome" class="text-danger text-sm mt-1 block"></span>
-            </div>
-            
-            <div>
-                <label asp-for="Ano" class="block font-bold text-on-surface mb-2">Ano Letivo</label>
-                <input asp-for="Ano" type="number" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" value="2026" required />
-                <span asp-validation-for="Ano" class="text-danger text-sm mt-1 block"></span>
-            </div>
-
-            <div>
-                <label asp-for="ProfessorId" class="block font-bold text-on-surface mb-2">ID do Professor (Opcional)</label>
-                <input asp-for="ProfessorId" type="number" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Ex: 15" />
-                <span asp-validation-for="ProfessorId" class="text-danger text-sm mt-1 block"></span>
-            </div>
-
-            <div class="flex gap-4 pt-4">
-                <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all border-none">
-                    Criar Turma
-                </button>
-                <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="flex-1 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-colors text-center decoration-none">
-                    Cancelar
+        <div class="max-w-4xl mx-auto px-6 pt-12">
+            <header class="mb-12 flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Criar Nova Turma</h1>
+                    <p class="text-secondary mt-2">Adicionar uma nova turma para a escola parceira.</p>
+                </div>
+                <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="px-6 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-colors decoration-none">
+                    Voltar
                 </a>
-            </div>
-        </form>
-    </section>
-</div>
+            </header>
+
+            <section class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm border border-stone-200/60">
+                <form asp-action="Create" method="post" class="space-y-6">
+                    <input type="hidden" asp-for="EscolaId" />
+
+                    <div>
+                        <label asp-for="Nome" class="block font-bold text-on-surface mb-2">Nome da Turma</label>
+                        <input asp-for="Nome" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Ex: 10ª Classe - Turma A" required />
+                        <span asp-validation-for="Nome" class="text-danger text-sm mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Ano" class="block font-bold text-on-surface mb-2">Ano Letivo</label>
+                        <input asp-for="Ano" type="number" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" value="@DateTime.Now.Year" required />
+                        <span asp-validation-for="Ano" class="text-danger text-sm mt-1 block"></span>
+                    </div>
+
+                    <!-- Dropdown de Professores (obrigatório) -->
+                    <div>
+                        <label asp-for="ProfessorId" class="block font-bold text-on-surface mb-2">Professor Responsável</label>
+                        <select asp-for="ProfessorId" class="w-full px-4 py-3 rounded-xl border border-stone-200 bg-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" required>
+                            <option value="">Selecione um professor...</option>
+                            @foreach (var prof in professores)
+                            {
+                            <option value="@prof.Id">@prof.Nome</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProfessorId" class="text-danger text-sm mt-1 block"></span>
+                        @if (semProfessores)
+                        {
+                        <p class="text-amber-600 text-sm mt-1">⚠️ Não existem professores registados. <a asp-controller="Admin" asp-action="Utilizadores" class="underline">Crie um professor primeiro.</a></p>
+                        }
+                    </div>
+
+                    <div class="flex gap-4 pt-4">
+                        @if (semProfessores)
+                        {
+                        <button type="submit" class="flex-1 py-3 rounded-full bg-stone-300 text-stone-500 font-bold cursor-not-allowed border-none" disabled>
+                            Criar Turma
+                        </button>
+                        }
+                        else
+                        {
+                        <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all border-none">
+                            Criar Turma
+                        </button>
+                        }
+                        <a asp-action="Index" asp-route-escolaId="@Model.EscolaId" class="flex-1 py-3 rounded-full bg-surface-container text-secondary font-bold hover:bg-surface-container-high transition-colors text-center decoration-none">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        }

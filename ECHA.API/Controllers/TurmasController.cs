@@ -1,6 +1,6 @@
 using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
-using EconomiaComHistoria.Core.Enums;   // Certifique-se de que o enum TipoUtilizador está acessível
+using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,70 +21,63 @@ public class TurmasController : ControllerBase
         _context = context;
     }
 
+    // Helper para obter utilizador atual
+    private async Task<Utilizador?> GetCurrentUserAsync(CancellationToken ct)
+    {
+        var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+        if (!int.TryParse(userIdStr, out var userId)) return null;
+        return await _context.Utilizadores.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId, ct);
+    }
+
+    private bool IsAdminOrCliente(TipoUtilizador tipo) =>
+        tipo == TipoUtilizador.Admin || tipo == TipoUtilizador.SuperAdmin || tipo == TipoUtilizador.ClienteInstitucional;
+
     [HttpGet]
     public async Task<ActionResult<List<TurmaResponseDto>>> GetTurmas(
         [FromQuery] int? escolaId,
         CancellationToken ct)
     {
-        // 1. Obter utilizador autenticado
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                       ?? User.FindFirst("sub")?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
-            return Unauthorized(new { message = "Utilizador não autenticado" });
+        var user = await GetCurrentUserAsync(ct);
+        if (user == null) return Unauthorized();
 
-        var user = await _context.Utilizadores
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == userId, ct);
-
-        if (user == null)
-            return Unauthorized(new { message = "Utilizador não encontrado" });
-
-        // 2. Construir query base
         var query = _context.Turmas
             .Include(t => t.Escola)
             .Include(t => t.Professor)
+            .Include(t => t.Alunos)
             .AsQueryable();
 
-        // 3. Filtrar por escolaId se fornecido
         if (escolaId.HasValue)
             query = query.Where(t => t.EscolaId == escolaId.Value);
 
-        // 4. Aplicar regras de permissão
-        bool isAdmin = user.Tipo == TipoUtilizador.Admin;
-        bool isCliente = user.Tipo == TipoUtilizador.ClienteInstitucional;
-
-        if (!isAdmin && !isCliente)
+        // Aplicar permissões
+        if (!IsAdminOrCliente(user.Tipo))
         {
-            // Utilizadores comuns (Estudante, Professor, Editor, Moderador)
-            // Só podem ver turmas da sua própria escola
+            // Utilizador comum (Estudante, Professor, Editor, Moderador)
             if (user.EscolaId == null)
-                return Ok(new List<TurmaResponseDto>());   // Sem escola associada → sem turmas
+                return Ok(new List<TurmaResponseDto>());
 
             query = query.Where(t => t.EscolaId == user.EscolaId.Value);
         }
-        // Para Admin e Cliente: mantêm-se todas (ou filtradas por escolaId se passado)
+        // Admin/Cliente veem todas (ou filtradas por escolaId se passado)
 
-        // 5. Executar e mapear
         var turmas = await query.ToListAsync(ct);
-        var response = turmas.Select(t => new TurmaResponseDto(
+        return Ok(turmas.Select(t => new TurmaResponseDto(
             t.Id,
             t.Nome,
-            ParseAno(t.Ano),
+            string.IsNullOrEmpty(t.Ano) ? null : int.Parse(t.Ano),
             t.EscolaId,
             t.Escola?.Nome,
             t.ProfessorId,
             t.Professor?.Nome,
             t.Alunos.Count
-        )).ToList();
-
-        return Ok(response);
+        )));
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<TurmaDetalheDto>> GetTurma(int id, CancellationToken ct)
     {
-        // (Opcional) Aplicar a mesma lógica de permissão para detalhe de uma turma específica
-        // Pode ser adicionado se necessário, mas o foco é a listagem.
+        var user = await GetCurrentUserAsync(ct);
+        if (user == null) return Unauthorized();
 
         var turma = await _context.Turmas
             .Include(t => t.Escola)
@@ -92,67 +85,80 @@ public class TurmasController : ControllerBase
             .Include(t => t.Alunos)
             .FirstOrDefaultAsync(t => t.Id == id, ct);
 
-        if (turma == null)
-            return NotFound();
+        if (turma == null) return NotFound();
 
-        // Verificar se o utilizador tem permissão para ver esta turma
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
-            return Unauthorized();
-
-        var user = await _context.Utilizadores.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId, ct);
-        if (user == null)
-            return Unauthorized();
-
-        bool isAdmin = user.Tipo == TipoUtilizador.Admin;
-        bool isCliente = user.Tipo == TipoUtilizador.ClienteInstitucional;
-
-        if (!isAdmin && !isCliente)
-        {
-            // Utilizador comum: só pode ver se a turma for da sua escola
-            if (user.EscolaId == null || turma.EscolaId != user.EscolaId)
-                return Forbid();   // Ou NotFound() para não expor existência
-        }
-
-        var alunos = turma.Alunos.Select(a => new AlunoResumoDto(a.Id, a.Nome, a.Email, a.PontosTotais)).ToList();
+        // Verificar permissão
+        if (!IsAdminOrCliente(user.Tipo) && (user.EscolaId == null || turma.EscolaId != user.EscolaId))
+            return Forbid();
 
         return Ok(new TurmaDetalheDto(
             turma.Id,
             turma.Nome,
-            ParseAno(turma.Ano),
+            string.IsNullOrEmpty(turma.Ano) ? null : int.Parse(turma.Ano),
             turma.EscolaId,
             turma.Escola?.Nome,
             turma.ProfessorId,
             turma.Professor?.Nome,
-            alunos
+            turma.Alunos.Select(a => new AlunoResumoDto(a.Id, a.Nome, a.Email, a.PontosTotais)).ToList()
         ));
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Editor")]
+    [HttpPost]
+    [Authorize(Roles = "Admin,SuperAdmin,Editor")]
     public async Task<ActionResult<TurmaResponseDto>> CreateTurma([FromBody] CreateTurmaDto dto, CancellationToken ct)
     {
+        // Validar se a Escola existe
+        var escola = await _context.Escolas.FindAsync(new object[] { dto.EscolaId }, ct);
+        if (escola == null)
+            return BadRequest(new { message = "Escola não encontrada." });
+
+        // Validar se o Professor existe e tem a role correta
+        var professor = await _context.Utilizadores
+            .FirstOrDefaultAsync(u => u.Id == dto.ProfessorId && u.Tipo == TipoUtilizador.Professor, ct);
+        if (professor == null)
+            return BadRequest(new { message = "Professor não encontrado ou não possui a role 'Professor'." });
+
         var turma = new Turma
         {
             Nome = dto.Nome,
             Ano = dto.Ano?.ToString() ?? string.Empty,
             EscolaId = dto.EscolaId,
-            ProfessorId = dto.ProfessorId
+            ProfessorId = dto.ProfessorId,
+            Ativa = true
         };
 
         _context.Turmas.Add(turma);
         await _context.SaveChangesAsync(ct);
 
+        var created = await _context.Turmas
+            .Include(t => t.Escola)
+            .Include(t => t.Professor)
+            .FirstAsync(t => t.Id == turma.Id, ct);
+
         return CreatedAtAction(nameof(GetTurma), new { id = turma.Id }, new TurmaResponseDto(
-            turma.Id, turma.Nome, ParseAno(turma.Ano), turma.EscolaId, null, turma.ProfessorId, null, 0
+            turma.Id,
+            turma.Nome,
+            string.IsNullOrEmpty(turma.Ano) ? null : int.Parse(turma.Ano),
+            turma.EscolaId,
+            turma.Escola?.Nome,
+            turma.ProfessorId,
+            turma.Professor?.Nome,
+            0
         ));
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Editor")]
     public async Task<ActionResult<TurmaResponseDto>> UpdateTurma(int id, [FromBody] UpdateTurmaDto dto, CancellationToken ct)
     {
-        var turma = await _context.Turmas.FindAsync(new object[] { id }, ct);
+        var turma = await _context.Turmas
+            .Include(t => t.Escola)
+            .Include(t => t.Professor)
+            .Include(t => t.Alunos)
+            .FirstOrDefaultAsync(t => t.Id == id, ct);
+
         if (turma == null) return NotFound();
 
         turma.Nome = dto.Nome;
@@ -162,12 +168,19 @@ public class TurmasController : ControllerBase
         await _context.SaveChangesAsync(ct);
 
         return Ok(new TurmaResponseDto(
-            turma.Id, turma.Nome, ParseAno(turma.Ano), turma.EscolaId, null, turma.ProfessorId, null, turma.Alunos.Count
+            turma.Id,
+            turma.Nome,
+            string.IsNullOrEmpty(turma.Ano) ? null : int.Parse(turma.Ano),
+            turma.EscolaId,
+            turma.Escola?.Nome,
+            turma.ProfessorId,
+            turma.Professor?.Nome,
+            turma.Alunos.Count
         ));
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Editor")]
     public async Task<IActionResult> DeleteTurma(int id, CancellationToken ct)
     {
         var turma = await _context.Turmas.FindAsync(new object[] { id }, ct);
@@ -175,32 +188,43 @@ public class TurmasController : ControllerBase
 
         _context.Turmas.Remove(turma);
         await _context.SaveChangesAsync(ct);
-
         return NoContent();
     }
 
     [HttpPost("{id}/alunos")]
-    [Authorize(Roles = "Admin,Editor,SuperAdmin")]
-    public async Task<ActionResult> AdicionarAluno(int id, [FromBody] int alunoId, CancellationToken ct)
+    [Authorize(Roles = "Admin,SuperAdmin,Editor")]
+    public async Task<IActionResult> AdicionarAluno(int id, [FromBody] int alunoId, CancellationToken ct)
     {
         var turma = await _context.Turmas.Include(t => t.Alunos).FirstOrDefaultAsync(t => t.Id == id, ct);
         if (turma == null) return NotFound();
 
         var aluno = await _context.Utilizadores.FindAsync(new object[] { alunoId }, ct);
-        if (aluno == null) return BadRequest("Aluno não encontrado");
+        if (aluno == null) return BadRequest(new { message = "Aluno não encontrado" });
 
-        if (!turma.Alunos.Any(a => a.Id == alunoId))
-        {
-            turma.Alunos.Add(aluno);
-            aluno.TurmaId = id;
-            await _context.SaveChangesAsync(ct);
-        }
+        if (turma.Alunos.Any(a => a.Id == alunoId))
+            return BadRequest(new { message = "Aluno já está nesta turma" });
+
+        turma.Alunos.Add(aluno);
+        aluno.TurmaId = id;
+        await _context.SaveChangesAsync(ct);
 
         return NoContent();
     }
 
-    private static int? ParseAno(string? ano)
+    [HttpDelete("{id}/alunos/{alunoId}")]
+    [Authorize(Roles = "Admin,SuperAdmin,Editor")]
+    public async Task<IActionResult> RemoverAluno(int id, int alunoId, CancellationToken ct)
     {
-        return int.TryParse(ano, out var value) ? value : null;
+        var turma = await _context.Turmas.Include(t => t.Alunos).FirstOrDefaultAsync(t => t.Id == id, ct);
+        if (turma == null) return NotFound();
+
+        var aluno = turma.Alunos.FirstOrDefault(a => a.Id == alunoId);
+        if (aluno == null) return BadRequest(new { message = "Aluno não está nesta turma" });
+
+        turma.Alunos.Remove(aluno);
+        aluno.TurmaId = null;
+        await _context.SaveChangesAsync(ct);
+
+        return NoContent();
     }
 }

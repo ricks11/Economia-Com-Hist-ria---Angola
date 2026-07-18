@@ -3,7 +3,7 @@ namespace EconomiaComHistoria.Core.Enums;
 public enum TipoUtilizador
 {
     Visitante,
-    Registado,
+    Aluno,
     Premium,
     Professor,
     Editor,

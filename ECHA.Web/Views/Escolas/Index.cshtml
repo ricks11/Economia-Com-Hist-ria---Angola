@@ -1,70 +1,235 @@
 @model IEnumerable<EconomiaComHistoria.Core.DTOs.EscolaResponseDto>
-@{
+    @{
     ViewData["Title"] = "Gestão de Escolas";
-}
+    }
 
-<main class="pt-12 pb-12 px-6 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-        <aside class="md:col-span-3 bg-surface-container-lowest rounded-3xl p-6 h-fit sticky top-24 border border-stone-200/60 shadow-sm">
-            <nav class="space-y-2">
-                <a asp-controller="Escolas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold decoration-none">
-                    <span class="material-symbols-outlined">school</span> Escolas
-                </a>
-                <a asp-controller="Turmas" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
-                    <span class="material-symbols-outlined">group</span> Turmas
-                </a>
-                <a asp-controller="Relatorios" asp-action="Index" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 hover:bg-surface-container-high transition decoration-none">
-                    <span class="material-symbols-outlined">bar_chart</span> Relatórios
-                </a>
-            </nav>
-        </aside>
-
-        <div class="md:col-span-9 space-y-8">
-            <header class="flex justify-between items-center flex-wrap gap-4">
-                <div>
-                    <h1 class="text-3xl font-headline font-extrabold text-primary tracking-tight">Instituições de Ensino</h1>
-                    <p class="text-secondary mt-2">Gerir acessos, turmas e estatísticas de uso pedagógico.</p>
-                </div>
-                <a asp-action="Create" class="px-6 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg transition-all decoration-none flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">add</span> Nova escola
-                </a>
-            </header>
-
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach (var item in Model)
-                {
-                    <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="font-headline font-bold text-xl text-primary">@item.Nome</h3>
-                            <span class="text-xs bg-tertiary-container/20 px-3 py-1 rounded-full text-on-tertiary-container font-medium uppercase">Verificada</span>
-                        </div>
-                        <p class="text-secondary text-sm mb-6">@item.Provincia - @item.Localizacao</p>
-                        
-                        <div class="flex gap-6 text-sm mb-6 border-t border-stone-200/50 pt-4">
-                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">group</span> @item.TotalAlunos alunos</span>
-                            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-stone-400">menu_book</span> @item.TotalTurmas turmas</span>
-                        </div>
-
-                        @if (!string.IsNullOrEmpty(item.CodigoConvite)) {
-                            <div class="bg-surface-container-low p-4 rounded-xl mb-6 text-center">
-                                <small class="text-secondary block mb-1">Código de Convite:</small>
-                                <strong class="text-lg font-bold">@item.CodigoConvite</strong>
-                            </div>
-                        }
-
-                        <div class="flex gap-2 flex-wrap">
-                            <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="flex-1 min-w-[100px] py-2 rounded-full bg-surface-container text-secondary font-bold text-sm hover:bg-surface-container-high transition-colors text-center decoration-none">Ver Turmas</a>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="flex-1 min-w-[100px] py-2 rounded-full bg-surface-container text-secondary font-bold text-sm hover:bg-surface-container-high transition-colors text-center decoration-none">Editar</a>
-                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="flex-1 min-w-[100px]">
-                                <button type="submit" class="w-full py-2 rounded-full bg-danger-container text-danger font-bold text-sm hover:bg-danger-container/80 transition-colors" onclick="return confirm('Tem certeza que deseja eliminar esta escola?');">Eliminar</button>
-                            </form>
-                            <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post" class="flex-1 min-w-[100px]">
-                                <button type="submit" class="w-full py-2 rounded-full bg-primary/5 text-primary font-bold text-sm hover:bg-primary/10 transition-colors">Novo Código</button>
-                            </form>
-                        </div>
-                    </div>
-                }
-            </section>
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+        <!-- Alertas de feedback -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+        <div class="p-4 bg-green-50 dark:bg-green-950/20 border-l-4 border-green-500 text-green-800 dark:text-green-300 rounded-r-xl shadow-sm flex items-center gap-3 transition-all">
+            <span class="material-symbols-outlined text-green-600 dark:text-green-400">check_circle</span>
+            <span class="font-medium text-sm">@TempData["SuccessMessage"]</span>
         </div>
-    </div>
-</main>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+        <div class="p-4 bg-red-50 dark:bg-red-950/20 border-l-4 border-red-500 text-red-800 dark:text-red-300 rounded-r-xl shadow-sm flex items-center gap-3 transition-all">
+            <span class="material-symbols-outlined text-red-600 dark:text-red-400">error</span>
+            <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
+        </div>
+        }
+
+        <!-- Cabeçalho Principal (Largura Total) -->
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-stone-100 dark:border-stone-800/80">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-headline font-extrabold text-stone-900 dark:text-stone-100 tracking-tight">
+                    Instituições de Ensino
+                </h1>
+                <p class="text-xs md:text-sm text-stone-500 dark:text-stone-400 mt-1">
+                    Gerir acessos, turmas associadas e códigos de convite pedagógicos.
+                </p>
+            </div>
+            <a asp-action="Create" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-stone-200 text-white dark:text-stone-900 font-bold text-sm shadow-sm transition-all decoration-none">
+                <span class="material-symbols-outlined text-sm font-bold">add</span> Nova Escola
+            </a>
+        </header>
+
+        <!-- Grelha de Escolas -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var item in Model)
+            {
+            <div class="bg-white dark:bg-stone-900 rounded-3xl p-6 border border-stone-200/70 dark:border-stone-800/80 ambient-shadow flex flex-col justify-between hover:border-stone-300 dark:hover:border-stone-700/80 transition-all">
+                <div>
+                    <!-- Identificação e Badge -->
+                    <div class="flex justify-between items-start gap-4 mb-3">
+                        <h3 class="font-headline font-bold text-lg md:text-xl text-stone-900 dark:text-stone-100 line-clamp-2">
+                            @item.Nome
+                        </h3>
+                        <span class="shrink-0 text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-100 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-900/30 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                            Verificada
+                        </span>
+                    </div>
+
+                    <!-- Localização -->
+                    <p class="text-xs text-stone-400 dark:text-stone-500 flex items-center gap-1 mb-5">
+                        <span class="material-symbols-outlined text-sm">location_on</span> @item.Provincia — @item.Localizacao
+                    </p>
+
+                    <!-- Métricas Rápidas -->
+                    <div class="grid grid-cols-2 gap-4 py-3 my-4 border-y border-stone-100 dark:border-stone-800/50 text-xs font-medium text-stone-600 dark:text-stone-400">
+                        <span class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-stone-400 text-base">group</span>
+                            <strong>@item.TotalAlunos</strong> alunos
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-stone-400 text-base">menu_book</span>
+                            <strong>@item.TotalTurmas</strong> turmas
+                        </span>
+                    </div>
+
+                    <!-- Secção do Código de Convite -->
+                    <div class="my-5">
+                        @if (!string.IsNullOrEmpty(item.CodigoConvite))
+                        {
+                        <div class="bg-stone-50 dark:bg-stone-850/40 border border-stone-100 dark:border-stone-800/60 p-4 rounded-2xl text-center">
+                            <small class="text-[11px] text-stone-400 dark:text-stone-500 uppercase tracking-wider font-bold block mb-1">Código de Convite Ativo</small>
+                            <strong class="text-xl font-extrabold font-mono text-stone-900 dark:text-stone-100 tracking-wider">@item.CodigoConvite</strong>
+                            <small class="block text-[11px] text-stone-400 dark:text-stone-500 mt-1.5 italic">
+                                Expira em: @(item.ConviteExpiraEm?.ToString("dd/MM/yyyy HH:mm") ?? "Sem expiração")
+                            </small>
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="bg-stone-50/50 dark:bg-stone-850/20 border border-dashed border-stone-200 dark:border-stone-800/80 p-4 rounded-2xl text-center text-xs text-stone-400 dark:text-stone-500">
+                            <span class="material-symbols-outlined text-stone-300 dark:text-stone-600 block text-xl mb-1">vpn_key_off</span>
+                            Nenhum código de convite gerado.
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Ações Operacionais -->
+                <div class="space-y-2 mt-4 pt-2 border-t border-stone-50 dark:border-stone-850/40">
+                    <div class="grid grid-cols-2 gap-2">
+                        <a asp-controller="Turmas" asp-action="Index" asp-route-escolaId="@item.Id" class="py-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-750 text-stone-700 dark:text-stone-300 font-bold text-xs text-center transition-colors decoration-none">
+                            Ver Turmas
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="py-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-750 text-stone-700 dark:text-stone-300 font-bold text-xs text-center transition-colors decoration-none">
+                            Editar
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <form asp-action="GerarConvite" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="w-full py-2 rounded-xl bg-stone-900/5 hover:bg-stone-900/10 dark:bg-stone-100/5 dark:hover:bg-stone-100/10 text-stone-800 dark:text-stone-200 font-bold text-xs transition-colors border border-stone-200/20 dark:border-stone-700/20">
+                                @(string.IsNullOrEmpty(item.CodigoConvite) ? "Gerar Código" : "Renovar Código")
+                            </button>
+                        </form>
+
+                        @if (!string.IsNullOrEmpty(item.CodigoConvite))
+                        {
+                        <button type="button" onclick="abrirModalRevogar('@Url.Action("RevogarConvite", new { id=item.Id })', '@item.Nome' )"
+                                class="w-full py-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 font-bold text-xs transition-colors border border-red-100/30 dark:border-red-900/20">
+                            Revogar
+                        </button>
+                        }
+                        else
+                        {
+                        <!-- Alterado: Agora aciona a função JS em vez de submeter o formulário diretamente -->
+                        <button type="button" onclick="abrirModalDelete('@Url.Action("Delete", new { id=item.Id })', '@item.Nome' )"
+                                class="w-full py-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/30 text-red-600 dark:text-red-400 font-bold text-xs transition-colors border border-red-100/30 dark:border-red-900/20">
+                            Eliminar
+                        </button>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </section>
+    </main>
+
+    <!-- Modal Nativo HTML5 para Revogação de Convites -->
+    <dialog id="modalRevogar" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100 dark:border-stone-800">
+                <h3 class="font-headline font-bold text-lg text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-red-600">heart_broken</span> Revogar Código
+                </h3>
+                <button type="button" onclick="fecharModalRevogar()" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-stone-500 dark:text-stone-400 mb-6 leading-relaxed">
+                Tens a certeza que pretendes invalidar o código de convite atual da instituição: <span id="nomeEscolaTarget" class="font-bold text-stone-900 dark:text-stone-100"></span>?<br><br>
+                Novos professores ou alunos não conseguirão registar-se usando este código até que um novo seja gerado.
+            </p>
+
+            <form id="formRevogar" method="post" class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="fecharModalRevogar()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                    Cancelar
+                </button>
+                <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors">
+                    Confirmar Revogação
+                </button>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- NOVO: Modal Nativo HTML5 para Eliminação de Escolas -->
+    <dialog id="modalDelete" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100 dark:border-stone-800">
+                <h3 class="font-headline font-bold text-lg text-stone-900 dark:text-stone-100 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-red-600">delete</span> Eliminar Escola
+                </h3>
+                <button type="button" onclick="fecharModalDelete()" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-stone-500 dark:text-stone-400 mb-6 leading-relaxed">
+                Tens a certeza que pretendes eliminar permanentemente a instituição: <span id="nomeEscolaDeleteTarget" class="font-bold text-stone-900 dark:text-stone-100"></span>?<br><br>
+                Esta ação é irreversível e irá remover todas as turmas e dados associados a esta escola do sistema.
+            </p>
+
+            <form id="formDelete" method="post" class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="fecharModalDelete()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                    Cancelar
+                </button>
+                <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors">
+                    Confirmar Eliminação
+                </button>
+            </form>
+        </div>
+    </dialog>
+
+    <script>
+        // Funções do Modal de Revogação
+        function abrirModalRevogar(actionUrl, nomeEscola) {
+            const targetText = document.getElementById('nomeEscolaTarget');
+            if (targetText) targetText.innerText = nomeEscola;
+
+            const form = document.getElementById('formRevogar');
+            if (form) {
+                form.action = actionUrl;
+            }
+
+            const dialog = document.getElementById('modalRevogar');
+            if (dialog) {
+                dialog.showModal();
+            }
+        }
+
+        function fecharModalRevogar() {
+            const dialog = document.getElementById('modalRevogar');
+            if (dialog) {
+                dialog.close();
+            }
+        }
+
+        // NOVAS: Funções do Modal de Eliminação
+        function abrirModalDelete(actionUrl, nomeEscola) {
+            const targetText = document.getElementById('nomeEscolaDeleteTarget');
+            if (targetText) targetText.innerText = nomeEscola;
+
+            const form = document.getElementById('formDelete');
+            if (form) {
+                form.action = actionUrl;
+            }
+
+            const dialog = document.getElementById('modalDelete');
+            if (dialog) {
+                dialog.showModal();
+            }
+        }
+
+        function fecharModalDelete() {
+            const dialog = document.getElementById('modalDelete');
+            if (dialog) {
+                dialog.close();
+            }
+        }
+    </script>

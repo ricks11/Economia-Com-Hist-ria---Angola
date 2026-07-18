@@ -528,6 +528,14 @@ type ApiClient(httpClient: HttpClient) =
                 return false
         }
 
+    member this.RevogarCodigoConviteAsync(escolaId: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.DeleteAsync($"/api/escolas/{escolaId}/convite")
+            httpClient.DefaultRequestHeaders.Authorization <- null
+            return response.IsSuccessStatusCode
+        }
+
     member this.GerarCodigoConviteAsync(escolaId: int, token: string) : Task<InviteCodeResponseDto option> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
@@ -572,13 +580,45 @@ type ApiClient(httpClient: HttpClient) =
     member this.CreateTurmaAsync(request: CreateTurmaDto, token: string) : Task<bool> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.PostAsJsonAsync("/api/turmas", request)
+            use! response = httpClient.PostAsJsonAsync("/api/turmas", request)
+            httpClient.DefaultRequestHeaders.Authorization <- null
+
             if response.IsSuccessStatusCode then
                 return true
-            else if (int response.StatusCode = 401) then
-                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else if (int response.StatusCode = 400) then
+                let! errorContent = response.Content.ReadAsStringAsync()
+                // Tentar extrair a mensagem da resposta JSON
+                try
+                    use doc = JsonDocument.Parse(errorContent)
+                    let message = doc.RootElement.GetProperty("message").GetString()
+                    return raise (ApiClientException(response.StatusCode, message))
+                with
+                | _ -> return raise (ApiClientException(response.StatusCode, errorContent))
             else
                 return false
+        }
+
+    // Adicionar/remover aluno da turma
+    member this.AdicionarAlunoTurmaAsync(turmaId: int, alunoId: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync($"/api/turmas/{turmaId}/alunos", alunoId)
+            httpClient.DefaultRequestHeaders.Authorization <- null
+            return response.IsSuccessStatusCode
+        }
+
+    member this.RemoverAlunoTurmaAsync(turmaId: int, alunoId: int, token: string) : Task<bool> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.DeleteAsync($"/api/turmas/{turmaId}/alunos/{alunoId}")
+            httpClient.DefaultRequestHeaders.Authorization <- null
+            return response.IsSuccessStatusCode
+        }
+
+    member this.ListProfessoresAsync(token: string) : Task<UtilizadorModeracaoDto list> =
+        task {
+            let! todos = this.ListUtilizadoresAsync(token)
+            return todos |> List.filter (fun u -> u.Tipo = "Professor")
         }
 
     member this.SolicitarRelatorioAsync(request: SolicitarRelatorioDto, token: string) : Task<RelatorioStatusDto option> =
@@ -880,4 +920,10 @@ type ApiClient(httpClient: HttpClient) =
                 return raise (ApiClientException(response.StatusCode, "Unauthorized"))
             else
                 return None
+        }
+
+    member this.ListAlunosAsync(token: string) : Task<UtilizadorModeracaoDto list> =
+        task {
+            let! todos = this.ListUtilizadoresAsync(token)
+            return todos |> List.filter (fun u -> u.Tipo = "Aluno")
         }

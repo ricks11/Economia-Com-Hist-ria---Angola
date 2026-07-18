@@ -1,5 +1,4 @@
-using EconomiaComHistoria.Core.DTOs;
-using EconomiaComHistoria.Infrastructure.Services;
+using EconomiaComHistoria.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

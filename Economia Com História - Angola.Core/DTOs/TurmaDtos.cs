@@ -1,6 +1,6 @@
 namespace EconomiaComHistoria.Core.DTOs;
 
-public record CreateTurmaDto(string Nome, int? Ano, int EscolaId, int? ProfessorId);
+public record CreateTurmaDto(string Nome, int? Ano, int EscolaId, int ProfessorId);
 
 public record UpdateTurmaDto(string Nome, int? Ano, int? ProfessorId);
 

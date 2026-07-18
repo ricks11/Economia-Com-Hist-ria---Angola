@@ -1,26 +1,16 @@
-using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
+using EconomiaComHistoria.Core.Interfaces;
 
 namespace EconomiaComHistoria.Infrastructure.Services;
-
-public interface IEscolaService
-{
-    Task<InviteCodeResponseDto> GerarCodigoConviteAsync(int escolaId, int ttlDias = 7, CancellationToken ct = default);
-    Task<bool> AssociarAlunoAsync(int utilizadorId, string codigo, CancellationToken ct = default);
-    Task<List<EscolaResponseDto>> ListarEscolasAsync(CancellationToken ct = default);
-}
 
 public class EscolaService : IEscolaService
 {
     private readonly AppDbContext _context;
 
-    public EscolaService(AppDbContext context)
-    {
-        _context = context;
-    }
+    public EscolaService(AppDbContext context) => _context = context;
 
     public async Task<InviteCodeResponseDto> GerarCodigoConviteAsync(int escolaId, int ttlDias = 7, CancellationToken ct = default)
     {
@@ -33,13 +23,14 @@ public class EscolaService : IEscolaService
 
         await _context.SaveChangesAsync(ct);
 
-        return new InviteCodeResponseDto(codigo, escola.CodigoConviteExpiracao);
+        return new InviteCodeResponseDto(codigo, escola.CodigoConviteExpiracao.Value);
     }
 
     public async Task<bool> AssociarAlunoAsync(int utilizadorId, string codigo, CancellationToken ct = default)
     {
-        var escola = await _context.Escolas.FirstOrDefaultAsync(e => e.CodigoConvite == codigo, ct);
-        if (escola == null || escola.CodigoConviteExpiracao < DateTime.UtcNow) return false;
+        var escola = await _context.Escolas
+            .FirstOrDefaultAsync(e => e.CodigoConvite == codigo && e.CodigoConviteExpiracao > DateTime.UtcNow, ct);
+        if (escola == null) return false;
 
         var user = await _context.Utilizadores.FindAsync(new object[] { utilizadorId }, ct);
         if (user == null) return false;
@@ -52,12 +43,14 @@ public class EscolaService : IEscolaService
     public async Task<List<EscolaResponseDto>> ListarEscolasAsync(CancellationToken ct = default)
     {
         return await _context.Escolas
+            .Include(e => e.Turmas)
+            .Include(e => e.Alunos)
             .Select(e => new EscolaResponseDto(
                 e.Id,
                 e.Nome,
-                null, // CodigoMEC not in entity
+                e.CodigoMEC,
                 e.Provincia,
-                e.Municipio, // Using Municipio instead of Localizacao
+                e.Municipio,          // Mapeia para Localizacao
                 e.CodigoConvite,
                 e.CodigoConviteExpiracao,
                 e.Alunos.Count,
