@@ -71,10 +71,10 @@ public class ModeracaoController : ControllerBase
     [HttpGet("denuncias")]
     public async Task<ActionResult<IEnumerable<DenunciaSummaryDto>>> GetDenuncias(CancellationToken cancellationToken)
     {
-        // Denúncias em Tópicos
+        // Denúncias em Tópicos que ainda estão pendentes de moderação
         var topicos = await _dbContext.TopicosForum
             .Include(x => x.Autor)
-            .Where(x => x.Denuncias.Any())
+            .Where(x => x.Denuncias.Any() && x.Estado == EstadoTopicoForum.Pendente) // ← filtro
             .OrderByDescending(x => x.Denuncias.Count)
             .Select(x => new DenunciaSummaryDto(
                 x.Id,
@@ -87,10 +87,10 @@ public class ModeracaoController : ControllerBase
             ))
             .ToListAsync(cancellationToken);
 
-        // Denúncias em Respostas
+        // Denúncias em Respostas que ainda estão pendentes de moderação
         var respostas = await _dbContext.RespostasForum
             .Include(x => x.Autor)
-            .Where(x => x.Denuncias.Any())
+            .Where(x => x.Denuncias.Any() && x.EstadoResposta == EstadoComentario.Pendente) // ← filtro
             .OrderByDescending(x => x.Denuncias.Count)
             .Select(x => new DenunciaSummaryDto(
                 x.Id,

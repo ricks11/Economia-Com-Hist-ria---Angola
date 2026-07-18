@@ -116,8 +116,8 @@
                         var isArquivado = topico.Estado == EstadoTopicoForum.Arquivado || topico.Estado == EstadoTopicoForum.Rejeitado;
                         var action = isPendingForUser ? "AguardarAprovacao" : "Details";
 
-                        // Permissão para apagar: moderadores, admins, editores ou o próprio autor
-                        var podeApagar = User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("SuperAdmin") ||
+                        // Permissão para arquivar: moderadores, admins, editores ou o próprio autor
+                        var podeArquivar = User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("SuperAdmin") ||
                         (currentUserId != null && topico.AutorId.ToString() == currentUserId);
 
                         <div class="block bg-white dark:bg-stone-900 p-6 rounded-2xl border border-stone-200/70 dark:border-stone-800 hover:border-stone-300 dark:hover:border-stone-700 hover:shadow-md transition-all relative">
@@ -139,7 +139,8 @@
                                     <h2 class="text-xl font-bold text-primary dark:text-rose-300 mb-2 group-hover:text-primary-container dark:group-hover:text-rose-400 transition-colors font-headline leading-snug">
                                         @topico.Titulo
                                     </h2>
-                                    <div class="flex shrink-0 gap-1 ml-2 pointer-events-auto">
+                                    <div class="flex shrink-0 gap-1 ml-2 pointer-events-auto flex-wrap justify-end">
+                                        <!-- Badges de Estado -->
                                         @if (topico.Estado == EstadoTopicoForum.Pendente)
                                         {
                                         <span class="bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-400 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
@@ -156,6 +157,26 @@
                                         {
                                         <span class="bg-red-400 dark:bg-red-700 text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
                                             Rejeitado
+                                        </span>
+                                        }
+
+                                        <!-- Badges de Visibilidade (NOVO) -->
+                                        @if (topico.Visibilidade == Visibilidade.Privado)
+                                        {
+                                        <span class="bg-purple-100 dark:bg-purple-950/40 text-purple-800 dark:text-purple-400 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                            Privado
+                                        </span>
+                                        }
+                                        @if (topico.Visibilidade == Visibilidade.Escola)
+                                        {
+                                        <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-400 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                            Escola
+                                        </span>
+                                        }
+                                        @if (topico.Visibilidade == Visibilidade.Turma)
+                                        {
+                                        <span class="bg-green-100 dark:bg-green-950/40 text-green-800 dark:text-green-400 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                                            Turma
                                         </span>
                                         }
                                     </div>
@@ -177,13 +198,13 @@
                                         </span>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <!-- Botão Apagar (visível apenas para autor ou moderadores) -->
-                                        @if (podeApagar)
+                                        <!-- Botão Arquivar (visível apenas para autor ou moderadores) -->
+                                        @if (podeArquivar)
                                         {
-                                        <button type="button" onclick="openDeleteModal('@topico.Id', '@topico.Titulo')"
-                                                class="text-stone-400 hover:text-red-600 transition-colors p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20"
-                                                title="Apagar tópico">
-                                            <span class="material-symbols-outlined text-sm">delete</span>
+                                        <button type="button" onclick="openArquivarModal('@topico.Id', '@topico.Titulo')"
+                                                class="text-stone-400 hover:text-amber-600 transition-colors p-1.5 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/20"
+                                                title="Arquivar tópico">
+                                            <span class="material-symbols-outlined text-sm">archive</span>
                                         </button>
                                         }
                                         <span class="flex items-center gap-1 text-primary dark:text-yellow-500 font-bold group-hover:translate-x-0.5 transition-transform">
@@ -247,43 +268,43 @@
                 </div>
             </div>
 
-            <!-- ===== MODAL DE CONFIRMAÇÃO DE ELIMINAÇÃO ===== -->
-            <dialog id="delete-dialog" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
+            <!-- ===== MODAL DE CONFIRMAÇÃO DE ARQUIVAMENTO ===== -->
+            <dialog id="arquivar-dialog" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100 dark:border-stone-800">
-                        <h3 class="font-headline font-bold text-lg text-red-600 flex items-center gap-1.5">
-                            <span class="material-symbols-outlined">delete</span> Apagar Tópico
+                        <h3 class="font-headline font-bold text-lg text-amber-600 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined">archive</span> Arquivar Tópico
                         </h3>
-                        <button type="button" onclick="document.getElementById('delete-dialog').close()" class="text-stone-400 hover:text-stone-600">
+                        <button type="button" onclick="document.getElementById('arquivar-dialog').close()" class="text-stone-400 hover:text-stone-600">
                             <span class="material-symbols-outlined">close</span>
                         </button>
                     </div>
 
                     <p class="text-sm text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">
-                        Tem a certeza de que deseja <strong class="text-red-600">apagar</strong> o tópico <span id="delete-topico-titulo" class="font-semibold text-primary dark:text-rose-300"></span>?
+                        Tem a certeza de que deseja <strong class="text-amber-600">arquivar</strong> o tópico <span id="arquivar-topico-titulo" class="font-semibold text-primary dark:text-rose-300"></span>?
                         <br><br>
-                        Esta ação é <strong class="text-red-600">irreversível</strong> e removerá o tópico permanentemente da plataforma.
+                        Esta ação irá <strong>remover o tópico da listagem pública</strong>, mas mantê-lo-á acessível no histórico para moderação e auditoria.
                     </p>
 
-                    <form id="delete-form" asp-action="ApagarTopico" method="post" class="flex justify-end gap-2">
+                    <form id="arquivar-form" asp-action="ApagarTopico" method="post" class="flex justify-end gap-2">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" id="delete-topico-id" name="id" value="" />
-                        <button type="button" onclick="document.getElementById('delete-dialog').close()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800">
+                        <input type="hidden" id="arquivar-topico-id" name="id" value="" />
+                        <button type="button" onclick="document.getElementById('arquivar-dialog').close()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800">
                             Cancelar
                         </button>
-                        <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors">
-                            <span class="material-symbols-outlined text-sm align-middle mr-1">delete</span>
-                            Confirmar Apagar
+                        <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                            <span class="material-symbols-outlined text-sm align-middle mr-1">archive</span>
+                            Confirmar Arquivo
                         </button>
                     </form>
                 </div>
             </dialog>
 
             <script>
-    function openDeleteModal(id, titulo) {
-        document.getElementById('delete-topico-id').value = id;
-        document.getElementById('delete-topico-titulo').textContent = '"' + titulo + '"';
-        const dialog = document.getElementById('delete-dialog');
-        if (dialog) dialog.showModal();
-    }
+                function openArquivarModal(id, titulo) {
+                    document.getElementById('arquivar-topico-id').value = id;
+                    document.getElementById('arquivar-topico-titulo').textContent = '"' + titulo + '"';
+                    const dialog = document.getElementById('arquivar-dialog');
+                    if (dialog) dialog.showModal();
+                }
             </script>

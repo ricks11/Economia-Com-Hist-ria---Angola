@@ -22,6 +22,13 @@ public class TopicoForum
     public int AutorId { get; set; }
     public Utilizador Autor { get; set; } = null!;
 
+    // Novas propriedades para visibilidade
+    public Visibilidade Visibilidade { get; set; } = Visibilidade.Publico;
+    public int? EscolaId { get; set; }
+    public Escola? Escola { get; set; }
+    public int? TurmaId { get; set; }
+    public Turma? Turma { get; set; }
+
     public ICollection<RespostaForum> Respostas { get; set; } = new List<RespostaForum>();
     public ICollection<DenunciaConteudo> Denuncias { get; set; } = new List<DenunciaConteudo>();
     public ICollection<Reacao> Reacoes { get; set; } = new List<Reacao>();

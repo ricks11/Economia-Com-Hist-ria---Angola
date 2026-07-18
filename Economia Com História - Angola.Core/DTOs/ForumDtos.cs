@@ -3,22 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EconomiaComHistoria.Core.DTOs;
 
-public class CriarTopicoForumDto
-{
-    [Required(ErrorMessage = "Título é obrigatório")]
-    [StringLength(200, MinimumLength = 5, ErrorMessage = "Título deve ter entre 5 e 200 caracteres")]
-    public string Titulo { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Descrição é obrigatória")]
-    [StringLength(2000, MinimumLength = 10, ErrorMessage = "Descrição deve ter entre 10 e 2000 caracteres")]
-    public string Descricao { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Categoria é obrigatória")]
-    [Range(1, int.MaxValue, ErrorMessage = "Categoria ID deve ser válido")]
-    public int CategoriaId { get; set; }
-}
+public record CriarTopicoForumDto(
+    string Titulo,
+    string Descricao,
+    int CategoriaId,
+    Visibilidade Visibilidade = Visibilidade.Publico,
+    int? EscolaId = null,
+    int? TurmaId = null
+);
 
 public record CategoriaForumDto(int Id, string Nome, string? Descricao, string? Icone);
+
 
 public record TopicoForumDto(
     int Id,
@@ -31,7 +26,13 @@ public record TopicoForumDto(
     EstadoTopicoForum Estado,
     DateTime CriadoEm,
     bool Fixado,
-    int Visualizacoes);
+    int Visualizacoes,
+    Visibilidade Visibilidade,
+    int? EscolaId = null,
+    string? EscolaNome = null,
+    int? TurmaId = null,
+    string? TurmaNome = null
+);
 
 public record TopicoForumDetalheDto(
     int Id,
@@ -45,9 +46,15 @@ public record TopicoForumDetalheDto(
     DateTime CriadoEm,
     bool Fixado,
     int Visualizacoes,
-    bool JaReagiu,       // <-- Adicionado
-    int TotalReacoes,    // <-- Adicionado
-    IReadOnlyCollection<RespostaForumDto> Respostas);
+    bool JaReagiu,
+    int TotalReacoes,
+    IReadOnlyCollection<RespostaForumDto> Respostas,
+    Visibilidade Visibilidade,
+    int? EscolaId = null,
+    string? EscolaNome = null,
+    int? TurmaId = null,
+    string? TurmaNome = null
+);
 
 public class CriarRespostaForumDto
 {

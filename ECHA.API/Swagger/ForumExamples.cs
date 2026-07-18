@@ -18,7 +18,7 @@ public class RankingEntradaDtoExample : IExamplesProvider<RankingEntradaDto>
     }
 }
 
-public class CriarTopicoForumDtoExample : IExamplesProvider<CriarTopicoForumDto>
+/*public class CriarTopicoForumDtoExample : IExamplesProvider<CriarTopicoForumDto>
 {
     public CriarTopicoForumDto GetExamples()
     {
@@ -29,7 +29,7 @@ public class CriarTopicoForumDtoExample : IExamplesProvider<CriarTopicoForumDto>
             CategoriaId = 3
         };
     }
-}
+}*/
 
 public class CriarRespostaForumDtoExample : IExamplesProvider<CriarRespostaForumDto>
 {

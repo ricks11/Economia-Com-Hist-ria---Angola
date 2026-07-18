@@ -55,6 +55,8 @@
             {
             <span class="bg-yellow-100 text-yellow-800 dark:bg-yellow-950/40 dark:text-yellow-400 px-3 py-1 rounded-full text-xs font-bold">Fixado</span>
             }
+
+            <!-- Badges de Estado -->
             @if (Model.Estado == EstadoTopicoForum.Pendente)
             {
             <span class="bg-yellow-100 text-yellow-800 dark:bg-yellow-950/40 dark:text-yellow-400 px-3 py-1 rounded-full text-xs font-bold">Em revisão</span>
@@ -67,6 +69,21 @@
             {
             <span class="bg-red-400 text-white dark:bg-red-700 px-3 py-1 rounded-full text-xs font-bold">Rejeitado</span>
             }
+
+            <!-- Badges de Visibilidade (NOVO) -->
+            @if (Model.Visibilidade == Visibilidade.Privado)
+            {
+            <span class="bg-purple-100 text-purple-800 dark:bg-purple-950/40 dark:text-purple-400 px-3 py-1 rounded-full text-xs font-bold">Privado</span>
+            }
+            @if (Model.Visibilidade == Visibilidade.Escola)
+            {
+            <span class="bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-bold">Escola: @Model.EscolaNome</span>
+            }
+            @if (Model.Visibilidade == Visibilidade.Turma)
+            {
+            <span class="bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-400 px-3 py-1 rounded-full text-xs font-bold">Turma: @Model.TurmaNome</span>
+            }
+
             <span class="text-xs text-stone-400 ml-auto font-mono">@Model.CriadoEm.ToString("dd/MM/yyyy HH:mm")</span>
         </div>
 

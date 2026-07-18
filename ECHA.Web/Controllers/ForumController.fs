@@ -49,8 +49,16 @@ type ForumController(apiClient: ApiClient) =
     [<Authorize>]
     member this.Criar() =
         task {
+            let token = this.GetToken()
             let! categorias = apiClient.ListCategoriasForumAsync()
             this.ViewData.["Categorias"] <- categorias
+            
+            if not (String.IsNullOrEmpty token) then
+                let! escolas = apiClient.ListEscolasAsync(token)
+                this.ViewData.["Escolas"] <- escolas
+                let! turmas = apiClient.ListTurmasAsync(token)
+                this.ViewData.["Turmas"] <- turmas
+            
             return this.View() :> IActionResult
         }
 
@@ -154,7 +162,7 @@ type ForumController(apiClient: ApiClient) =
             | null -> return this.RedirectToAction("Login", "Auth") :> IActionResult
             | t ->
                 try
-                    let! sucesso = apiClient.DesarquivarTopicoAsync(id, t) // novo método no ApiClient
+                    let! sucesso = apiClient.DesarquivarTopicoAsync(id, t)
                     if sucesso then
                         this.TempData["SuccessMessage"] <- "Tópico desarquivado com sucesso."
                     else
@@ -178,7 +186,6 @@ type ForumController(apiClient: ApiClient) =
                     let! _ = apiClient.DenunciarAsync(request, t)
                     this.TempData["SuccessMessage"] <- "Denúncia enviada. A nossa equipa vai analisar."
 
-                    // Determina o ID do tópico para redirecionamento
                     let! redirectIdTask =
                         task {
                             if topicoId.HasValue then

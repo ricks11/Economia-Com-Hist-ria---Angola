@@ -3,59 +3,96 @@
     ViewData["Title"] = "Denúncias Recebidas";
     }
 
-    <div class="container mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Denúncias Ativas</h1>
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Exibir mensagens de feedback -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+        <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded-r-xl shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-green-600">check_circle</span>
+            <span class="font-medium">@TempData["SuccessMessage"]</span>
+        </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-xl shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-red-600">error</span>
+            <span class="font-medium">@TempData["ErrorMessage"]</span>
+        </div>
+        }
+
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-2xl md:text-3xl font-headline font-extrabold text-primary dark:text-rose-200">
+                Denúncias Ativas
+            </h1>
+            <span class="bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-3 py-1 rounded-full text-xs font-bold font-mono">
+                Painel de Moderação
+            </span>
+        </div>
 
         @if (!Model.Any())
         {
-        <div class="bg-green-50 border border-green-200 p-6 rounded-lg text-green-700">
-            <p class="font-medium">Excelente! Não existem denúncias pendentes de tratamento no sistema.</p>
+        <div class="flex items-center gap-3 bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-300 px-6 py-5 rounded-2xl border border-green-200/50 ambient-shadow">
+            <span class="material-symbols-outlined text-green-600 dark:text-green-400">verified_user</span>
+            <div>
+                <p class="font-bold text-sm">Excelente trabalho!</p>
+                <p class="text-xs opacity-90">Não existem denúncias pendentes de tratamento no sistema neste momento.</p>
+            </div>
         </div>
         }
         else
         {
-        <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+        <div class="bg-white dark:bg-stone-900 rounded-3xl overflow-hidden border border-stone-200/70 dark:border-stone-800/80 ambient-shadow overflow-x-auto">
+            <table class="min-w-full divide-y divide-stone-100 dark:divide-stone-800">
+                <thead class="bg-stone-50 dark:bg-stone-900/50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Conteúdo/Alvo</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Autor</th>
-                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Denúncias</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Última Alerta</th>
-                        <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Ações</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Tipo</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Conteúdo / Alvo</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Autor do Envio</th>
+                        <th scope="col" class="px-6 py-4 text-center text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Acumulado</th>
+                        <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Ações de Resolução</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
+                <tbody class="divide-y divide-stone-100 dark:divide-stone-800 bg-white dark:bg-stone-900">
                     @foreach (var item in Model)
                     {
-                    <tr class="hover:bg-gray-50 transition">
+                    var tipo = item.Tipo?.Trim() ?? "";
+                    var isTopico = tipo.Equals("Topico", StringComparison.OrdinalIgnoreCase);
+                    <tr class="hover:bg-stone-50/60 dark:hover:bg-stone-850/40 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2.5 py-1 text-xs font-semibold rounded-full @(item.Tipo == " Topico" ? "bg-amber-100 text-amber-800" : "bg-purple-100 text-purple-800" )">
+                            <span class="px-2.5 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider @(isTopico ? " bg-amber-50 text-amber-700 border border-amber-200 /50 dark:bg-amber-950 /20 dark:text-amber-400 dark:border-amber-900 /30" : "bg-purple-50 text-purple-700 border border-purple-200/50 dark:bg-purple-950/20 dark:text-purple-400 dark:border-purple-900/30" )">
                                 @item.Tipo
                             </span>
                         </td>
 
-                        <td class="px-6 py-4 max-w-xs truncate font-medium text-gray-900">
+                        <td class="px-6 py-4 max-w-xs truncate text-sm font-medium text-stone-800 dark:text-stone-200">
                             @item.TituloOuConteudo
                         </td>
 
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @item.AutorNome
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-600 dark:text-stone-400">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-base opacity-70">person</span> @item.AutorNome
+                            </span>
                         </td>
 
-                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-red-600 bg-red-50">
-                            @item.TotalDenuncias
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            <span class="inline-block px-2.5 py-1 text-xs font-mono font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/20 rounded-lg">
+                                @item.TotalDenuncias
+                            </span>
                         </td>
 
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end gap-3">
-                                <form asp-action="@(item.Tipo == " Topico" ? "AprovarTopico" : "AprovarResposta" )" asp-route-id="@item.Id" method="post" class="inline">
-                                    <button type="submit" class="text-green-600 hover:text-green-900 font-semibold">Manter Conteúdo</button>
+                                <!-- Formulário para MANTER -->
+                                <form asp-action="@(isTopico ? "AprovarTopico" : "AprovarResposta" )" asp-route-id="@item.Id" method="post" class="inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="inline-flex items-center gap-1 bg-stone-50 hover:bg-stone-100 text-stone-700 dark:bg-stone-800 dark:hover:bg-stone-750 dark:text-stone-300 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-stone-200/40 dark:border-stone-700">
+                                        <span class="material-symbols-outlined text-sm text-green-600 dark:text-green-400">check</span> Manter
+                                    </button>
                                 </form>
 
-                                <button onclick="abrirModalRejeicao('@item.Id', '@item.Tipo')" class="text-red-600 hover:text-red-900 font-semibold">
-                                    Remover Conteúdo
+                                <!-- Botão para abrir modal de REMOVER -->
+                                <button type="button" onclick="abrirModalRejeicao('@item.Id', '@(isTopico ? "Topico" : "Resposta" )')" class="...">
+                                    <span class="material-symbols-outlined text-sm">delete_sweep</span> Remover
                                 </button>
                             </div>
                         </td>
@@ -67,30 +104,67 @@
         }
     </div>
 
-    <div id="modalRejeicao" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Remover Conteúdo Denunciado</h3>
-            <form id="formRejeicao" method="post">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Motivo da remoção do conteúdo:</label>
-                    <textarea id="motivo" name="motivo" required rows="4" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Indique a regra infringida pelo utilizador..."></textarea>
+    <!-- Modal para Remover com justificação -->
+    <dialog id="modalRejeicao" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100 dark:border-stone-800">
+                <h3 class="font-headline font-bold text-lg text-primary dark:text-rose-300 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-red-600">gavel</span> Aplicar Penalização
+                </h3>
+                <button type="button" onclick="fecharModalRejeicao()" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-stone-500 dark:text-stone-400 mb-4 leading-relaxed">
+                Ao remover esta publicação, um registo de infração será associado à conta do utilizador de forma permanente.
+            </p>
+
+            <form id="formRejeicao" method="post" class="space-y-4">
+                @Html.AntiForgeryToken()
+                <div>
+                    <label for="motivo" class="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-2">
+                        Motivo Formal da Remoção
+                    </label>
+                    <textarea id="motivo" name="motivo" required rows="4"
+                              class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl p-3 text-sm text-stone-800 dark:text-stone-200 focus:ring-2 focus:ring-primary/20 focus:border-transparent outline-none transition-all"
+                              placeholder="Ex: Infração do Artigo 3º (Falta de Rigor Científico / Citação Errada)..."></textarea>
                 </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="fecharModalRejeicao()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded font-medium text-sm transition">Cancelar</button>
-                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium text-sm transition">Aplicar Penalização</button>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="fecharModalRejeicao()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors">
+                        Remover e Penalizar
+                    </button>
                 </div>
             </form>
         </div>
-    </div>
+    </dialog>
 
     <script>
         function abrirModalRejeicao(id, tipo) {
             const form = document.getElementById('formRejeicao');
-            form.action = `/Moderacao/Rejeitar${tipo}/${id}`;
-            document.getElementById('modalRejeicao').classList.remove('hidden');
+            if (form) {
+                // Remove espaços e capitaliza a primeira letra (caso necessário)
+                const acao = tipo.trim() === 'Topico' ? 'Topico' : 'Resposta';
+                form.action = `/Moderacao/Rejeitar${acao}/${id}`;
+            }
+            const dialog = document.getElementById('modalRejeicao');
+            if (dialog) {
+                dialog.showModal();
+            }
         }
+
         function fecharModalRejeicao() {
-            document.getElementById('modalRejeicao').classList.add('hidden');
-            document.getElementById('motivo').value = '';
+            const dialog = document.getElementById('modalRejeicao');
+            if (dialog) {
+                dialog.close();
+            }
+            const motivoInput = document.getElementById('motivo');
+            if (motivoInput) {
+                motivoInput.value = '';
+            }
         }
     </script>

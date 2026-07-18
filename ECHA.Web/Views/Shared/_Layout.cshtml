@@ -30,6 +30,36 @@
             ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500"
             : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800";
     }
+
+    // ─────────────────────────────────────────
+    // Flags de permissão — com base na tabela cruzada de TipoUtilizador.
+    // Calculadas uma única vez para manter a nav legível e fácil de ajustar.
+    // ─────────────────────────────────────────
+    bool isEditor = User.IsInRole("Editor");
+    bool isAdmin = User.IsInRole("Admin");
+    bool isModerador = User.IsInRole("Moderador");
+    bool isSuperAdmin = User.IsInRole("SuperAdmin");
+
+    // Quizzes (Web) é só gestão (criar/editar/estatísticas) — QuizzesController exige Editor/Admin/SuperAdmin.
+    // Um Registado/Professor não tem nenhum ecrã de quiz no Web (joga via Mobile), por isso o link não deve aparecer.
+    bool podeGerirQuizzes = isEditor || isAdmin || isSuperAdmin;
+
+    // Turmas — TurmasController exige Editor/Admin.
+    bool podeGerirTurmas = isEditor || isAdmin || isSuperAdmin;
+
+    // Escolas — EscolasController é exclusivo de Admin (nem Editor tem acesso).
+    bool podeGerirEscolas = isAdmin || isSuperAdmin;
+
+    // Moderação — ModeracaoController (API) já inclui Moderador; a Web deve reflectir o mesmo.
+    bool podeModerar = isEditor || isAdmin || isModerador || isSuperAdmin;
+
+    // Relatórios — RelatoriosController exige Editor/Admin.
+    bool podeVerRelatorios = isEditor || isAdmin || isSuperAdmin;
+
+    // Auditoria e Gestão de Roles — exclusivo de SuperAdmin.
+    bool ehSuperAdmin = isSuperAdmin;
+
+    bool mostraSeparadorAdmin = podeGerirQuizzes || podeGerirTurmas || podeGerirEscolas || podeModerar || podeVerRelatorios || ehSuperAdmin;
 }
 
 <!DOCTYPE html>
@@ -160,6 +190,8 @@
             </button>
         </div>
         <nav class="flex-1 space-y-1 px-3 overflow-y-auto">
+
+            <!-- Disponível para TODOS os utilizadores autenticados (Registado, Premium, Professor, Editor, Moderador, Admin, SuperAdmin, ClienteInstitucional) -->
             <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Home")" href="@Url.Action("Index", "Home" )">
                 <span class="material-symbols-outlined">home</span>
                 <span class="text-sm font-semibold font-label">Início</span>
@@ -167,10 +199,6 @@
             <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Conteudos")" href="@Url.Action("Index", "Conteudos" )">
                 <span class="material-symbols-outlined">menu_book</span>
                 <span class="text-sm font-semibold font-label">Aprender</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Quizzes")" href="@Url.Action("Index", "Quizzes" )">
-                <span class="material-symbols-outlined">sports_esports</span>
-                <span class="text-sm font-semibold font-label">Jogar</span>
             </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Forum")" href="@Url.Action("Index", "Forum" )">
                 <span class="material-symbols-outlined">groups</span>
@@ -180,24 +208,48 @@
                 <span class="material-symbols-outlined">leaderboard</span>
                 <span class="text-sm font-semibold font-label">Ranking</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Escolas")" href="@Url.Action("Index", "Escolas" )">
-                <span class="material-symbols-outlined">school</span>
-                <span class="text-sm font-semibold font-label">Escolas</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Turmas")" href="@Url.Action("Index", "Turmas" )">
-                <span class="material-symbols-outlined">group</span>
-                <span class="text-sm font-semibold font-label">Turmas</span>
-            </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Perfil")" href="@Url.Action("Index", "Perfil" )">
                 <span class="material-symbols-outlined">person</span>
                 <span class="text-sm font-semibold font-label">Perfil</span>
             </a>
 
-            @if (User.IsInRole("Editor") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+            @if (podeGerirQuizzes)
+            {
+            <!-- Editor, Admin, SuperAdmin — QuizzesController (Web) não permite mais ninguém -->
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Quizzes")" href="@Url.Action("Index", "Quizzes" )">
+                <span class="material-symbols-outlined">sports_esports</span>
+                <span class="text-sm font-semibold font-label">Gerir Quizzes</span>
+            </a>
+            }
+
+            @if (podeGerirEscolas)
+            {
+            <!-- Exclusivo de Admin/SuperAdmin — EscolasController não permite Editor -->
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Escolas")" href="@Url.Action("Index", "Escolas" )">
+                <span class="material-symbols-outlined">school</span>
+                <span class="text-sm font-semibold font-label">Escolas</span>
+            </a>
+            }
+
+            @if (podeGerirTurmas)
+            {
+            <!-- Editor, Admin, SuperAdmin -->
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Turmas")" href="@Url.Action("Index", "Turmas" )">
+                <span class="material-symbols-outlined">group</span>
+                <span class="text-sm font-semibold font-label">Turmas</span>
+            </a>
+            }
+
+            @if (mostraSeparadorAdmin)
             {
             <div class="pt-4 border-t border-stone-200/50 mt-4 px-4 pb-2">
                 <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest font-headline">Painel Administrativo</p>
             </div>
+            }
+
+            @if (podeModerar)
+            {
+            <!-- Editor, Admin, Moderador, SuperAdmin — alinhado com ModeracaoController (API) que já inclui Moderador -->
             <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Fila" )" href="@Url.Action("Fila", "Moderacao" )">
                 <span class="material-symbols-outlined">edit_note</span>
                 <span class="text-sm font-semibold font-label">Fila de Revisão</span>
@@ -210,16 +262,27 @@
                 <span class="material-symbols-outlined">report</span>
                 <span class="text-sm font-semibold font-label">Denúncias</span>
             </a>
+            }
+
+            @if (podeVerRelatorios)
+            {
+            <!-- Editor, Admin, SuperAdmin -->
             <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Relatorios")" href="@Url.Action("Index", "Relatorios" )">
                 <span class="material-symbols-outlined">assessment</span>
                 <span class="text-sm font-semibold font-label">Desempenho</span>
             </a>
             }
-            @if (User.IsInRole("SuperAdmin"))
+
+            @if (ehSuperAdmin)
             {
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Admin", "Permissoes" )" href="@Url.Action("Permissoes", "Admin" )">
+            <!-- Exclusivo de SuperAdmin — links corrigidos para os controllers reais (Admin/Auditoria e Admin/Utilizadores) -->
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Admin", "Auditoria" )" href="@Url.Action("Auditoria", "Admin" )">
+                <span class="material-symbols-outlined">history</span>
+                <span class="text-sm font-semibold font-label">Auditoria</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Admin", "Utilizadores" )" href="@Url.Action("Utilizadores", "Admin" )">
                 <span class="material-symbols-outlined">admin_panel_settings</span>
-                <span class="text-sm font-semibold font-label">Permissões</span>
+                <span class="text-sm font-semibold font-label">Gestão de Roles</span>
             </a>
             }
         </nav>
@@ -289,7 +352,7 @@
                 <div class="hidden md:flex gap-6 items-center">
                     <a class="@(currentController == "Home" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label" href="@Url.Action("Index", "Home" )">Explore</a>
                     <a class="@(currentController == "Conteudos" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Conteudos" )">Arquivo</a>
-                    <a class="@(currentController == "Quizzes" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Quizzes" )">Quizzes</a>
+                    <a class="@(currentController == "Forum" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Forum" )">Fórum</a>
                 </div>
             </div>
             <div class="flex items-center gap-4">

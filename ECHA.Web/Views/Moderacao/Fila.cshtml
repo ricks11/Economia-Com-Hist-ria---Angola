@@ -3,31 +3,64 @@
     ViewData["Title"] = "Fila de Moderação";
 }
 
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Fila de Aprovação</h1>
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <!-- Cabeçalho Principal -->
+    <div class="flex items-center justify-between mb-10 pb-4 border-b border-stone-100 dark:border-stone-800">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-headline font-extrabold text-primary dark:text-rose-200">
+                Fila de Aprovação
+            </h1>
+            <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">
+                Análise e moderação de novos conteúdos submetidos pela comunidade académica.
+            </p>
+        </div>
+        <span class="bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-3 py-1 rounded-full text-xs font-bold font-mono shadow-sm">
+            Pendentes
+        </span>
+    </div>
 
-    <section class="mb-10">
-        <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Tópicos a Aguardar Revisão (@Model.Topicos.Count)</h2>
+    <!-- Secção 1: Tópicos -->
+    <section class="mb-12">
+        <h2 class="text-lg font-headline font-bold text-stone-800 dark:text-stone-200 mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-500">dynamic_feed</span>
+            Tópicos a Aguardar Revisão
+            <span class="text-xs font-mono font-bold px-2 py-0.5 bg-stone-100 dark:bg-stone-800 rounded-md text-stone-500">@Model.Topicos.Count</span>
+        </h2>
+
         @if (!Model.Topicos.Any())
         {
-        <p class="text-gray-500 bg-gray-50 p-4 rounded-lg">Não existem tópicos pendentes de aprovação.</p>
+        <div class="bg-stone-50/60 dark:bg-stone-900/40 rounded-2xl p-6 text-center text-stone-500 dark:text-stone-400 border border-dashed border-stone-200 dark:border-stone-800">
+            Não existem tópicos pendentes de aprovação na plataforma.
+        </div>
         }
         else
         {
         <div class="grid gap-4">
             @foreach (var topico in Model.Topicos)
             {
-            <div class="bg-white p-5 rounded-lg shadow border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div class="bg-white dark:bg-stone-900 p-5 md:p-6 rounded-2xl border border-stone-200/70 dark:border-stone-800/80 ambient-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex-1">
-                    <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mb-2 font-medium">@topico.CategoriaNome</span>
-                    <h3 class="text-lg font-bold text-gray-900">@topico.TituloOuConteudo</h3>
-                    <p class="text-sm text-gray-500">Autor: @topico.AutorNome | Criado em: @topico.DataCriacao.ToString("dd/MM/yyyy HH:mm")</p>
+                    <span class="inline-block bg-amber-50 text-amber-700 border border-amber-200/40 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900/30 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider mb-2">
+                        @topico.CategoriaNome
+                    </span>
+                    <h3 class="text-base md:text-lg font-bold text-stone-900 dark:text-stone-100 leading-snug">
+                        @topico.TituloOuConteudo
+                    </h3>
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-500 dark:text-stone-400 mt-2 font-medium">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> @topico.AutorNome</span>
+                        <span class="font-mono text-[11px]">@topico.DataCriacao.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
                 </div>
-                <div class="flex gap-2 mt-4 md:mt-0">
-                    <form asp-action="AprovarTopico" asp-route-id="@topico.Id" method="post">
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium transition">Aprovar</button>
+
+                <div class="flex items-center gap-2 w-full md:w-auto shrink-0 pt-2 md:pt-0 border-t border-stone-50 md:border-t-0 dark:border-stone-800">
+                    <form asp-action="AprovarTopico" asp-route-id="@topico.Id" method="post" class="flex-1 md:flex-none">
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 dark:bg-green-950/20 dark:text-green-400 px-4 py-2 rounded-xl text-xs font-bold transition-all border border-green-200/30 dark:border-green-900/20">
+                            <span class="material-symbols-outlined text-sm">check</span> Aprovar
+                        </button>
                     </form>
-                    <button onclick="abrirModalRejeicao('@topico.Id', 'Topico')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition">Rejeitar</button>
+                    <button type="button" onclick="abrirModalRejeicao('@topico.Id', 'Topico')" class="flex-1 md:flex-none inline-flex items-center justify-center gap-1 bg-red-50 hover:bg-red-100 text-red-700 dark:bg-red-950/20 dark:text-red-400 px-4 py-2 rounded-xl text-xs font-bold transition-all border border-red-200/30 dark:border-red-900/20">
+                        <span class="material-symbols-outlined text-sm">close</span> Rejeitar
+                    </button>
                 </div>
             </div>
             }
@@ -35,28 +68,48 @@
         }
     </section>
 
+    <!-- Secção 2: Respostas -->
     <section>
-        <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Respostas a Aguardar Revisão (@Model.Respostas.Count)</h2>
+        <h2 class="text-lg font-headline font-bold text-stone-800 dark:text-stone-200 mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-purple-500">forum</span>
+            Respostas a Aguardar Revisão
+            <span class="text-xs font-mono font-bold px-2 py-0.5 bg-stone-100 dark:bg-stone-800 rounded-md text-stone-500">@Model.Respostas.Count</span>
+        </h2>
+
         @if (!Model.Respostas.Any())
         {
-        <p class="text-gray-500 bg-gray-50 p-4 rounded-lg">Não existem respostas pendentes de aprovação.</p>
+        <div class="bg-stone-50/60 dark:bg-stone-900/40 rounded-2xl p-6 text-center text-stone-500 dark:text-stone-400 border border-dashed border-stone-200 dark:border-stone-800">
+            Não existem respostas pendentes de aprovação na plataforma.
+        </div>
         }
         else
         {
         <div class="grid gap-4">
             @foreach (var resposta in Model.Respostas)
             {
-            <div class="bg-white p-5 rounded-lg shadow border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center">
-                <div class="flex-1">
-                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Em resposta ao Tópico #@resposta.TopicoId</h4>
-                    <p class="text-gray-800 italic bg-gray-50 p-3 rounded mb-2 border-l-4 border-gray-300">"@resposta.TituloOuConteudo"</p>
-                    <p class="text-sm text-gray-500">Autor: @resposta.AutorNome | Submetido em: @resposta.DataCriacao.ToString("dd/MM/yyyy HH:mm")</p>
+            <div class="bg-white dark:bg-stone-900 p-5 md:p-6 rounded-2xl border border-stone-200/70 dark:border-stone-800/80 ambient-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex-1 w-full">
+                    <span class="inline-flex items-center gap-1 text-[11px] font-mono text-stone-400 dark:text-stone-500 uppercase tracking-wider mb-2 font-bold">
+                        <span class="material-symbols-outlined text-sm">tag</span> Contexto: Tópico #@resposta.TopicoId
+                    </span>
+                    <blockquote class="text-sm text-stone-700 dark:text-stone-300 italic bg-stone-50/80 dark:bg-stone-850 p-3.5 rounded-xl border-l-4 border-stone-300 dark:border-stone-700 mb-3 whitespace-pre-line leading-relaxed">
+                        "@resposta.TituloOuConteudo"
+                    </blockquote>
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-500 dark:text-stone-400 font-medium">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> @resposta.AutorNome</span>
+                        <span class="font-mono text-[11px]">@resposta.DataCriacao.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
                 </div>
-                <div class="flex gap-2 mt-4 md:mt-0">
-                    <form asp-action="AprovarResposta" asp-route-id="@resposta.Id" method="post">
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium transition">Aprovar</button>
+
+                <div class="flex items-center gap-2 w-full md:w-auto shrink-0 pt-2 md:pt-0 border-t border-stone-50 md:border-t-0 dark:border-stone-800">
+                    <form asp-action="AprovarResposta" asp-route-id="@resposta.Id" method="post" class="flex-1 md:flex-none">
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-1 bg-green-50 hover:bg-green-100 text-green-700 dark:bg-green-950/20 dark:text-green-400 px-4 py-2 rounded-xl text-xs font-bold transition-all border border-green-200/30 dark:border-green-900/20">
+                            <span class="material-symbols-outlined text-sm">check</span> Aprovar
+                        </button>
                     </form>
-                    <button onclick="abrirModalRejeicao('@resposta.Id', 'Resposta')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition">Rejeitar</button>
+                    <button type="button" onclick="abrirModalRejeicao('@resposta.Id', 'Resposta')" class="flex-1 md:flex-none inline-flex items-center justify-center gap-1 bg-red-50 hover:bg-red-100 text-red-700 dark:bg-red-950/20 dark:text-red-400 px-4 py-2 rounded-xl text-xs font-bold transition-all border border-red-200/30 dark:border-red-900/20">
+                        <span class="material-symbols-outlined text-sm">close</span> Rejeitar
+                    </button>
                 </div>
             </div>
             }
@@ -65,32 +118,70 @@
     </section>
 </div>
 
-<div id="modalRejeicao" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
-        <h3 class="text-xl font-bold text-gray-900 mb-4">Motivo da Rejeição</h3>
-        <form id="formRejeicao" method="post">
+<!-- Modal Nativo HTML5 para Justificação de Rejeição -->
+<dialog id="modalRejeicao" class="backdrop:bg-stone-900/60 p-0 rounded-2xl border-0 shadow-xl max-w-md w-full bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200">
+    <div class="p-6">
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100 dark:border-stone-800">
+            <h3 class="font-headline font-bold text-lg text-primary dark:text-rose-300 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-red-600">gavel</span> Motivo da Rejeição
+            </h3>
+            <button type="button" onclick="fecharModalRejeicao()" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <p class="text-xs text-stone-500 dark:text-stone-400 mb-4 leading-relaxed">
+            Por favor, indique uma justificação clara. O autor receberá uma notificação com esta informação para compreender as regras infringidas.
+        </p>
+
+        <form id="formRejeicao" method="post" class="space-y-4">
             <input type="hidden" id="rejeicaoId" name="id" />
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Por favor, indique a razão de rejeição:</label>
-                <textarea id="motivo" name="motivo" required rows="4" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder="Ex: Linguagem imprópria, fora do âmbito económico-histórico..."></textarea>
+
+            <div>
+                <label for="motivo" class="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-2">
+                    Razão de Infração Administrativa
+                </label>
+                <textarea id="motivo" name="motivo" required rows="4"
+                          class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl p-3 text-sm text-stone-800 dark:text-stone-200 focus:ring-2 focus:ring-primary/20 focus:border-transparent outline-none transition-all"
+                          placeholder="Ex: Conteúdo redundante ou sem fundamentação histórico-económica explícita..."></textarea>
             </div>
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="fecharModalRejeicao()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded font-medium text-sm transition">Cancelar</button>
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium text-sm transition">Confirmar Rejeição</button>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="fecharModalRejeicao()" class="px-4 py-2 text-sm font-semibold rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
+                    Cancelar
+                </button>
+                <button type="submit" class="px-5 py-2 text-sm font-bold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors">
+                    Confirmar Rejeição
+                </button>
             </div>
         </form>
     </div>
-</div>
+</dialog>
 
 <script>
     function abrirModalRejeicao(id, tipo) {
-        document.getElementById('rejeicaoId').value = id;
+        const idInput = document.getElementById('rejeicaoId');
+        if (idInput) idInput.value = id;
+
         const form = document.getElementById('formRejeicao');
-        form.action = `/Moderacao/Rejeitar${tipo}/${id}`;
-        document.getElementById('modalRejeicao').classList.remove('hidden');
+        if (form) {
+            form.action = `/Moderacao/Rejeitar${tipo}/${id}`;
+        }
+
+        const dialog = document.getElementById('modalRejeicao');
+        if (dialog) {
+            dialog.showModal();
+        }
     }
+
     function fecharModalRejeicao() {
-        document.getElementById('modalRejeicao').classList.add('hidden');
-        document.getElementById('motivo').value = '';
+        const dialog = document.getElementById('modalRejeicao');
+        if (dialog) {
+            dialog.close();
+        }
+        const motivoInput = document.getElementById('motivo');
+        if (motivoInput) {
+            motivoInput.value = '';
+        }
     }
 </script>
