@@ -5,6 +5,12 @@ namespace EconomiaComHistoria.Core.Interfaces;
 
 public interface IRankingService
 {
-    Task GerarSnapshotSemanalAsync();
-    Task<List<EntradaRanking>> GetRankingAsync(TipoRanking tipo, PeriodoRanking periodo, int? escolaId = null, string? provincia = null);
+    Task GerarSnapshotSemanalAsync(CancellationToken ct = default);
+    Task<List<EntradaRanking>> GetRankingAsync(
+        TipoRanking tipo,
+        PeriodoRanking periodo,
+        int? escolaId = null,
+        string? provincia = null,
+        string? municipio = null,
+        CancellationToken ct = default);
 }

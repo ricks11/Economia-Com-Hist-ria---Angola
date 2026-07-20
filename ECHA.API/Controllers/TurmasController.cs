@@ -1,6 +1,7 @@
 using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace ECHA.API.Controllers;
 public class TurmasController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IAuditoriaService _auditoriaService;
 
-    public TurmasController(AppDbContext context)
+    public TurmasController(AppDbContext context, IAuditoriaService auditoriaService)
     {
         _context = context;
+        _auditoriaService = auditoriaService;
     }
 
     // Helper para obter utilizador atual
@@ -132,6 +135,17 @@ public class TurmasController : ControllerBase
         _context.Turmas.Add(turma);
         await _context.SaveChangesAsync(ct);
 
+        var userId = TryGetUserId(out var uid) ? uid : 0;
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "CriarTurma",
+            "Turma",
+            turma.Id,
+            null,
+            $"Nome: {turma.Nome}, EscolaId: {turma.EscolaId}",
+            HttpContext
+        );
+
         var created = await _context.Turmas
             .Include(t => t.Escola)
             .Include(t => t.Professor)
@@ -161,11 +175,24 @@ public class TurmasController : ControllerBase
 
         if (turma == null) return NotFound();
 
+        var antes = System.Text.Json.JsonSerializer.Serialize(new { turma.Nome, turma.ProfessorId });
+
         turma.Nome = dto.Nome;
         turma.Ano = dto.Ano?.ToString() ?? string.Empty;
         turma.ProfessorId = dto.ProfessorId;
 
         await _context.SaveChangesAsync(ct);
+
+        var depois = System.Text.Json.JsonSerializer.Serialize(new { turma.Nome, turma.ProfessorId });
+        await _auditoriaService.RegistarAsync(
+            id,
+            "AtualizarTurma",
+            "Turma",
+            id,
+            antes,
+            depois,
+            HttpContext
+        );
 
         return Ok(new TurmaResponseDto(
             turma.Id,
@@ -188,6 +215,17 @@ public class TurmasController : ControllerBase
 
         _context.Turmas.Remove(turma);
         await _context.SaveChangesAsync(ct);
+
+        await _auditoriaService.RegistarAsync(
+            id,
+            "EliminarTurma",
+            "Turma",
+            id,
+            null,
+            "Eliminada",
+            HttpContext
+        );
+
         return NoContent();
     }
 
@@ -226,5 +264,12 @@ public class TurmasController : ControllerBase
         await _context.SaveChangesAsync(ct);
 
         return NoContent();
+    }
+
+    private bool TryGetUserId(out int userId)
+    {
+        var value = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                 ?? User.FindFirst("sub")?.Value;
+        return int.TryParse(value, out userId);
     }
 }

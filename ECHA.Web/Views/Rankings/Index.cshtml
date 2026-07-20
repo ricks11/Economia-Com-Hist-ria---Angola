@@ -1,74 +1,122 @@
-@model EconomiaComHistoria.Core.DTOs.RankingResponseDto
+@using EconomiaComHistoria.Core.DTOs
+@model RankingResponseDto
 @{
     ViewData["Title"] = "Ranking e Leaderboard";
-    var tipo = Context.Request.Query["tipo"].ToString();
-    var periodo = Context.Request.Query["periodo"].ToString();
-    if (string.IsNullOrEmpty(tipo)) tipo = "Nacional";
-    if (string.IsNullOrEmpty(periodo)) periodo = "Semanal";
+    var tipoAtual = ViewData["TipoAtual"] as string ?? "Nacional";
+    var periodoAtual = ViewData["PeriodoAtual"] as string ?? "Semanal";
+    var escolaId = ViewData["EscolaId"] as int?;
+    var provincia = ViewData["Provincia"] as string ?? "";
+    var municipio = ViewData["Municipio"] as string ?? "";
 }
 
-<div class="max-w-5xl mx-auto">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Cabeçalho -->
     <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-headline font-extrabold text-primary tracking-tight">Ranking</h1>
-            <p class="text-on-surface-variant mt-2">Classificação dos investigadores mais activos na plataforma.</p>
+            <h1 class="text-3xl md:text-4xl font-headline font-extrabold text-primary tracking-tight">Ranking</h1>
+            <p class="text-on-surface-variant mt-2">Classificação dos investigadores mais ativos na plataforma.</p>
         </div>
         @if (Model != null && Model.PosicaoUtilizador > 0)
         {
-            <div class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-4 rounded-2xl text-center">
-                <p class="text-xs uppercase tracking-widest opacity-80">A tua posição</p>
-                <p class="text-3xl font-headline font-extrabold">#@Model.PosicaoUtilizador</p>
-                <p class="text-sm">@Model.PontosUtilizador pontos</p>
-            </div>
+        <div class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-4 rounded-2xl text-center shadow-sm">
+            <p class="text-xs uppercase tracking-widest opacity-80">A tua posição</p>
+            <p class="text-3xl font-headline font-extrabold">#@Model.PosicaoUtilizador</p>
+            <p class="text-sm">@Model.PontosUtilizador pontos</p>
+        </div>
         }
     </header>
 
+    <!-- Filtros -->
     <div class="flex flex-wrap gap-3 mb-8">
-        <a href="@Url.Action("Index", new { tipo = "Nacional", periodo })" class="px-5 py-2 rounded-full @(tipo == "Nacional" ? "bg-primary text-white" : "bg-surface-container text-secondary") font-semibold text-sm no-underline">Nacional</a>
-        <a href="@Url.Action("Index", new { tipo = "Escola", periodo })" class="px-5 py-2 rounded-full @(tipo == "Escola" ? "bg-primary text-white" : "bg-surface-container text-secondary") font-semibold text-sm no-underline">Escola</a>
-        <a href="@Url.Action("Index", new { tipo, periodo = "Semanal" })" class="px-5 py-2 rounded-full @(periodo == "Semanal" ? "bg-tertiary text-white" : "bg-surface-container text-secondary") font-semibold text-sm no-underline">Semanal</a>
-        <a href="@Url.Action("Index", new { tipo, periodo = "Historico" })" class="px-5 py-2 rounded-full @(periodo == "Historico" ? "bg-tertiary text-white" : "bg-surface-container text-secondary") font-semibold text-sm no-underline">Histórico</a>
+        <!-- Tipo -->
+        <div class="flex items-center gap-1.5 bg-surface-container-low p-1 rounded-2xl border border-stone-200 dark:border-stone-800/60">
+            <a href="@Url.Action(" Index", new { tipo="Nacional" , periodo=periodoAtual })"
+               class="px-5 py-2 rounded-xl text-sm font-semibold no-underline transition-all @(tipoAtual == " Nacional" ? "bg-primary text-on-primary shadow-sm" : "text-on-surface-variant hover:bg-surface-container" )">
+                Nacional
+            </a>
+            <a href="@Url.Action(" Index", new { tipo="Escola" , periodo=periodoAtual, escolaId=escolaId })"
+               class="px-5 py-2 rounded-xl text-sm font-semibold no-underline transition-all @(tipoAtual == " Escola" ? "bg-primary text-on-primary shadow-sm" : "text-on-surface-variant hover:bg-surface-container" )">
+                Escola
+            </a>
+            <a href="@Url.Action(" Index", new { tipo="Provincia" , periodo=periodoAtual, provincia=provincia })"
+               class="px-5 py-2 rounded-xl text-sm font-semibold no-underline transition-all @(tipoAtual == " Provincia" ? "bg-primary text-on-primary shadow-sm" : "text-on-surface-variant hover:bg-surface-container" )">
+                Província
+            </a>
+            <a href="@Url.Action(" Index", new { tipo="Municipio" , periodo=periodoAtual, municipio=municipio })"
+               class="px-5 py-2 rounded-xl text-sm font-semibold no-underline transition-all @(tipoAtual == " Municipio" ? "bg-primary text-on-primary shadow-sm" : "text-on-surface-variant hover:bg-surface-container" )">
+                Município
+            </a>
+        </div>
+
+        <!-- Período -->
+        <div class="flex items-center gap-1.5 bg-surface-container-low p-1 rounded-2xl border border-stone-200 dark:border-stone-800/60">
+            <a href="@Url.Action(" Index", new { tipo=tipoAtual, periodo="Semanal" })"
+               class="px-5 py-2 rounded-xl text-sm font-semibold no-underline transition-all @(periodoAtual == " Semanal" ? "bg-tertiary text-on-primary shadow-sm" : "text-on-surface-variant hover:bg-surface-container" )">
+                Semanal
+            </a>
+            <a href="@Url.Action(" Index", new { tipo=tipoAtual, periodo="Historico" })"
+               class="px-5 py-2 rounded-xl text-sm font-semibold no-underline transition-all @(periodoAtual == " Historico" ? "bg-tertiary text-on-primary shadow-sm" : "text-on-surface-variant hover:bg-surface-container" )">
+                Histórico
+            </a>
+        </div>
     </div>
 
-    <div class="bg-surface-container-lowest rounded-3xl overflow-hidden ambient-shadow">
+    <!-- Tabela de Ranking -->
+    <div class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-stone-200 dark:border-stone-800/60">
         @if (Model?.Top100 == null || !Model.Top100.Any())
         {
-            <div class="p-12 text-center text-stone-500">
-                <span class="material-symbols-outlined text-5xl mb-4 block">leaderboard</span>
-                Ainda não há dados de ranking disponíveis.
-            </div>
+        <div class="p-12 text-center text-stone-500 dark:text-stone-400">
+            <span class="material-symbols-outlined text-5xl mb-4 block opacity-50">leaderboard</span>
+            <p class="font-medium">Ainda não há dados de ranking disponíveis.</p>
+            <p class="text-sm mt-1">Completa quizzes para apareceres nesta lista!</p>
+        </div>
         }
         else
         {
-            <table class="w-full">
-                <thead class="bg-surface-container-low">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-surface-container-low border-b border-stone-200 dark:border-stone-800/60">
                     <tr>
-                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Pos.</th>
-                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Investigador</th>
-                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500 hidden md:table-cell">Escola</th>
-                        <th class="text-right px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500">Pontos</th>
-                        <th class="text-right px-6 py-4 text-xs font-bold uppercase tracking-widest text-stone-500 hidden sm:table-cell">Quizzes</th>
+                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Pos.</th>
+                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Investigador</th>
+                        <th class="text-left px-6 py-4 text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 hidden md:table-cell">Escola</th>
+                        <th class="text-right px-6 py-4 text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Pontos</th>
+                        <th class="text-right px-6 py-4 text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 hidden sm:table-cell">Quizzes</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-stone-100 dark:divide-stone-800/40">
                     @foreach (var entrada in Model.Top100)
                     {
-                        var isTop3 = entrada.Posicao <= 3;
-                        <tr class="hover:bg-surface-container-low transition-colors @(isTop3 ? "bg-amber-50/50" : "")">
-                            <td class="px-6 py-4">
-                                @if (entrada.Posicao == 1) { <span class="text-2xl">🥇</span> }
-                                else if (entrada.Posicao == 2) { <span class="text-2xl">🥈</span> }
-                                else if (entrada.Posicao == 3) { <span class="text-2xl">🥉</span> }
-                                else { <span class="font-bold text-stone-500">#@entrada.Posicao</span> }
-                            </td>
-                            <td class="px-6 py-4 font-bold text-primary">@entrada.NomeUtilizador</td>
-                            <td class="px-6 py-4 text-sm text-stone-500 hidden md:table-cell">@(entrada.EscolaNome ?? "—")</td>
-                            <td class="px-6 py-4 text-right font-extrabold text-primary">@entrada.Pontos</td>
-                            <td class="px-6 py-4 text-right text-sm text-stone-500 hidden sm:table-cell">@entrada.QuizzesCompletados</td>
-                        </tr>
+                    var isTop3 = entrada.Posicao <= 3;
+                    var isCurrentUser = entrada.UtilizadorId == Model.UtilizadorId;
+                    <tr class="hover:bg-surface-container-low/50 transition-colors @(isTop3 ? " bg-amber-50 /30 dark:bg-amber-950 /10" : "" ) @(isCurrentUser ? "bg-primary/5 dark:bg-primary/10 font-bold" : "" )">
+                        <td class="px-6 py-4">
+                            @if (entrada.Posicao == 1) { <span class="text-2xl">🥇</span> }
+                            else if (entrada.Posicao == 2) { <span class="text-2xl">🥈</span> }
+                            else if (entrada.Posicao == 3) { <span class="text-2xl">🥉</span> }
+                            else { <span class="font-bold text-stone-500 dark:text-stone-400">#@entrada.Posicao</span> }
+                        </td>
+                        <td class="px-6 py-4 font-bold text-on-surface">
+                            @entrada.NomeUtilizador
+                            @if (isCurrentUser)
+                            {
+                            <span class="ml-2 text-[10px] bg-primary/20 text-primary dark:bg-primary/30 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold">Tu</span>
+                            }
+                        </td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant hidden md:table-cell">@(entrada.EscolaNome ?? "—")</td>
+                        <td class="px-6 py-4 text-right font-extrabold text-primary">@entrada.Pontos</td>
+                        <td class="px-6 py-4 text-right text-sm text-on-surface-variant hidden sm:table-cell">@entrada.QuizzesCompletados</td>
+                    </tr>
                     }
                 </tbody>
             </table>
+        </div>
         }
+    </div>
+
+    <!-- Rodapé com informações -->
+    <div class="mt-4 flex justify-between items-center text-xs text-stone-400 dark:text-stone-500">
+        <span>Top 100 utilizadores</span>
+        <span>@(Model?.Top100?.Count ?? 0) registos</span>
     </div>
 </div>

@@ -18,23 +18,23 @@
     ViewData["Title"] = "Início - Economia com História – Angola";
 
 <!-- Main Content Area -->
-<div class="grid grid-cols-12 gap-6 lg:gap-8 relative animate-fade-in">
+<div class="grid grid-cols-12 gap-6 lg:gap-8 relative animate-fade-in text-on-surface">
 
     <!-- Center Column: Welcome & Map -->
     <section class="col-span-12 lg:col-span-8 space-y-6 lg:space-y-8">
 
         <!-- Welcome Banner -->
-        <div class="relative overflow-hidden bg-surface-container-lowest p-8 md:p-10 rounded-2xl border border-stone-200/40 shadow-sm transition-all hover:shadow-md duration-300">
+        <div class="relative overflow-hidden bg-surface-container-lowest p-8 md:p-10 rounded-2xl border border-stone-200/40 dark:border-stone-800/60 shadow-sm transition-all hover:shadow-md duration-300">
             <div class="relative z-10 max-w-lg">
                 <span class="inline-flex items-center gap-1.5 bg-rose-50 dark:bg-rose-950/30 text-primary dark:text-rose-300 text-xs font-bold px-3 py-1 rounded-full mb-4">
                     <span class="w-1.5 h-1.5 rounded-full bg-primary dark:bg-rose-400 animate-pulse"></span>
                     Portal do Conhecimento
                 </span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-primary tracking-tight mb-3 font-headline">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-primary dark:text-rose-400 tracking-tight mb-3 font-headline">
                     Bem-vindo, @nomeUtilizador.
                 </h2>
                 <p class="text-on-surface-variant text-base md:text-lg leading-relaxed font-normal mb-6">
-                    Explore o rico tapeçário da economia angolana através dos séculos. Hoje, o arquivo destaca a transição monetária da era colonial para a independência.
+                    Explore o rico tapeçário da economy angolana através dos séculos. Hoje, o arquivo destaca a transição monetária da era colonial para a independência.
                 </p>
                 <a href="@Url.Action("Index", "Conteudos" )" class="bg-accent-yellow text-on-accent-yellow px-6 py-3.5 rounded-xl font-bold inline-flex items-center gap-2 hover:bg-yellow-500 hover:scale-[1.02] transition-all duration-200 no-underline shadow-sm hover:shadow-md">
                     Iniciar Jornada Histórica
@@ -52,14 +52,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <!-- Bento Card: Featured Era -->
-            <a href="@Url.Action("Index", "Conteudos" )" class="bg-surface-container-low p-5 rounded-2xl relative group cursor-pointer hover:shadow-md transition-all duration-300 border border-stone-200/30 flex flex-col justify-between no-underline text-on-surface">
+            <a href="@Url.Action("Index", "Conteudos" )" class="bg-surface-container-low p-5 rounded-2xl relative group cursor-pointer hover:shadow-md transition-all duration-300 border border-stone-200/30 dark:border-stone-800/50 flex flex-col justify-between no-underline text-on-surface">
                 <div>
-                    <div class="h-44 mb-4 rounded-xl overflow-hidden bg-stone-200 relative">
-                        <div class="absolute inset-0 bg-gradient-to-t from-stone-950/40 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity"></div>
+                    <div class="h-44 mb-4 rounded-xl overflow-hidden bg-surface-container-high relative">
+                        <div class="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent z-10 opacity-70 group-hover:opacity-40 transition-opacity"></div>
                         <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Ciclo do Sal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZOq7POI16IzSbZj3dU__oLDl5-E94mw7j2LP_ftWsmNvR6zuxrlt6_mMZGz8tNN4_4Q6XJZh1ZmX859zIvIdE6zHIfYujM5HE7WaavBZ0TLmOSwKvXsHr8wBxHKTPDRNwjJqbr5jS-1P-6Rck1LMIEAW0UmUC-XJEjmtoAhZBuqmWfQU0kIDtlqdnLQIijjvUZ6t3bXVlgDK1cZWTCU9ylAnSEq3Yh3tDpmrUr6qQEog0iRdIVsEJ2q4iJAYH_SCISMfsngB1bIbJ" />
                     </div>
                     <span class="text-[10px] font-bold text-primary dark:text-rose-400 uppercase tracking-[0.2em] mb-1.5 block font-headline">Era do Ouro Branco</span>
-                    <h3 class="text-xl font-bold mb-2 font-headline group-hover:text-primary transition-colors">O Ciclo do Sal</h3>
+                    <h3 class="text-xl font-bold mb-2 font-headline group-hover:text-primary dark:group-hover:text-rose-400 transition-colors">O Ciclo do Sal</h3>
                     <p class="text-sm text-on-surface-variant line-clamp-2 leading-relaxed">Descubra como o sal moldou as primeiras rotas comerciais e alianças estratégicas no território...</p>
                 </div>
                 <div class="mt-4 flex items-center gap-1 text-xs font-bold text-primary dark:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -107,84 +107,84 @@
     <aside class="col-span-12 lg:col-span-4 space-y-6 lg:space-y-8">
 
         <!-- Highlights Section -->
-        <div class="bg-surface-container-lowest p-6 rounded-2xl border-l-4 border-accent-yellow border border-stone-200/40 shadow-sm">
+        <div class="bg-surface-container-lowest p-6 rounded-2xl border-l-4 border-accent-yellow border border-stone-200/40 dark:border-stone-800/60 shadow-sm">
             <div class="flex items-center gap-2 mb-6">
                 <span class="material-symbols-outlined text-accent-yellow" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
                 <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface font-headline">Destaques do Mês</h3>
             </div>
             <div class="space-y-5">
                 <div class="flex gap-4 group cursor-pointer">
-                    <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200/50 flex flex-col items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-surface-container-low border border-stone-200/50 dark:border-stone-800/50 flex flex-col items-center justify-center text-primary dark:text-rose-400 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                         <span class="text-base font-extrabold leading-none">15</span>
                         <span class="text-[9px] uppercase font-bold tracking-tighter opacity-80">Jan</span>
                     </div>
                     <div class="flex-1">
                         <p class="text-[10px] text-primary dark:text-rose-400 font-bold uppercase tracking-tighter mb-0.5">Exposição Virtual</p>
-                        <h4 class="text-sm font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2">O Kwanza através das gerações</h4>
+                        <h4 class="text-sm font-bold leading-snug group-hover:text-primary dark:group-hover:text-rose-400 transition-colors line-clamp-2 text-on-surface">O Kwanza através das gerações</h4>
                     </div>
                 </div>
 
                 <div class="flex gap-4 group cursor-pointer">
-                    <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-stone-100 dark:bg-stone-800 border border-stone-200/50 flex flex-col items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-surface-container-low border border-stone-200/50 dark:border-stone-800/50 flex flex-col items-center justify-center text-primary dark:text-rose-400 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                         <span class="text-base font-extrabold leading-none">22</span>
                         <span class="text-[9px] uppercase font-bold tracking-tighter opacity-80">Jan</span>
                     </div>
                     <div class="flex-1">
                         <p class="text-[10px] text-primary dark:text-rose-400 font-bold uppercase tracking-tighter mb-0.5">Webinar Directo</p>
-                        <h4 class="text-sm font-bold leading-snug group-hover:text-primary transition-colors line-clamp-2">Economia Azul e o potencial costeiro</h4>
+                        <h4 class="text-sm font-bold leading-snug group-hover:text-primary dark:group-hover:text-rose-400 transition-colors line-clamp-2 text-on-surface">Economia Azul e o potencial costeiro</h4>
                     </div>
                 </div>
             </div>
-            <button class="mt-8 w-full py-2.5 border border-stone-200 hover:border-primary/30 rounded-xl text-stone-600 hover:text-primary font-bold text-xs flex items-center justify-center gap-2 group transition-all">
+            <button class="mt-8 w-full py-2.5 border border-stone-200 dark:border-stone-800 hover:border-primary/30 text-on-surface-variant hover:text-primary dark:hover:text-rose-400 rounded-xl font-bold text-xs flex items-center justify-center gap-2 group transition-all bg-transparent">
                 Ver Calendário Completo
                 <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">chevron_right</span>
             </button>
         </div>
 
         <!-- Fast Progress Section -->
-        <div class="bg-surface-container-low p-6 rounded-2xl border border-stone-200/30">
+        <div class="bg-surface-container-low p-6 rounded-2xl border border-stone-200/30 dark:border-stone-800/50">
             <div class="flex items-center justify-between mb-5">
                 <h3 class="text-xs font-bold uppercase tracking-widest text-on-surface font-headline">Progresso Rápido</h3>
-                <span class="text-[11px] font-bold text-primary bg-primary-fixed px-2.5 py-1 rounded-lg">Nível @nivel</span>
+                <span class="text-[11px] font-bold text-primary dark:text-rose-300 bg-rose-100 dark:bg-rose-950/50 px-2.5 py-1 rounded-lg">Nível @nivel</span>
             </div>
 
             <div class="space-y-4">
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs font-bold">
                         <span class="text-on-surface-variant font-medium">Progresso do Nível Atual</span>
-                        <span class="text-primary">@percentagemNivel.ToString("0")%</span>
+                        <span class="text-primary dark:text-rose-400">@percentagemNivel.ToString("0")%</span>
                     </div>
                     <div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden p-[1px]">
-                        <div class="h-full bg-primary rounded-full transition-all duration-500 ease-out" style="width: @percentagemNivel.ToString("0")%"></div>
+                        <div class="h-full bg-primary dark:bg-rose-500 rounded-full transition-all duration-500 ease-out" style="width: @percentagemNivel.ToString(" 0")%"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Badge Area -->
-            <div class="mt-6 pt-5 border-t border-stone-200/50">
+            <div class="mt-6 pt-5 border-t border-stone-200/30 dark:border-stone-800/60">
                 @if (ultimoBadge != null)
                 {
-                <p class="text-[10px] uppercase font-black text-stone-400 mb-3 tracking-wider font-headline">Último Distintivo Ganho</p>
-                <div class="flex items-center gap-3 bg-white/60 dark:bg-stone-900/40 p-3 rounded-xl border border-stone-200/30">
+                <p class="text-[10px] uppercase font-black text-on-surface-variant opacity-70 mb-3 tracking-wider font-headline">Último Distintivo Ganho</p>
+                <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-xl border border-stone-200/30 dark:border-stone-800/50">
                     <div class="w-10 h-10 rounded-full bg-accent-yellow/20 flex items-center justify-center text-accent-yellow font-bold flex-shrink-0 shadow-sm">
                         <span class="material-symbols-outlined">@(string.IsNullOrEmpty(ultimoBadge.Icone) ? "military_tech" : ultimoBadge.Icone)</span>
                     </div>
                     <div class="min-w-0">
-                        <p class="text-xs font-bold truncate">@ultimoBadge.Nome</p>
-                        <p class="text-[10px] text-stone-500 truncate">@ultimoBadge.Descricao</p>
+                        <p class="text-xs font-bold truncate text-on-surface">@ultimoBadge.Nome</p>
+                        <p class="text-[10px] text-on-surface-variant truncate">@ultimoBadge.Descricao</p>
                     </div>
                 </div>
                 }
                 else
                 {
-                <p class="text-[10px] uppercase font-black text-stone-400 mb-3 tracking-wider font-headline">Próxima Conquista</p>
-                <div class="flex items-center gap-3 bg-white/60 dark:bg-stone-900/40 p-3 rounded-xl border border-stone-200/30">
+                <p class="text-[10px] uppercase font-black text-on-surface-variant opacity-70 mb-3 tracking-wider font-headline">Próxima Conquista</p>
+                <div class="flex items-center gap-3 bg-surface-container-lowest p-3 rounded-xl border border-stone-200/30 dark:border-stone-800/50">
                     <div class="w-10 h-10 rounded-full bg-accent-yellow/10 flex items-center justify-center text-accent-yellow flex-shrink-0">
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
                     </div>
                     <div>
-                        <p class="text-xs font-bold">Iniciante Histórico</p>
-                        <p class="text-[10px] text-stone-500">Conclua o primeiro módulo para obter a sua insígnia!</p>
+                        <p class="text-xs font-bold text-on-surface">Iniciante Histórico</p>
+                        <p class="text-[10px] text-on-surface-variant">Conclua o primeiro módulo para obter a sua insígnia!</p>
                     </div>
                 </div>
                 }
@@ -194,9 +194,9 @@
         <!-- Mini CTA Card -->
         <a href="@Url.Action("Contribuir", "Conteudos" )" class="block relative h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-300">
             <img class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="CTA Card" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRLfCkcBCrk2Ev8eLuvGcDbmK_uVjybsVcPai55a5Cd5pU5tOYQ8R0469WRdLMweMnNjOrDVyz0M5uKM2hb_IG9R-U7rWB5I7jy82BncunXvnQNvJsTNq-MgtD163Upu_-6CQQKdhO39rrHK9a66pee91v3lLvZGp6QzjaTPsyCLDcyXtYnj-EmEjNwsB61wK40BkGnBinSRxVzy81JWyOwTi6_obIEy5gVmJWOsn6Fwxq-r9iCuvkB8MLDDS2QxwwfoFpRQNKpAA9" />
-            <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/50 to-black/20 p-6 flex flex-col justify-end">
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/60 to-transparent dark:from-stone-950 dark:via-stone-950/70 p-6 flex flex-col justify-end">
                 <p class="text-white font-bold leading-tight font-headline text-lg group-hover:text-accent-yellow transition-colors">Contribuir para o Arquivo Público</p>
-                <p class="text-white/80 text-[10px] uppercase tracking-widest mt-1 font-semibold">Envie documentos ou fotos raras</p>
+                <p class="text-white/80 dark:text-stone-300 text-[10px] uppercase tracking-widest mt-1 font-semibold">Envie documentos ou fotos raras</p>
             </div>
         </a>
     </aside>
@@ -207,11 +207,11 @@ else
     ViewData["Title"] = "Economia com História — Angola";
 
 <!-- Landing Page (Anonymous) -->
-<div class="relative w-full overflow-hidden animate-fade-in">
+<div class="relative w-full overflow-hidden animate-fade-in text-on-surface">
 
     <!-- Subtle Map Watermark Background -->
-    <div class="absolute inset-0 z-0 opacity-[0.04] dark:opacity-[0.02] pointer-events-none mix-blend-multiply flex justify-center items-center overflow-hidden">
-        <img alt="Topografia de Angola" class="w-full h-full object-cover select-none scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB1IqoMXdmHK4OA39uptmjQJKCqSkqVz7fkurNcw9URxGo-x-PJ825fOg6nhVi38Z494y0TxiQZOHcSlYuoxZ5BX97_P0Aksnu9WgyA4j0_JusoLOGRgQlr9zx05SYsRL2ciLKJUzGMw-QU8pcHrNShfjBrTand-0niWewx742ICI7m0vb29d1GS9Xa83msccbegv9CAz6nw1u30J3fEcK4r76V6yizjQMIrrrLPVLjBp3PM2CLvHpUM00PDvpPAZ4QypeVQ8-FmAK" />
+    <div class="absolute inset-0 z-0 opacity-[0.04] dark:opacity-[0.015] pointer-events-none flex justify-center items-center overflow-hidden">
+        <img alt="Topografia de Angola" class="w-full h-full object-cover select-none scale-105 dark:invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB1IqoMXdmHK4OA39uptmjQJKCqSkqVz7fkurNcw9URxGo-x-PJ825fOg6nhVi38Z494y0TxiQZOHcSlYuoxZ5BX97_P0Aksnu9WgyA4j0_JusoLOGRgQlr9zx05SYsRL2ciLKJUzGMw-QU8pcHrNShfjBrTand-0niWewx742ICI7m0vb29d1GS9Xa83msccbegv9CAz6nw1u30J3fEcK4r76V6yizjQMIrrrLPVLjBp3PM2CLvHpUM00PDvpPAZ4QypeVQ8-FmAK" />
     </div>
 
     <!-- Hero Section -->
@@ -219,7 +219,7 @@ else
         <div class="lg:w-1/2 pr-0 lg:pr-8 text-center lg:text-left">
             <h1 class="font-headline font-bold text-4xl sm:text-5xl lg:text-6xl text-on-surface leading-tight mb-6">
                 Descubra o Valor<br />
-                <span class="text-primary bg-gradient-to-r from-primary to-rose-700 bg-clip-text text-transparent">da Nossa História</span>
+                <span class="text-primary bg-gradient-to-r from-primary to-rose-700 dark:from-rose-400 dark:to-rose-600 bg-clip-text text-transparent">da Nossa História</span>
             </h1>
             <p class="font-body text-base sm:text-lg text-on-surface-variant mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Economia com História — Angola é a sua plataforma definitiva para entender o desenvolvimento económico através dos tempos. Uma jornada educativa, interativa e totalmente colaborativa.
@@ -229,7 +229,7 @@ else
                     Começar Agora
                     <span class="material-symbols-outlined">arrow_forward</span>
                 </a>
-                <a href="@Url.Action("Index", "Conteudos" )" class="px-8 py-4 rounded-xl font-label font-bold text-base text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-700 transition-colors bg-white/50 backdrop-blur-sm no-underline text-center">
+                <a href="@Url.Action("Index", "Conteudos" )" class="px-8 py-4 rounded-xl font-label font-bold text-base text-on-surface hover:bg-surface-container-high border border-stone-200 dark:border-stone-800 transition-colors bg-surface-container-lowest/50 backdrop-blur-sm no-underline text-center">
                     Saber Mais
                 </a>
             </div>
@@ -238,14 +238,14 @@ else
         <div class="lg:w-1/2 w-full">
             <!-- Asymmetric Bento-style Hero Grid -->
             <div class="grid grid-cols-2 gap-4 auto-rows-[160px] sm:auto-rows-[200px]">
-                <div class="col-span-2 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-surface-container-lowest border border-stone-200/30">
-                    <img alt="Luanda Skyline" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjGlTd5TANbSqHOW_ukwgI2bkpeFYmiO8hX6eKa2U_nSmZq5HAehK-XirODNq-qHakJd92KIYqItBydCr8fH8YqkOMT8i-DxIr8pA1nvoHgK4gAipTFs2PRQkHLZywJeJEnktfc90CRU9peCmXzOl7Koea2tkNV_Ks1euk2imauRcJ4dpPGoV3KxCjVH-p_0RhvIKdjj_0GcjAuiuI1h_3GCJbLE3d8yyHE9wCBMQtzjnF84NpDr774lEd3216hdxI-sX_fTquk4BD" />
+                <div class="col-span-2 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-surface-container-lowest border border-stone-200/30 dark:border-stone-800/50">
+                    <img alt="Luanda Skyline" class="w-full h-full object-cover opacity-90 dark:opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjGlTd5TANbSqHOW_ukwgI2bkpeFYmiO8hX6eKa2U_nSmZq5HAehK-XirODNq-qHakJd92KIYqItBydCr8fH8YqkOMT8i-DxIr8pA1nvoHgK4gAipTFs2PRQkHLZywJeJEnktfc90CRU9peCmXzOl7Koea2tkNV_Ks1euk2imauRcJ4dpPGoV3KxCjVH-p_0RhvIKdjj_0GcjAuiuI1h_3GCJbLE3d8yyHE9wCBMQtzjnF84NpDr774lEd3216hdxI-sX_fTquk4BD" />
                 </div>
-                <div class="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-surface-container-lowest border border-stone-200/30">
-                    <img alt="Dados Economicos" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwsSENOO1Ffl2VeHMcuhkl7sjn9TnSxsSNmVIkflpGJenrY8nbIGguWvLVQWSIuuyWRFtIbrowco-0LVFEuQiusbpNPPTdcB-G-IAhL84srlNAOLn04OSMZQg4uJC6c4cGlYhCrSsndYcmV6nC4-oqmKGnhc07h-1BDWsln0wJuyvV2w6Wo_r4o1rRtZNSQfkaTN13OgOqlicQNm1Sa6KP1GDsKfsOULtbq57mwH0RoHYkZzv-6Uwi7nJ6KBrgGj3ZADhL5-iPITZM" />
+                <div class="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-surface-container-lowest border border-stone-200/30 dark:border-stone-800/50">
+                    <img alt="Dados Economicos" class="w-full h-full object-cover opacity-90 dark:opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwsSENOO1Ffl2VeHMcuhkl7sjn9TnSxsSNmVIkflpGJenrY8nbIGguWvLVQWSIuuyWRFtIbrowco-0LVFEuQiusbpNPPTdcB-G-IAhL84srlNAOLn04OSMZQg4uJC6c4cGlYhCrSsndYcmV6nC4-oqmKGnhc07h-1BDWsln0wJuyvV2w6Wo_r4o1rRtZNSQfkaTN13OgOqlicQNm1Sa6KP1GDsKfsOULtbq57mwH0RoHYkZzv-6Uwi7nJ6KBrgGj3ZADhL5-iPITZM" />
                 </div>
-                <div class="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-surface-container-low to-surface flex flex-col justify-center p-6 border border-stone-200/30">
-                    <span class="material-symbols-outlined text-primary text-4xl mb-2" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                <div class="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-surface-container-low to-surface-container-lowest flex flex-col justify-center p-6 border border-stone-200/30 dark:border-stone-800/50">
+                    <span class="material-symbols-outlined text-primary dark:text-rose-400 text-4xl mb-2" style="font-variation-settings: 'FILL' 1;">account_balance</span>
                     <h3 class="font-headline font-bold text-lg text-on-surface">500 Anos</h3>
                     <p class="font-label text-xs text-on-surface-variant font-medium">de dados históricos e análises compiladas.</p>
                 </div>
@@ -254,7 +254,7 @@ else
     </section>
 
     <!-- Pillars Section (Bento Grid) -->
-    <section class="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-8 py-20 bg-surface-container-low rounded-t-[2.5rem] border-t border-stone-200/40">
+    <section class="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-8 py-20 bg-surface-container-low rounded-t-[2.5rem] border-t border-stone-200/40 dark:border-stone-800/60">
         <div class="text-center mb-16 max-w-2xl mx-auto">
             <h2 class="font-headline font-bold text-3xl lg:text-4xl text-on-surface mb-3">Três Pilares do Conhecimento</h2>
             <p class="font-body text-base text-on-surface-variant">Uma abordagem dinâmica e engajante para dominar a história económica nacional.</p>
@@ -262,12 +262,12 @@ else
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Pillar 1: Explorar -->
-            <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm hover:shadow-md transform hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group border border-stone-200/20">
+            <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm hover:shadow-md transform hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group border border-stone-200/20 dark:border-stone-800/40">
                 <div class="absolute -top-4 -right-4 p-4 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-500">
-                    <span class="material-symbols-outlined text-9xl text-primary">travel_explore</span>
+                    <span class="material-symbols-outlined text-9xl text-primary dark:text-rose-400">travel_explore</span>
                 </div>
-                <div class="w-12 h-12 bg-stone-100 dark:bg-stone-800 rounded-xl flex items-center justify-center mb-6 border border-stone-200/50">
-                    <span class="material-symbols-outlined text-primary">menu_book</span>
+                <div class="w-12 h-12 bg-surface-container-high rounded-xl flex items-center justify-center mb-6 border border-stone-200/50 dark:border-stone-800/50">
+                    <span class="material-symbols-outlined text-primary dark:text-rose-400">menu_book</span>
                 </div>
                 <h3 class="font-headline font-bold text-xl text-on-surface mb-3">Educação e Foco</h3>
                 <p class="font-body text-sm text-on-surface-variant leading-relaxed">
@@ -276,12 +276,12 @@ else
             </div>
 
             <!-- Pillar 2: Jogar -->
-            <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm hover:shadow-md transform hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group border border-stone-200/20">
+            <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm hover:shadow-md transform hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group border border-stone-200/20 dark:border-stone-800/40">
                 <div class="absolute -top-4 -right-4 p-4 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-500">
-                    <span class="material-symbols-outlined text-9xl text-primary">sports_esports</span>
+                    <span class="material-symbols-outlined text-9xl text-primary dark:text-rose-400">sports_esports</span>
                 </div>
-                <div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-primary">emoji_events</span>
+                <div class="w-12 h-12 bg-rose-100 dark:bg-rose-950/50 rounded-xl flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-primary dark:text-rose-400">emoji_events</span>
                 </div>
                 <h3 class="font-headline font-bold text-xl text-on-surface mb-3">Gamificação Ativa</h3>
                 <p class="font-body text-sm text-on-surface-variant leading-relaxed">
@@ -290,12 +290,12 @@ else
             </div>
 
             <!-- Pillar 3: Participar -->
-            <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm hover:shadow-md transform hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group border border-stone-200/20">
+            <div class="bg-surface-container-lowest rounded-2xl p-8 shadow-sm hover:shadow-md transform hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group border border-stone-200/20 dark:border-stone-800/40">
                 <div class="absolute -top-4 -right-4 p-4 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-500">
-                    <span class="material-symbols-outlined text-9xl text-primary">forum</span>
+                    <span class="material-symbols-outlined text-9xl text-primary dark:text-rose-400">forum</span>
                 </div>
-                <div class="w-12 h-12 bg-tertiary-fixed rounded-xl flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-on-tertiary-fixed">groups</span>
+                <div class="w-12 h-12 bg-surface-container-high rounded-xl flex items-center justify-center mb-6 border border-stone-200/50 dark:border-stone-800/50">
+                    <span class="material-symbols-outlined text-primary dark:text-rose-400">groups</span>
                 </div>
                 <h3 class="font-headline font-bold text-xl text-on-surface mb-3">Colaboração Pública</h3>
                 <p class="font-body text-sm text-on-surface-variant leading-relaxed">

@@ -22,8 +22,7 @@
 
     string GetFilterClass(string targetType)
     {
-    bool matchTipo = tipoAtual.Equals(targetType, StringComparison.OrdinalIgnoreCase) ||
-    (targetType.Equals("Video", StringComparison.OrdinalIgnoreCase) && tipoAtual.Equals("Video", StringComparison.OrdinalIgnoreCase));
+    bool matchTipo = tipoAtual.Equals(targetType, StringComparison.OrdinalIgnoreCase);
 
     if (targetType.Equals("Texto", StringComparison.OrdinalIgnoreCase))
     {
@@ -32,7 +31,9 @@
     : "bg-surface-container text-secondary hover:bg-surface-container-high";
     }
 
-    return matchTipo ? "bg-primary text-white shadow-md shadow-primary/10" : "bg-surface-container text-secondary hover:bg-surface-container-high";
+    return matchTipo
+    ? "bg-primary text-white shadow-md shadow-primary/10"
+    : "bg-surface-container text-secondary hover:bg-surface-container-high";
     }
 
     string GetJindungoClass() =>
@@ -44,12 +45,12 @@
     string GetNivelBadgeClass(string nivel) =>
     nivelAtual.Equals(nivel, StringComparison.OrdinalIgnoreCase)
     ? "bg-primary text-white font-semibold shadow-sm shadow-primary/10"
-    : "bg-stone-100 text-stone-600 hover:bg-stone-200/70";
+    : "bg-surface-container text-on-surface-variant hover:bg-stone-200/70";
 
     string GetEstadoBadgeClass(string estado) =>
     estadoAtual.Equals(estado, StringComparison.OrdinalIgnoreCase)
     ? "bg-secondary text-white font-semibold shadow-sm shadow-secondary/10"
-    : "bg-stone-100 text-stone-600 hover:bg-stone-200/70";
+    : "bg-surface-container text-on-surface-variant hover:bg-stone-200/70";
     }
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -80,7 +81,7 @@
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-3xl">
                 <form method="get" class="relative flex-1 shadow-sm rounded-2xl m-0">
                     <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">search</span>
-                    <input name="tema" value="@queryParams["tema"]" class="w-full pl-12 pr-6 py-3.5 bg-surface-container-low border border-stone-200/40 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400 outline-none text-sm" placeholder="Pesquisar por tema..." type="text" />
+                    <input name="tema" value="@queryParams[" tema"]" class="w-full pl-12 pr-6 py-3.5 bg-surface-container-low border border-stone-200/40 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface placeholder:text-stone-400 outline-none text-sm" placeholder="Pesquisar por tema..." type="text" />
                     @foreach (var key in queryParams.Keys.Where(k => k != "tema"))
                     {
                     <input type="hidden" name="@key" value="@queryParams[key]" />
@@ -126,14 +127,14 @@
             </section>
 
             <section class="flex flex-wrap items-center gap-3 text-xs">
-                <div class="flex items-center gap-1.5 bg-stone-50 p-1.5 rounded-2xl border border-stone-100">
+                <div class="flex items-center gap-1.5 bg-surface-container-low p-1.5 rounded-2xl border border-stone-100">
                     <span class="font-bold text-stone-400 uppercase text-[10px] tracking-wider px-2">Nível:</span>
                     <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Basico" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass(" Basico")">Básico</a>
                     <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Intermedio" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass(" Intermedio")">Intermediário</a>
                     <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-estado="@estadoAtual" asp-route-nivel="Avancado" class="px-3 py-1 rounded-xl transition-all decoration-none @GetNivelBadgeClass(" Avancado")">Avançado</a>
                 </div>
 
-                <div class="flex items-center gap-1.5 bg-stone-50 p-1.5 rounded-2xl border border-stone-100">
+                <div class="flex items-center gap-1.5 bg-surface-container-low p-1.5 rounded-2xl border border-stone-100">
                     <span class="font-bold text-stone-400 uppercase text-[10px] tracking-wider px-2">Estado:</span>
                     <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="Rascunho" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass(" Rascunho")">Rascunho</a>
                     <a asp-action="Index" asp-route-tipo="@tipoAtual" asp-route-jindungo="@jindungoAtual" asp-route-tema="@temaAtual" asp-route-nivel="@nivelAtual" asp-route-estado="EmRevisao" class="px-3 py-1 rounded-xl transition-all decoration-none @GetEstadoBadgeClass(" EmRevisao")">Em Revisão</a>
@@ -163,7 +164,7 @@
                 <div class="absolute inset-0 w-full h-full overflow-hidden">
                     @if (!string.IsNullOrEmpty(featured.ThumbnailUrl))
                     {
-                    <img src="@featured.ThumbnailUrl" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-102" />
+                    <img src="@featured.ThumbnailUrl" alt="@featured.Titulo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" />
                     }
                     else
                     {
@@ -192,10 +193,10 @@
             {
             <a asp-action="Details" asp-route-id="@item.Id" class="col-span-12 md:col-span-4 bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group decoration-none flex flex-col justify-between border border-stone-100">
                 <div>
-                    <div class="aspect-[16/10] w-full overflow-hidden relative bg-stone-100">
+                    <div class="aspect-[16/10] w-full overflow-hidden relative bg-surface-container">
                         @if (!string.IsNullOrEmpty(item.ThumbnailUrl))
                         {
-                        <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103" />
+                        <img src="@item.ThumbnailUrl" alt="@item.Titulo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                         }
                         else
                         {
@@ -204,7 +205,7 @@
                         </div>
                         }
                         <div class="absolute top-3 left-3">
-                            <span class="px-2 py-1 bg-white/95 backdrop-blur-sm text-primary text-[10px] font-bold rounded-md uppercase tracking-wider shadow-sm">@item.Tipo</span>
+                            <span class="px-2 py-1 bg-surface-container-lowest/95 backdrop-blur-sm text-primary text-[10px] font-bold rounded-md uppercase tracking-wider shadow-sm">@item.Tipo</span>
                         </div>
                     </div>
                     <div class="p-5">

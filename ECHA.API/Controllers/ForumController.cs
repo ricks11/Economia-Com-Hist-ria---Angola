@@ -17,15 +17,18 @@ public class ForumController : ControllerBase
     private readonly AppDbContext _dbContext;
     private readonly IModeracaoService _moderacaoService;
     private readonly INotificacaoService _notificacaoService;
+    private readonly IAuditoriaService _auditoriaService;
 
     public ForumController(
         AppDbContext dbContext,
         IModeracaoService moderacaoService,
-        INotificacaoService notificacaoService)
+        INotificacaoService notificacaoService,
+        IAuditoriaService auditoriaService)
     {
         _dbContext = dbContext;
         _moderacaoService = moderacaoService;
         _notificacaoService = notificacaoService;
+        _auditoriaService = auditoriaService;
     }
 
     // ─────────────────────────────────────────
@@ -86,6 +89,16 @@ public class ForumController : ControllerBase
 
         _dbContext.TopicosForum.Add(topico);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "CriarTopico",
+            "TopicoForum",
+            topico.Id,
+            null,
+            $"Título: {topico.Titulo}, Categoria: {topico.CategoriaId}",
+            HttpContext
+        );
 
         await _dbContext.Entry(topico)
             .Reference(t => t.Categoria)
@@ -304,6 +317,16 @@ public class ForumController : ControllerBase
 
         topico.Estado = EstadoTopicoForum.Arquivado;
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "ArquivarTopico",
+            "TopicoForum",
+            id,
+            null,
+            "Arquivado",
+            HttpContext
+        );
         return NoContent();
     }
 
@@ -311,6 +334,9 @@ public class ForumController : ControllerBase
     [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<IActionResult> DesarquivarTopico(int id, CancellationToken cancellationToken)
     {
+        if (!TryGetUserId(out var userId))
+            return Unauthorized(new { message = "Utilizador não autenticado" });
+
         var topico = await _dbContext.TopicosForum.FindAsync(new object[] { id }, cancellationToken);
         if (topico is null)
             return NotFound(new { message = "Tópico não encontrado" });
@@ -320,6 +346,16 @@ public class ForumController : ControllerBase
 
         topico.Estado = EstadoTopicoForum.Ativo;
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "DesarquivarTopico",
+            "TopicoForum",
+            id,
+            "Arquivado",
+            "Ativo",
+            HttpContext
+        );
         return NoContent();
     }
 
@@ -410,6 +446,16 @@ public class ForumController : ControllerBase
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "AdicionarResposta",
+            "RespostaForum",
+            resposta.Id,
+            null,
+            $"Tópico {topicoId}",
+            HttpContext
+        );
+
         if (topico.AutorId != userId)
         {
             await _notificacaoService.EnviarPushAsync(
@@ -494,6 +540,16 @@ public class ForumController : ControllerBase
 
         resposta.EstadoResposta = EstadoComentario.Removido;
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "RemoverResposta",
+            "RespostaForum",
+            id,
+            null,
+            "Removido",
+            HttpContext
+        );
         return NoContent();
     }
 

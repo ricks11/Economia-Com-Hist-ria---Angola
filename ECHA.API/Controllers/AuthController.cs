@@ -14,15 +14,17 @@ public class AuthController : ControllerBase
     private readonly AppDbContext _dbContext;
     private readonly IAuthService _authService;
     private readonly IEmailService _emailService;
+    private readonly IAuditoriaService _auditoriaService;
 
     // TODO Sprint 8: substituir por RefreshToken persistido na base de dados
     private static readonly Dictionary<string, string> RefreshTokenStore = new(); // Simple in-memory store
 
-    public AuthController(AppDbContext dbContext, IAuthService authService, IEmailService emailService)
+    public AuthController(AppDbContext dbContext, IAuthService authService, IEmailService emailService, IAuditoriaService auditoriaService  )
     {
         _dbContext = dbContext;
         _authService = authService;
         _emailService = emailService;
+        _auditoriaService = auditoriaService;
     }
 
     [HttpPost("register")]
@@ -59,6 +61,7 @@ public class AuthController : ControllerBase
         };
 
         _dbContext.Utilizadores.Add(newUser);
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var accessToken = _authService.GenerateAccessToken(newUser.Id, newUser.Email, newUser.Tipo.ToString(), newUser.Nome);

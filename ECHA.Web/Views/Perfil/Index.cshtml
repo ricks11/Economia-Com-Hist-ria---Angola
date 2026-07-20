@@ -93,58 +93,46 @@
                         <!-- Escola -->
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-stone-600 ml-2 font-body">Escola</label>
-                            @if (isAdmin)
+                            <!-- Hidden input to preserve EscolaId during profile updates -->
+                            <input type="hidden" name="EscolaId" value="@p.EscolaId" />
+                            @if (p.EscolaId.HasValue && !string.IsNullOrEmpty(p.EscolaNome))
                             {
-                            <select id="escolaSelect" name="EscolaId" class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20">
-                                <option value="">— Nenhuma —</option>
-                                @foreach (var e in Model.Escolas)
-                                {
-                                <option value="@e.Id" selected="@(e.Id == p.EscolaId)">@e.Nome</option>
-                                }
-                            </select>
+                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body">@p.EscolaNome</div>
                             }
                             else
                             {
-                            var escolaAtual = Model.Escolas.FirstOrDefault(e => e.Id == p.EscolaId);
-                            if (escolaAtual != null)
-                            {
-                            <input type="hidden" name="EscolaId" value="@escolaAtual.Id" />
-                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body">@escolaAtual.Nome</div>
-                            <p class="text-xs text-stone-400 ml-2">A escola só pode ser alterada através de código de convite.</p>
-                            }
-                            else
-                            {
-                            <input type="hidden" name="EscolaId" value="" />
                             <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-400 font-body italic">Sem escola associada</div>
-                            <p class="text-xs text-stone-400 ml-2">Associe-se a uma escola usando o código de convite.</p>
                             }
-                            }
+
+                            <div class="space-y-2">
+                            <label class="text-xs font-bold text-stone-600 ml-2 font-body">Código de Convite para Escola</label>
+                            <div class="flex gap-2">
+                            <input type="text" id="conviteInput" name="CodigoConvite"
+                                   placeholder="Digite o código de convite da escola"
+                                   class="flex-1 bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20" />
+                            <button type="button" id="associarEscolaBtn"
+                                    class="bg-primary text-white font-bold px-4 py-4 rounded-xl hover:bg-primary/90 transition-all">
+                                Associar Escola
+                            </button>
+                            </div>
+                            <p id="conviteEscolaMsg" class="text-xs text-stone-400 ml-2"></p>
+                            </div>
                         </div>
 
                         <!-- Turma -->
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-stone-600 ml-2 font-body">Turma</label>
-                            @if (isAdmin)
+                            <!-- Hidden input to preserve TurmaId during profile updates -->
+                            <input type="hidden" name="TurmaId" value="@p.TurmaId" />
+                            @if (p.TurmaId.HasValue && !string.IsNullOrEmpty(p.TurmaNome))
                             {
-                            <select id="turmaSelect" name="TurmaId" class="w-full bg-surface-container-lowest border-0 rounded-2xl p-4 text-stone-800 font-body focus:ring-2 focus:ring-primary/20">
-                                <option value="">— Selecione uma escola primeiro —</option>
-                            </select>
+                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body">@p.TurmaNome</div>
+                            <p class="text-xs text-stone-400 ml-2">A turma está associada à sua escola.</p>
                             }
                             else
                             {
-                            var turmaAtual = Model.Turmas.FirstOrDefault(t => t.Id == p.TurmaId);
-                            if (turmaAtual != null)
-                            {
-                            <input type="hidden" name="TurmaId" value="@turmaAtual.Id" />
-                            <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-500 font-body">@turmaAtual.Nome</div>
-                            <p class="text-xs text-stone-400 ml-2">A turma deve pertencer à sua escola.</p>
-                            }
-                            else
-                            {
-                            <input type="hidden" name="TurmaId" value="" />
                             <div class="w-full bg-surface-container-lowest/60 border-0 rounded-2xl p-4 text-stone-400 font-body italic">Sem turma associada</div>
-                            <p class="text-xs text-stone-400 ml-2">Associe-se a uma turma na sua escola.</p>
-                            }
+                            <p class="text-xs text-stone-400 ml-2">A turma será associada automaticamente após você se associar a uma escola que possui turmas.</p>
                             }
                         </div>
                     </div>
@@ -266,52 +254,64 @@
     }
     mostrarTab('@Model.TabAtiva');
 
-    @if (isAdmin) {
-        <text>
-            const escolaSelect = document.getElementById('escolaSelect');
-            const turmaSelect = document.getElementById('turmaSelect');
-            let carregando = false;
+        // Funcionalidade de associação de escola via código de convite
+    document.addEventListener('DOMContentLoaded', function() {
+                const associarBtn = document.getElementById('associarEscolaBtn');
+        const conviteInput = document.getElementById('conviteInput');
+        const msgEl = document.getElementById('conviteEscolaMsg');
 
-            // Obter token do claims do utilizador (armazenado durante o login)
-            const token = "@(User.FindFirst("AccessToken")?.Value ?? "")";
+        if (associarBtn && conviteInput && msgEl) {
+            associarBtn.addEventListener('click', async () => {
+                const codigo = conviteInput.value.trim();
 
-            // Função para obter o token (para compatibilidade com o código existente)
-            function getToken() {
-                return token;
-            }
+                if (!codigo) {
+                    msgEl.textContent = 'Por favor, digite o código de convite';
+                    msgEl.className = 'text-xs text-red-500 ml-2';
+                    return;
+                }
 
-            function carregarTurmas(escolaId) {
-                    if (!escolaId) {
-                turmaSelect.innerHTML = '<option value="">— Selecione uma escola primeiro —</option>';
-            return;
-                    }
-
-            carregando = true;
-            turmaSelect.innerHTML = '<option value="">Carregando turmas...</option>';
-            turmaSelect.disabled = true;
-
-            const currentToken = getToken();
-            const headers = {
-                'Content-Type': 'application/json'
-            };
-            if (currentToken) {
-                headers['Authorization'] = `Bearer ${currentToken}`;
-            }
-            fetch(`/api/turmas?escolaId=${escolaId}`, {
-                method: 'GET',
-                headers: headers,
-                credentials: 'include'
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        if (response.status === 401) {
-                            window.location.href = '/Auth/Login';
-                            return;
+                try {
+                    const token = "@(User.FindFirst("AccessToken")?.Value ?? "")";
+                    const response = await fetch(`/api/alunos/associar?codigo=${encodeURIComponent(codigo)}`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
                         }
-                        throw new Error('Erro ao carregar turmas: ' + response.status);
+                    });
+
+                    if (response.ok) {
+                        msgEl.textContent = 'Associação realizada com sucesso!';
+                        msgEl.className = 'text-xs text-green-500 ml-2';
+                        // Limpar input
+                        conviteInput.value = '';
+                        // Recarregar página para mostrar informações atualizadas
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        const error = await response.json();
+                        msgEl.textContent = error.message || 'Código inválido ou expirado';
+                        msgEl.className = 'text-xs text-red-500 ml-2';
                     }
-                    return response.json();
-                })
+                } catch (err) {
+                    msgEl.textContent = 'Erro ao tentar associar. Tente novamente.';
+                    msgEl.className = 'text-xs text-red-500 ml-2';
+                    console.error('Association error:', err);
+                }
+            });
+
+            // Também permite pressionar Enter no campo de input
+            conviteInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    associarBtn.click();
+                }
+            });
+        }
+    });
+
+
+
+
+
                 .then(turmas => {
                 turmaSelect.innerHTML = '<option value="">— Selecione uma turma —</option>';
                     turmas.forEach(t => {
@@ -323,10 +323,7 @@
 
                     // Selecionar a turma atual (se for a mesma escola)
                     const turmaAtualId = '@(p.TurmaId)';
-                    if (turmaAtualId && turmas.some(t => t.id == turmaAtualId)) {
-                        turmaSelect.value = turmaAtualId;
-                    }
-                })
+                });
                 .catch(err => {
                     console.error(err);
                     turmaSelect.innerHTML = '<option value="">Erro ao carregar turmas</option>';
@@ -335,21 +332,5 @@
                     carregando = false;
                     turmaSelect.disabled = false;
                 });
-            }
-
-            // Quando a escola mudar, recarregar as turmas
-            escolaSelect.addEventListener('change', function () {
-                carregarTurmas(this.value);
-                });
-
-            // Carregar turmas iniciais se já houver escola selecionada
-            const escolaInicial = escolaSelect.value;
-            if (escolaInicial) {
-                carregarTurmas(escolaInicial);
-                } else {
-                turmaSelect.innerHTML = '<option value="">— Selecione uma escola primeiro —</option>';
-                }
-        </text>
-    }
 </script>
 }

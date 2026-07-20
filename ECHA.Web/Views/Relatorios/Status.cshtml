@@ -1,55 +1,97 @@
+@using EconomiaComHistoria.Core.Enums
 @model EconomiaComHistoria.Core.DTOs.RelatorioStatusDto
 @{
     ViewData["Title"] = "Estado do Relatório";
-    var estado = Model.Estado.ToString();
+    var isConcluido = Model.Estado == EstadoRelatorio.Concluido;
+    var isErro = Model.Estado == EstadoRelatorio.Erro || Model.Estado == EstadoRelatorio.Expirado;
+    var isPendente = Model.Estado == EstadoRelatorio.Pendente || Model.Estado == EstadoRelatorio.Processando;
 }
 
-<div class="max-w-2xl mx-auto">
-    <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-8 hover:underline no-underline">
-        <span class="material-symbols-outlined">arrow_back</span> Voltar aos relatórios
+<div class="max-w-3xl mx-auto px-4 sm:px-6 pt-12 pb-16 font-sans">
+    <!-- Link de Retorno -->
+    <a asp-action="Index" class="inline-flex items-center gap-2 text-primary font-bold mb-8 hover:underline no-underline transition-all">
+        <span class="material-symbols-outlined text-lg">arrow_back</span>
+        Voltar aos relatórios
     </a>
 
-    <div class="bg-surface-container-lowest rounded-3xl p-10 ambient-shadow text-center">
-        @if (estado == "Concluido" || estado == "Completo")
+    <!-- Cartão de Estado Central -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 text-center">
+
+        @if (isConcluido)
         {
-            <span class="material-symbols-outlined text-6xl text-green-600 mb-4" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-            <h1 class="text-2xl font-headline font-extrabold text-primary mb-2">Relatório Pronto</h1>
+        <span class="material-symbols-outlined text-6xl text-green-600 mb-4" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h1 class="text-2xl font-black text-primary mb-2">Relatório Pronto</h1>
+        <p class="text-stone-600 mb-6 font-medium">@Model.Titulo</p>
+        <div class="bg-green-50 p-4 rounded-xl border border-green-200 mb-6 text-sm">
+            <span class="font-semibold text-green-700">Relatório gerado com sucesso! Pronto para transferência.</span>
+        </div>
         }
-        else if (estado == "Erro" || estado == "Falhou")
+        else if (isErro)
         {
-            <span class="material-symbols-outlined text-6xl text-error mb-4">error</span>
-            <h1 class="text-2xl font-headline font-extrabold text-primary mb-2">Erro na Geração</h1>
+        <span class="material-symbols-outlined text-6xl text-red-600 mb-4">error</span>
+        <h1 class="text-2xl font-black text-primary mb-2">Erro na Geração</h1>
+        <p class="text-stone-600 mb-4 font-medium">@Model.Titulo</p>
+        <div class="bg-red-50 p-4 rounded-xl border border-red-200 mb-6 text-sm">
+            <span class="font-semibold text-red-700">@(Model.MensagemErro ?? "Ocorreu um erro inesperado durante o processamento.")</span>
+        </div>
         }
-        else
+        else if (isPendente)
         {
-            <span class="material-symbols-outlined text-6xl text-amber-500 mb-4 animate-pulse">hourglass_top</span>
-            <h1 class="text-2xl font-headline font-extrabold text-primary mb-2">A processar...</h1>
+        <span class="material-symbols-outlined text-6xl text-amber-500 mb-4 animate-spin">progress_activity</span>
+        <h1 class="text-2xl font-black text-primary mb-2">A Processar...</h1>
+        <p class="text-stone-600 mb-6 font-medium">@Model.Titulo</p>
+        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 mb-6 text-sm">
+            <span class="font-semibold text-amber-700">O relatório está a ser gerado. Esta página atualiza automaticamente a cada 10 segundos.</span>
+        </div>
         }
 
-        <p class="text-on-surface-variant mb-6">@Model.Titulo</p>
-
-        <div class="grid grid-cols-2 gap-4 text-left mb-8">
-            <div class="bg-surface-container-low rounded-2xl p-4">
-                <p class="text-xs font-bold text-stone-500 uppercase">Estado</p>
-                <p class="font-bold text-primary">@estado</p>
+        <!-- Detalhes Finais em Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mb-8">
+            <div class="bg-stone-50 rounded-2xl p-4 border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase tracking-wider">Estado Atual</p>
+                <p class="font-bold text-stone-800 mt-0.5">@Model.Estado</p>
             </div>
-            <div class="bg-surface-container-low rounded-2xl p-4">
-                <p class="text-xs font-bold text-stone-500 uppercase">Solicitado em</p>
-                <p class="font-bold text-primary">@Model.DataSolicitacao.ToString("dd/MM/yyyy HH:mm")</p>
+            <div class="bg-stone-50 rounded-2xl p-4 border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase tracking-wider">Solicitado em</p>
+                <p class="font-bold text-stone-800 mt-0.5">@Model.DataSolicitacao.ToString("dd/MM/yyyy · HH:mm")</p>
             </div>
+            @if (Model.DataConclusao.HasValue)
+            {
+            <div class="sm:col-span-2 bg-stone-50 rounded-2xl p-4 border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase tracking-wider">Concluído em</p>
+                <p class="font-bold text-stone-800 mt-0.5">@Model.DataConclusao.Value.ToString("dd/MM/yyyy · HH:mm")</p>
+            </div>
+            }
         </div>
 
-        @if (!string.IsNullOrEmpty(Model.DownloadUrl))
-        {
-            <a href="@Model.DownloadUrl" class="inline-flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-full font-bold no-underline hover:opacity-90">
-                <span class="material-symbols-outlined">download</span>
+        <!-- Seção de Ações Dinâmicas Baseadas no Estado -->
+        <div class="flex flex-col items-center justify-center gap-4">
+            @if (isConcluido)
+            {
+            <a asp-controller="Relatorios" asp-action="Download" asp-route-id="@Model.Id" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full font-bold no-underline shadow-md shadow-primary/10 hover:shadow-lg hover:scale-[1.02] transition-all text-sm w-full sm:w-auto">
+                <span class="material-symbols-outlined text-lg">download</span>
                 Descarregar Relatório
             </a>
-        }
-        else if (estado != "Concluido" && estado != "Completo")
-        {
-            <p class="text-sm text-stone-500">O relatório está a ser gerado. Actualize esta página em alguns momentos.</p>
-            <button onclick="location.reload()" class="mt-4 px-6 py-3 rounded-full bg-surface-container text-secondary font-bold">Actualizar</button>
-        }
+            }
+            else if (isPendente)
+            {
+            <button onclick="location.reload()" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-stone-100 text-stone-700 font-bold hover:bg-stone-200 transition-colors text-sm w-full sm:w-auto">
+                <span class="material-symbols-outlined text-lg">refresh</span>
+                Forçar Atualização
+            </button>
+            <script>
+                // Auto-refresh inteligente a cada 10 segundos
+                setTimeout(() => location.reload(), 10000);
+            </script>
+            }
+            else if (isErro)
+            {
+            <a asp-action="Criar" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full font-bold no-underline shadow-md shadow-primary/10 hover:opacity-95 transition-all text-sm w-full sm:w-auto">
+                <span class="material-symbols-outlined text-lg">refresh</span>
+                Solicitar Novamente
+            </a>
+            }
+        </div>
+
     </div>
 </div>

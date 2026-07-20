@@ -185,24 +185,19 @@
     }
     }
 
-    <!-- Barra Inferior de Ações Dinâmicas -->
+    <!-- Barra Inferior de Ações Dinâmicas (Continuação) -->
     <footer class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-100">
-        <a asp-action="Index" class="flex items-center gap-2 text-stone-600 font-semibold text-sm hover:text-primary no-underline transition-colors py-2">
-            <span class="material-symbols-outlined text-[18px]">arrow_back</span> Voltar ao arquivo principal
+        <a asp-action="Index" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-100 text-secondary font-semibold text-sm hover:bg-stone-200 transition-colors no-underline">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Voltar à Listagem
         </a>
 
-        @if (User.IsInRole("Editor") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Professor"))
+        @if (User.IsInRole("Editor") || User.IsInRole("Admin"))
         {
-        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <button type="button" id="abrirDeleteModalBtn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-700 font-bold text-xs hover:bg-red-100 transition-colors">
-                Eliminar Artigo
-            </button>
-
-            <!-- Correção aqui: fechando com </a> de forma correta -->
-            <a asp-action="Edit" asp-route-id="@Model.Conteudo.Id" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs text-center no-underline hover:opacity-95 shadow-md shadow-primary/5 transition-all">
-                Editar Dados
-            </a>
-        </div>
+        <a asp-action="Edit" asp-route-id="@Model.Conteudo.Id" class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm shadow-md shadow-primary/10 hover:opacity-95 transition-all no-underline">
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+            Editar Ensaio
+        </a>
         }
     </footer>
 </main>

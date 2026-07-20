@@ -18,7 +18,7 @@ public class RankingService : IRankingService
         _cache = cache;
     }
 
-    public async Task GerarSnapshotSemanalAsync()
+    public async Task GerarSnapshotSemanalAsync(CancellationToken ct = default)
     {
         var now = DateTime.UtcNow;
         var startOfWeek = now.AddDays(-(int)now.DayOfWeek).Date;
@@ -32,11 +32,11 @@ public class RankingService : IRankingService
                 TotalScore = g.Sum(t => t.Pontuacao),
                 QuizzesCompletados = g.Count()
             })
-            .ToListAsync();
+            .ToListAsync(ct);
 
         var users = await _context.Utilizadores
-            .Select(u => new { u.Id, u.EscolaId, u.Provincia })
-            .ToListAsync();
+            .Select(u => new { u.Id, u.EscolaId, u.Provincia, u.Municipio })
+            .ToListAsync(ct);
 
         var ranking = new Ranking
         {
@@ -62,13 +62,19 @@ public class RankingService : IRankingService
         }
 
         ranking.Entradas = entradas;
-        await _context.Rankings.AddAsync(ranking);
-        await _context.SaveChangesAsync();
+        await _context.Rankings.AddAsync(ranking, ct);
+        await _context.SaveChangesAsync(ct);
     }
 
-    public async Task<List<EntradaRanking>> GetRankingAsync(TipoRanking tipo, PeriodoRanking periodo, int? escolaId = null, string? provincia = null)
+    public async Task<List<EntradaRanking>> GetRankingAsync(
+        TipoRanking tipo,
+        PeriodoRanking periodo,
+        int? escolaId = null,
+        string? provincia = null,
+        string? municipio = null,
+        CancellationToken ct = default)
     {
-        string cacheKey = $"ranking_{tipo}_{periodo}_{escolaId}_{provincia}";
+        string cacheKey = $"ranking_{tipo}_{periodo}_{escolaId}_{provincia}_{municipio}";
 
         if (_cache.TryGetValue(cacheKey, out List<EntradaRanking>? cachedRankings))
         {
@@ -77,13 +83,12 @@ public class RankingService : IRankingService
 
         var rankingQuery = _context.Rankings
             .Include(r => r.Entradas)
-            .ThenInclude(e => e.Utilizador)
+                .ThenInclude(e => e.Utilizador)
             .Where(r => r.Periodo == periodo);
 
-        // Find the most recent ranking for this period
         var latestRanking = await rankingQuery
             .OrderByDescending(r => r.DataCalculo)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(ct);
 
         if (latestRanking == null)
         {
@@ -100,11 +105,15 @@ public class RankingService : IRankingService
         {
             query = query.Where(e => e.Utilizador != null && e.Utilizador.Provincia == provincia);
         }
+        else if (tipo == TipoRanking.Municipio && !string.IsNullOrEmpty(municipio))
+        {
+            query = query.Where(e => e.Utilizador != null && e.Utilizador.Municipio == municipio);
+        }
 
         var result = await query
             .OrderBy(e => e.Posicao)
             .Take(100)
-            .ToListAsync();
+            .ToListAsync(ct);
 
         _cache.Set(cacheKey, result, TimeSpan.FromMinutes(5));
 

@@ -18,12 +18,14 @@ public class QuizzesController : ControllerBase
     private readonly IQuizRepository _quizRepository;
     private readonly IQuizScoringService _scoringService;
     private readonly AppDbContext _dbContext;
+    private readonly IAuditoriaService _auditoriaService;
 
-    public QuizzesController(IQuizRepository quizRepository, IQuizScoringService scoringService, AppDbContext dbContext)
+    public QuizzesController(IQuizRepository quizRepository, IQuizScoringService scoringService, AppDbContext dbContext, IAuditoriaService auditoriaService )
     {
         _quizRepository = quizRepository;
         _scoringService = scoringService;
         _dbContext = dbContext;
+        _auditoriaService = auditoriaService;
     }
 
     [HttpGet]
@@ -169,6 +171,17 @@ public class QuizzesController : ControllerBase
             quiz.Ativo
         );
 
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "CriarQuiz",
+            "Quiz",
+            quiz.Id,
+            null,
+            $"Título: {quiz.Titulo}, Nível: {quiz.Nivel}",
+            HttpContext
+        );
+
         // CORREÇÃO: Aponta para 'GetQuiz' (singular) que aceita o ID na rota
         return CreatedAtAction(nameof(GetQuiz), new { id = quiz.Id }, responseDto);
     }
@@ -183,6 +196,8 @@ public class QuizzesController : ControllerBase
             .FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
 
         if (quiz == null) return NotFound();
+
+        var antes = System.Text.Json.JsonSerializer.Serialize(new { quiz.Titulo, quiz.Nivel, quiz.TotalPerguntas });
 
         quiz.Titulo = dto.Titulo;
         quiz.Tema = dto.Tema;
@@ -247,6 +262,18 @@ public class QuizzesController : ControllerBase
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        var depois = System.Text.Json.JsonSerializer.Serialize(new { quiz.Titulo, quiz.Nivel, quiz.TotalPerguntas });
+        await _auditoriaService.RegistarAsync(
+            id,
+            "AtualizarQuiz",
+            "Quiz",
+            id,
+            antes,
+            depois,
+            HttpContext
+        );
+
         return NoContent();
     }
 
@@ -258,6 +285,17 @@ public class QuizzesController : ControllerBase
         if (quiz == null) return NotFound();
 
         await _quizRepository.DeleteAsync(id);
+
+        await _auditoriaService.RegistarAsync(
+            id,
+            "EliminarQuiz",
+            "Quiz",
+            id,
+            null,
+            "Eliminado",
+            HttpContext
+        );
+
         return NoContent();
     }
 

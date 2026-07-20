@@ -7,4 +7,5 @@ public class RankingResponseDto
     public int? PontosUtilizador { get; set; }
     public string? Tipo { get; set; }
     public string? Periodo { get; set; }
+    public int UtilizadorId { get; set; }
 }

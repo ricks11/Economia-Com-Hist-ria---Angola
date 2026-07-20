@@ -8,12 +8,25 @@ public record SolicitarRelatorioDto(
     int? TurmaId,
     int? EscolaId,
     DateTime? Inicio,
-    DateTime? Fim);
+    DateTime? Fim
+);
 
 public record RelatorioStatusDto(
     int Id,
     string Titulo,
+    string Tipo,
     EstadoRelatorio Estado,
     DateTime DataSolicitacao,
     DateTime? DataConclusao,
-    string? DownloadUrl);
+    string? DownloadUrl,
+    string? MensagemErro = null
+);
+
+public record RelatorioListaDto(
+    int Id,
+    string Titulo,
+    string Tipo,
+    EstadoRelatorio Estado,
+    DateTime DataSolicitacao,
+    DateTime? DataConclusao
+);

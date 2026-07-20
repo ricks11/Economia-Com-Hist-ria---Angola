@@ -9,6 +9,7 @@ open EconomiaComHistoria.Core.DTOs
 open EconomiaComHistoria.Core.Enums
 
 open System.Text.Json.Serialization
+open System.Net.Http.Headers
 
 module private JsonOpts =
     let options =
@@ -621,32 +622,6 @@ type ApiClient(httpClient: HttpClient) =
             return todos |> List.filter (fun u -> u.Tipo = "Professor")
         }
 
-    member this.SolicitarRelatorioAsync(request: SolicitarRelatorioDto, token: string) : Task<RelatorioStatusDto option> =
-        task {
-            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.PostAsJsonAsync("/api/relatorios/gerar", request)
-            if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>(JsonOpts.options)  // <- adicionar options
-                return Some result
-            else if (int response.StatusCode = 401) then
-                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
-            else
-                return None
-        }
-
-    member this.GetRelatorioStatusAsync(id: int, token: string) : Task<RelatorioStatusDto option> =
-        task {
-            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
-            let! response = httpClient.GetAsync($"/api/relatorios/{id}/status")
-            if response.IsSuccessStatusCode then
-                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>(JsonOpts.options)  // <- adicionar options
-                return Some result
-            else if (int response.StatusCode = 401) then
-                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
-            else
-                return None
-        }
-
     member this.GetPerfilAsync(token: string) : Task<PerfilResponseDto option> =
         task {
             use request = new HttpRequestMessage(HttpMethod.Get, "/api/perfil")
@@ -861,6 +836,21 @@ type ApiClient(httpClient: HttpClient) =
                 return None
         }
 
+    member this.GetRankingByUrlAsync(url: string, token: string) : Task<RankingResponseDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync(url)
+            httpClient.DefaultRequestHeaders.Authorization <- null
+
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RankingResponseDto>(JsonOpts.options)
+                return Some result
+            else if (int response.StatusCode = 401) then
+                return raise (ApiClientException(response.StatusCode, "Unauthorized"))
+            else
+                return None
+        }
+
     member this.AdicionarRespostaAsync(topicoId: int, request: CriarRespostaForumDto, token: string) : Task<bool> =
         task {
             httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
@@ -926,4 +916,62 @@ type ApiClient(httpClient: HttpClient) =
         task {
             let! todos = this.ListUtilizadoresAsync(token)
             return todos |> List.filter (fun u -> u.Tipo = "Aluno")
+        }
+
+    member this.ListarRelatoriosAsync(token: string, ?escolaId: int) : Task<RelatorioListaDto list> =
+        task {
+            let mutable url = "/api/relatorios"
+            escolaId |> Option.iter (fun id -> url <- url + $"?escolaId={id}")
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync(url)
+            httpClient.DefaultRequestHeaders.Authorization <- null
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RelatorioListaDto list>(JsonOpts.options)
+                return result
+            else
+                return []
+        }
+
+    member this.SolicitarRelatorioAsync(request: SolicitarRelatorioDto, token: string) : Task<RelatorioStatusDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.PostAsJsonAsync("/api/relatorios/gerar", request, JsonOpts.options)
+            httpClient.DefaultRequestHeaders.Authorization <- null
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>(JsonOpts.options)
+                return Some result
+            else
+                return None
+        }
+
+    member this.GetRelatorioStatusAsync(id: int, token: string) : Task<RelatorioStatusDto option> =
+        task {
+            httpClient.DefaultRequestHeaders.Authorization <- System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token)
+            let! response = httpClient.GetAsync($"/api/relatorios/{id}/status")
+            httpClient.DefaultRequestHeaders.Authorization <- null
+            if response.IsSuccessStatusCode then
+                let! result = response.Content.ReadFromJsonAsync<RelatorioStatusDto>(JsonOpts.options)
+                return Some result
+            else
+                return None
+        }
+
+    member this.DownloadRelatorioAsync (id: int, token: string) : Task<byte[] option> =
+        task {
+            // 1. Configura a requisição GET para o endpoint da API
+            let url = sprintf "api/relatorios/%d/download" id
+            use request = new HttpRequestMessage(HttpMethod.Get, url)
+            
+            // 2. Injeta o Token JWT que veio do Web Controller
+            request.Headers.Authorization <- AuthenticationHeaderValue("Bearer", token)
+            
+            // 3. Envia o pedido à API
+            let! response = httpClient.SendAsync(request)
+            
+            // 4. Se a API responder 200 OK, lê os bytes; caso contrário (404, 401), retorna None
+            if response.IsSuccessStatusCode then
+                let! bytes = response.Content.ReadAsByteArrayAsync()
+                return Some bytes
+            else
+                return None
         }

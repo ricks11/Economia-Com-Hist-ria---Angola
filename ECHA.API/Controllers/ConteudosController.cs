@@ -1,15 +1,16 @@
+using EconomiaComHistoria.API.Services;
+using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.Core.DTOs.Sync;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
-using EconomiaComHistoria.API.Services;
 using EconomiaComHistoria.Core.Helpers;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
+using EconomiaComHistoria.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using EconomiaComHistoria.Core.DTOs;
-using EconomiaComHistoria.Core.Interfaces;
-using EconomiaComHistoria.Core.DTOs.Sync;
 
 namespace EconomiaComHistoria.API.Controllers;
 
@@ -20,12 +21,14 @@ public class ConteudosController : ControllerBase
     private readonly AppDbContext _dbContext;
     private readonly IFileStorageService _fileStorageService;
     private readonly IConteudoCacheExportService _conteudoCacheService;
+    private readonly IAuditoriaService _auditoriaService;
 
-    public ConteudosController(AppDbContext dbContext, IFileStorageService fileStorageService, IConteudoCacheExportService conteudoCacheService)
+    public ConteudosController(AppDbContext dbContext, IFileStorageService fileStorageService, IConteudoCacheExportService conteudoCacheService, IAuditoriaService auditoriaService )
     {
         _dbContext = dbContext;
         _fileStorageService = fileStorageService;
         _conteudoCacheService = conteudoCacheService;
+        _auditoriaService = auditoriaService;
     }
 
     /// <summary>
@@ -96,6 +99,16 @@ public class ConteudosController : ControllerBase
 
         _dbContext.Conteudos.Add(conteudo);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "CriarConteudo",
+            "Conteudo",
+            conteudo.Id,
+            null,
+            System.Text.Json.JsonSerializer.Serialize(new { conteudo.Titulo, conteudo.Estado }),
+            HttpContext
+        );
 
         var response = MapToResponseDto(conteudo, false);
         return CreatedAtAction(nameof(GetConteudo), new { id = conteudo.Id }, response);
@@ -309,6 +322,8 @@ public class ConteudosController : ControllerBase
         if (conteudo is null)
             return NotFound(new { message = "Conteúdo não encontrado" });
 
+        var antes = System.Text.Json.JsonSerializer.Serialize(new { conteudo.Titulo, conteudo.Estado, conteudo.IsJindungo });
+
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                        ?? User.FindFirst("sub")?.Value;
         if (!int.TryParse(userIdClaim, out var userId))
@@ -363,6 +378,18 @@ public class ConteudosController : ControllerBase
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        var depois = System.Text.Json.JsonSerializer.Serialize(new { conteudo.Titulo, conteudo.Estado, conteudo.IsJindungo });
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "AtualizarConteudo",
+            "Conteudo",
+            id,
+            antes,
+            depois,
+            HttpContext
+        );
+
         var isFavorito = await _dbContext.Favoritos
             .AnyAsync(f => f.ConteudoId == id && f.UtilizadorId == userId, cancellationToken);
 
@@ -415,6 +442,16 @@ public class ConteudosController : ControllerBase
 
         conteudo.Estado = EstadoConteudo.Arquivado;
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "ApagarConteudo",
+            "Conteudo",
+            id,
+            null,
+            "Arquivado",
+            HttpContext
+        );
 
         return NoContent();
     }

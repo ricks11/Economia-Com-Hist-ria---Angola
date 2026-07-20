@@ -18,11 +18,13 @@ public class EscolasController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IEscolaService _escolaService;
+    private readonly IAuditoriaService _auditoriaService;
 
-    public EscolasController(AppDbContext context, IEscolaService escolaService)
+    public EscolasController(AppDbContext context, IEscolaService escolaService, IAuditoriaService auditoriaService )
     {
         _context = context;
         _escolaService = escolaService;
+        _auditoriaService = auditoriaService;
     }
 
     private bool TryGetUserId(out int userId)
@@ -131,6 +133,17 @@ public class EscolasController : ControllerBase
         escola.CodigoConviteExpiracao = invite.ExpiraEm;
         await _context.SaveChangesAsync(ct);
 
+        var userId = TryGetUserId(out var uid) ? uid : 0;
+        await _auditoriaService.RegistarAsync(
+            userId,
+            "CriarEscola",
+            "Escola",
+            escola.Id,
+            null,
+            $"Nome: {escola.Nome}",
+            HttpContext
+        );
+
         return CreatedAtAction(nameof(GetEscola), new { id = escola.Id }, new EscolaResponseDto(
             escola.Id, escola.Nome, escola.CodigoMEC, escola.Provincia, escola.Municipio,
             escola.CodigoConvite, escola.CodigoConviteExpiracao, 0, 0));
@@ -143,12 +156,25 @@ public class EscolasController : ControllerBase
         var escola = await _context.Escolas.FindAsync(new object[] { id }, ct);
         if (escola == null) return NotFound();
 
+        var antes = System.Text.Json.JsonSerializer.Serialize(new { escola.Nome, escola.Provincia, escola.Municipio });
+
         escola.Nome = dto.Nome;
         escola.CodigoMEC = dto.CodigoMEC;
         escola.Provincia = dto.Provincia ?? string.Empty;
         escola.Municipio = dto.Localizacao;
 
         await _context.SaveChangesAsync(ct);
+
+        var depois = System.Text.Json.JsonSerializer.Serialize(new { escola.Nome, escola.Provincia, escola.Municipio });
+        await _auditoriaService.RegistarAsync(
+            id,
+            "AtualizarEscola",
+            "Escola",
+            id,
+            antes,
+            depois,
+            HttpContext
+        );
 
         var updated = await _context.Escolas
             .Include(e => e.Turmas)
@@ -172,6 +198,17 @@ public class EscolasController : ControllerBase
 
         _context.Escolas.Remove(escola);
         await _context.SaveChangesAsync(ct);
+
+        await _auditoriaService.RegistarAsync(
+            id,
+            "EliminarEscola",
+            "Escola",
+            id,
+            null,
+            "Eliminada",
+            HttpContext
+        );
+
         return NoContent();
     }
 
@@ -187,6 +224,16 @@ public class EscolasController : ControllerBase
         escola.CodigoConviteExpiracao = invite.ExpiraEm;
         await _context.SaveChangesAsync(ct);
 
+        await _auditoriaService.RegistarAsync(
+            id,
+            "GerarConvite",
+            "Escola",
+            id,
+            null,
+            $"Código: {invite.Codigo}",
+            HttpContext
+        );
+
         return Ok(invite);
     }
 
@@ -200,6 +247,16 @@ public class EscolasController : ControllerBase
         escola.CodigoConvite = null;
         escola.CodigoConviteExpiracao = null;
         await _context.SaveChangesAsync(ct);
+
+        await _auditoriaService.RegistarAsync(
+            id,
+            "RevogarConvite",
+            "Escola",
+            id,
+            null,
+            "Código revogado",
+            HttpContext
+        );
 
         return NoContent();
     }

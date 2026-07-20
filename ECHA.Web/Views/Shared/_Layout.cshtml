@@ -4,9 +4,9 @@
 
     // Obter o nome completo (tenta a claim "FullName", depois ClaimTypes.Name, fallback para email)
     var fullName = User.FindFirst("Nome")?.Value
-                   ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value
-                   ?? User.Identity?.Name
-                   ?? "U";
+                    ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value
+                    ?? User.Identity?.Name
+                    ?? "U";
 
     // Calcular iniciais para o avatar (usa o fullName)
     var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -27,47 +27,41 @@
     string GetNavClass(string controller, string action = null) {
         bool isActive = currentController == controller && (action == null || currentAction == action);
         return isActive
-            ? "bg-stone-100 dark:bg-stone-800 text-rose-900 dark:text-yellow-400 font-bold border-r-4 border-yellow-500"
-            : "text-stone-500 dark:text-stone-400 hover:text-rose-800 hover:bg-stone-100 dark:hover:bg-stone-800";
+            ? "bg-stone-150/70 dark:bg-stone-800/80 text-rose-950 dark:text-yellow-400 font-bold border-r-4 border-yellow-500 shadow-sm"
+            : "text-stone-600 dark:text-stone-400 hover:text-rose-900 dark:hover:text-stone-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/40";
     }
 
-    // ─────────────────────────────────────────
-    // Flags de permissão — com base na tabela cruzada de TipoUtilizador.
-    // Calculadas uma única vez para manter a nav legível e fácil de ajustar.
-    // ─────────────────────────────────────────
+    // Flags de permissão
     bool isEditor = User.IsInRole("Editor");
     bool isAdmin = User.IsInRole("Admin");
     bool isModerador = User.IsInRole("Moderador");
     bool isSuperAdmin = User.IsInRole("SuperAdmin");
 
-    // Quizzes (Web) é só gestão (criar/editar/estatísticas) — QuizzesController exige Editor/Admin/SuperAdmin.
-    // Um Registado/Professor não tem nenhum ecrã de quiz no Web (joga via Mobile), por isso o link não deve aparecer.
     bool podeGerirQuizzes = isEditor || isAdmin || isSuperAdmin;
-
-    // Turmas — TurmasController exige Editor/Admin.
     bool podeGerirTurmas = isEditor || isAdmin || isSuperAdmin;
-
-    // Escolas — EscolasController é exclusivo de Admin (nem Editor tem acesso).
     bool podeGerirEscolas = isAdmin || isSuperAdmin;
-
-    // Moderação — ModeracaoController (API) já inclui Moderador; a Web deve reflectir o mesmo.
     bool podeModerar = isEditor || isAdmin || isModerador || isSuperAdmin;
-
-    // Relatórios — RelatoriosController exige Editor/Admin.
     bool podeVerRelatorios = isEditor || isAdmin || isSuperAdmin;
-
-    // Auditoria e Gestão de Roles — exclusivo de SuperAdmin.
     bool ehSuperAdmin = isSuperAdmin;
 
     bool mostraSeparadorAdmin = podeGerirQuizzes || podeGerirTurmas || podeGerirEscolas || podeModerar || podeVerRelatorios || ehSuperAdmin;
 }
 
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" class="scroll-smooth">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Economia com História – Angola</title>
+
+    <!-- Prevenção de Flash de Luz Elétrica (Anti-FOUC) -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -79,6 +73,13 @@
             theme: {
                 extend: {
                     "colors": {
+                        "background": "var(--bg-main)",
+                        "surface": "var(--bg-surface)",
+                        "surface-container": "var(--bg-container)",
+                        "surface-container-high": "var(--bg-container-high)",
+                        "on-background": "var(--text-main)",
+                        "on-surface": "var(--text-surface)",
+
                         "inverse-surface": "#2f3131",
                         "on-error": "#ffffff",
                         "on-surface-variant": "#554241",
@@ -88,14 +89,9 @@
                         "secondary-fixed": "#e4e2e1",
                         "on-secondary": "#ffffff",
                         "secondary": "#5f5e5e",
-                        "surface-container": "#eeeeee",
-                        "on-background": "#1a1c1c",
-                        "surface": "#f9f9f9",
                         "on-primary-container": "#f0847f",
                         "inverse-primary": "#ffb3ae",
                         "tertiary-fixed-dim": "#e9c349",
-                        "on-surface": "#1a1c1c",
-                        "background": "#f9f9f9",
                         "on-secondary-container": "#656464",
                         "inverse-on-surface": "#f1f1f1",
                         "secondary-container": "#e4e2e1",
@@ -106,14 +102,10 @@
                         "primary-container": "#6b1e1e",
                         "on-secondary-fixed-variant": "#474747",
                         "tertiary-container": "#cca830",
-                        "surface-container-high": "#e8e8e8",
-                        "surface-container-low": "#f3f3f3",
-                        "error": "#ba1a1a",
-                        "on-primary-fixed": "#410005",
                         "surface-container-lowest": "#ffffff",
                         "on-tertiary": "#ffffff",
                         "on-primary-fixed-variant": "#7d2b2a",
-                        "primary": "#4d070b",
+                        "primary": "var(--primary-color)",
                         "surface-bright": "#f9f9f9",
                         "secondary-fixed-dim": "#c8c6c5",
                         "outline-variant": "#dbc0be",
@@ -130,9 +122,10 @@
                         "on-accent-yellow": "#451a03"
                     },
                     "borderRadius": {
-                        "DEFAULT": "0.25rem",
+                        "DEFAULT": "0.375rem",
                         "lg": "0.5rem",
                         "xl": "0.75rem",
+                        "2xl": "1rem",
                         "full": "9999px"
                     },
                     "fontFamily": {
@@ -145,13 +138,103 @@
         }
     </script>
     <style>
+        /* Paleta de Cores Sofisticada e Harmoniosa */
+        :root {
+            /* Neutros Claros - Tema Claro */
+            --bg-main: #fafafa;
+            --bg-surface: #ffffff;
+            --bg-container: #f5f5f5;
+            --bg-container-high: #eeeeee;
+            --bg-input: #fafafa;
+
+            --text-primary: #1a1c1c;
+            --text-secondary: #4a4a4a;
+            --text-muted: #7a7a7a;
+            --text-on-surface: #1a1c1c;
+
+            --border-light: #e0e0e0;
+            --border-medium: #cccccc;
+            --border-strong: #b3b3b3;
+
+            --primary: #4d070b;
+            --primary-light: #6b090d;
+            --primary-dark: #360508;
+
+            --secondary: #6b7280;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 16px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark {
+            /* Neutros Escuros - Tema Escuro */
+            --bg-main: #0e0e0e;
+            --bg-surface: #1a1a1a;
+            --bg-container: #242424;
+            --bg-container-high: #2d2d2d;
+            --bg-input: #242424;
+
+            --text-primary: #f5f5f5;
+            --text-secondary: #d4d4d4;
+            --text-muted: #a3a3a3;
+            --text-on-surface: #f5f5f5;
+
+            --border-light: #3a3a3a;
+            --border-medium: #4a4a4a;
+            --border-strong: #5a5a5a;
+
+            --primary: #ffb3ae;
+            --primary-light: #ffc3c0;
+            --primary-dark: #ff939e;
+
+            --secondary: #a1a1aa;
+            --accent: #fbbf24;
+            --success: #34d399;
+            --error: #f87171;
+            --warning: #fbbf24;
+            --info: #60a5fa;
+
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 16px -3px rgba(0, 0, 0, 0.2);
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
+        /* Suavização de Transição Global */
+        *, ::before, ::after {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms; /* Aplica-se apenas a mudanças manuais de classes */
+        }
+
+        .theme-transitioning *, .theme-transitioning {
+            transition-duration: 300ms !important;
+        }
+
         body {
-            background-color: theme('colors.background');
-            color: theme('colors.on-background');
+            background-color: var(--bg-main);
+            color: var(--text-main);
             font-family: theme('fontFamily.body');
         }
 
@@ -160,13 +243,48 @@
             letter-spacing: -0.02em;
         }
 
-        .angola-watermark {
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
-            opacity: 0.03;
+        /* Forçar retrocompatibilidade estética com views antigas que usam bg-white fixo */
+        .dark .bg-white, .dark .bg-stone-50 {
+            background-color: var(--bg-surface) !important;
+        }
+
+        .dark .text-stone-900, .dark .text-stone-800 {
+            color: var(--text-main) !important;
+        }
+
+        .dark .text-stone-500 {
+            color: #a8a29e !important;
+        }
+
+        /* Custom Scrollbar Aesthetic */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+            border-radius: 9999px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #44403c;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
         }
 
         .ambient-shadow {
-            box-shadow: 0 8px 32px rgba(26, 28, 28, 0.06);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+        }
+
+        .dark .ambient-shadow {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
         }
     </style>
     @await RenderSectionAsync("Styles", required: false)
@@ -176,47 +294,44 @@
     @if (User.Identity?.IsAuthenticated == true)
     {
     <!-- Backdrop para fechar o menu mobile ao clicar fora -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-stone-900/40 z-40 hidden md:hidden transition-opacity"></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-stone-950/40 dark:bg-black/60 z-40 hidden md:hidden transition-opacity"></div>
 
     <!-- Sidebar Navigation (Responsiva) -->
-    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-stone-50 dark:bg-stone-900 flex flex-col py-8 z-50 border-r-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-stone-50/90 dark:bg-stone-900/60 backdrop-blur-md flex flex-col py-8 z-50 border-r border-stone-200/50 dark:border-stone-800/40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="px-6 mb-10 flex items-center justify-between">
             <a href="@Url.Action("Index", "Home" )" class="no-underline">
                 <h1 class="text-rose-950 dark:text-rose-200 font-bold tracking-tighter text-2xl font-headline">Economia com História</h1>
             </a>
             <!-- Botão fechar (Apenas Mobile) -->
-            <button id="close-sidebar" class="md:hidden text-stone-500 hover:text-stone-800">
+            <button id="close-sidebar" class="md:hidden text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 focus:outline-none">
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
         <nav class="flex-1 space-y-1 px-3 overflow-y-auto">
-
-            <!-- Disponível para TODOS os utilizadores autenticados (Registado, Premium, Professor, Editor, Moderador, Admin, SuperAdmin, ClienteInstitucional) -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Home")" href="@Url.Action("Index", "Home" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Home")" href="@Url.Action("Index", "Home" )">
                 <span class="material-symbols-outlined">home</span>
                 <span class="text-sm font-semibold font-label">Início</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Conteudos")" href="@Url.Action("Index", "Conteudos" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Conteudos")" href="@Url.Action("Index", "Conteudos" )">
                 <span class="material-symbols-outlined">menu_book</span>
                 <span class="text-sm font-semibold font-label">Aprender</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Forum")" href="@Url.Action("Index", "Forum" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Forum")" href="@Url.Action("Index", "Forum" )">
                 <span class="material-symbols-outlined">groups</span>
                 <span class="text-sm font-semibold font-label">Participar</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Rankings")" href="@Url.Action("Index", "Rankings" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Rankings")" href="@Url.Action("Index", "Rankings" )">
                 <span class="material-symbols-outlined">leaderboard</span>
                 <span class="text-sm font-semibold font-label">Ranking</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Perfil")" href="@Url.Action("Index", "Perfil" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Perfil")" href="@Url.Action("Index", "Perfil" )">
                 <span class="material-symbols-outlined">person</span>
                 <span class="text-sm font-semibold font-label">Perfil</span>
             </a>
 
             @if (podeGerirQuizzes)
             {
-            <!-- Editor, Admin, SuperAdmin — QuizzesController (Web) não permite mais ninguém -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Quizzes")" href="@Url.Action("Index", "Quizzes" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Quizzes")" href="@Url.Action("Index", "Quizzes" )">
                 <span class="material-symbols-outlined">sports_esports</span>
                 <span class="text-sm font-semibold font-label">Gerir Quizzes</span>
             </a>
@@ -224,8 +339,7 @@
 
             @if (podeGerirEscolas)
             {
-            <!-- Exclusivo de Admin/SuperAdmin — EscolasController não permite Editor -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Escolas")" href="@Url.Action("Index", "Escolas" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Escolas")" href="@Url.Action("Index", "Escolas" )">
                 <span class="material-symbols-outlined">school</span>
                 <span class="text-sm font-semibold font-label">Escolas</span>
             </a>
@@ -233,8 +347,7 @@
 
             @if (podeGerirTurmas)
             {
-            <!-- Editor, Admin, SuperAdmin -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Turmas")" href="@Url.Action("Index", "Turmas" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Turmas")" href="@Url.Action("Index", "Turmas" )">
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm font-semibold font-label">Turmas</span>
             </a>
@@ -242,23 +355,22 @@
 
             @if (mostraSeparadorAdmin)
             {
-            <div class="pt-4 border-t border-stone-200/50 mt-4 px-4 pb-2">
-                <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest font-headline">Painel Administrativo</p>
+            <div class="pt-5 border-t border-stone-200/60 dark:border-stone-800/60 mt-5 px-4 pb-2">
+                <p class="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-widest font-headline">Painel Administrativo</p>
             </div>
             }
 
             @if (podeModerar)
             {
-            <!-- Editor, Admin, Moderador, SuperAdmin — alinhado com ModeracaoController (API) que já inclui Moderador -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Fila" )" href="@Url.Action("Fila", "Moderacao" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Moderacao", "Fila" )" href="@Url.Action("Fila", "Moderacao" )">
                 <span class="material-symbols-outlined">edit_note</span>
                 <span class="text-sm font-semibold font-label">Fila de Revisão</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Utilizadores" )" href="@Url.Action("Utilizadores", "Moderacao" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Moderacao", "Utilizadores" )" href="@Url.Action("Utilizadores", "Moderacao" )">
                 <span class="material-symbols-outlined">manage_accounts</span>
                 <span class="text-sm font-semibold font-label">Utilizadores</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Moderacao", "Denuncias" )" href="@Url.Action("Denuncias", "Moderacao" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Moderacao", "Denuncias" )" href="@Url.Action("Denuncias", "Moderacao" )">
                 <span class="material-symbols-outlined">report</span>
                 <span class="text-sm font-semibold font-label">Denúncias</span>
             </a>
@@ -266,8 +378,7 @@
 
             @if (podeVerRelatorios)
             {
-            <!-- Editor, Admin, SuperAdmin -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Relatorios")" href="@Url.Action("Index", "Relatorios" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Relatorios")" href="@Url.Action("Index", "Relatorios" )">
                 <span class="material-symbols-outlined">assessment</span>
                 <span class="text-sm font-semibold font-label">Desempenho</span>
             </a>
@@ -275,20 +386,23 @@
 
             @if (ehSuperAdmin)
             {
-            <!-- Exclusivo de SuperAdmin — links corrigidos para os controllers reais (Admin/Auditoria e Admin/Utilizadores) -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Admin", "Auditoria" )" href="@Url.Action("Auditoria", "Admin" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Admin", "Auditoria" )" href="@Url.Action("Auditoria", "Admin" )">
                 <span class="material-symbols-outlined">history</span>
                 <span class="text-sm font-semibold font-label">Auditoria</span>
             </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-md transition-colors duration-200 @GetNavClass("Admin", "Utilizadores" )" href="@Url.Action("Utilizadores", "Admin" )">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Admin", "Utilizadores" )" href="@Url.Action("Utilizadores", "Admin" )">
                 <span class="material-symbols-outlined">admin_panel_settings</span>
                 <span class="text-sm font-semibold font-label">Gestão de Roles</span>
             </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all @GetNavClass("Admin", "Permissoes" )" href="@Url.Action("Permissoes", "Admin" )">
+                <span class="material-symbols-outlined">lock_open</span>
+                <span class="text-sm font-semibold font-label">Permissões</span>
+            </a>
             }
         </nav>
-        <div class="px-6 mt-auto pt-4">
+        <div class="px-4 mt-auto pt-4">
             <form asp-controller="Auth" asp-action="Logout" method="post" class="w-full">
-                <button type="submit" class="w-full bg-stone-200/50 hover:bg-stone-200 text-stone-700 py-3 rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                <button type="submit" class="w-full bg-stone-200/50 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700/80 text-stone-700 dark:text-stone-300 py-3 rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 border border-transparent dark:border-stone-700/30">
                     <span class="material-symbols-outlined text-sm">logout</span>
                     Sair
                 </button>
@@ -296,45 +410,46 @@
         </div>
     </aside>
 
-    <!-- Top App Bar (Responsiva) -->
-    <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 bg-white/80 dark:bg-stone-950/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 z-40 border-b border-stone-200/30">
+    <!-- Top App Bar -->
+    <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 bg-white/70 dark:bg-stone-950/70 backdrop-blur-md flex items-center justify-between px-4 md:px-8 z-40 border-b border-stone-200/30 dark:border-stone-800/40">
         <div class="flex items-center gap-4 flex-1 max-w-xl">
             <!-- Hambúrguer Mobile -->
-            <button id="open-sidebar" class="md:hidden text-stone-600 hover:text-stone-900 focus:outline-none">
+            <button id="open-sidebar" class="md:hidden text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 focus:outline-none">
                 <span class="material-symbols-outlined text-2xl">menu</span>
             </button>
 
             <form action="@Url.Action("Pesquisar", "Conteudos" )" method="get" class="relative w-full">
-                <input name="q" class="w-full bg-surface-container-high border-none rounded-full py-2 pl-10 text-sm focus:ring-2 focus:ring-accent-yellow" placeholder="Pesquisar arquivos, moedas ou eras..." type="text" />
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-lg">search</span>
+                <input name="q" class="w-full bg-stone-100 dark:bg-stone-900 border border-transparent focus:border-stone-200 dark:focus:border-stone-700 rounded-full py-2 pl-10 text-sm focus:ring-0 text-stone-900 dark:text-stone-100 placeholder-stone-400" placeholder="Pesquisar arquivos, moedas ou eras..." type="text" />
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500 text-lg">search</span>
             </form>
         </div>
 
-        <div class="flex items-center gap-3 md:gap-6">
-            <button class="text-stone-600 hover:text-yellow-500 transition-all hidden sm:block">
-                <span class="material-symbols-outlined">notifications</span>
-            </button>
-            <a href="@Url.Action("Index", "Perfil" )" class="text-stone-600 hover:text-yellow-500 transition-all no-underline hidden sm:block">
+        <div class="flex items-center gap-2 md:gap-4">
+            <a href="@Url.Action("Index", "Perfil" )" class="text-stone-600 dark:text-stone-400 hover:text-yellow-500 dark:hover:text-yellow-400 transition-all p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-900 no-underline hidden sm:block focus:outline-none">
                 <span class="material-symbols-outlined">settings</span>
             </a>
-            <div class="flex items-center gap-3 pl-2 md:pl-4 border-l border-stone-200">
+
+            <!-- Alternador de Tema Estilizado -->
+            <button class="theme-toggle-btn text-stone-600 dark:text-stone-400 hover:text-yellow-500 dark:hover:text-yellow-400 transition-all focus:outline-none flex items-center justify-center p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-900">
+                <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+
+            <div class="flex items-center gap-3 pl-2 md:pl-4 border-l border-stone-200 dark:border-stone-800">
                 <div class="text-right hidden lg:block">
-                    <!-- Aqui exibimos apenas o primeiro e último nome -->
-                    <p class="text-xs font-bold text-on-surface">@GetDisplayName(fullName)</p>
-                    <p class="text-[10px] text-stone-500 uppercase font-bold tracking-tighter">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
+                    <p class="text-xs font-bold text-stone-900 dark:text-stone-100">@GetDisplayName(fullName)</p>
+                    <p class="text-[9px] text-stone-400 dark:text-stone-500 uppercase font-black tracking-widest mt-0.5">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</p>
                 </div>
-                <div class="w-8 h-8 rounded-full border border-outline-variant/20 bg-primary/10 flex items-center justify-center text-primary font-bold text-xs" title="@User.Identity.Name">
+                <div class="w-9 h-9 rounded-full border border-stone-200 dark:border-stone-800 bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-rose-950 dark:text-yellow-400 font-bold text-xs shadow-sm" title="@User.Identity.Name">
                     @initials
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Area (Responsiva) -->
+    <!-- Main Content Area -->
     <div class="w-full md:ml-64 pt-16 flex-grow flex flex-col min-h-screen">
         <main class="flex-grow p-4 md:p-8">
-            <!-- Div limitador adicionado aqui -->
-            <div class="max-w-6xl mr-auto w-full">
+            <div class="max-w-6xl mr-auto w-full ambient-shadow rounded-2xl">
                 @RenderBody()
             </div>
         </main>
@@ -342,50 +457,56 @@
     }
     else
     {
-    <!-- Top Navigation Bar (Anonymous) -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-[0_8px_32px_rgba(26,28,28,0.06)] transition-all">
+    <!-- Top Navigation Bar (Anónimo) -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-stone-950/80 backdrop-blur-md shadow-sm transition-all border-b border-stone-200/30 dark:border-stone-800/40">
         <div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
             <div class="flex items-center gap-8">
                 <a href="@Url.Action("Index", "Home" )" class="no-underline">
-                    <span class="text-xl font-black tracking-tighter text-[#1a1c1c] dark:text-white font-headline">Economia com História</span>
+                    <span class="text-xl font-black tracking-tighter text-stone-900 dark:text-white font-headline">Economia com História</span>
                 </a>
                 <div class="hidden md:flex gap-6 items-center">
-                    <a class="@(currentController == "Home" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label" href="@Url.Action("Index", "Home" )">Explore</a>
-                    <a class="@(currentController == "Conteudos" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Conteudos" )">Arquivo</a>
-                    <a class="@(currentController == "Forum" ? "text-[#800020] border-b-2 border-[#800020]" : "text-[#584141]" ) pb-1 text-sm font-medium font-label transition-colors" href="@Url.Action("Index", "Forum" )">Fórum</a>
+                    <a class="@(currentController == "Home" ? "text-rose-900 dark:text-yellow-400 border-b-2 border-rose-900 dark:border-yellow-400" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200" ) pb-1 text-sm font-semibold font-label transition-all" href="@Url.Action("Index", "Home" )">Explore</a>
+                    <a class="@(currentController == "Conteudos" ? "text-rose-900 dark:text-yellow-400 border-b-2 border-rose-900 dark:border-yellow-400" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200" ) pb-1 text-sm font-semibold font-label transition-all" href="@Url.Action("Index", "Conteudos" )">Arquivo</a>
+                    <a class="@(currentController == "Forum" ? "text-rose-900 dark:text-yellow-400 border-b-2 border-rose-900 dark:border-yellow-400" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200" ) pb-1 text-sm font-semibold font-label transition-all" href="@Url.Action("Index", "Forum" )">Fórum</a>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <a href="@Url.Action("Login", "Auth" )" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-md font-label text-sm font-bold shadow-[0_8px_32px_rgba(26,28,28,0.06)] hover:opacity-90 transition-opacity no-underline">
+            <div class="flex items-center gap-3">
+                <!-- Botão Modo Escuro (Anónimo) -->
+                <button class="theme-toggle-btn text-stone-600 dark:text-stone-400 hover:text-rose-900 dark:hover:text-yellow-400 transition-all focus:outline-none flex items-center justify-center p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-900">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                </button>
+
+                <a href="@Url.Action("Login", "Auth" )" class="bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-stone-200 text-white dark:text-stone-950 px-5 py-2 rounded-full font-label text-sm font-bold shadow-sm transition-all no-underline">
                     Entrar
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Area (Anonymous) -->
+    <!-- Main Content Area (Anónimo) -->
     <main class="flex-grow pt-16">
         @RenderBody()
     </main>
 
-    <!-- Footer (Anonymous) -->
-    <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50 border-t border-stone-200/30 text-sm tracking-wide">
-        <div class="font-headline font-bold text-primary text-lg">Economia com História – Angola</div>
-        <div class="flex flex-wrap justify-center gap-6 text-stone-500">
-            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Termos</a>
-            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Privacidade</a>
-            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Contacto</a>
-            <a class="hover:text-red-800 underline transition-all opacity-80 hover:opacity-100" href="#">Sobre o Projecto</a>
+    <!-- Footer (Anónimo) -->
+    <footer class="w-full py-12 px-6 flex flex-col items-center gap-6 mt-auto bg-stone-50 dark:bg-stone-900/40 border-t border-stone-200/30 dark:border-stone-800/40 text-sm tracking-wide">
+        <div class="font-headline font-bold text-stone-900 dark:text-rose-300 text-lg">Economia com História – Angola</div>
+        <div class="flex flex-wrap justify-center gap-6 text-stone-500 dark:text-stone-400 font-medium">
+            <a class="hover:text-rose-900 dark:hover:text-yellow-400 underline transition-all opacity-90" href="#">Termos</a>
+            <a class="hover:text-rose-900 dark:hover:text-yellow-400 underline transition-all opacity-90" href="#">Privacidade</a>
+            <a class="hover:text-rose-900 dark:hover:text-yellow-400 underline transition-all opacity-90" href="#">Contacto</a>
+            <a class="hover:text-rose-900 dark:hover:text-yellow-400 underline transition-all opacity-90" href="#">Sobre o Projecto</a>
         </div>
-        <p class="text-stone-500 opacity-80 text-center">© 2026 Economia com História – Angola. Preservando a narrativa económica.</p>
+        <p class="text-stone-400 dark:text-stone-500 text-xs text-center">© 2026 Economia com História – Angola. Preservando a narrativa económica brasileira e angolana.</p>
     </footer>
     }
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    <!-- Script Inline minimalista para controlo do Menu Mobile -->
+    <!-- Script Otimizado para Transições Fluidas -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // --- Menu Lateral Mobile ---
             const openBtn = document.getElementById("open-sidebar");
             const closeBtn = document.getElementById("close-sidebar");
             const sidebar = document.getElementById("sidebar");
@@ -396,11 +517,39 @@
                     sidebar.classList.toggle("-translate-x-full");
                     overlay.classList.toggle("hidden");
                 }
-
                 openBtn.addEventListener("click", toggleSidebar);
                 if (closeBtn) closeBtn.addEventListener("click", toggleSidebar);
                 if (overlay) overlay.addEventListener("click", toggleSidebar);
             }
+
+            // --- Lógica Avançada de Dark Mode ---
+            const toggleButtons = document.querySelectorAll('.theme-toggle-btn');
+
+            function updateIcons(isDark) {
+                toggleButtons.forEach(btn => {
+                    const icon = btn.querySelector('.material-symbols-outlined');
+                    if (icon) {
+                        icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+                    }
+                });
+            }
+
+            updateIcons(document.documentElement.classList.contains('dark'));
+
+            toggleButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Adiciona classe temporária para suavizar a animação apenas ao clicar
+                    document.documentElement.classList.add('theme-transitioning');
+
+                    const isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    updateIcons(isDark);
+
+                    setTimeout(() => {
+                        document.documentElement.classList.remove('theme-transitioning');
+                    }, 350);
+                });
+            });
         });
     </script>
 </body>

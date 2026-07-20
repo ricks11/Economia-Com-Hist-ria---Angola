@@ -77,6 +77,15 @@ public class AdminController : ControllerBase
         var antes = user.Tipo.ToString();
         user.Tipo = (EconomiaComHistoria.Core.Enums.TipoUtilizador)roleObj;
         await _userRepo.UpdateAsync(user);
+        await _auditoriaService.RegistarAsync(
+            user.Id,
+            "AlterarRole",
+            "Utilizador",
+            user.Id,
+            antes,
+            role,
+            HttpContext
+        );
 
         return Ok(new { message = $"Role alterado de {antes} para {role}" });
     }
