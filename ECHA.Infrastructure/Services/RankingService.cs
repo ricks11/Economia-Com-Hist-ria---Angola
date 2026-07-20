@@ -67,12 +67,12 @@ public class RankingService : IRankingService
     }
 
     public async Task<List<EntradaRanking>> GetRankingAsync(
-        TipoRanking tipo,
-        PeriodoRanking periodo,
-        int? escolaId = null,
-        string? provincia = null,
-        string? municipio = null,
-        CancellationToken ct = default)
+    TipoRanking tipo,
+    PeriodoRanking periodo,
+    int? escolaId = null,
+    string? provincia = null,
+    string? municipio = null,
+    CancellationToken ct = default)
     {
         string cacheKey = $"ranking_{tipo}_{periodo}_{escolaId}_{provincia}_{municipio}";
 
@@ -81,22 +81,25 @@ public class RankingService : IRankingService
             return cachedRankings!;
         }
 
-        var rankingQuery = _context.Rankings
-            .Include(r => r.Entradas)
-                .ThenInclude(e => e.Utilizador)
-            .Where(r => r.Periodo == periodo);
-
-        var latestRanking = await rankingQuery
+        // 1. Obter o ID do ranking mais recente (apenas o ID, sem carregar entradas)
+        var latestRankingId = await _context.Rankings
+            .Where(r => r.Periodo == periodo)
             .OrderByDescending(r => r.DataCalculo)
+            .Select(r => r.Id)
             .FirstOrDefaultAsync(ct);
 
-        if (latestRanking == null)
+        if (latestRankingId == 0)
         {
             return new List<EntradaRanking>();
         }
 
-        IQueryable<EntradaRanking> query = latestRanking.Entradas.AsQueryable();
+        // 2. Construir a consulta sobre EntradaRanking (DIRETAMENTE sobre o DbSet)
+        var query = _context.EntradasRanking
+            .Include(e => e.Utilizador)
+            .Include(e => e.Escola)
+            .Where(e => e.RankingId == latestRankingId);
 
+        // 3. Aplicar filtros (IQueryable nativo, sem materialização)
         if (tipo == TipoRanking.Escola && escolaId.HasValue)
         {
             query = query.Where(e => e.EscolaId == escolaId.Value);
@@ -110,11 +113,13 @@ public class RankingService : IRankingService
             query = query.Where(e => e.Utilizador != null && e.Utilizador.Municipio == municipio);
         }
 
+        // 4. Executar a consulta assíncrona (agora é uma IQueryable do EF Core)
         var result = await query
             .OrderBy(e => e.Posicao)
             .Take(100)
             .ToListAsync(ct);
 
+        // 5. Guardar em cache
         _cache.Set(cacheKey, result, TimeSpan.FromMinutes(5));
 
         return result;
