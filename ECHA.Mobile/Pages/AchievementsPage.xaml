@@ -2,24 +2,107 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
              x:Class="ECHA.Mobile.Pages.AchievementsPage"
              x:DataType="pageModels:AchievementsPageModel"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-    <ContentPage.Content>
-        <ScrollView Padding="24">
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0" Padding="24,16,24,24" VerticalScrollBarVisibility="Never">
             <VerticalStackLayout Spacing="24">
-                <Label 
-                    Text="Conquistas"
-                    FontAttributes="Bold"
-                    FontSize="32"
-                    TextColor="{StaticResource OnSurface}"/>
-                <Label 
-                    Text="Em breve, suas conquistas aparecerão aqui!"
-                    FontSize="16"
-                    TextColor="{StaticResource OnSurfaceVariant}"/>
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Label Text="←" FontSize="24" TextColor="{StaticResource OnSurface}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Column="1"
+                           Text="Minhas Conquistas"
+                           FontAttributes="Bold"
+                           FontSize="18"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Border Grid.Column="2"
+                            BackgroundColor="{StaticResource ActionYellow}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="10,6">
+                        <Label Text="⭐ Kz 2.450,00" FontSize="11" FontAttributes="Bold" TextColor="{StaticResource OnActionYellow}" />
+                    </Border>
+                </Grid>
+
+                <Border BackgroundColor="{StaticResource Tertiary}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="24">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Jornada do Curador"
+                               FontAttributes="Bold"
+                               FontSize="20"
+                               TextColor="{StaticResource OnTertiary}" />
+                        <Label Text="Seu progresso na História de Angola"
+                               FontSize="13"
+                               TextColor="{StaticResource OnTertiaryContainer}" />
+                        <ProgressBar Progress="0.6" ProgressColor="{StaticResource ActionYellow}" Margin="0,8,0,0" />
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="12 de 20 Insígnias" FontSize="12" TextColor="{StaticResource OnTertiaryContainer}" />
+                            <Label Grid.Column="1" Text="60% Concluído" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource ActionYellow}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <FlexLayout BindableLayout.ItemsSource="{Binding Badges}"
+                            Wrap="Wrap"
+                            JustifyContent="Start">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="pageModels:AchievementBadge">
+                            <Border WidthRequest="155"
+                                    Margin="0,0,12,12"
+                                    BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="14"
+                                    Opacity="{Binding Opacity}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding Emoji}" FontSize="28" />
+                                    <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource OnSurface}" />
+                                    <Label Text="Como ganhar" FontSize="10" FontAttributes="Bold" CharacterSpacing="0.5" TextColor="{StaticResource Primary}" />
+                                    <Label Text="{Binding HowToEarn}" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" LineHeight="1.3" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+
+                <Border BackgroundColor="{StaticResource SurfaceContainerLow}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="20">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Próximo Marco: Visionário Económico"
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               TextColor="{StaticResource OnSurface}" />
+                        <Label Text="Você está a apenas 3 módulos de desbloquear a insígnia mais rara da plataforma. Ao completar o estudo sobre as 'Reformas de 2017', você receberá o título de Visionário e terá acesso a documentos exclusivos do arquivo nacional digitalizado."
+                               FontSize="13"
+                               TextColor="{StaticResource OnSurfaceVariant}"
+                               LineHeight="1.4" />
+                        <Button Text="Continuar Aprendizado  →"
+                                Command="{Binding ContinueLearningCommand}"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="{StaticResource OnPrimary}"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                CornerRadius="8"
+                                Padding="16,12"
+                                HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+                </Border>
             </VerticalStackLayout>
         </ScrollView>
-    </ContentPage.Content>
+
+        <controls:AppBottomNav Grid.Row="1" ActiveTab="perfil" />
+    </Grid>
 </ContentPage>

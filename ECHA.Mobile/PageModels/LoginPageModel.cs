@@ -10,6 +10,7 @@ public partial class LoginPageModel : ObservableObject
     private readonly ITokenService _tokenService;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SubmitButtonText))]
     private bool _isLoginMode = true;
 
     [ObservableProperty]

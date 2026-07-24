@@ -1,13 +1,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using EconomiaComHistoria.Core.DTOs;
+using EconomiaComHistoria.Core.Helpers;
+using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels
 {
     public partial class MainPageModel : ObservableObject
     {
+        private readonly IApiService _apiService;
         [ObservableProperty]
         bool _isBusy;
+
+        [ObservableProperty]
+        private string _contentStatus = "A carregar arquivos em destaque...";
 
         [ObservableProperty]
         private string _today = DateTime.Now.ToString("dddd, MMM d");
@@ -20,9 +27,12 @@ namespace ECHA.Mobile.PageModels
 
         public ObservableCollection<FeaturedArchive> FeaturedArchives { get; } = new();
 
-        public MainPageModel()
+        public MainPageModel(IApiService apiService)
         {
-            LoadFeaturedArchives();
+            _apiService = apiService;
+            var token = Preferences.Default.Get("access_token", string.Empty);
+            _apiService.SetAccessToken(token);
+            WelcomeMessage = $"Bem-vindo ao, {Preferences.Default.Get("user_name", "Visitante")}";
         }
 
         private void LoadFeaturedArchives()
@@ -49,8 +59,33 @@ namespace ECHA.Mobile.PageModels
         [RelayCommand]
         private async Task Appearing()
         {
-            // Future dashboard logic here
-            await Task.CompletedTask;
+            if (IsBusy) return;
+            IsBusy = true;
+            try
+            {
+                var result = await _apiService.GetAsync<PagedResult<ConteudoResponseDto>>("api/conteudos?pagina=1&tamanho=8");
+                FeaturedArchives.Clear();
+                foreach (var item in result?.Items ?? [])
+                {
+                    FeaturedArchives.Add(new FeaturedArchive
+                    {
+                        Title = item.Titulo,
+                        Category = item.Tema,
+                        Summary = item.Resumo ?? item.CorpoTexto ?? "Explorar este arquivo.",
+                        ImageUrl = item.ThumbnailUrl ?? string.Empty,
+                        IsNew = item.DataPublicacao >= DateTime.UtcNow.AddDays(-30)
+                    });
+                }
+                ContentStatus = FeaturedArchives.Count == 0
+                    ? "Ainda nao existem arquivos publicados."
+                    : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                ContentStatus = "Nao foi possivel carregar os arquivos. Confirme que a API esta em execucao.";
+            }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]
@@ -64,8 +99,19 @@ namespace ECHA.Mobile.PageModels
         [RelayCommand]
         private async Task NavigateToArchive(FeaturedArchive archive)
         {
-            // Navigation logic here
-            await Task.CompletedTask;
+            await Shell.Current.GoToAsync("//ExplorePage");
+        }
+
+        [RelayCommand]
+        private async Task GoExplore()
+        {
+            await Shell.Current.GoToAsync("//ExplorePage");
+        }
+
+        [RelayCommand]
+        private async Task GoNotifications()
+        {
+            await Shell.Current.GoToAsync("//NotificationsPage");
         }
     }
 

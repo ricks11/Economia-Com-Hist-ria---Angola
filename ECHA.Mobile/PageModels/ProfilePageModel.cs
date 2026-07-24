@@ -10,16 +10,22 @@ public partial class ProfilePageModel : ObservableObject
     private readonly IApiService _apiService;
 
     [ObservableProperty]
-    private string _nome = string.Empty;
+    private string _nome = "Kátia dos Santos";
 
     [ObservableProperty]
     private string _escola = string.Empty;
 
     [ObservableProperty]
-    private string _provincia = string.Empty;
+    private string _provincia = "Luanda";
 
     [ObservableProperty]
     private UserStatsDto? _stats;
+
+    [ObservableProperty]
+    private string _codigoConvite = string.Empty;
+
+    public string DisplayName => string.IsNullOrWhiteSpace(Nome) ? "Kátia dos Santos" : Nome;
+    public string DisplaySubtitle => $"Curadora de Nível {(Stats?.Nivel ?? 4)} • {(string.IsNullOrWhiteSpace(Provincia) ? "Luanda" : Provincia)}";
 
     public ProfilePageModel(IApiService apiService)
     {
@@ -31,17 +37,17 @@ public partial class ProfilePageModel : ObservableObject
     private async Task LoadStatsAsync()
     {
         Stats = await _apiService.GetAsync<UserStatsDto>("api/perfil/stats");
+        OnPropertyChanged(nameof(DisplaySubtitle));
     }
 
     private void LoadProfile()
     {
-        Nome = Preferences.Default.Get("nome", string.Empty);
+        var saved = Preferences.Default.Get("nome", string.Empty);
+        if (!string.IsNullOrWhiteSpace(saved)) Nome = saved;
         Escola = Preferences.Default.Get("escola", string.Empty);
-        Provincia = Preferences.Default.Get("provincia", string.Empty);
+        var prov = Preferences.Default.Get("provincia", string.Empty);
+        if (!string.IsNullOrWhiteSpace(prov)) Provincia = prov;
     }
-
-    [ObservableProperty]
-    private string _codigoConvite = string.Empty;
 
     [RelayCommand]
     private async Task AssociarEscolaAsync()
@@ -64,5 +70,11 @@ public partial class ProfilePageModel : ObservableObject
         Preferences.Default.Set("escola", Escola);
         Preferences.Default.Set("provincia", Provincia);
         await Shell.Current.DisplayAlert("Sucesso", "Perfil guardado!", "OK");
+    }
+
+    [RelayCommand]
+    private async Task GoAchievements()
+    {
+        await Shell.Current.GoToAsync("//AchievementsPage");
     }
 }

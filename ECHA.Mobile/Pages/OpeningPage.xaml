@@ -2,61 +2,227 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
              x:Class="ECHA.Mobile.Pages.OpeningPage"
              x:DataType="pageModels:OpeningPageModel"
-             Title="Bem-vindo"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-    <VerticalStackLayout Padding="24"
-                         Spacing="32"
-                         VerticalOptions="Center">
-        <!-- Icon -->
-        <Border WidthRequest="96"
-                HeightRequest="96"
-                BackgroundColor="{StaticResource Primary}"
-                Opacity="0.1"
-                StrokeShape="RoundRectangle 24"
-                HorizontalOptions="Center">
-            <Label Text="history_edu"
-                   FontFamily="FluentSystemIcons-Regular"
-                   FontSize="48"
-                   TextColor="{StaticResource Primary}"
+    <Grid RowDefinitions="*,Auto">
+        <Grid Grid.Row="0">
+            <Image Source="https://lh3.googleusercontent.com/aida-public/AB6AXuBWwg3rRKyXgefdUd7cQhX6i6BU66p3sC5n6bnGYihm-P9Qqq-isKjJJ_bfvkEF7HePX1GsQTytMeyv3cdCqEhgj4FlIhxdl4VRaZGE15hBmBYop3zaPmFXyTR566MIQEa1OOP6G1yLmuI1ypZxKbp4gooQ_Q-abBfCFSuybTh3KG9rTY-hs9WIlPVsEvamkCX7DaqEWyaNWURJlbTDImP"
+                   Aspect="AspectFit"
+                   Opacity="0.08"
                    HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-        </Border>
+                   VerticalOptions="Center"
+                   InputTransparent="True" />
 
-        <!-- Title -->
-        <VerticalStackLayout Spacing="8">
-            <Label Text="Economia com História"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   TextColor="{StaticResource OnSurface}"
-                   HorizontalTextAlignment="Center"/>
-            <Label Text="Angola"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   TextColor="{StaticResource Primary}"
-                   HorizontalTextAlignment="Center"/>
-        </VerticalStackLayout>
+            <ScrollView Padding="24,16,24,24" VerticalScrollBarVisibility="Never">
+                <VerticalStackLayout Spacing="0">
+                    <!-- Top bar -->
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,8,0,16">
+                        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                            <Label Text="🗺️" FontSize="22" VerticalTextAlignment="Center" />
+                            <Label Text="Economia com História"
+                                   TextColor="{StaticResource Primary}"
+                                   FontAttributes="Bold"
+                                   FontSize="18"
+                                   VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Column="1" Spacing="12" VerticalOptions="Center">
+                            <Label Text="🔔" FontSize="22" VerticalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoNotificationsCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Border WidthRequest="32" HeightRequest="32"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 16"
+                                    BackgroundColor="{StaticResource PrimaryContainer}">
+                                <Image Source="https://lh3.googleusercontent.com/aida-public/AB6AXuBDIaofLpZ-tu1GjZnRGTDq65KFZFrSqohRiWmQmyChRj9hsyF6dAnGhnazTJHYBn9u5e0IyVN7XWF1dVOPXKFCNe11bS8nTF-jHaD7Fc6fbbwq_t48HjWCKebmtMjLa7gof9awFzyjAXs9bPV6bStXM6zJwAzBX4dnaOKg9o2JEzA8HKuqF_Kx72yJgj6qaLvZLSA3q2wiqQe09uEzUOQpaZKf9xXw50SDlmBUVLRSBWgQIl6j2-xCMyornIJ1ht-LT5MWZbdHKd1S"
+                                       Aspect="AspectFill" />
+                            </Border>
+                        </HorizontalStackLayout>
+                    </Grid>
 
-        <!-- Description -->
-        <Label Text="Aprender e transformar realidades através da preservação da narrativa económica nacional."
-               FontSize="16"
-               TextColor="{StaticResource OnSurfaceVariant}"
-               HorizontalTextAlignment="Center"
-               MaximumWidthRequest="280"/>
+                    <!-- Hero -->
+                    <VerticalStackLayout Spacing="12" Margin="0,24,0,32">
+                        <Label Text="O ARQUIVO DIGITAL"
+                               TextColor="{StaticResource Primary}"
+                               FontAttributes="Bold"
+                               FontSize="11"
+                               CharacterSpacing="2" />
+                        <Label FontSize="34" FontAttributes="Bold" LineHeight="1.15">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Bem-vindo ao&#10;" TextColor="{StaticResource OnSurface}" />
+                                    <Span Text="Economia com História" TextColor="{StaticResource Primary}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="Descubra a jornada económica de Angola através de uma curadoria digital exclusiva."
+                               TextColor="{StaticResource OnSurfaceVariant}"
+                               FontSize="16"
+                               LineHeight="1.4" />
+                    </VerticalStackLayout>
 
-        <!-- Button -->
-        <Button Text="Entrar no Portal"
-                Command="{Binding EnterPortalCommand}"
-                BackgroundColor="{StaticResource ActionYellow}"
-                TextColor="{StaticResource OnActionYellow}"
-                FontAttributes="Bold"
-                FontSize="16"
-                CornerRadius="24"
-                Padding="0, 16"
-                MaximumWidthRequest="280"
-                HorizontalOptions="Fill"/>
-    </VerticalStackLayout>
+                    <!-- Bento grid -->
+                    <VerticalStackLayout Spacing="16">
+                        <!-- Explorar -->
+                        <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="24"
+                                MinimumHeightRequest="160">
+                            <Border.Shadow>
+                                <Shadow Brush="#1A1C1C" Opacity="0.06" Radius="32" Offset="0,8" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoExploreCommand}" />
+                            </Border.GestureRecognizers>
+                            <Grid>
+                                <BoxView Color="{StaticResource Primary}"
+                                         WidthRequest="4"
+                                         HorizontalOptions="Start"
+                                         Margin="-24, -24, 0, -24" />
+                                <VerticalStackLayout Spacing="24">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="🧭" FontSize="28" />
+                                        <Border Grid.Column="1"
+                                                BackgroundColor="#1A570013"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 12"
+                                                Padding="8,4">
+                                            <Label Text="NOVO"
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="10" />
+                                        </Border>
+                                    </Grid>
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="Explorar" FontAttributes="Bold" FontSize="20" TextColor="{StaticResource OnSurface}" />
+                                        <Label Text="Aceda à linha do tempo económica." FontSize="13" TextColor="{StaticResource OnSurfaceVariant}" />
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!-- Quiz + Fórum -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                            <Border BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="20"
+                                    MinimumHeightRequest="140">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoQuizCommand}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="24">
+                                    <Label Text="🏅" FontSize="24" TextColor="{StaticResource Gray500}" />
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="Quiz" FontAttributes="Bold" FontSize="17" TextColor="{StaticResource OnSurface}" />
+                                        <Label Text="Teste o seu conhecimento." FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Column="1"
+                                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="20"
+                                    MinimumHeightRequest="140">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoForumCommand}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="24">
+                                    <Label Text="💬" FontSize="24" />
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="Fórum" FontAttributes="Bold" FontSize="17" TextColor="{StaticResource OnSurface}" />
+                                        <Label Text="Debates e insights." FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+
+                        <!-- Comentários -->
+                        <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="24">
+                            <Border.Shadow>
+                                <Shadow Brush="#1A1C1C" Opacity="0.06" Radius="32" Offset="0,8" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoForumCommand}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
+                                <Border WidthRequest="48" HeightRequest="48"
+                                        BackgroundColor="{StaticResource SurfaceContainer}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 24">
+                                    <Label Text="💭" FontSize="20"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center" />
+                                </Border>
+                                <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                    <Label Text="Comentários" FontAttributes="Bold" FontSize="17" TextColor="{StaticResource OnSurface}" />
+                                    <Label Text="Feedback da comunidade académica." FontSize="13" TextColor="{StaticResource OnSurfaceVariant}" />
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <!-- Perfil -->
+                        <Border BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="20"
+                                WidthRequest="160"
+                                HorizontalOptions="Start"
+                                MinimumHeightRequest="140">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoProfileCommand}" />
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="24">
+                                <Label Text="👤" FontSize="24" />
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Perfil" FontAttributes="Bold" FontSize="17" TextColor="{StaticResource OnSurface}" />
+                                    <Label Text="Gira o seu progresso." FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Destaque -->
+                    <Border BackgroundColor="{StaticResource Tertiary}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="32"
+                            Margin="0,48,32,24">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Destaque do Mês"
+                                   FontAttributes="Bold"
+                                   FontSize="20"
+                                   TextColor="{StaticResource OnTertiary}" />
+                            <Label Text="A evolução da moeda Kwanza: do período colonial à estabilização moderna."
+                                   FontSize="14"
+                                   TextColor="{StaticResource OnTertiaryContainer}"
+                                   LineHeight="1.4" />
+                            <Button Text="Ler Documento"
+                                    Command="{Binding GoExploreCommand}"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="{StaticResource OnPrimary}"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="8"
+                                    Padding="24,12"
+                                    HorizontalOptions="Start"
+                                    Margin="0,8,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <controls:AppBottomNav Grid.Row="1" ActiveTab="aprender" />
+    </Grid>
 </ContentPage>
