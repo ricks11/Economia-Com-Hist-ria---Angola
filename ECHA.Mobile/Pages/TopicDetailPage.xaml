@@ -2,29 +2,146 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
-             xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
              x:Class="ECHA.Mobile.Pages.TopicDetailPage"
              x:DataType="pageModels:TopicDetailPageModel"
-             Title="{Binding Topico.Titulo}">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
-    <StackLayout Padding="20" Spacing="10">
-        <Label Text="{Binding Topico.Titulo}" FontSize="24" FontAttributes="Bold" />
-        <Label Text="{Binding Topico.Descricao}" />
-        
-        <CollectionView ItemsSource="{Binding Respostas}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:CompileBindings="False">
-                    <Frame Margin="0,5" Padding="10">
-                        <StackLayout>
-                            <Label Text="{Binding Conteudo}" />
-                            <HorizontalStackLayout Spacing="10">
-                                <Button Text="Reagir" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ReagirCommand}" CommandParameter="{Binding .}" />
-                                <Button Text="Denunciar" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DenunciarCommand}" CommandParameter="{Binding .}" />
-                            </HorizontalStackLayout>
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </StackLayout>
+    <Grid RowDefinitions="*,Auto,Auto">
+        <ScrollView Grid.Row="0" Padding="24,16,24,16" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="20">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Label Text="←" FontSize="24" TextColor="{StaticResource OnSurface}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Column="1"
+                           Text="Discussão"
+                           FontAttributes="Bold"
+                           FontSize="18"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Label Grid.Column="2" Text="🚩" FontSize="20" VerticalTextAlignment="Center" />
+                </Grid>
+
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <Border WidthRequest="44" HeightRequest="44"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 22"
+                            BackgroundColor="{StaticResource SurfaceContainerHigh}">
+                        <Label Text="👨‍🏫" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                        <Label Text="{Binding AuthorName}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                        <Label Text="{Binding AuthorMeta}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2" Text="⚠️" FontSize="18" VerticalTextAlignment="Center" />
+                </Grid>
+
+                <Label Text="{Binding TopicTitle}"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource OnSurface}"
+                       LineHeight="1.25" />
+
+                <Border IsVisible="{Binding IsPrivate}"
+                        BackgroundColor="{StaticResource SurfaceContainerLow}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12,8">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="🔒" FontSize="14" VerticalTextAlignment="Center" />
+                        <Label Text="Conteúdo Privado - Acesso Restrito"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Label Text="{Binding TopicBody}"
+                       FontSize="15"
+                       TextColor="{StaticResource OnSurfaceVariant}"
+                       LineHeight="1.45" />
+
+                <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,4,0,0">
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="💬" FontSize="16" />
+                        <Label Text="{Binding CommentCountLabel}" FontSize="13" TextColor="{StaticResource OnSurfaceVariant}" VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                    <Button Grid.Column="2"
+                            Text="Partilhar"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource Primary}"
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            Padding="0" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                    <Label Text="Respostas da Comunidade" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource OnSurface}" />
+                    <Label Grid.Column="1" Text="Recentes ▾" FontSize="13" TextColor="{StaticResource OnSurfaceVariant}" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="14" BindableLayout.ItemsSource="{Binding DisplayReplies}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="pageModels:TopicReplyCard">
+                            <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="16">
+                                <VerticalStackLayout Spacing="10">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label>
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Author}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
+                                                    <Span Text="  •  " TextColor="{StaticResource OnSurfaceVariant}" />
+                                                    <Span Text="{Binding TimeAgo}" TextColor="{StaticResource OnSurfaceVariant}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Column="1" Text="⚠️" FontSize="14" />
+                                    </Grid>
+                                    <Label Text="{Binding Content}" FontSize="14" TextColor="{StaticResource OnSurfaceVariant}" LineHeight="1.4" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Composer -->
+        <Border Grid.Row="1"
+                BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                StrokeThickness="0"
+                Padding="16,12">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <Border BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Padding="16,4">
+                    <Entry Placeholder="Escreva a sua resposta..."
+                           PlaceholderColor="{StaticResource Gray400}"
+                           TextColor="{StaticResource OnSurface}"
+                           BackgroundColor="Transparent" />
+                </Border>
+                <Border Grid.Column="1"
+                        WidthRequest="44" HeightRequest="44"
+                        BackgroundColor="{StaticResource Primary}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label Text="➤" TextColor="White" FontSize="18"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <controls:AppBottomNav Grid.Row="2" ActiveTab="participar" />
+    </Grid>
 </ContentPage>

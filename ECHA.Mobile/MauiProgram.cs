@@ -30,6 +30,18 @@ namespace ECHA.Mobile
                     fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
                 });
 
+            // The login design draws its own rounded input surfaces. Remove the
+            // platform Entry chrome so it does not add a second border/underline.
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("LoginEntryChrome", (handler, view) =>
+            {
+#if WINDOWS
+                handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                handler.PlatformView.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+#elif ANDROID
+                handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+#endif
+            });
+
 #if DEBUG
     		builder.Logging.AddDebug();
     		builder.Services.AddLogging(configure => configure.AddDebug());
@@ -98,7 +110,9 @@ namespace ECHA.Mobile
             builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5000/"); // Update with production URL later
+                client.BaseAddress = new Uri(OperatingSystem.IsAndroid()
+                    ? "http://10.0.2.2:5194/"
+                    : "http://localhost:5194/");
             })
             .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
 

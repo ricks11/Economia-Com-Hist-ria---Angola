@@ -2,13 +2,207 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
              x:Class="ECHA.Mobile.Pages.CreateTopicPage"
              x:DataType="pageModels:CreateTopicPageModel"
-             Title="Novo Tópico">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
-    <StackLayout Padding="20" Spacing="10">
-        <Entry Text="{Binding Titulo}" Placeholder="Título" />
-        <Editor Text="{Binding Descricao}" Placeholder="Descrição" HeightRequest="150" />
-        <Button Text="Criar Tópico" Command="{Binding CriarTopicoCommand}" />
-    </StackLayout>
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0" Padding="24,16,24,24" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="24">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Label Text="☰" FontSize="22" TextColor="{StaticResource Gray500}" VerticalTextAlignment="Center" />
+                    <Label Grid.Column="1"
+                           Text="THE SOVEREIGN ARCHIVE"
+                           TextColor="{StaticResource Primary}"
+                           FontAttributes="Bold"
+                           FontSize="12"
+                           CharacterSpacing="1"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2" Text="⋮" FontSize="22" TextColor="{StaticResource Gray500}" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Criar Novo Tópico"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Label Text="Inicie uma nova discussão no acervo documental."
+                           FontSize="14"
+                           TextColor="{StaticResource OnSurfaceVariant}" />
+                </VerticalStackLayout>
+
+                <!-- Public / Private -->
+                <VerticalStackLayout Spacing="12">
+                    <Border StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="16"
+                            BackgroundColor="{StaticResource SurfaceContainerLow}">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsPublic}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryFixed}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsPublic}" Value="False">
+                                <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetPublicCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="14">
+                            <Label Text="🌐" FontSize="24" VerticalTextAlignment="Center" />
+                            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                <Label Text="Fórum Público" FontAttributes="Bold" FontSize="15" TextColor="{StaticResource OnSurface}" />
+                                <Label Text="Qualquer utilizador pode visualizar este tópico. Requer autenticação para comentar."
+                                       FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <Border StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="16">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsPublic}" Value="False">
+                                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryFixed}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsPublic}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainerLow}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SetPrivateCommand}" />
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="14">
+                            <Label Text="🔒" FontSize="24" VerticalTextAlignment="Center" />
+                            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                <Label Text="Fórum Privado" FontAttributes="Bold" FontSize="15" TextColor="{StaticResource OnSurface}" />
+                                <Label Text="Acesso restrito. Apenas utilizadores convidados poderão visualizar e participar."
+                                       FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Invite (private) -->
+                <VerticalStackLayout Spacing="8" IsVisible="{Binding IsPublic, Converter={StaticResource NotConverter}}">
+                    <Label Text="Convidar Participantes" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                    <Border BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="14,4">
+                        <Entry Text="{Binding Invitees}"
+                               Placeholder="Insira emails ou IDs separados por vírgula"
+                               PlaceholderColor="{StaticResource Gray400}"
+                               TextColor="{StaticResource OnSurface}"
+                               BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Título do Tópico" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                    <Border BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="14,4">
+                        <Entry Text="{Binding Titulo}"
+                               Placeholder="Escreva um título claro e específico"
+                               PlaceholderColor="{StaticResource Gray400}"
+                               TextColor="{StaticResource OnSurface}"
+                               BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Categoria" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                    <Border BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="14,10">
+                        <Picker Title="Selecione uma categoria histórica ou económica"
+                                ItemsSource="{Binding Categorias}"
+                                SelectedItem="{Binding SelectedCategoria}"
+                                TextColor="{StaticResource OnSurface}"
+                                BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Mensagem Inicial" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                    <Border BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="14,8">
+                        <Editor Text="{Binding Descricao}"
+                                Placeholder="Partilhe o contexto da discussão..."
+                                PlaceholderColor="{StaticResource Gray400}"
+                                TextColor="{StaticResource OnSurface}"
+                                BackgroundColor="Transparent"
+                                HeightRequest="120"
+                                AutoSize="TextChanges" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Allow comments -->
+                <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Permitir Comentários" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                            <Label Text="Outros utilizadores poderão responder a este tópico."
+                                   FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding AllowComments}"
+                                OnColor="{StaticResource Primary}"
+                                VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Add quiz -->
+                <Border BackgroundColor="{StaticResource SurfaceContainerLow}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16">
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="❓" FontSize="22" VerticalTextAlignment="Center" />
+                        <Label Text="Adicionar Quiz ao Tópico"
+                               FontAttributes="Bold"
+                               FontSize="14"
+                               TextColor="{StaticResource OnSurface}"
+                               VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Rules -->
+                <Border BackgroundColor="{StaticResource SurfaceContainerLow}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16">
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="⚖️" FontSize="20" VerticalTextAlignment="Start" />
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Regras de Moderação" FontAttributes="Bold" FontSize="13" TextColor="{StaticResource OnSurface}" />
+                            <Label Text="Ao publicar, concorda em manter um tom académico e respeitoso. Discursos de ódio ou desinformação resultarão na remoção do tópico."
+                                   FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" LineHeight="1.35" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Button Text="Publicar Tópico  →"
+                        Command="{Binding CriarTopicoCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource OnPrimary}"
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        CornerRadius="8"
+                        Padding="16,16"
+                        Margin="0,8,0,16" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:AppBottomNav Grid.Row="1" ActiveTab="participar" />
+    </Grid>
 </ContentPage>

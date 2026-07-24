@@ -7,6 +7,7 @@ public interface IApiService
 {
     Task<T?> GetAsync<T>(string endpoint);
     Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest data);
+    void SetAccessToken(string? accessToken);
 }
 
 public class ApiService : IApiService
@@ -42,5 +43,12 @@ public class ApiService : IApiService
         }
         
         return await response.Content.ReadFromJsonAsync<TResponse>(_serializerOptions);
+    }
+
+    public void SetAccessToken(string? accessToken)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = string.IsNullOrWhiteSpace(accessToken)
+            ? null
+            : new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
     }
 }
