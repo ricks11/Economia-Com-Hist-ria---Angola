@@ -28,5 +28,50 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<!-- ═══════════════════════════════════════════════════════════════
+	     APP TRANSPORT SECURITY (ATS)
+	     A API usa HTTPS com certificado válido (Traefik + Let's Encrypt).
+	     O ATS do iOS permite HTTPS por padrão — esta secção explicita
+	     isso e garante que não há bloqueios silenciosos.
+	     ═══════════════════════════════════════════════════════════════ -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Exige HTTPS em todas as ligações (padrão seguro) -->
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+
+		<!-- Domínio da API pública — certificado TLS válido via Traefik/Let's Encrypt -->
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.economia-com-historia.work.gd</key>
+			<dict>
+				<!-- Permite ligações HTTPS a este domínio explicitamente -->
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<false/>
+				<!-- Permite subdomínios (ex: www.) se necessário no futuro -->
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<!-- Requer TLS 1.2+ (já é o padrão, mas explicitado para clareza) -->
+				<key>NSExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+				<!-- Permite Forward Secrecy para máxima segurança -->
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+
+	<!-- Necessário em iOS 14+ para ligações à rede local durante debug/testes -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Esta aplicação necessita de acesso à rede para comunicar com a plataforma Economia com História.</string>
+
+	<!-- Necessário em iOS 14+ para descoberta Bonjour durante debug (simulador) -->
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+		<string>_https._tcp</string>
+	</array>
 </dict>
 </plist>
+

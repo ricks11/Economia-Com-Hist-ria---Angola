@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using ECHA.Mobile.Services;
@@ -94,11 +95,19 @@ namespace ECHA.Mobile
             builder.Services.AddSingleton<OpeningPageModel>();
             builder.Services.AddTransient<OpeningPage>();
             
-            builder.Services.AddSingleton<ApiService>();
+            // ── Serviços de autenticação e armazenamento seguro ────────────────────
+            builder.Services.AddSingleton<ITokenService, SecureTokenService>();
+
+            // ── Cliente HTTP com URL lida das configurações ───────────────────────
             builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5000/"); // Update with production URL later
+                // Em Debug: usa localhost; em Release: usa appsettings.Production.json
+                var config = builder.Configuration;
+                var baseUrl = config["Api:BaseUrl"] ?? "https://api.economia-com-historia.work.gd/";
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.Timeout = TimeSpan.FromSeconds(30);
             })
             .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
 
