@@ -1,39 +1,38 @@
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace ECHA.Mobile.Services;
 
+/// <summary>
+/// Contrato do serviço HTTP central da app mobile.
+/// O token JWT é gerido automaticamente pelo <see cref="AuthHeaderHandler"/> —
+/// não é necessário distinguir chamadas "públicas" de "autenticadas" na interface.
+/// </summary>
 public interface IApiService
 {
-    // ── Chamadas públicas (sem token) ──────────────────────────────────────
     Task<T?> GetAsync<T>(string endpoint);
     Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest data);
-
-    // ── Chamadas autenticadas (injetam Bearer token automaticamente) ────────
-    Task<T?> AuthGetAsync<T>(string endpoint);
-    Task<TResponse?> AuthPostAsync<TRequest, TResponse>(string endpoint, TRequest data);
-    Task<TResponse?> AuthPutAsync<TRequest, TResponse>(string endpoint, TRequest data);
-    Task AuthDeleteAsync(string endpoint);
+    Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest data);
+    Task DeleteAsync(string endpoint);
 }
 
 /// <summary>
-/// Serviço HTTP central da app mobile.
-/// • Chamadas <c>Get/Post</c> são públicas (sem autenticação).
-/// • Chamadas <c>AuthGet/AuthPost/AuthPut/AuthDelete</c> injetam automaticamente
-///   o token JWT no cabeçalho <c>Authorization: Bearer …</c>.
+/// Implementação do cliente HTTP da app mobile.
+///
+/// Responsabilidade única: serialização / deserialização de pedidos HTTP.
+/// A injecção do token Bearer e o redirecionamento em caso de sessão expirada
+/// são tratados globalmente pelo <see cref="AuthHeaderHandler"/>, que actua
+/// como middleware da camada de transporte.
 /// </summary>
 public class ApiService : IApiService
 {
     private readonly HttpClient _httpClient;
-    private readonly ITokenService _tokenService;
     private readonly JsonSerializerOptions _serializerOptions;
 
-    public ApiService(HttpClient httpClient, ITokenService tokenService)
+    public ApiService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _tokenService = tokenService;
         _serializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -41,13 +40,13 @@ public class ApiService : IApiService
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // CHAMADAS PÚBLICAS
+    // MÉTODOS HTTP  (token injectado automaticamente pelo AuthHeaderHandler)
     // ─────────────────────────────────────────────────────────────────────
 
     public async Task<T?> GetAsync<T>(string endpoint)
     {
         var response = await _httpClient.GetAsync(endpoint);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
         return await response.Content.ReadFromJsonAsync<T>(_serializerOptions);
     }
 
@@ -58,68 +57,28 @@ public class ApiService : IApiService
         return await response.Content.ReadFromJsonAsync<TResponse>(_serializerOptions);
     }
 
-    // ─────────────────────────────────────────────────────────────────────
-    // CHAMADAS AUTENTICADAS  (Bearer token injetado automaticamente)
-    // ─────────────────────────────────────────────────────────────────────
-
-    public async Task<T?> AuthGetAsync<T>(string endpoint)
+    public async Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest data)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-        await AttachBearerTokenAsync(request);
-        var response = await _httpClient.SendAsync(request);
-        await EnsureSuccessAsync(response);
-        return await response.Content.ReadFromJsonAsync<T>(_serializerOptions);
-    }
-
-    public async Task<TResponse?> AuthPostAsync<TRequest, TResponse>(string endpoint, TRequest data)
-    {
-        using var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
-        request.Content = JsonContent.Create(data, options: _serializerOptions);
-        await AttachBearerTokenAsync(request);
-        var response = await _httpClient.SendAsync(request);
+        var response = await _httpClient.PutAsJsonAsync(endpoint, data, _serializerOptions);
         await EnsureSuccessAsync(response);
         return await response.Content.ReadFromJsonAsync<TResponse>(_serializerOptions);
     }
 
-    public async Task<TResponse?> AuthPutAsync<TRequest, TResponse>(string endpoint, TRequest data)
+    public async Task DeleteAsync(string endpoint)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Put, endpoint);
-        request.Content = JsonContent.Create(data, options: _serializerOptions);
-        await AttachBearerTokenAsync(request);
-        var response = await _httpClient.SendAsync(request);
-        await EnsureSuccessAsync(response);
-        return await response.Content.ReadFromJsonAsync<TResponse>(_serializerOptions);
-    }
-
-    public async Task AuthDeleteAsync(string endpoint)
-    {
-        using var request = new HttpRequestMessage(HttpMethod.Delete, endpoint);
-        await AttachBearerTokenAsync(request);
-        var response = await _httpClient.SendAsync(request);
+        var response = await _httpClient.DeleteAsync(endpoint);
         await EnsureSuccessAsync(response);
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // HELPERS PRIVADOS
+    // HELPER PRIVADO
     // ─────────────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Lê o token do SecureStorage e injeta-o no cabeçalho Authorization da requisição.
-    /// Se não existir token, lança UnauthorizedAccessException para que o chamador
-    /// possa redirecionar para o ecrã de login.
-    /// </summary>
-    private async Task AttachBearerTokenAsync(HttpRequestMessage request)
-    {
-        var token = await _tokenService.GetTokenAsync();
-        if (string.IsNullOrEmpty(token))
-            throw new UnauthorizedAccessException("Sessão expirada. Por favor, faça login novamente.");
-
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-    }
-
-    /// <summary>
-    /// Verifica o código de resposta e lança excepções tipificadas para tratamento
-    /// consistente em toda a app (401 → redireciona para login, etc.).
+    /// Verifica o código de resposta e lança excepções tipificadas.
+    /// Nota: o 401 também é tratado pelo AuthHeaderHandler para redirecionar
+    /// para o Login — este método lança excepção adicional para PageModels
+    /// que queiram tratar o erro localmente (ex: mostrar mensagem).
     /// </summary>
     private static async Task EnsureSuccessAsync(HttpResponseMessage response)
     {
@@ -127,13 +86,13 @@ public class ApiService : IApiService
 
         var body = await response.Content.ReadAsStringAsync();
 
-        if (response.StatusCode == HttpStatusCode.Unauthorized)
-            throw new UnauthorizedAccessException("Sessão inválida ou expirada.");
-
-        if (response.StatusCode == HttpStatusCode.Forbidden)
-            throw new UnauthorizedAccessException("Não tem permissão para realizar esta acção.");
-
-        throw new HttpRequestException($"API Error {(int)response.StatusCode}: {body}");
+        throw response.StatusCode switch
+        {
+            HttpStatusCode.Unauthorized  => new UnauthorizedAccessException("Sessão inválida ou expirada."),
+            HttpStatusCode.Forbidden     => new UnauthorizedAccessException("Não tem permissão para realizar esta acção."),
+            HttpStatusCode.NotFound      => new KeyNotFoundException($"Recurso não encontrado: {response.RequestMessage?.RequestUri?.PathAndQuery}"),
+            HttpStatusCode.TooManyRequests => new InvalidOperationException("Demasiados pedidos. Aguarde um momento e tente novamente."),
+            _                            => new HttpRequestException($"Erro da API [{(int)response.StatusCode}]: {body}")
+        };
     }
 }
-

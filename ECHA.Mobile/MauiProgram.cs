@@ -110,7 +110,12 @@ namespace ECHA.Mobile
             // ── Serviços de autenticação e armazenamento seguro ────────────────────
             builder.Services.AddSingleton<ITokenService, SecureTokenService>();
 
-            // ── Cliente HTTP com URL lida das configurações ───────────────────────
+            // AuthHeaderHandler é Transient por exigência do HttpClientFactory:
+            // cada HttpClient precisa da sua própria instância do handler para
+            // evitar conflitos de estado (ex: a guarda _isRedirecting).
+            builder.Services.AddTransient<AuthHeaderHandler>();
+
+            // ── Cliente HTTP com URL lida das configurações + handler de autenticação ───
             builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
             {
@@ -121,6 +126,10 @@ namespace ECHA.Mobile
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
+            // O AuthHeaderHandler actua como middleware: injeta o Bearer token
+            // em todos os pedidos de saída e interceta 401 para redirecionar ao login.
+            .AddHttpMessageHandler<AuthHeaderHandler>()
+            // Polly: retry automático em erros transitórios de rede (timeout, 5xx).
             .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
 
             return builder.Build();
