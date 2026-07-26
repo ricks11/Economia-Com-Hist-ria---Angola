@@ -30,8 +30,6 @@ namespace ECHA.Mobile.PageModels
         public MainPageModel(IApiService apiService)
         {
             _apiService = apiService;
-            var token = Preferences.Default.Get("access_token", string.Empty);
-            _apiService.SetAccessToken(token);
             WelcomeMessage = $"Bem-vindo ao, {Preferences.Default.Get("user_name", "Visitante")}";
         }
 

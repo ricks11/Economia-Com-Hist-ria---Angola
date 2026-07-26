@@ -16,7 +16,8 @@ public record PerfilResponseDto(
     int? EscolaId, 
     string? EscolaNome, 
     int? TurmaId, 
-    string? TurmaNome);
+    string? TurmaNome,
+    string? AvatarConfig);
 
 public class UpdatePerfilDto
 {
@@ -31,7 +32,14 @@ public class UpdatePerfilDto
 
     [Range(1, int.MaxValue, ErrorMessage = "Turma ID deve ser válido")]
     public int? TurmaId { get; set; }
+
+    [StringLength(50, ErrorMessage = "Telemóvel não pode exceder 50 caracteres")]
+    public string? Telemovel { get; set; }
 }
+
+public record UpdateAvatarDto(string AvatarBase64);
+
+public record ChangePasswordDto(string PalavraPasseAtual, string NovaPalavraPasse);
 
 public record PerfilDto(
     int Id,

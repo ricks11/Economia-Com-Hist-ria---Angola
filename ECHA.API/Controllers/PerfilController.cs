@@ -2,6 +2,7 @@ using EconomiaComHistoria.Core.DTOs;
 using EconomiaComHistoria.Core.Entities;
 using EconomiaComHistoria.Core.Enums;
 using EconomiaComHistoria.Core.Helpers;
+using EconomiaComHistoria.Core.Interfaces;
 using EconomiaComHistoria.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace ECHA.API.Controllers;
 public class PerfilController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
+    private readonly IAuthService _authService;
 
-    public PerfilController(AppDbContext dbContext)
+    public PerfilController(AppDbContext dbContext, IAuthService authService)
     {
         _dbContext = dbContext;
+        _authService = authService;
     }
 
     private bool TryGetUserId(out int userId)
@@ -103,6 +106,9 @@ public class PerfilController : ControllerBase
         if (!string.IsNullOrEmpty(request.Provincia))
             utilizador.Provincia = request.Provincia;
 
+        if (request.Telemovel is not null)
+            utilizador.Telemovel = request.Telemovel;
+
         // ---- VALIDAÇÃO DE PERMISSÃO PARA ESCOLA ----
         if (request.EscolaId.HasValue)
         {
@@ -173,6 +179,43 @@ public class PerfilController : ControllerBase
 
         var response = MapToPerfilResponseDto(utilizador);
         return Ok(response);
+    }
+
+    [HttpPut("avatar")]
+    public async Task<ActionResult<PerfilResponseDto>> UpdateAvatar(
+        [FromBody] UpdateAvatarDto request,
+        CancellationToken ct)
+    {
+        var utilizador = await GetCurrentUserWithIncludesAsync(ct);
+        if (utilizador is null) return Unauthorized();
+
+        if (string.IsNullOrWhiteSpace(request.AvatarBase64) || request.AvatarBase64.Length > 4_000_000)
+            return BadRequest(new { message = "Imagem de perfil inválida ou demasiado grande." });
+
+        if (!request.AvatarBase64.StartsWith("data:image/", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { message = "A fotografia deve ser uma imagem." });
+
+        utilizador.AvatarConfig = request.AvatarBase64;
+        await _dbContext.SaveChangesAsync(ct);
+        return Ok(MapToPerfilResponseDto(utilizador));
+    }
+
+    [HttpPut("password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto request, CancellationToken ct)
+    {
+        var utilizador = await GetCurrentUserWithIncludesAsync(ct);
+        if (utilizador is null) return Unauthorized();
+
+        if (string.IsNullOrWhiteSpace(request.PalavraPasseAtual) ||
+            string.IsNullOrWhiteSpace(request.NovaPalavraPasse) || request.NovaPalavraPasse.Length < 8)
+            return BadRequest(new { message = "A nova palavra-passe deve ter pelo menos 8 caracteres." });
+
+        if (!_authService.VerifyPassword(request.PalavraPasseAtual, utilizador.PasswordHash))
+            return BadRequest(new { message = "A palavra-passe atual está incorreta." });
+
+        utilizador.PasswordHash = _authService.HashPassword(request.NovaPalavraPasse);
+        await _dbContext.SaveChangesAsync(ct);
+        return Ok(new { message = "Palavra-passe alterada com sucesso." });
     }
 
     [HttpGet("favoritos")]
@@ -249,6 +292,7 @@ public class PerfilController : ControllerBase
             utilizador.EscolaId,
             utilizador.Escola?.Nome,
             utilizador.TurmaId,
-            utilizador.Turma?.Nome);
+            utilizador.Turma?.Nome,
+            utilizador.AvatarConfig);
     }
 }
