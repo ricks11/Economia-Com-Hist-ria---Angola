@@ -65,3 +65,60 @@
             </a>
         </div>
     </div>
+
+    <!-- Ranking Table -->
+    @if (Model != null && Model.Top100 != null && Model.Top100.Any())
+    {
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-stone-200 dark:divide-stone-700">
+                <thead class="bg-stripe">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider">
+                            Pos.
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider">
+                            Investigador
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider">
+                            Pontos
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider">
+                            Quizzes Completados
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider">
+                            Escola
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-stone-200 dark:divide-stone-700">
+                    @foreach (var entrada in Model.Top100)
+                    {
+                        <tr class="hover:bg-stone-50/50 dark:hover:bg-stone-900/50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface-variant">
+                                #@entrada.Posicao
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface-variant">
+                                @entrada.NomeUtilizador
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface-variant">
+                                @entrada.Pontos.ToString("N0")
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface-variant">
+                                @entrada.QuizzesCompletados.ToString("N0")
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface-variant">
+                                @(string.IsNullOrEmpty(entrada.EscolaNome) ? "Não informada" : entrada.EscolaNome)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-12">
+            <p class="text-on-surface-variant/60">Nenhum dado encontrado para os filtros selecionados.</p>
+        </div>
+    }
+</div>
