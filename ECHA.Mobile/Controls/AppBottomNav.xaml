@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ECHA.Mobile.Controls.AppBottomNav" x:Name="Root">
+ <Border Background="#FFFFFF" Stroke="#E2DFDC" StrokeThickness="1" Padding="4,10,4,14" StrokeShape="RoundRectangle 0">
+  <Grid ColumnDefinitions="*,*,*,*,*">
+   <VerticalStackLayout Grid.Column="0" Spacing="4" HorizontalOptions="Center"><VerticalStackLayout.GestureRecognizers><TapGestureRecognizer Tapped="OnInicioTapped" /></VerticalStackLayout.GestureRecognizers><Border Background="#F6E9EA" StrokeThickness="0" StrokeShape="RoundRectangle 10" Padding="14,5"><Label Text="⌂" FontSize="20" TextColor="#6D0F1F" HorizontalTextAlignment="Center" /></Border><Label Text="Explorar" FontSize="11" TextColor="#6D0F1F" HorizontalTextAlignment="Center" /></VerticalStackLayout>
+   <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center"><VerticalStackLayout.GestureRecognizers><TapGestureRecognizer Tapped="OnJogarTapped" /></VerticalStackLayout.GestureRecognizers><Label Text="⌑" FontSize="21" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /><Label Text="Quiz" FontSize="11" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout>
+   <VerticalStackLayout Grid.Column="2" Spacing="4" HorizontalOptions="Center"><VerticalStackLayout.GestureRecognizers><TapGestureRecognizer Tapped="OnParticiparTapped" /></VerticalStackLayout.GestureRecognizers><Label Text="□" FontSize="21" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /><Label Text="Forum" FontSize="11" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout>
+   <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center"><Label Text="◇" FontSize="21" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /><Label Text="Comentarios" FontSize="11" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout>
+   <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center"><VerticalStackLayout.GestureRecognizers><TapGestureRecognizer Tapped="OnPerfilTapped" /></VerticalStackLayout.GestureRecognizers><Label Text="○" FontSize="21" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /><Label Text="Perfil" FontSize="11" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout>
+  </Grid>
+ </Border>
+</ContentView>

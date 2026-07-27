@@ -2,19 +2,190 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
-             xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ECHA.Mobile.Pages.RankingPage"
              x:DataType="pageModels:RankingPageModel"
-             Title="Ranking">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
-    <CollectionView ItemsSource="{Binding Rankings}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="dtos:RankingEntradaDto">
-                <HorizontalStackLayout Spacing="10" Padding="10">
-                    <Label Text="{Binding NomeUtilizador}" FontAttributes="Bold" />
-                    <Label Text="{Binding Pontos}" />
-                </HorizontalStackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding LoadRankingsCommand}" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0" Padding="24,16,24,24" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="24">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Ranking Regional"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Label Grid.Column="1"
+                           Text="Kz 0.00"
+                           FontSize="13"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalTextAlignment="Center" />
+                </Grid>
+
+                <!-- Podium -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" HeightRequest="180" VerticalOptions="End">
+                    <!-- 2nd -->
+                    <VerticalStackLayout Grid.Column="0" VerticalOptions="End" Spacing="8" HorizontalOptions="Center">
+                        <Border WidthRequest="56" HeightRequest="56"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                HorizontalOptions="Center">
+                            <Label Text="👩" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="24" />
+                        </Border>
+                        <Label Text="Ana Paula" FontAttributes="Bold" FontSize="12" HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurface}" />
+                        <Label Text="15,800 pts" FontSize="11" HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Border BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8,8,0,0"
+                                HeightRequest="70"
+                                WidthRequest="90"
+                                HorizontalOptions="Center">
+                            <Label Text="2" FontSize="28" FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource OnSurface}" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <!-- 1st -->
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="End" Spacing="8" HorizontalOptions="Center">
+                        <Label Text="👑" FontSize="20" HorizontalTextAlignment="Center" />
+                        <Border WidthRequest="64" HeightRequest="64"
+                                StrokeThickness="2"
+                                Stroke="{StaticResource ActionYellow}"
+                                StrokeShape="RoundRectangle 32"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                HorizontalOptions="Center">
+                            <Label Text="👨" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="28" />
+                        </Border>
+                        <Label Text="João M." FontAttributes="Bold" FontSize="13" HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurface}" />
+                        <Label Text="12,450 pts" FontSize="11" HorizontalTextAlignment="Center" TextColor="{StaticResource ActionYellow}" />
+                        <Border BackgroundColor="{StaticResource Primary}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8,8,0,0"
+                                HeightRequest="100"
+                                WidthRequest="100"
+                                HorizontalOptions="Center">
+                            <Label Text="1" FontSize="32" FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="White" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <!-- 3rd -->
+                    <VerticalStackLayout Grid.Column="2" VerticalOptions="End" Spacing="8" HorizontalOptions="Center">
+                        <Border WidthRequest="56" HeightRequest="56"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28"
+                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                HorizontalOptions="Center">
+                            <Label Text="🧑" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="24" />
+                        </Border>
+                        <Label Text="Carlos D." FontAttributes="Bold" FontSize="12" HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurface}" />
+                        <Label Text="10,120 pts" FontSize="11" HorizontalTextAlignment="Center" TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Border BackgroundColor="{StaticResource SurfaceContainer}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8,8,0,0"
+                                HeightRequest="55"
+                                WidthRequest="90"
+                                HorizontalOptions="Center">
+                            <Label Text="3" FontSize="26" FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource OnSurface}" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Tabs -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Button Text="Geral"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            CornerRadius="20"
+                            Padding="8,8" />
+                    <Button Grid.Column="1"
+                            Text="Escola"
+                            BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="13"
+                            CornerRadius="20"
+                            Padding="8,8" />
+                    <Button Grid.Column="2"
+                            Text="Província"
+                            BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                            TextColor="{StaticResource OnSurfaceVariant}"
+                            FontSize="13"
+                            CornerRadius="20"
+                            Padding="8,8" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding DisplayRankings}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="pageModels:RankingRowCard">
+                            <Border StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="16"
+                                    BackgroundColor="{StaticResource SurfaceContainerLowest}">
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding IsCurrentUser}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryFixed}" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <Label Text="{Binding Position}"
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                           TextColor="{StaticResource OnSurfaceVariant}"
+                                           VerticalTextAlignment="Center"
+                                           WidthRequest="28" />
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" />
+                                        <Label Text="{Binding Location}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
+                                        <Label Text="{Binding Points}" FontAttributes="Bold" FontSize="15" TextColor="{StaticResource OnSurface}" HorizontalTextAlignment="End" />
+                                        <Label Text="PTS" FontSize="10" TextColor="{StaticResource OnSurfaceVariant}" HorizontalTextAlignment="End" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Border BackgroundColor="{StaticResource Tertiary}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="20">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Suba no Ranking!"
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               TextColor="{StaticResource OnTertiary}" />
+                        <Label Text="Complete o módulo &quot;História da Moeda&quot; para ganhar +500 pontos hoje."
+                               FontSize="13"
+                               TextColor="{StaticResource OnTertiaryContainer}" />
+                        <Button Text="Aprender Agora  📈"
+                                BackgroundColor="{StaticResource ActionYellow}"
+                                TextColor="{StaticResource OnActionYellow}"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                CornerRadius="8"
+                                Padding="16,12"
+                                HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:AppBottomNav Grid.Row="1" ActiveTab="jogar" />
+    </Grid>
 </ContentPage>

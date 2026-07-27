@@ -1,9 +1,11 @@
 using CommunityToolkit.Maui;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using ECHA.Mobile.Services;
 using Polly;
 using Polly.Extensions.Http;
+using System.Reflection;
 
 namespace ECHA.Mobile
 {
@@ -29,6 +31,34 @@ namespace ECHA.Mobile
                     fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
                     fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
                 });
+
+            // Carrega appsettings embutidos (Debug → localhost; Release → produção)
+            var assembly = Assembly.GetExecutingAssembly();
+#if DEBUG
+            using (var stream = assembly.GetManifestResourceStream("ECHA.Mobile.appsettings.json"))
+            {
+                if (stream is not null)
+                    builder.Configuration.AddJsonStream(stream);
+            }
+#else
+            using (var stream = assembly.GetManifestResourceStream("ECHA.Mobile.appsettings.Production.json"))
+            {
+                if (stream is not null)
+                    builder.Configuration.AddJsonStream(stream);
+            }
+#endif
+
+            // The login design draws its own rounded input surfaces. Remove the
+            // platform Entry chrome so it does not add a second border/underline.
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("LoginEntryChrome", (handler, view) =>
+            {
+#if WINDOWS
+                handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                handler.PlatformView.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+#elif ANDROID
+                handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+#endif
+            });
 
 #if DEBUG
     		builder.Logging.AddDebug();
@@ -94,11 +124,29 @@ namespace ECHA.Mobile
             builder.Services.AddSingleton<OpeningPageModel>();
             builder.Services.AddTransient<OpeningPage>();
             
-            builder.Services.AddSingleton<ApiService>();
+            // ── Serviços de autenticação e armazenamento seguro ────────────────────
+            builder.Services.AddSingleton<ITokenService, SecureTokenService>();
+
+            // ── Cliente HTTP com URL lida das configurações ───────────────────────
             builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5000/"); // Update with production URL later
+                var config = builder.Configuration;
+#if DEBUG
+#if ANDROID
+                // Emulador Android: 10.0.2.2 = localhost da máquina anfitriã
+                var baseUrl = config["Api:BaseUrl"] ?? "http://10.0.2.2:5194/";
+                if (baseUrl.Contains("localhost", StringComparison.OrdinalIgnoreCase))
+                    baseUrl = baseUrl.Replace("localhost", "10.0.2.2", StringComparison.OrdinalIgnoreCase);
+#else
+                var baseUrl = config["Api:BaseUrl"] ?? "http://localhost:5194/";
+#endif
+#else
+                var baseUrl = config["Api:BaseUrl"] ?? "https://api.economia-com-historia.work.gd/";
+#endif
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.Timeout = TimeSpan.FromSeconds(30);
             })
             .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
 

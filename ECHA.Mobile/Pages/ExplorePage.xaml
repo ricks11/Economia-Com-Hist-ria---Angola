@@ -3,57 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
              x:Class="ECHA.Mobile.Pages.ExplorePage"
              x:DataType="pageModels:ExplorePageModel"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-    <Grid RowDefinitions="Auto, *">
-        <!-- Top Bar -->
-        <Grid 
-            Grid.Row="0" 
-            Padding="24, 16"
-            ColumnDefinitions="*, Auto"
-            BackgroundColor="{StaticResource SurfaceContainerLowest}"
-            ZIndex="10">
-            <HorizontalStackLayout Grid.Column="0" Spacing="8">
-                <Label Text="🗺️" FontSize="24"/>
-                <Label 
-                    Text="Economia com História"
-                    TextColor="{StaticResource Primary}"
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    VerticalTextAlignment="Center"/>
-            </HorizontalStackLayout>
-            <ImageButton 
-                Grid.Column="1"
-                Source="{StaticResource IconExplore}"
-                WidthRequest="40"
-                HeightRequest="40"
-                BackgroundColor="Transparent"/>
-        </Grid>
-        
-        <!-- Content -->
-        <ScrollView Grid.Row="1" Padding="24" VerticalScrollBarVisibility="Never">
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0" Padding="24,16,24,24" VerticalScrollBarVisibility="Never">
             <VerticalStackLayout Spacing="40">
+                <!-- Top Bar -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="🗺️" FontSize="24"/>
+                        <Label Text="Economia com História"
+                               TextColor="{StaticResource Primary}"
+                               FontAttributes="Bold"
+                               FontSize="18"
+                               VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                    <Label Grid.Column="1" Text="🔍" FontSize="22" VerticalTextAlignment="Center"/>
+                </Grid>
                 <!-- Header -->
                 <VerticalStackLayout Spacing="12">
-                    <Label 
-                        Text="Arquivo Digital"
-                        TextColor="{StaticResource OnSurfaceVariant}"
-                        FontAttributes="Bold"
-                        FontSize="12"
-                        CharacterSpacing="2"/>
-                    <Label 
-                        Text="Explorar Conteúdos"
-                        TextColor="{StaticResource OnSurface}"
-                        FontAttributes="Bold"
-                        FontSize="32"/>
-                    <BoxView 
-                        Color="{StaticResource PrimaryContainer}"
-                        WidthRequest="48"
-                        HeightRequest="4"
-                        CornerRadius="2"/>
+                    <Label Text="Arquivo Digital"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           FontAttributes="Bold"
+                           FontSize="12"
+                           CharacterSpacing="2"/>
+                    <Label Text="Explorar Conteúdos"
+                           TextColor="{StaticResource OnSurface}"
+                           FontAttributes="Bold"
+                           FontSize="32"/>
+                    <BoxView Color="{StaticResource PrimaryContainer}"
+                             WidthRequest="48"
+                             HeightRequest="4"
+                             CornerRadius="2"/>
                 </VerticalStackLayout>
                 
                 <!-- Filter Chips -->

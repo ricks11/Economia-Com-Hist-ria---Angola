@@ -8,6 +8,11 @@
     Shell.FlyoutBehavior="Disabled"
     Title="ECHA.Mobile">
 
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage" />
+
     <!-- Main Navigation Pages -->
     <ShellContent
         Title="Opening"
@@ -18,11 +23,6 @@
         Title="Landing"
         ContentTemplate="{DataTemplate pages:LandingPage}"
         Route="LandingPage" />
-        
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate pages:LoginPage}"
-        Route="LoginPage" />
         
     <ShellContent
         Title="Dashboard"

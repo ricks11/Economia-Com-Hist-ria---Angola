@@ -50,6 +50,10 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Utilizador>()
+            .Property(u => u.AvatarConfig)
+            .HasColumnType("longtext");
+
         // Utilizador — auto-referência na Turma (professor != aluno)
         modelBuilder.Entity<Turma>()
             .HasOne(t => t.Professor)

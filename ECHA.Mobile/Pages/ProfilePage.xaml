@@ -2,27 +2,82 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
-             xmlns:converters="clr-namespace:ECHA.Mobile.Converters"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
+             xmlns:dto="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
              x:Class="ECHA.Mobile.Pages.ProfilePage"
              x:DataType="pageModels:ProfilePageModel"
-             Title="Perfil">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F3F1EF">
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="0" Padding="0,0,0,28">
+                <Grid Padding="20,16" BackgroundColor="White" ColumnDefinitions="*,Auto">
+                    <HorizontalStackLayout Spacing="9">
+                        <Label Text="▰" TextColor="#6D0F1F" FontSize="21" VerticalTextAlignment="Center" />
+                        <Label Text="Economia com História" TextColor="#201E1D" FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                    <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="#6D0F1F" />
+                </Grid>
+
+                <VerticalStackLayout Padding="20,30,20,6" Spacing="6" HorizontalOptions="Center">
+                    <Grid WidthRequest="108" HeightRequest="108" HorizontalOptions="Center" Margin="0,0,0,12">
+                        <Border Stroke="White" StrokeThickness="4" BackgroundColor="#0E2E2A" StrokeShape="RoundRectangle 24">
+                            <Image Source="{Binding AvatarImage}" IsVisible="{Binding HasAvatar}" Aspect="AspectFill" />
+                        </Border>
+                        <Label Text="👤" IsVisible="{Binding HasAvatar, Converter={StaticResource NotConverter}}" FontSize="44" HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Border Background="#6D0F1F" Stroke="White" StrokeThickness="3" StrokeShape="RoundRectangle 16" WidthRequest="32" HeightRequest="32" HorizontalOptions="End" VerticalOptions="End">
+                            <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding ChangeAvatarCommand}" /></Border.GestureRecognizers>
+                            <Label Text="✎" TextColor="White" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <Label Text="{Binding Nome}" TextColor="#6D0F1F" FontSize="23" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding DisplaySubtitle}" TextColor="#6F6B68" FontSize="13" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Padding="20,24,20,4" Spacing="14">
+                    <Border Style="{StaticResource ProfileCardStyle}"><VerticalStackLayout Spacing="8"><Label Text="🔥" FontSize="24" HorizontalTextAlignment="Center" /><Label Text="{Binding StreakText}" FontSize="27" FontAttributes="Bold" TextColor="#201E1D" HorizontalTextAlignment="Center" /><Label Text="STREAK ATUAL" FontSize="11" FontAttributes="Bold" CharacterSpacing="1" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout></Border>
+                    <Border Style="{StaticResource ProfileCardStyle}"><VerticalStackLayout Spacing="8"><Label Text="▣" FontSize="24" TextColor="#2F8B4F" HorizontalTextAlignment="Center" /><Label Text="{Binding PontosText}" FontSize="27" FontAttributes="Bold" TextColor="#201E1D" HorizontalTextAlignment="Center" /><Label Text="PONTOS ACUMULADOS" FontSize="11" FontAttributes="Bold" CharacterSpacing="1" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout></Border>
+                    <Border Style="{StaticResource ProfileCardStyle}"><VerticalStackLayout Spacing="8"><Label Text="⌑" FontSize="25" TextColor="#6D0F1F" HorizontalTextAlignment="Center" /><Label Text="{Binding Nivel, StringFormat='Nível {0}'}" FontSize="27" FontAttributes="Bold" TextColor="#201E1D" HorizontalTextAlignment="Center" /><Label Text="NÍVEL ATUAL" FontSize="11" FontAttributes="Bold" CharacterSpacing="1" TextColor="#A9A5A1" HorizontalTextAlignment="Center" /></VerticalStackLayout></Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Padding="20,30,20,4" Spacing="16">
+                    <Grid ColumnDefinitions="*,Auto"><Label Text="Badges Conquistadas" FontSize="19" FontAttributes="Bold" TextColor="#201E1D" /><Label Grid.Column="1" Text="VER TODOS" TextColor="#6D0F1F" FontSize="12" FontAttributes="Bold"><Label.GestureRecognizers><TapGestureRecognizer Command="{Binding GoAchievementsCommand}" /></Label.GestureRecognizers></Label></Grid>
+                    <CollectionView ItemsSource="{Binding Badges}" HeightRequest="112" HorizontalScrollBarVisibility="Never">
+                        <CollectionView.ItemsLayout><LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" /></CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate><DataTemplate x:DataType="dto:BadgeConquistadoDto"><Border WidthRequest="92" Padding="8" Background="#EBE8E5" StrokeThickness="0" StrokeShape="RoundRectangle 14"><VerticalStackLayout Spacing="7" HorizontalOptions="Center"><Label Text="★" FontSize="27" TextColor="#6D0F1F" HorizontalTextAlignment="Center" /><Label Text="{Binding Nome}" FontSize="10" FontAttributes="Bold" TextColor="#201E1D" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" MaxLines="2" /></VerticalStackLayout></Border></DataTemplate></CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView><Border Padding="16" Background="#EBE8E5" StrokeThickness="0" StrokeShape="RoundRectangle 14"><Label Text="Complete conteúdos e quizzes para conquistar badges." TextColor="#6F6B68" FontSize="12" /></Border></CollectionView.EmptyView>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <Border Margin="20,30,20,0" Background="#6D0F1F" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="22,24">
+                    <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SubscribeCommand}" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="10"><Label Text="PREMIUM ACCESS" FontSize="11" FontAttributes="Bold" CharacterSpacing="1" TextColor="White" /><Label Text="Conteúdos Exclusivos" FontSize="22" FontAttributes="Bold" TextColor="White" /><Label Text="Acesse relatórios profundos sobre a economia colonial e dados exclusivos." FontSize="13" TextColor="#F6E9EA" LineHeight="1.35" /><Button Text="Subscrever por 1.500 Kz/mês" Command="{Binding SubscribeCommand}" BackgroundColor="White" TextColor="#6D0F1F" FontAttributes="Bold" CornerRadius="10" Margin="0,8,0,0" /></VerticalStackLayout>
+                </Border>
+
+                <Border Margin="20,30,20,0" Background="#4C0A15" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="22,24">
+                    <VerticalStackLayout Spacing="11"><Label Text="Próximo Objetivo" FontSize="21" FontAttributes="Bold" TextColor="White" /><Label Text="Continue a explorar conteúdos e quizzes para subir de nível." FontSize="13" TextColor="#F6E9EA" /><ProgressBar Progress="{Binding ProgressFraction}" ProgressColor="White" BackgroundColor="#9D6670" HeightRequest="8" /><Grid ColumnDefinitions="*,Auto"><Label Text="{Binding ProgressoText}" TextColor="White" FontSize="12" FontAttributes="Bold" /><Label Grid.Column="1" Text="{Binding ObjetivoText}" TextColor="White" FontSize="12" /></Grid></VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Padding="20,30,20,4" Spacing="14">
+                    <Label Text="Atividade Recente" FontSize="19" FontAttributes="Bold" TextColor="#201E1D" />
+                    <Border Style="{StaticResource ProfileCardStyle}"><VerticalStackLayout Spacing="9"><Grid ColumnDefinitions="*,Auto"><Label Text="HISTÓRICO DE APRENDIZAGEM" FontSize="10" FontAttributes="Bold" CharacterSpacing="1" TextColor="#A9A5A1" /><Label Grid.Column="1" Text="{Binding ProgressoText}" FontSize="11" FontAttributes="Bold" TextColor="#2F8B4F" /></Grid><Label Text="O teu progresso de aprendizagem" FontSize="16" FontAttributes="Bold" TextColor="#201E1D" /><ProgressBar Progress="{Binding ProgressFraction}" ProgressColor="#6D0F1F" BackgroundColor="#E2DFDC" HeightRequest="6" /></VerticalStackLayout></Border>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="14"><Border Background="#EBE8E5" StrokeThickness="0" StrokeShape="RoundRectangle 16" Padding="18"><VerticalStackLayout Spacing="6"><Label Text="?" FontSize="22" /><Label Text="Meus pontos" FontSize="13" FontAttributes="Bold" TextColor="#201E1D" /><Label Text="{Binding PontosText}" FontSize="24" FontAttributes="Bold" TextColor="#201E1D" /></VerticalStackLayout></Border><Border Grid.Column="1" Background="#EBE8E5" StrokeThickness="0" StrokeShape="RoundRectangle 16" Padding="18"><Border.GestureRecognizers><TapGestureRecognizer Command="{Binding ManageDownloadsCommand}" /></Border.GestureRecognizers><VerticalStackLayout Spacing="6"><Label Text="⇩" FontSize="22" /><Label Text="Offline" FontSize="13" FontAttributes="Bold" TextColor="#201E1D" /><Label Text="{Binding OfflineCount, StringFormat='{0} módulos guardados'}" FontSize="12" TextColor="#6F6B68" /></VerticalStackLayout></Border></Grid>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Padding="20,30,20,4" Spacing="12">
+                    <Label Text="Gestão e Privacidade" FontSize="19" FontAttributes="Bold" TextColor="#201E1D" />
+                    <Border Style="{StaticResource SettingsCardStyle}"><Border.GestureRecognizers><TapGestureRecognizer Command="{Binding EditAccountCommand}" /></Border.GestureRecognizers><Grid ColumnDefinitions="Auto,*,Auto"><Label Text="👤" FontSize="19" /><VerticalStackLayout Grid.Column="1" Margin="14,0"><Label Text="Detalhes da Conta" FontSize="14" FontAttributes="Bold" TextColor="#201E1D" /><Label Text="{Binding Email}" FontSize="11" TextColor="#A9A5A1" /></VerticalStackLayout><Label Grid.Column="2" Text="›" FontSize="24" TextColor="#A9A5A1" /></Grid></Border>
+                    <Border Style="{StaticResource SettingsCardStyle}"><Border.GestureRecognizers><TapGestureRecognizer Command="{Binding ManageDownloadsCommand}" /></Border.GestureRecognizers><Grid ColumnDefinitions="Auto,*,Auto"><Label Text="⇩" FontSize="19" /><Label Grid.Column="1" Text="Gerenciar Downloads" Margin="14,0" FontSize="14" FontAttributes="Bold" TextColor="#201E1D" /><Label Grid.Column="2" Text="›" FontSize="24" TextColor="#A9A5A1" /></Grid></Border>
+                    <Border Style="{StaticResource SettingsCardStyle}"><Border.GestureRecognizers><TapGestureRecognizer Command="{Binding ChangePasswordCommand}" /></Border.GestureRecognizers><Grid ColumnDefinitions="Auto,*,Auto"><Label Text="⌘" FontSize="19" /><Label Grid.Column="1" Text="Alterar Palavra-passe" Margin="14,0" FontSize="14" FontAttributes="Bold" TextColor="#201E1D" /><Label Grid.Column="2" Text="›" FontSize="24" TextColor="#A9A5A1" /></Grid></Border>
+                    <Border Background="#F7E4E6" StrokeThickness="0" StrokeShape="RoundRectangle 14" Padding="16"><Border.GestureRecognizers><TapGestureRecognizer Command="{Binding LogoutCommand}" /></Border.GestureRecognizers><HorizontalStackLayout Spacing="14"><Label Text="⇥" FontSize="19" TextColor="#6D0F1F" /><Label Text="Sair da Conta" FontSize="14" FontAttributes="Bold" TextColor="#6D0F1F" /></HorizontalStackLayout></Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+        <controls:AppBottomNav Grid.Row="1" ActiveTab="perfil" />
+    </Grid>
 
     <ContentPage.Resources>
-        <converters:XPToProgressConverter x:Key="XPToProgressConverter" />
+        <Style x:Key="ProfileCardStyle" TargetType="Border"><Setter Property="Background" Value="White" /><Setter Property="StrokeThickness" Value="0" /><Setter Property="StrokeShape" Value="RoundRectangle 16" /><Setter Property="Padding" Value="20" /></Style>
+        <Style x:Key="SettingsCardStyle" TargetType="Border"><Setter Property="Background" Value="#EBE8E5" /><Setter Property="StrokeThickness" Value="0" /><Setter Property="StrokeShape" Value="RoundRectangle 14" /><Setter Property="Padding" Value="16" /></Style>
     </ContentPage.Resources>
-
-    <StackLayout Padding="20" Spacing="10">
-        <Label Text="{Binding Stats.Nivel, StringFormat='Nível: {0}'}" FontSize="18" FontAttributes="Bold" />
-        <ProgressBar Progress="{Binding Stats.XPAtual, Converter={StaticResource XPToProgressConverter}}" />
-        <Label Text="{Binding Stats.StreakDias, StringFormat='Streak: {0} dias'}" />
-        
-        <Entry Text="{Binding Nome}" Placeholder="Nome" />
-        <Entry Text="{Binding Escola}" Placeholder="Escola" />
-        <Entry Text="{Binding Provincia}" Placeholder="Província" />
-        <Button Text="Salvar" Command="{Binding SaveProfileCommand}" />
-        
-        <Label Text="Associação Institucional" FontAttributes="Bold" Margin="0,20,0,0" />
-        <Entry Text="{Binding CodigoConvite}" Placeholder="Código de Convite" />
-        <Button Text="Associar à Escola" Command="{Binding AssociarEscolaCommand}" />
-    </StackLayout>
 </ContentPage>
