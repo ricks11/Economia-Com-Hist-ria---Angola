@@ -54,7 +54,7 @@ public partial class ProfilePageModel : ObservableObject
         IsBusy = true;
         try
         {
-            var profile = await _api.AuthGetAsync<PerfilResponse>("api/perfil");
+            var profile = await _api.GetAsync<PerfilResponse>("api/perfil");
             if (profile is not null)
             {
                 Nome = profile.Nome;
@@ -72,7 +72,7 @@ public partial class ProfilePageModel : ObservableObject
             // deve impedir o utilizador de abrir o perfil ou terminar a sessão.
             try
             {
-                var progress = await _api.AuthGetAsync<ProgressoUtilizadorDto>("api/perfil/progresso");
+                var progress = await _api.GetAsync<ProgressoUtilizadorDto>("api/perfil/progresso");
                 if (progress is not null)
                 {
                     PontosTotais = progress.PontosTotais;
@@ -119,7 +119,7 @@ public partial class ProfilePageModel : ObservableObject
 
             var mime = string.IsNullOrWhiteSpace(photo.ContentType) ? "image/jpeg" : photo.ContentType;
             var avatar = $"data:{mime};base64,{Convert.ToBase64String(memory.ToArray())}";
-            var response = await _api.AuthPutAsync<UpdateAvatarRequest, PerfilResponse>("api/perfil/avatar", new(avatar));
+            var response = await _api.PutAsync<UpdateAvatarRequest, PerfilResponse>("api/perfil/avatar", new(avatar));
             SetAvatar(response?.AvatarConfig ?? avatar);
         }
         catch (Exception)
@@ -140,7 +140,7 @@ public partial class ProfilePageModel : ObservableObject
 
         try
         {
-            var response = await _api.AuthPutAsync<UpdateProfileRequest, PerfilResponse>("api/perfil",
+            var response = await _api.PutAsync<UpdateProfileRequest, PerfilResponse>("api/perfil",
                 new(newName.Trim(), newProvince.Trim(), newPhone.Trim(), EscolaId, TurmaId));
             if (response is not null)
             {
@@ -173,7 +173,7 @@ public partial class ProfilePageModel : ObservableObject
 
         try
         {
-            await _api.AuthPutAsync<ChangePasswordRequest, MessageResponse>("api/perfil/password", new(current, next));
+            await _api.PutAsync<ChangePasswordRequest, MessageResponse>("api/perfil/password", new(current, next));
             await Shell.Current.DisplayAlert("Palavra-passe", "A palavra-passe foi alterada com sucesso.", "OK");
         }
         catch (Exception)
