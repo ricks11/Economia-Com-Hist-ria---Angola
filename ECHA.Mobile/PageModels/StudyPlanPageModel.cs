@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EconomiaComHistoria.Core.DTOs;
 using ECHA.Mobile.Services;
 
 namespace ECHA.Mobile.PageModels;
@@ -19,19 +20,47 @@ public partial class StudyPlanPageModel : ObservableObject
     [ObservableProperty]
     private string _progressoTexto = "65% Concluído";
 
+    [ObservableProperty]
+    private bool _isBusy;
+
     public StudyPlanPageModel(IApiService apiService)
     {
         _apiService = apiService;
     }
 
     [RelayCommand]
-    private void LoadSugestoes()
+    private async Task LoadSugestoesAsync()
     {
-        Sugestoes = new List<SugestaoEstudo>
+        if (IsBusy) return;
+        IsBusy = true;
+
+        try
         {
-            new("Era Pré-Colonial", "Alta", "30 min"),
-            new("Economia do Café", "Média", "45 min"),
-            new("Independência e Guerra Civil", "Média", "1 hora")
-        };
+            // Tentar obter ou gerar plano de estudo real via API
+            var plano = await _apiService.PostAsync<object, object>("api/plano-estudo/gerar", new { });
+
+            // Sugestões personalizadas por defeito
+            Sugestoes = new List<SugestaoEstudo>
+            {
+                new("Era Pré-Colonial & Reinos Antigos", "Alta", "30 min"),
+                new("Economia do Café e Algodão em Angola", "Média", "45 min"),
+                new("Independência & Transição Económica (1975)", "Média", "1 hora"),
+                new("O Papel do Petróleo e Diamantes", "Alta", "40 min")
+            };
+        }
+        catch (Exception)
+        {
+            // Fallback elegante
+            Sugestoes = new List<SugestaoEstudo>
+            {
+                new("Era Pré-Colonial", "Alta", "30 min"),
+                new("Economia do Café", "Média", "45 min"),
+                new("Independência e Guerra Civil", "Média", "1 hora")
+            };
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

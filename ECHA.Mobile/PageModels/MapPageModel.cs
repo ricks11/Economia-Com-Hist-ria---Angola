@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ECHA.Mobile.Data;
 using ECHA.Mobile.Services;
+using EconomiaComHistoria.Core.DTOs;
 
 namespace ECHA.Mobile.PageModels;
 
@@ -41,32 +42,20 @@ public partial class MapPageModel : ObservableObject
 
         try
         {
-            // Dados de demonstração – substituir pela chamada à API real
-            var progressoSimulado = new Dictionary<string, double>
+            var mapaDto = await _apiService.GetAsync<MapaProgressoDto>("api/mapa/progresso");
+
+            if (mapaDto?.Provincias is null)
             {
-                { "AO-LUA", 0.85 },  // Luanda
-                { "AO-BGO", 0.60 },  // Bengo
-                { "AO-CNO", 0.45 },  // Cuanza Norte
-                { "AO-CUS", 0.30 },  // Cuanza Sul
-                { "AO-MAL", 0.20 },  // Malanje
-                { "AO-UIG", 0.15 },  // Uíge
-                { "AO-ZAI", 0.10 },  // Zaire
-                { "AO-CAB", 0.05 },  // Cabinda
-                { "AO-BGU", 0.70 },  // Benguela
-                { "AO-HUA", 0.40 },  // Huambo
-                { "AO-HUI", 0.25 },  // Huíla
-                { "AO-NAM", 0.00 },  // Namibe
-                { "AO-CNN", 0.00 },  // Cunene
-                { "AO-CCU", 0.00 },  // Cuando-Cubango
-                { "AO-MOX", 0.00 },  // Moxico
-                { "AO-LSU", 0.00 },  // Lunda Sul
-                { "AO-LNO", 0.00 },  // Lunda Norte
-                { "AO-BIE", 0.00 },  // Bié
-            };
+                IsLoading = false;
+                return;
+            }
+
+            var progressoDict = mapaDto.Provincias
+                .ToDictionary(p => p.ProvinciaId, p => p.PercentualExplorado, StringComparer.OrdinalIgnoreCase);
 
             var items = AngolaMapData.AllProvinces.Select(p =>
             {
-                var percentual = progressoSimulado.TryGetValue(p.Id, out var val) ? val : 0.0;
+                var percentual = progressoDict.TryGetValue(p.Id, out var val) ? val : 0.0;
                 var item = new ProvinciaMapItem
                 {
                     Id = p.Id,
@@ -79,10 +68,26 @@ public partial class MapPageModel : ObservableObject
             }).ToList();
 
             Provincias = new ObservableCollection<ProvinciaMapItem>(items);
-
-            // Calcular percentual geral
             PercentualGeral = items.Count > 0 ? items.Average(i => i.PercentualExplorado) : 0.0;
             PercentualGeralTexto = $"{(int)(PercentualGeral * 100)}%";
+        }
+        catch (Exception)
+        {
+            // Falha silenciosa — mapa fica com 0% em todas as províncias
+            var items = AngolaMapData.AllProvinces.Select(p =>
+            {
+                var item = new ProvinciaMapItem
+                {
+                    Id = p.Id,
+                    NomeProvincia = p.Nome,
+                    PathData = p.PathData,
+                    PercentualExplorado = 0.0
+                };
+                item.UpdateCor();
+                return item;
+            }).ToList();
+            Provincias = new ObservableCollection<ProvinciaMapItem>(items);
+            PercentualGeralTexto = "0%";
         }
         finally
         {

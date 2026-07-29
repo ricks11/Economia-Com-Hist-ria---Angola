@@ -266,6 +266,42 @@ public class TurmasController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// GET api/turmas/{id}/ranking
+    /// Retorna o ranking dos alunos de uma turma específica.
+    /// </summary>
+    [HttpGet("{id}/ranking")]
+    [ProducesResponseType(typeof(TurmaRankingResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<TurmaRankingResponseDto>> GetRankingTurma(int id, CancellationToken ct)
+    {
+        if (!TryGetUserId(out var userId)) return Unauthorized();
+
+        var turma = await _context.Turmas
+            .Include(t => t.Alunos)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.Id == id, ct);
+
+        if (turma == null) return NotFound(new { message = "Turma não encontrada." });
+
+        var entradas = turma.Alunos
+            .OrderByDescending(a => a.PontosTotais)
+            .Select((a, index) => new TurmaRankingEntradaDto(
+                index + 1,
+                a.Id,
+                a.Nome,
+                a.PontosTotais,
+                0, // QuizzesCompletados — será enriquecido com tabela de tentativas futura
+                a.Id == userId
+            ))
+            .ToList();
+
+        var posicaoUtilizador = entradas.FirstOrDefault(e => e.IsCurrentUser)?.Posicao ?? 0;
+
+        return Ok(new TurmaRankingResponseDto(turma.Id, turma.Nome, entradas, posicaoUtilizador));
+    }
+
     private bool TryGetUserId(out int userId)
     {
         var value = User.FindFirst(ClaimTypes.NameIdentifier)?.Value

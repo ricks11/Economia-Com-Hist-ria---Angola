@@ -9,20 +9,22 @@ public partial class TeacherDashboardPageModel : ObservableObject
 {
     private readonly IApiService _apiService;
 
-    [ObservableProperty]
-    private List<RankingEntradaDto> _alunos = new();
-    
-    [ObservableProperty]
-    private bool _isBusy;
-    
-    [ObservableProperty]
-    private string _totalAlunos = "42";
-    
-    [ObservableProperty]
-    private string _mediaTurma = "14.5";
-    
-    [ObservableProperty]
-    private string _quizzesAtivos = "3";
+    // ── Estatísticas de cabeçalho ──────────────────────────────────────────
+    [ObservableProperty] private int _totalAlunos;
+    [ObservableProperty] private int _totalTurmas;
+    [ObservableProperty] private int _quizzesAtivos;
+    [ObservableProperty] private string _mediaTurmaTexto = "–";
+
+    // ── Turmas ────────────────────────────────────────────────────────────
+    [ObservableProperty] private List<TurmaResumoDto> _turmas = new();
+
+    // ── Alunos recentes ───────────────────────────────────────────────────
+    [ObservableProperty] private List<AlunoAtividadeRecenteDto> _alunosRecentes = new();
+
+    // ── Estado de carregamento ────────────────────────────────────────────
+    [ObservableProperty] private bool _isBusy;
+    [ObservableProperty] private bool _hasError;
+    [ObservableProperty] private string _errorMessage = string.Empty;
 
     public TeacherDashboardPageModel(IApiService apiService)
     {
@@ -34,21 +36,42 @@ public partial class TeacherDashboardPageModel : ObservableObject
     {
         if (IsBusy) return;
         IsBusy = true;
-        
-        try 
+        HasError = false;
+
+        try
         {
-            var response = await _apiService.GetAsync<RankingResponseDto>("api/ranking/geral");
-            Alunos = response?.Top100?.Take(5).ToList() ?? new();
+            var dashboard = await _apiService.GetAsync<ProfessorDashboardDto>("api/professor/dashboard");
+
+            if (dashboard is null) return;
+
+            TotalAlunos = dashboard.TotalAlunos;
+            TotalTurmas = dashboard.TotalTurmas;
+            QuizzesAtivos = dashboard.QuizzesAtivos;
+            MediaTurmaTexto = dashboard.MediaPontosTurmas.ToString("N0") + " pts";
+            Turmas = dashboard.Turmas ?? new();
+            AlunosRecentes = dashboard.AlunosRecentes ?? new();
+        }
+        catch (Exception ex)
+        {
+            HasError = true;
+            ErrorMessage = "Não foi possível carregar o painel. Verifique a sua ligação.";
+            System.Diagnostics.Debug.WriteLine($"[TeacherDashboard] Erro: {ex.Message}");
         }
         finally
         {
             IsBusy = false;
         }
     }
-    
+
     [RelayCommand]
     private async Task NavigateToRankingAsync()
     {
         await Shell.Current.GoToAsync("TurmaRankingPage");
+    }
+
+    [RelayCommand]
+    private async Task NavigateToTurmaAsync(TurmaResumoDto turma)
+    {
+        await Shell.Current.GoToAsync($"TurmaRankingPage?turmaId={turma.Id}");
     }
 }

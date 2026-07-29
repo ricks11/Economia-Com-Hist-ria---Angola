@@ -14,22 +14,25 @@ public partial class TurmaRankingPageModel : ObservableObject
     private int _turmaId;
 
     [ObservableProperty]
-    private List<RankingEntradaDto> _ranking = new();
+    private string _turmaNome = "Turma";
 
     [ObservableProperty]
-    private TurmaRankingItemViewModel _firstPlace;
+    private TurmaRankingItemViewModel? _firstPlace;
 
     [ObservableProperty]
-    private TurmaRankingItemViewModel _secondPlace;
+    private TurmaRankingItemViewModel? _secondPlace;
 
     [ObservableProperty]
-    private TurmaRankingItemViewModel _thirdPlace;
+    private TurmaRankingItemViewModel? _thirdPlace;
 
     [ObservableProperty]
     private List<TurmaRankingItemViewModel> _displayRankings = new();
 
     [ObservableProperty]
-    private int _currentUserPosicao = 5; // Mock logic
+    private int _currentUserPosicao;
+
+    [ObservableProperty]
+    private bool _isBusy;
 
     public TurmaRankingPageModel(IApiService apiService)
     {
@@ -39,33 +42,75 @@ public partial class TurmaRankingPageModel : ObservableObject
     [RelayCommand]
     private async Task LoadRankingAsync()
     {
-        var response = await _apiService.GetAsync<RankingResponseDto>($"api/ranking/turma/{TurmaId}");
-        var list = response?.Top100 ?? new();
-        Ranking = list;
+        if (IsBusy) return;
+        IsBusy = true;
 
-        var viewModels = list.Select(x => new TurmaRankingItemViewModel
+        try
         {
-            Posicao = x.Posicao,
-            NomeUtilizador = x.NomeUtilizador ?? "Utilizador",
-            Pontos = x.Pontos,
-            Initials = GetInitials(x.NomeUtilizador),
-            // Mock logic for current user highlight (e.g. position 5)
-            IsCurrentUser = x.Posicao == 5 
-        }).ToList();
+            var endpoint = TurmaId > 0 ? $"api/turmas/{TurmaId}/ranking" : "api/ranking?tipo=Geral&periodo=Geral";
 
-        FirstPlace = viewModels.FirstOrDefault(x => x.Posicao == 1);
-        SecondPlace = viewModels.FirstOrDefault(x => x.Posicao == 2);
-        ThirdPlace = viewModels.FirstOrDefault(x => x.Posicao == 3);
+            if (TurmaId > 0)
+            {
+                var response = await _apiService.GetAsync<TurmaRankingResponseDto>(endpoint);
 
-        DisplayRankings = viewModels.Where(x => x.Posicao > 3).ToList();
+                if (response is not null)
+                {
+                    TurmaNome = response.TurmaNome ?? "Turma";
+                    CurrentUserPosicao = response.PosicaoUtilizador;
+
+                    var items = (response.Entradas ?? new()).Select(e => new TurmaRankingItemViewModel
+                    {
+                        Posicao = e.Posicao,
+                        NomeUtilizador = e.NomeAluno ?? "Aluno",
+                        Pontos = e.Pontos,
+                        Initials = GetInitials(e.NomeAluno),
+                        IsCurrentUser = e.IsCurrentUser
+                    }).ToList();
+
+                    FirstPlace = items.FirstOrDefault(x => x.Posicao == 1);
+                    SecondPlace = items.FirstOrDefault(x => x.Posicao == 2);
+                    ThirdPlace = items.FirstOrDefault(x => x.Posicao == 3);
+                    DisplayRankings = items.Where(x => x.Posicao > 3).ToList();
+                }
+            }
+            else
+            {
+                var response = await _apiService.GetAsync<RankingResponseDto>(endpoint);
+                if (response?.Top100 is not null)
+                {
+                    CurrentUserPosicao = response.PosicaoUtilizador;
+                    var items = response.Top100.Select(e => new TurmaRankingItemViewModel
+                    {
+                        Posicao = e.Posicao,
+                        NomeUtilizador = e.NomeUtilizador ?? "Utilizador",
+                        Pontos = e.Pontos,
+                        Initials = GetInitials(e.NomeUtilizador),
+                        IsCurrentUser = e.Posicao == response.PosicaoUtilizador
+                    }).ToList();
+
+                    FirstPlace = items.FirstOrDefault(x => x.Posicao == 1);
+                    SecondPlace = items.FirstOrDefault(x => x.Posicao == 2);
+                    ThirdPlace = items.FirstOrDefault(x => x.Posicao == 3);
+                    DisplayRankings = items.Where(x => x.Posicao > 3).ToList();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[TurmaRanking] Erro ao carregar: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
-    private string GetInitials(string name)
+    private static string GetInitials(string? name)
     {
         if (string.IsNullOrWhiteSpace(name)) return "??";
         var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length == 1) return parts[0].Substring(0, 1).ToUpper();
-        return (parts[0].Substring(0, 1) + parts[^1].Substring(0, 1)).ToUpper();
+        if (parts.Length == 1) return parts[0][..1].ToUpper();
+        return (parts[0][..1] + parts[^1][..1]).ToUpper();
     }
 
     [RelayCommand]
@@ -77,14 +122,9 @@ public partial class TurmaRankingPageModel : ObservableObject
 
 public partial class TurmaRankingItemViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private int _posicao;
-    [ObservableProperty]
-    private string _nomeUtilizador;
-    [ObservableProperty]
-    private int _pontos;
-    [ObservableProperty]
-    private string _initials;
-    [ObservableProperty]
-    private bool _isCurrentUser;
+    [ObservableProperty] private int _posicao;
+    [ObservableProperty] private string _nomeUtilizador = string.Empty;
+    [ObservableProperty] private int _pontos;
+    [ObservableProperty] private string _initials = string.Empty;
+    [ObservableProperty] private bool _isCurrentUser;
 }

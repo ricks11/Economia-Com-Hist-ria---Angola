@@ -13,6 +13,9 @@ public partial class LoginPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(SubmitButtonText))]
     private bool _isLoginMode = true;
 
+    /// <summary>Texto do botão de submissão — muda conforme o modo (Login / Registo).</summary>
+    public string SubmitButtonText => IsLoginMode ? "Entrar" : "Criar Conta";
+
     [ObservableProperty]
     private string _email = string.Empty;
 
