@@ -2,28 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ECHA.Mobile.Pages.StudyPlanPage"
              x:DataType="pageModels:StudyPlanPageModel"
              Title="Plano de Estudo"
-             BackgroundColor="{StaticResource Background}">
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior
-            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-            EventName="Appearing"
-            Command="{Binding LoadSugestoesCommand}" />
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding LoadSugestoesCommand}" />
     </ContentPage.Behaviors>
 
-    <CollectionView ItemsSource="{Binding Sugestoes}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="pageModels:StudyPlanPageModel+SugestaoEstudo">
-                <Border Margin="10" Padding="15" BackgroundColor="{StaticResource SurfaceContainerLow}" Stroke="{StaticResource OutlineVariant}" StrokeShape="RoundRectangle 12">
-                    <VerticalStackLayout>
-                        <Label Text="{Binding Titulo}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
-                        <Label Text="{Binding Prioridade}" TextColor="{StaticResource OnSurfaceVariant}" />
-                    </VerticalStackLayout>
-                </Border>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20">
+
+        <!-- Hero Card -->
+        <Border Grid.Row="0" BackgroundColor="{StaticResource Tertiary}" StrokeThickness="0" StrokeShape="RoundRectangle 16" Padding="24" Margin="0,0,0,24">
+            <VerticalStackLayout>
+                <Label Text="Plano de Estudo" FontSize="22" FontAttributes="Bold" TextColor="White" Margin="0,0,0,16" />
+                
+                <ProgressBar Progress="{Binding ProgressoGeral}" ProgressColor="{StaticResource Primary}" HeightRequest="8" Margin="0,0,0,8" />
+                
+                <Label Text="{Binding ProgressoTexto}" TextColor="White" FontSize="14" HorizontalOptions="End" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Section Title & List -->
+        <VerticalStackLayout Grid.Row="1">
+            <Label Text="Esta Semana" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" Margin="0,0,0,16" />
+
+            <CollectionView ItemsSource="{Binding Sugestoes}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="pageModels:StudyPlanPageModel+SugestaoEstudo">
+                        <Grid ColumnDefinitions="Auto, *" Margin="0,0,0,0">
+                            <!-- Left: Timeline indicator -->
+                            <Grid Grid.Column="0" RowDefinitions="Auto, *" Margin="0,0,16,0">
+                                <BoxView Grid.Row="0" WidthRequest="12" HeightRequest="12" CornerRadius="6" VerticalOptions="Start" Margin="0,8,0,0">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Prioridade}" Value="Alta">
+                                            <Setter Property="Color" Value="{StaticResource Primary}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Prioridade}" Value="Média">
+                                            <Setter Property="Color" Value="Orange" />
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+                                <BoxView Grid.Row="1" WidthRequest="2" Color="#DDDDDD" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Margin="0,4,0,0" />
+                            </Grid>
+
+                            <!-- Right: Content -->
+                            <Border Grid.Column="1" BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="16" Margin="0,0,0,16">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                        <Label Text="{Binding Titulo}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" Margin="0,0,0,4" />
+                                        <Border BackgroundColor="{StaticResource SurfaceContainerLow}" StrokeThickness="0" StrokeShape="RoundRectangle 8" HorizontalOptions="Start" Padding="8,4">
+                                            <Label Text="{Binding Prioridade}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                                        </Border>
+                                    </VerticalStackLayout>
+
+                                    <Label Grid.Column="1" Text="{Binding TempoEstimado}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+        <!-- Footer CTA -->
+        <Button Grid.Row="2" Text="Continuar Aprendizado" BackgroundColor="{StaticResource Primary}" TextColor="White" CornerRadius="24" FontAttributes="Bold" Margin="0,16,0,0" />
+
+    </Grid>
 </ContentPage>

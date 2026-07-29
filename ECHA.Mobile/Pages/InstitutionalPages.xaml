@@ -7,19 +7,107 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-    <ContentPage.Content>
-        <ScrollView Padding="24">
-            <VerticalStackLayout Spacing="24">
-                <Label 
-                    Text="Páginas Institucionais"
-                    FontAttributes="Bold"
-                    FontSize="32"
-                    TextColor="{StaticResource OnSurface}"/>
-                <Label 
-                    Text="Em breve, as páginas institucionais aparecerão aqui!"
-                    FontSize="16"
-                    TextColor="{StaticResource OnSurfaceVariant}"/>
+    <ScrollView Padding="24">
+        <VerticalStackLayout Spacing="24">
+            
+            <!-- Header section -->
+            <VerticalStackLayout HorizontalOptions="Center" Spacing="12" Margin="0,20,0,12">
+                <Border WidthRequest="80" 
+                        HeightRequest="80" 
+                        BackgroundColor="{StaticResource Primary}" 
+                        StrokeThickness="0" 
+                        StrokeShape="RoundRectangle 40"
+                        HorizontalOptions="Center">
+                    <Label Text="E" 
+                           FontSize="40" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"/>
+                </Border>
+                <Label Text="Economia com História" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource OnSurface}" 
+                       HorizontalOptions="Center"/>
+                <Label Text="v1.0.0" 
+                       FontSize="14" 
+                       TextColor="{StaticResource OnSurfaceVariant}" 
+                       HorizontalOptions="Center"/>
             </VerticalStackLayout>
-        </ScrollView>
-    </ContentPage.Content>
+
+            <Label Text="Uma plataforma dedicada ao resgate, preservação e ensino da rica história económica de Angola, conectando o passado ao presente."
+                   FontSize="16"
+                   TextColor="{StaticResource OnSurfaceVariant}"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,12"/>
+
+            <!-- Sobre a Plataforma -->
+            <Border BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="20">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Sobre a Plataforma" FontAttributes="Bold" FontSize="18" TextColor="{StaticResource OnSurface}"/>
+                    <Label Text="Este projecto visa democratizar o acesso à informação económica histórica através de módulos interactivos, quizzes e um vasto arquivo digital." FontSize="14" TextColor="{StaticResource OnSurfaceVariant}"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Equipa de Desenvolvimento -->
+            <Border BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="20">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Equipa de Desenvolvimento" FontAttributes="Bold" FontSize="18" TextColor="{StaticResource OnSurface}"/>
+                    
+                    <!-- Member 1 -->
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                        <Border Grid.Column="0" WidthRequest="40" HeightRequest="40" BackgroundColor="{StaticResource SurfaceContainerLow}" StrokeThickness="0" StrokeShape="RoundRectangle 20">
+                            <Label Text="👨🏽‍💻" HorizontalOptions="Center" VerticalOptions="Center" FontSize="18"/>
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="Ricardo Tavares" FontAttributes="Bold" TextColor="{StaticResource OnSurface}"/>
+                            <Label Text="Lead Developer" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Member 2 -->
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                        <Border Grid.Column="0" WidthRequest="40" HeightRequest="40" BackgroundColor="{StaticResource SurfaceContainerLow}" StrokeThickness="0" StrokeShape="RoundRectangle 20">
+                            <Label Text="👩🏾‍🎨" HorizontalOptions="Center" VerticalOptions="Center" FontSize="18"/>
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="Ana Silva" FontAttributes="Bold" TextColor="{StaticResource OnSurface}"/>
+                            <Label Text="UI/UX Designer" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Parceiros -->
+            <Border BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="20">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Parceiros" FontAttributes="Bold" FontSize="18" TextColor="{StaticResource OnSurface}"/>
+                    <Label Text="Tavares Royale, Inc." FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bottom Links -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="16" Margin="0,24,0,24">
+                <Label Text="Termos de Privacidade" TextColor="{StaticResource Primary}" TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToPrivacyCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="|" TextColor="{StaticResource OnSurfaceVariant}" />
+                <Label Text="FAQ" TextColor="{StaticResource Primary}" TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToFaqCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="|" TextColor="{StaticResource OnSurfaceVariant}" />
+                <Label Text="Contacto" TextColor="{StaticResource Primary}" TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToContactCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -13,6 +13,12 @@ public partial class QuizListPageModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
+    [ObservableProperty]
+    private int _totalXp = 1250; // Mock value for display
+
+    [ObservableProperty]
+    private string _selectedFilter = "Todos";
+
     public ObservableCollection<QuizResponseDto> Quizzes { get; } = new();
 
     public QuizListPageModel(IApiService apiService)
@@ -43,5 +49,16 @@ public partial class QuizListPageModel : ObservableObject
         {
             IsBusy = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task SelectQuizAsync(QuizResponseDto quiz)
+    {
+        if (quiz == null) return;
+        
+        await Shell.Current.GoToAsync($"QuizPage", new Dictionary<string, object>
+        {
+            { "Quiz", quiz }
+        });
     }
 }

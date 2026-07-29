@@ -11,6 +11,18 @@ public partial class TeacherDashboardPageModel : ObservableObject
 
     [ObservableProperty]
     private List<RankingEntradaDto> _alunos = new();
+    
+    [ObservableProperty]
+    private bool _isBusy;
+    
+    [ObservableProperty]
+    private string _totalAlunos = "42";
+    
+    [ObservableProperty]
+    private string _mediaTurma = "14.5";
+    
+    [ObservableProperty]
+    private string _quizzesAtivos = "3";
 
     public TeacherDashboardPageModel(IApiService apiService)
     {
@@ -18,10 +30,25 @@ public partial class TeacherDashboardPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadAlunosAsync()
+    private async Task LoadDashboardAsync()
     {
-        // For now, just use a placeholder
-        var response = await _apiService.GetAsync<RankingResponseDto>("api/ranking/geral");
-        Alunos = response?.Top100 ?? new();
+        if (IsBusy) return;
+        IsBusy = true;
+        
+        try 
+        {
+            var response = await _apiService.GetAsync<RankingResponseDto>("api/ranking/geral");
+            Alunos = response?.Top100?.Take(5).ToList() ?? new();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+    
+    [RelayCommand]
+    private async Task NavigateToRankingAsync()
+    {
+        await Shell.Current.GoToAsync("TurmaRankingPage");
     }
 }

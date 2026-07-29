@@ -2,21 +2,181 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:controls="clr-namespace:ECHA.Mobile.Controls"
              xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
              x:Class="ECHA.Mobile.Pages.QuizListPage"
              x:DataType="pageModels:QuizListPageModel"
-             Title="Quizzes">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
-             <CollectionView ItemsSource="{Binding Quizzes}">
-             <CollectionView.ItemTemplate>
-             <DataTemplate x:DataType="dtos:QuizResponseDto">
-                <Frame Margin="10" Padding="10">
-                    <StackLayout>
-                        <Label Text="{Binding Titulo}" FontAttributes="Bold" FontSize="18" />
-                        <Label Text="{Binding Tema}" />
-                    </StackLayout>
-                </Frame>
-             </DataTemplate>
-             </CollectionView.ItemTemplate>
-             </CollectionView>
+    <Grid RowDefinitions="*, Auto">
+        <!-- Main Content -->
+        <Grid Grid.Row="0">
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="{StaticResource Primary}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               ZIndex="10"/>
+
+            <ScrollView Padding="24,16,24,24" VerticalScrollBarVisibility="Never">
+                <VerticalStackLayout Spacing="32">
+                    
+                    <!-- Header -->
+                    <Grid ColumnDefinitions="*, Auto">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Desafios"
+                                   TextColor="{StaticResource OnSurfaceVariant}"
+                                   FontAttributes="Bold"
+                                   FontSize="12"
+                                   CharacterSpacing="2"/>
+                            <Label Text="Quizzes"
+                                   TextColor="{StaticResource OnSurface}"
+                                   FontAttributes="Bold"
+                                   FontSize="32"/>
+                            <BoxView Color="{StaticResource PrimaryContainer}"
+                                     WidthRequest="48"
+                                     HeightRequest="4"
+                                     CornerRadius="2"
+                                     HorizontalOptions="Start"/>
+                        </VerticalStackLayout>
+
+                        <!-- XP Badge -->
+                        <Border Grid.Column="1"
+                                BackgroundColor="{StaticResource ActionYellow}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 24"
+                                Padding="12,8"
+                                VerticalOptions="Center">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label Text="⚡" FontSize="14" VerticalTextAlignment="Center"/>
+                                <Label Text="1,240 XP" 
+                                       TextColor="{StaticResource OnActionYellow}"
+                                       FontAttributes="Bold"
+                                       FontSize="14"
+                                       VerticalTextAlignment="Center"/>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- Filter Chips -->
+                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                        <HorizontalStackLayout Spacing="12" Padding="0, 0, 24, 0">
+                            <Button Text="Todos"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="{StaticResource OnPrimary}"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    CornerRadius="24"
+                                    Padding="20, 8"/>
+                            <Button Text="Economia"
+                                    BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                    TextColor="{StaticResource OnSurfaceVariant}"
+                                    FontSize="14"
+                                    CornerRadius="24"
+                                    Padding="20, 8"/>
+                            <Button Text="História"
+                                    BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                    TextColor="{StaticResource OnSurfaceVariant}"
+                                    FontSize="14"
+                                    CornerRadius="24"
+                                    Padding="20, 8"/>
+                        </HorizontalStackLayout>
+                    </ScrollView>
+
+                    <!-- Quizzes List -->
+                    <CollectionView ItemsSource="{Binding Quizzes}"
+                                    SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Spacing="16" HorizontalOptions="Center" VerticalOptions="Center" Padding="0, 64">
+                                <Label Text="📭" FontSize="48" HorizontalTextAlignment="Center" />
+                                <Label Text="Nenhum quiz disponível no momento." 
+                                       TextColor="{StaticResource OnSurfaceVariant}"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                        
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="16" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dtos:QuizResponseDto">
+                                <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 16"
+                                        Padding="16">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:QuizListPageModel}}, Path=SelectQuizCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="16">
+                                        <!-- Number Badge -->
+                                        <Border Grid.Column="0"
+                                                WidthRequest="56" HeightRequest="56"
+                                                BackgroundColor="{StaticResource SurfaceContainerHigh}"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 28"
+                                                VerticalOptions="Center">
+                                            <Label Text="Q" 
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="20"
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- Details -->
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                            <Label Text="{Binding Tema}"
+                                                   TextColor="{StaticResource OnSurfaceVariant}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="10"
+                                                   TextTransform="Uppercase"
+                                                   CharacterSpacing="1"/>
+                                            <Label Text="{Binding Titulo}"
+                                                   TextColor="{StaticResource OnSurface}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="16"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation"/>
+                                            <HorizontalStackLayout Spacing="8" Margin="0, 4, 0, 0">
+                                                <Label Text="10 Perguntas" 
+                                                       TextColor="{StaticResource OnSurfaceVariant}"
+                                                       FontSize="12"/>
+                                                <Label Text="•" 
+                                                       TextColor="{StaticResource OutlineVariant}"
+                                                       FontSize="12"/>
+                                                <Label Text="+100 XP" 
+                                                       TextColor="{StaticResource ActionYellow}"
+                                                       FontAttributes="Bold"
+                                                       FontSize="12"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+
+                                        <!-- Difficulty -->
+                                        <VerticalStackLayout Grid.Column="2" Spacing="4" VerticalOptions="Center" HorizontalOptions="End">
+                                            <HorizontalStackLayout Spacing="2">
+                                                <BoxView Color="{StaticResource Primary}" WidthRequest="6" HeightRequest="6" CornerRadius="3" />
+                                                <BoxView Color="{StaticResource Primary}" WidthRequest="6" HeightRequest="6" CornerRadius="3" />
+                                                <BoxView Color="{StaticResource SurfaceContainerHigh}" WidthRequest="6" HeightRequest="6" CornerRadius="3" />
+                                            </HorizontalStackLayout>
+                                            <Label Text="▶️" FontSize="18" HorizontalOptions="End" Margin="0, 8, 0, 0"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- Bottom Nav -->
+        <controls:AppBottomNav Grid.Row="1" ActiveTab="jogar" />
+    </Grid>
 </ContentPage>

@@ -2,26 +2,256 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ECHA.Mobile.Pages.MapPage"
              x:DataType="pageModels:MapPageModel"
              Title="Mapa de Angola"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
             EventName="Appearing"
             Command="{Binding LoadProgressoCommand}" />
     </ContentPage.Behaviors>
 
-    <CollectionView ItemsSource="{Binding Progresso}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="pageModels:MapPageModel+ProvinciaProgresso">
-                <HorizontalStackLayout Padding="20,10">
-                    <Label Text="{Binding NomeProvincia}" WidthRequest="150" TextColor="{StaticResource OnSurface}" />
-                    <ProgressBar Progress="{Binding PercentualExplorado}" WidthRequest="200" />
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+            <!-- ══════════════════════════════ HEADER ══════════════════════════════ -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="*,Auto"
+                  Padding="20,52,20,16">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#570013" Offset="0" />
+                        <GradientStop Color="#800020" Offset="1" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <!-- Título + subtítulo -->
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                    <Label Text="Mapa de Angola"
+                           FontFamily="ManropeBold"
+                           FontSize="22"
+                           TextColor="White" />
+                    <Label Text="Toque numa província para explorar"
+                           FontFamily="ManropeRegular"
+                           FontSize="12"
+                           TextColor="#FFCDD2"
+                           Opacity="0.85" />
+                </VerticalStackLayout>
+
+                <!-- Medalha de progresso geral -->
+                <Frame Grid.Column="1"
+                       CornerRadius="40"
+                       Padding="14,8"
+                       BackgroundColor="#00000033"
+                       BorderColor="#FFFFFF44"
+                       VerticalOptions="Center"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="0" HorizontalOptions="Center">
+                        <Label Text="{Binding PercentualGeralTexto}"
+                               FontFamily="ManropeBold"
+                               FontSize="20"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label Text="explorado"
+                               FontFamily="ManropeRegular"
+                               FontSize="9"
+                               TextColor="#FFCDD2"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- ══════════════════════════════ LEGENDA ══════════════════════════════ -->
+            <HorizontalStackLayout Grid.Row="1"
+                                   Padding="20,12,20,4"
+                                   Spacing="14"
+                                   HorizontalOptions="Center">
+                <!-- Não iniciado -->
+                <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                    <BoxView WidthRequest="12" HeightRequest="12"
+                             CornerRadius="3" Color="#EF4444"
+                             VerticalOptions="Center" />
+                    <Label Text="Não iniciado"
+                           FontFamily="ManropeRegular"
+                           FontSize="10"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
                 </HorizontalStackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+
+                <!-- Em progresso -->
+                <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                    <BoxView WidthRequest="12" HeightRequest="12"
+                             CornerRadius="3" Color="#F59E0B"
+                             VerticalOptions="Center" />
+                    <Label Text="Em progresso"
+                           FontFamily="ManropeRegular"
+                           FontSize="10"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <!-- Concluído -->
+                <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                    <BoxView WidthRequest="12" HeightRequest="12"
+                             CornerRadius="3" Color="#10B981"
+                             VerticalOptions="Center" />
+                    <Label Text="Concluído"
+                           FontFamily="ManropeRegular"
+                           FontSize="10"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+
+            <!-- ══════════════════════════ MAPA VETORIAL ══════════════════════════ -->
+            <ScrollView Grid.Row="2"
+                        Orientation="Both"
+                        HorizontalScrollBarVisibility="Never"
+                        VerticalScrollBarVisibility="Never"
+                        Padding="0,8,0,8">
+
+                <!-- Indicador de carregamento -->
+                <Grid>
+                    <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                       IsVisible="{Binding IsLoading}"
+                                       Color="{StaticResource Primary}"
+                                       HeightRequest="40"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center" />
+
+                    <!--
+                        MAPA: O viewBox do SVG original é 612.38 x 684.89.
+                        Usamos Scale="0.52" para caber em ecrãs de ~320px de largura.
+                        Todas as 18 províncias partilham o mesmo espaço de coordenadas,
+                        por isso colocamos cada Path sobreposto num mesmo Grid (0,0).
+                    -->
+                    <Grid WidthRequest="612"
+                          HeightRequest="685"
+                          Scale="0.55"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Start"
+                          IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
+
+                        <!-- Iterar pelas 18 províncias e sobrepor os paths -->
+                        <BindableLayout.ItemsSource>
+                            <Binding Path="Provincias" />
+                        </BindableLayout.ItemsSource>
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="pageModels:ProvinciaMapItem">
+                                <Grid>
+                                    <shapes:Path Data="{Binding PathData}"
+                                                 Fill="{Binding CorFill}"
+                                                 Stroke="White"
+                                                 StrokeThickness="1.5"
+                                                 Aspect="Fill">
+                                        <shapes:Path.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectProvinciaCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        </shapes:Path.GestureRecognizers>
+                                    </shapes:Path>
+
+                                    <!-- Halo de seleção: borda amarela quando IsSelected -->
+                                    <shapes:Path Data="{Binding PathData}"
+                                                 Fill="Transparent"
+                                                 Stroke="#FFD700"
+                                                 StrokeThickness="3"
+                                                 Aspect="Fill"
+                                                 IsVisible="{Binding IsSelected}"
+                                                 InputTransparent="True" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </Grid>
+                </Grid>
+            </ScrollView>
+
+            <!-- ══════════════════════ CARD DE DETALHE DA PROVÍNCIA ══════════════════════ -->
+            <Frame Grid.Row="3"
+                   IsVisible="{Binding HasSelection}"
+                   Margin="16,0,16,20"
+                   Padding="0"
+                   CornerRadius="20"
+                   HasShadow="True"
+                   BorderColor="{StaticResource OutlineVariant}"
+                   BackgroundColor="{StaticResource SurfaceContainerLowest}">
+
+                <Grid RowDefinitions="Auto,Auto" Padding="20,18,20,18" RowSpacing="12">
+
+                    <!-- Linha superior: nome + percentual -->
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="{Binding SelectedProvincia.NomeProvincia}"
+                                   FontFamily="ManropeBold"
+                                   FontSize="18"
+                                   TextColor="{StaticResource OnSurface}" />
+                            <Label Text="{Binding SelectedProvincia.StatusTexto}"
+                                   FontFamily="ManropeRegular"
+                                   FontSize="12"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+
+                        <!-- Badge de percentual -->
+                        <Frame Grid.Column="1"
+                               CornerRadius="30"
+                               Padding="14,8"
+                               BackgroundColor="{StaticResource Primary}"
+                               BorderColor="Transparent"
+                               HasShadow="False"
+                               VerticalOptions="Center">
+                            <Label Text="{Binding SelectedProvincia.PercentualTexto}"
+                                   FontFamily="ManropeBold"
+                                   FontSize="16"
+                                   TextColor="White"
+                                   HorizontalOptions="Center" />
+                        </Frame>
+                    </Grid>
+
+                    <!-- Barra de progresso + botão CTA -->
+                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <ProgressBar Grid.Column="0"
+                                     Progress="{Binding SelectedProvincia.PercentualExplorado}"
+                                     ProgressColor="{StaticResource Primary}"
+                                     BackgroundColor="{StaticResource SurfaceContainer}"
+                                     HeightRequest="6"
+                                     VerticalOptions="Center" />
+
+                        <Button Grid.Column="1"
+                                Text="Explorar"
+                                Command="{Binding ExplorarProvinciaCommand}"
+                                FontFamily="ManropeSemiBold"
+                                FontSize="13"
+                                TextColor="White"
+                                CornerRadius="12"
+                                Padding="16,10"
+                                HeightRequest="40">
+                            <Button.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#570013" Offset="0" />
+                                    <GradientStop Color="#800020" Offset="1" />
+                                </LinearGradientBrush>
+                            </Button.Background>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Frame>
+
+            <!-- Placeholder quando nenhuma província está selecionada -->
+            <Label Grid.Row="3"
+                   Text="Toque numa província para ver detalhes"
+                   IsVisible="{Binding HasSelection, Converter={toolkit:InvertedBoolConverter}}"
+                   FontFamily="ManropeRegular"
+                   FontSize="12"
+                   TextColor="{StaticResource OnSurfaceVariant}"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20"
+                   Opacity="0.6" />
+
+        </Grid>
+    </ScrollView>
 </ContentPage>

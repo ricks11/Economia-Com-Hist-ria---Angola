@@ -5,24 +5,125 @@
              xmlns:converters="clr-namespace:ECHA.Mobile.Converters"
              x:Class="ECHA.Mobile.Pages.ContentDetailPage"
              x:DataType="pageModels:ContentDetailPageModel"
-             Title="{Binding Conteudo.Titulo}">
+             Title="{Binding Conteudo.Titulo}"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
 
     <ContentPage.Resources>
         <converters:BoolToFavoritoConverter x:Key="BoolToFavoritoConverter" />
     </ContentPage.Resources>
 
-    <ScrollView>
-        <StackLayout Padding="20" Spacing="20">
-            <Label Text="{Binding Conteudo.Titulo}" FontSize="24" FontAttributes="Bold" />
+    <Grid RowDefinitions="*, Auto">
+        
+        <!-- Content Body (Scrollable) -->
+        <ScrollView Grid.Row="0" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout>
+                
+                <!-- Hero media area -->
+                <Border StrokeShape="RoundRectangle 0" StrokeThickness="0" HeightRequest="220" Margin="0" Padding="0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="{StaticResource Tertiary}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Primary}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <!-- Document Icon Overlay -->
+                        <Label Text="📄" FontSize="60" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                        
+                        <!-- Category badge overlay (bottom-left) -->
+                        <Border StrokeShape="RoundRectangle 16" StrokeThickness="0" BackgroundColor="White" HorizontalOptions="Start" VerticalOptions="End" Margin="16, 16, 16, 24" Padding="12, 4">
+                            <Label Text="{Binding Conteudo.Tema}" TextColor="{StaticResource Primary}" FontSize="12" FontAttributes="Bold" TextTransform="Uppercase" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Content Details -->
+                <VerticalStackLayout Padding="24" Spacing="16">
+                    <!-- Title -->
+                    <Label Text="{Binding Conteudo.Titulo}" 
+                           FontSize="24" 
+                           FontAttributes="Bold" 
+                           CharacterSpacing="-0.5" 
+                           TextColor="{StaticResource OnSurface}" />
+                    
+                    <!-- Meta row: author | date | read time -->
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="{Binding Conteudo.EditorNome, TargetNullValue='Equipa ECHA'}" 
+                               FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Label Text="•" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Label Text="{Binding Conteudo.DataPublicacao, StringFormat='{0:dd MMM yyyy}', TargetNullValue='2026'}" 
+                               FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Label Text="•" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Label Text="5 min leitura" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                    </HorizontalStackLayout>
+                    
+                    <!-- Divider -->
+                    <BoxView HeightRequest="1" Color="{StaticResource OutlineVariant}" />
+                    
+                    <!-- Resumo/Summary -->
+                    <Label Text="{Binding Conteudo.Resumo}" 
+                           FontAttributes="Italic" 
+                           TextColor="{StaticResource OnSurfaceVariant}" 
+                           FontSize="14" />
+                    
+                    <!-- Body text -->
+                    <Label Text="{Binding Conteudo.CorpoTexto}" 
+                           FontSize="16" 
+                           TextColor="{StaticResource OnSurface}" 
+                           LineHeight="1.5" />
+                           
+                    <!-- Extras Placeholder Card -->
+                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource OutlineVariant}" BackgroundColor="{StaticResource SurfaceContainerLowest}" Padding="16" Margin="0, 16, 0, 24">
+                        <Grid ColumnDefinitions="Auto, *">
+                            <Border Grid.Column="0" StrokeShape="RoundRectangle 24" StrokeThickness="0" BackgroundColor="Teal" WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="▶️" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="16,0,0,0">
+                                <Label Text="Ficheiro Media" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource OnSurface}" />
+                                <Label Text="Toque para reproduzir" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Glassmorphism-style top bar -->
+        <Grid Grid.Row="0" VerticalOptions="Start" BackgroundColor="#CCFFFFFF" Padding="16, 48, 16, 16" ColumnDefinitions="Auto, *, Auto">
+            <!-- Back Button -->
+            <Button Grid.Column="0" Text="⬅" FontSize="20" TextColor="{StaticResource OnSurface}" BackgroundColor="Transparent" Padding="0" Clicked="OnBackButtonClicked" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" />
             
-            <!-- Media Player Placeholder -->
-            <BoxView HeightRequest="200" Color="Gray" />
+            <!-- Category/tema label -->
+            <Label Grid.Column="1" Text="{Binding Conteudo.Tema}" TextTransform="Uppercase" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
             
-            <Label Text="{Binding Conteudo.Resumo}" />
-            <Label Text="{Binding Conteudo.CorpoTexto}" />
-            
-            <Button Text="{Binding Conteudo.EhFavorito, Converter={StaticResource BoolToFavoritoConverter}}"
-                    Command="{Binding ToggleFavoritoCommand}" />
-        </StackLayout>
-    </ScrollView>
+            <!-- Favorite toggle button (header) -->
+            <Button Grid.Column="2" Text="{Binding Conteudo.EhFavorito, Converter={StaticResource BoolToFavoritoConverter}}" BackgroundColor="Transparent" Padding="0" Command="{Binding ToggleFavoritoCommand}" FontSize="20" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Bottom action bar -->
+        <Border Grid.Row="1" BackgroundColor="{StaticResource SurfaceContainerLowest}" Stroke="{StaticResource OutlineVariant}" StrokeThickness="1" StrokeShape="RoundRectangle 0" Margin="0" Padding="0, 16, 0, 32">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="16">
+                <!-- Favorite button (pill) -->
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1" Stroke="{StaticResource Primary}" BackgroundColor="Transparent">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleFavoritoCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="8" Padding="24, 12" VerticalOptions="Center">
+                        <Label Text="{Binding Conteudo.EhFavorito, Converter={StaticResource BoolToFavoritoConverter}}" VerticalTextAlignment="Center" FontSize="16" />
+                        <Label Text="Guardar" TextColor="{StaticResource Primary}" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="14" />
+                    </HorizontalStackLayout>
+                </Border>
+                
+                <!-- Share button (pill) -->
+                <Border StrokeShape="RoundRectangle 20" StrokeThickness="1" Stroke="{StaticResource Primary}" BackgroundColor="Transparent">
+                    <HorizontalStackLayout Spacing="8" Padding="24, 12" VerticalOptions="Center">
+                        <Label Text="📤" VerticalTextAlignment="Center" FontSize="16" />
+                        <Label Text="Partilhar" TextColor="{StaticResource Primary}" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="14" />
+                    </HorizontalStackLayout>
+                </Border>
+            </HorizontalStackLayout>
+        </Border>
+
+    </Grid>
 </ContentPage>

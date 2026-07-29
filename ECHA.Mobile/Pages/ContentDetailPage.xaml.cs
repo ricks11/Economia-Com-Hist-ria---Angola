@@ -27,15 +27,8 @@ public partial class ContentDetailPage : ContentPage
         }
     }
 
-    //private void OnLanguageChanged(object sender, EventArgs e)
-    //{
-    //    var picker = (Picker)sender;
-    //    var traducao = (Models.TraducaoDto)picker.SelectedItem;
-    //    if (traducao != null && BindingContext is ContentDetailPageModel viewModel && viewModel.Conteudo != null)
-    //    {
-    //        // Update UI content with translated text
-    //        // Note: Simplification, assuming ViewModel handles the swap
-    //    }
-    //}
+    private async void OnBackButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("..");
+    }
 }
-

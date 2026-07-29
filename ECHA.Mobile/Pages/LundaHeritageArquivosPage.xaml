@@ -10,41 +10,67 @@
 
     <ScrollView Padding="24">
         <VerticalStackLayout Spacing="24">
-            <Label Text="Arquivos"
+            <Label Text="Arquivos Digitais"
                    FontSize="32"
                    FontAttributes="Bold"
                    TextColor="{StaticResource OnSurface}"/>
+                   
+            <Label Text="Explore o acervo histórico de documentos económicos."
+                   FontSize="14"
+                   TextColor="{StaticResource OnSurfaceVariant}"
+                   Margin="0,-16,0,0" />
 
-            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Arquivos}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="pageModels:LundaHeritageArquivosPageModel/ArquivoItem">
+            <CollectionView ItemsSource="{Binding Arquivos}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="pageModels:LundaHeritageArquivosPageModel+ArquivoItem">
                         <Border BackgroundColor="{StaticResource SurfaceContainerLowest}"
-                                Stroke="{StaticResource OutlineVariant}"
+                                StrokeThickness="0"
                                 StrokeShape="RoundRectangle 12"
-                                Padding="16">
-                            <HorizontalStackLayout Spacing="12">
-                                <Border WidthRequest="48"
+                                Padding="16"
+                                Margin="0,0,0,16">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:LundaHeritageArquivosPageModel}}, Path=SelectArquivoCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            
+                            <Grid ColumnDefinitions="Auto, *" ColumnSpacing="16">
+                                <Border Grid.Column="0" 
+                                        WidthRequest="48"
                                         HeightRequest="48"
                                         BackgroundColor="{StaticResource SurfaceContainerLow}"
-                                        StrokeShape="RoundRectangle 8">
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 8"
+                                        VerticalOptions="Start">
                                     <Label Text="{Binding Icon}"
                                            FontSize="24"
                                            HorizontalTextAlignment="Center"
                                            VerticalTextAlignment="Center"/>
                                 </Border>
-                                <VerticalStackLayout Spacing="4">
+                                
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
                                     <Label Text="{Binding Title}"
                                            FontAttributes="Bold"
                                            TextColor="{StaticResource OnSurface}"/>
+                                           
                                     <Label Text="{Binding Description}"
                                            FontSize="12"
                                            TextColor="{StaticResource OnSurfaceVariant}"/>
+                                           
+                                    <Border BackgroundColor="{StaticResource PrimaryContainer}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 12"
+                                            HorizontalOptions="Start"
+                                            Padding="8,4"
+                                            Margin="0,4,0,0">
+                                        <Label Text="Documento Histórico" 
+                                               FontSize="10" 
+                                               TextColor="{StaticResource Primary}"/>
+                                    </Border>
                                 </VerticalStackLayout>
-                            </HorizontalStackLayout>
+                            </Grid>
                         </Border>
                     </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </VerticalStackLayout>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

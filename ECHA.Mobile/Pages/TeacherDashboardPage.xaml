@@ -3,18 +3,86 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:ECHA.Mobile.PageModels"
              xmlns:dtos="clr-namespace:EconomiaComHistoria.Core.DTOs;assembly=ECHA.Core"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ECHA.Mobile.Pages.TeacherDashboardPage"
              x:DataType="pageModels:TeacherDashboardPageModel"
-             Title="Painel do Professor">
+             Title="Painel do Professor"
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
 
-    <CollectionView ItemsSource="{Binding Alunos}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="dtos:RankingEntradaDto">
-                <VerticalStackLayout Padding="10">
-                    <Label Text="{Binding NomeUtilizador}" FontAttributes="Bold" />
-                    <Label Text="{Binding Pontos, StringFormat='Pontos: {0}'}" />
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding LoadDashboardCommand}" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *, Auto" Padding="20">
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Margin="0,0,0,24">
+            <Label Text="Painel do Professor" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+            <Label Text="Escola Secundária de Luanda - Turma 10º B" FontSize="14" TextColor="{StaticResource OnSurfaceVariant}" />
+        </VerticalStackLayout>
+
+        <!-- Stats Row -->
+        <Grid Grid.Row="1" ColumnDefinitions="*, *, *" ColumnSpacing="12" Margin="0,0,0,32">
+            <!-- Alunos -->
+            <Border Grid.Column="0" BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="12">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding TotalAlunos}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" HorizontalOptions="Center" />
+                    <Label Text="Alunos" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" HorizontalOptions="Center" />
                 </VerticalStackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+            </Border>
+            
+            <!-- Média Turma -->
+            <Border Grid.Column="1" BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="12">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding MediaTurma}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" HorizontalOptions="Center" />
+                    <Label Text="Média Turma" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Quizzes -->
+            <Border Grid.Column="2" BackgroundColor="{StaticResource SurfaceContainerLowest}" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="12">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <Label Text="{Binding QuizzesAtivos}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" HorizontalOptions="Center" />
+                    <Label Text="Quizzes" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <!-- Top Alunos Title -->
+        <Label Grid.Row="2" Text="Top Alunos" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" Margin="0,0,0,16" />
+
+        <!-- Top Alunos Collection -->
+        <Grid Grid.Row="3">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="{StaticResource Primary}" HorizontalOptions="Center" VerticalOptions="Center" />
+            
+            <CollectionView ItemsSource="{Binding Alunos}" IsVisible="{Binding IsBusy, Converter={toolkit:InvertedBoolConverter}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dtos:RankingEntradaDto">
+                        <Grid ColumnDefinitions="30, 40, *, Auto" ColumnSpacing="12" Padding="0,8">
+                            <!-- Rank placeholder -->
+                            <Label Grid.Column="0" Text="#" VerticalOptions="Center" TextColor="{StaticResource OnSurfaceVariant}" FontAttributes="Bold" />
+                            
+                            <!-- Initials Circle -->
+                            <Border Grid.Column="1" WidthRequest="40" HeightRequest="40" BackgroundColor="{StaticResource SurfaceContainerLow}" StrokeThickness="0" StrokeShape="RoundRectangle 20">
+                                <Label Text="U" HorizontalOptions="Center" VerticalOptions="Center" TextColor="{StaticResource OnSurface}" FontAttributes="Bold" />
+                            </Border>
+
+                            <!-- Name & Subtitle -->
+                            <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                                <Label Text="{Binding NomeUtilizador}" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" />
+                                <Label Text="Estudante" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </VerticalStackLayout>
+
+                            <!-- Points -->
+                            <Label Grid.Column="3" Text="{Binding Pontos, StringFormat='{0} pts'}" FontAttributes="Bold" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- CTA -->
+        <Button Grid.Row="4" Text="Ver Ranking Completo" Command="{Binding NavigateToRankingCommand}" BackgroundColor="{StaticResource Primary}" TextColor="White" CornerRadius="24" Margin="0,16,0,0" FontAttributes="Bold" />
+    </Grid>
+
 </ContentPage>

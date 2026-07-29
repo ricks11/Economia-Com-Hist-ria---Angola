@@ -8,27 +8,54 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-    <ScrollView Padding="24">
-        <VerticalStackLayout Spacing="24">
-            <Label Text="Sobre o Projecto"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   TextColor="{StaticResource OnSurface}"/>
+    <ScrollView>
+        <VerticalStackLayout>
+            <!-- Banner -->
+            <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" HeightRequest="120" StrokeShape="Rectangle">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="{StaticResource Primary}" Offset="0.0" />
+                        <GradientStop Color="{StaticResource PrimaryContainer}" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label Text="Lunda Heritage" FontSize="32" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
 
-            <VerticalStackLayout Spacing="16">
-                <Label Text="Economia com História – Angola é um arquivo digital dedicado à preservação da trajetória económica nacional."
-                       FontSize="16"
-                       TextColor="{StaticResource OnSurfaceVariant}"/>
+            <VerticalStackLayout Padding="24" Spacing="24">
+                <Label Text="Economia com História – Angola é um arquivo digital dedicado à preservação da trajetória económica nacional." FontSize="16" TextColor="{StaticResource OnSurfaceVariant}" />
 
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="Missão"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource Primary}"/>
-                    <Label Text="Disponibilizar fontes para investigadores e cidadãos interessados na história económica angolana."
-                           FontSize="16"
-                           TextColor="{StaticResource OnSurfaceVariant}"/>
-                </VerticalStackLayout>
+                <!-- Mission -->
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="16">
+                    <Border Grid.Column="0" WidthRequest="48" HeightRequest="48" BackgroundColor="{StaticResource SurfaceContainerLow}" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                        <Label Text="🎯" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="Nossa Missão" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" Margin="0,0,0,4" />
+                        <Label Text="Disponibilizar fontes para investigadores e cidadãos interessados na história económica angolana." FontSize="14" TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Vision -->
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="16">
+                    <Border Grid.Column="0" WidthRequest="48" HeightRequest="48" BackgroundColor="{StaticResource SurfaceContainerLow}" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                        <Label Text="👁️" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="Nossa Visão" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource OnSurface}" Margin="0,0,0,4" />
+                        <Label Text="Ser a principal referência no resgate e preservação do património económico e histórico de Angola." FontSize="14" TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Arquivo Digital -->
+                <Border BackgroundColor="{StaticResource Tertiary}" StrokeThickness="0" StrokeShape="RoundRectangle 16" Padding="20" Margin="0,8,0,0">
+                    <VerticalStackLayout>
+                        <Label Text="Arquivo Digital" FontSize="20" FontAttributes="Bold" TextColor="White" Margin="0,0,0,8" />
+                        <Label Text="O nosso acervo conta com milhares de documentos, mapas, e fotografias que contam a história da economia angolana desde a época pré-colonial." FontSize="14" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- CTA -->
+                <Button Text="Explorar Arquivos" Command="{Binding NavigateToArquivosCommand}" BackgroundColor="{StaticResource Primary}" TextColor="White" CornerRadius="24" FontAttributes="Bold" Margin="0,16,0,0" />
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
