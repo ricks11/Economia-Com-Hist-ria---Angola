@@ -67,7 +67,7 @@ public class TurmasController : ControllerBase
         return Ok(turmas.Select(t => new TurmaResponseDto(
             t.Id,
             t.Nome,
-            string.IsNullOrEmpty(t.Ano) ? null : int.Parse(t.Ano),
+            string.IsNullOrEmpty(t.Ano) ? null : (int?)(int.TryParse(System.Text.RegularExpressions.Regex.Match(t.Ano, @"\d+").Value, out var number) ? (int?)number : null),
             t.EscolaId,
             t.Escola?.Nome,
             t.ProfessorId,
@@ -97,7 +97,7 @@ public class TurmasController : ControllerBase
         return Ok(new TurmaDetalheDto(
             turma.Id,
             turma.Nome,
-            string.IsNullOrEmpty(turma.Ano) ? null : int.Parse(turma.Ano),
+            string.IsNullOrEmpty(turma.Ano) ? null : (int?)(int.TryParse(System.Text.RegularExpressions.Regex.Match(turma.Ano, @"\d+").Value, out var number) ? (int?)number : null),
             turma.EscolaId,
             turma.Escola?.Nome,
             turma.ProfessorId,
@@ -154,7 +154,7 @@ public class TurmasController : ControllerBase
         return CreatedAtAction(nameof(GetTurma), new { id = turma.Id }, new TurmaResponseDto(
             turma.Id,
             turma.Nome,
-            string.IsNullOrEmpty(turma.Ano) ? null : int.Parse(turma.Ano),
+            string.IsNullOrEmpty(turma.Ano) ? null : (int?)(int.TryParse(System.Text.RegularExpressions.Regex.Match(turma.Ano, @"\d+").Value, out var number) ? (int?)number : null),
             turma.EscolaId,
             turma.Escola?.Nome,
             turma.ProfessorId,
@@ -197,7 +197,7 @@ public class TurmasController : ControllerBase
         return Ok(new TurmaResponseDto(
             turma.Id,
             turma.Nome,
-            string.IsNullOrEmpty(turma.Ano) ? null : int.Parse(turma.Ano),
+            string.IsNullOrEmpty(turma.Ano) ? null : (int?)(int.TryParse(System.Text.RegularExpressions.Regex.Match(turma.Ano, @"\d+").Value, out var number) ? (int?)number : null),
             turma.EscolaId,
             turma.Escola?.Nome,
             turma.ProfessorId,

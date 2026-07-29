@@ -63,9 +63,9 @@
 
             <!-- Navegação de abas -->
             <div class="flex gap-2 bg-surface-container-low p-1.5 rounded-2xl w-fit">
-                <button type="button" onclick="mostrarTab('perfil')" id="tabBtn-perfil" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Perfil</button>
-                <button type="button" onclick="mostrarTab('progresso')" id="tabBtn-progresso" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Progresso</button>
-                <button type="button" onclick="mostrarTab('favoritos')" id="tabBtn-favoritos" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Favoritos</button>
+                <button type="button" onclick="mostrarTab('perfil')" id="tab-perfil" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Perfil</button>
+                <button type="button" onclick="mostrarTab('progresso')" id="tab-progresso" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Progresso</button>
+                <button type="button" onclick="mostrarTab('favoritos')" id="tab-favoritos" class="tab-btn px-5 py-2 rounded-xl font-bold text-sm transition-colors">Favoritos</button>
             </div>
 
             <!-- Aba: Perfil (formulário de edição) -->
@@ -312,25 +312,44 @@
 
 
 
-                .then(turmas => {
-                turmaSelect.innerHTML = '<option value="">— Selecione uma turma —</option>';
+            }
+        });
+
+        // Load turmas when escola selection changes
+        const escolaSelect = document.getElementById('escolaSelect');
+        if (escolaSelect) {
+            escolaSelect.addEventListener('change', function() {
+                const escolaId = this.value;
+                if (escolaId) {
+                    carregando = true;
+                    if (turmaSelect) {
+                        turmaSelect.disabled = true;
+                        turmaSelect.innerHTML = '<option value="">Carregando...</option>';
+                    }
+
+                    fetch(`/api/escolas/${escolaId}/turmas`)
+                        .then(response => response.json())
+                        .then(turmas => {
+                    turmaSelect.innerHTML = '<option value="">— Selecione uma turma —</option>';
                     turmas.forEach(t => {
                         const opt = document.createElement('option');
                         opt.value = t.id;
                         opt.textContent = t.nome;
+                        if (t.id == '@(p.TurmaId?.ToString() ?? "")') {
+                            opt.selected = true;
+                        }
                         turmaSelect.appendChild(opt);
                     });
-
-                    // Selecionar a turma atual (se for a mesma escola)
-                    const turmaAtualId = '@(p.TurmaId)';
-                });
+                })
                 .catch(err => {
                     console.error(err);
                     turmaSelect.innerHTML = '<option value="">Erro ao carregar turmas</option>';
                 })
                 .finally(() => {
                     carregando = false;
-                    turmaSelect.disabled = false;
+                    if (turmaSelect) {
+                        turmaSelect.disabled = false;
+                    }
                 });
 </script>
 }

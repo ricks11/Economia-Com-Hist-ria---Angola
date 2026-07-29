@@ -139,6 +139,20 @@ public class QuizzesController : ControllerBase
     [Authorize(Roles = "Admin,Editor,SuperAdmin")]
     public async Task<ActionResult> CreateQuiz([FromBody] CreateQuizDto dto)
     {
+        // Validation
+        if (dto.Perguntas == null || !dto.Perguntas.Any())
+        {
+            return BadRequest(new { message = "O quiz deve ter pelo menos uma pergunta." });
+        }
+        if (dto.TotalPerguntas > dto.Perguntas.Count)
+        {
+            return BadRequest(new { message = "O número de perguntas exibidas não pode ser maior que o total de perguntas fornecidas." });
+        }
+        if (dto.TotalPerguntas < 0)
+        {
+            return BadRequest(new { message = "O número de perguntas exibidas não pode ser negativo." });
+        }
+
         var quiz = new Quiz
         {
             Titulo = dto.Titulo,
@@ -264,8 +278,9 @@ public class QuizzesController : ControllerBase
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var depois = System.Text.Json.JsonSerializer.Serialize(new { quiz.Titulo, quiz.Nivel, quiz.TotalPerguntas });
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await _auditoriaService.RegistarAsync(
-            id,
+            userId,
             "AtualizarQuiz",
             "Quiz",
             id,
@@ -286,8 +301,9 @@ public class QuizzesController : ControllerBase
 
         await _quizRepository.DeleteAsync(id);
 
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await _auditoriaService.RegistarAsync(
-            id,
+            userId,
             "EliminarQuiz",
             "Quiz",
             id,
