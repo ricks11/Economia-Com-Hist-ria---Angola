@@ -17,6 +17,7 @@ public class Utilizador
     public int StreakAtual { get; set; }
     public int StreakRecorde { get; set; }
     public int TempoEstudoMinutos { get; set; }
+    [MaxLength(4_000_000)]
     public string? AvatarConfig { get; set; }
     public string? Provincia { get; set; }
     public string? Municipio { get; set; }

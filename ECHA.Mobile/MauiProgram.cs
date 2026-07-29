@@ -5,6 +5,7 @@ using Syncfusion.Maui.Toolkit.Hosting;
 using ECHA.Mobile.Services;
 using Polly;
 using Polly.Extensions.Http;
+using System.Reflection;
 
 namespace ECHA.Mobile
 {
@@ -30,6 +31,22 @@ namespace ECHA.Mobile
                     fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
                     fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
                 });
+
+            // Carrega appsettings embutidos (Debug → localhost; Release → produção)
+            var assembly = Assembly.GetExecutingAssembly();
+#if DEBUG
+            using (var stream = assembly.GetManifestResourceStream("ECHA.Mobile.appsettings.json"))
+            {
+                if (stream is not null)
+                    builder.Configuration.AddJsonStream(stream);
+            }
+#else
+            using (var stream = assembly.GetManifestResourceStream("ECHA.Mobile.appsettings.Production.json"))
+            {
+                if (stream is not null)
+                    builder.Configuration.AddJsonStream(stream);
+            }
+#endif
 
             // The login design draws its own rounded input surfaces. Remove the
             // platform Entry chrome so it does not add a second border/underline.
@@ -119,9 +136,19 @@ namespace ECHA.Mobile
             builder.Services.AddDbContext<CacheDbContext>();
             builder.Services.AddHttpClient<IApiService, ApiService>(client =>
             {
-                // Em Debug: usa localhost; em Release: usa appsettings.Production.json
                 var config = builder.Configuration;
+#if DEBUG
+#if ANDROID
+                // Emulador Android: 10.0.2.2 = localhost da máquina anfitriã
+                var baseUrl = config["Api:BaseUrl"] ?? "http://10.0.2.2:5194/";
+                if (baseUrl.Contains("localhost", StringComparison.OrdinalIgnoreCase))
+                    baseUrl = baseUrl.Replace("localhost", "10.0.2.2", StringComparison.OrdinalIgnoreCase);
+#else
+                var baseUrl = config["Api:BaseUrl"] ?? "http://localhost:5194/";
+#endif
+#else
                 var baseUrl = config["Api:BaseUrl"] ?? "https://api.economia-com-historia.work.gd/";
+#endif
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);

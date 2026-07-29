@@ -23,13 +23,34 @@ public partial class LoginPageModel : ObservableObject
     private string _password = string.Empty;
 
     [ObservableProperty]
+    private string _confirmPassword = string.Empty;
+
+    [ObservableProperty]
     private string _name = string.Empty;
 
     [ObservableProperty]
-    private bool _isBusy = false;
+    private string _phone = string.Empty;
 
     [ObservableProperty]
+    private bool _acceptedTerms;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasErrorMessage))]
     private string _errorMessage = string.Empty;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasInfoMessage))]
+    private string _infoMessage = string.Empty;
+
+    public string SubmitButtonText => IsLoginMode ? "Entrar" : "Criar conta";
+
+    public bool HasErrorMessage => !string.IsNullOrWhiteSpace(ErrorMessage);
+
+    public bool HasInfoMessage => !string.IsNullOrWhiteSpace(InfoMessage);
 
     public LoginPageModel(IApiService apiService, ITokenService tokenService)
     {
@@ -38,15 +59,81 @@ public partial class LoginPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private void ToggleMode()
+    private void SetLoginMode()
     {
-        IsLoginMode = !IsLoginMode;
-        ErrorMessage = string.Empty;
+        IsLoginMode = true;
+        ClearMessages();
     }
 
     [RelayCommand]
-    private async Task Login()
+    private void SetRegisterMode()
     {
+        IsLoginMode = false;
+        ClearMessages();
+    }
+
+    [RelayCommand]
+    private void ToggleMode()
+    {
+        IsLoginMode = !IsLoginMode;
+        ClearMessages();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSubmit))]
+    private async Task Submit()
+    {
+        if (IsLoginMode)
+            await LoginAsync();
+        else
+            await RegisterAsync();
+    }
+
+    [RelayCommand]
+    private async Task RecoverAccess()
+    {
+        ClearMessages();
+
+        if (string.IsNullOrWhiteSpace(Email))
+        {
+            ErrorMessage = "Introduza o email para recuperar o acesso.";
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            await _apiService.PostAsync<ForgotPasswordRequest, MessageResponse>(
+                "api/auth/forgot-password",
+                new ForgotPasswordRequest(Email.Trim()));
+
+            InfoMessage = "Se o email estiver registado, receberá um link de recuperação em breve.";
+        }
+        catch (HttpRequestException ex)
+        {
+            ErrorMessage = $"Erro de ligação: {ex.Message}";
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Não foi possível solicitar a recuperação. Tente novamente.";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task ContinueAsGuest()
+    {
+        await Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private bool CanSubmit() => !IsBusy;
+
+    private async Task LoginAsync()
+    {
+        ClearMessages();
+
         if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
         {
             ErrorMessage = "Por favor, preencha o email e a senha.";
@@ -54,24 +141,19 @@ public partial class LoginPageModel : ObservableObject
         }
 
         IsBusy = true;
-        ErrorMessage = string.Empty;
-
         try
         {
-            // Chama o endpoint público de login (sem token) e recebe o JWT
-            var response = await _apiService.PostAsync<LoginRequest, LoginResponse>(
+            var response = await _apiService.PostAsync<LoginRequest, AuthResponse>(
                 "api/auth/login",
-                new LoginRequest(Email, Password));
+                new LoginRequest(Email.Trim(), Password));
 
-            if (response?.Token is null)
+            if (string.IsNullOrWhiteSpace(response?.AccessToken))
             {
                 ErrorMessage = "Resposta inválida do servidor. Tente novamente.";
                 return;
             }
 
-            // Guarda o token de forma segura no Keystore/Keychain nativo
-            await _tokenService.SaveTokenAsync(response.Token);
-
+            await PersistSessionAsync(response);
             await Shell.Current.GoToAsync("//MainPage");
         }
         catch (UnauthorizedAccessException)
@@ -92,18 +174,95 @@ public partial class LoginPageModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    private async Task ContinueAsGuest()
+    private async Task RegisterAsync()
     {
-        await Shell.Current.GoToAsync("//MainPage");
+        ClearMessages();
+
+        if (string.IsNullOrWhiteSpace(Name) ||
+            string.IsNullOrWhiteSpace(Email) ||
+            string.IsNullOrWhiteSpace(Password))
+        {
+            ErrorMessage = "Preencha nome, email e palavra-passe.";
+            return;
+        }
+
+        if (Password.Length < 8)
+        {
+            ErrorMessage = "A palavra-passe deve ter no mínimo 8 caracteres.";
+            return;
+        }
+
+        if (!string.Equals(Password, ConfirmPassword, StringComparison.Ordinal))
+        {
+            ErrorMessage = "As palavras-passe não coincidem.";
+            return;
+        }
+
+        if (!AcceptedTerms)
+        {
+            ErrorMessage = "Tem de aceitar os Termos de Utilização.";
+            return;
+        }
+
+        IsBusy = true;
+        try
+        {
+            var telemovel = string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim();
+            var response = await _apiService.PostAsync<RegisterRequest, AuthResponse>(
+                "api/auth/register",
+                new RegisterRequest(Email.Trim(), Password, Name.Trim(), telemovel));
+
+            if (string.IsNullOrWhiteSpace(response?.AccessToken))
+            {
+                ErrorMessage = "Resposta inválida do servidor. Tente novamente.";
+                return;
+            }
+
+            await PersistSessionAsync(response);
+            await Shell.Current.GoToAsync("//MainPage");
+        }
+        catch (HttpRequestException ex) when (ex.Message.Contains("409"))
+        {
+            ErrorMessage = "Já existe uma conta com este email.";
+        }
+        catch (HttpRequestException ex)
+        {
+            ErrorMessage = $"Erro de ligação: {ex.Message}";
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Não foi possível criar a conta. Tente novamente.";
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
-    // ─────────────────────────────────────────
-    // MODELOS DE TRANSFERÊNCIA
-    // ─────────────────────────────────────────
+    private async Task PersistSessionAsync(AuthResponse response)
+    {
+        await _tokenService.SaveTokenAsync(response.AccessToken);
+        Preferences.Default.Set("user_name", response.Nome);
+        Preferences.Default.Set("user_email", response.Email);
+        Preferences.Default.Set("user_role", response.Tipo);
+    }
+
+    private void ClearMessages()
+    {
+        ErrorMessage = string.Empty;
+        InfoMessage = string.Empty;
+    }
 
     private record LoginRequest(string Email, string Password);
-
-    private record LoginResponse(string Token, string Role, string NomeCompleto);
+    private record RegisterRequest(string Email, string Password, string Nome, string? Telemovel);
+    private record ForgotPasswordRequest(string Email);
+    private record MessageResponse(string Message);
+    private record AuthResponse(
+        int Id,
+        string Email,
+        string Nome,
+        string AccessToken,
+        string RefreshToken,
+        DateTime ExpiresIn,
+        string Tipo);
 }
-

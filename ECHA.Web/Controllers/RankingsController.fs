@@ -26,7 +26,7 @@ type RankingsController(apiClient: ApiClient) =
                     // Valores padrão
                     let tipoParam = if String.IsNullOrEmpty(tipo) then "Nacional" else tipo
                     let periodoParam = if String.IsNullOrEmpty(periodo) then "Semanal" else periodo
-                    
+
                     // Construir query string com filtros opcionais
                     let mutable url = $"/api/ranking?tipo={tipoParam}&periodo={periodoParam}"
                     if escolaId.HasValue then url <- url + $"&escolaId={escolaId.Value}"

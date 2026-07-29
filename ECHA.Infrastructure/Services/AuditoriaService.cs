@@ -23,6 +23,19 @@ public class AuditoriaService : IAuditoriaService
         string? dadosDepois = null,
         HttpContext? httpContext = null)
     {
+        string? sessionId = null;
+        if (httpContext != null)
+        {
+            try
+            {
+                sessionId = httpContext.Session.Id;
+            }
+            catch (InvalidOperationException)
+            {
+                // Session is not configured, so we leave sessionId as null.
+            }
+        }
+
         var log = new AuditoriaLog
         {
             UtilizadorId = utilizadorId,
@@ -33,7 +46,7 @@ public class AuditoriaService : IAuditoriaService
             DadosDepois = dadosDepois,
             Ip = httpContext?.Connection.RemoteIpAddress?.ToString(),
             UserAgent = httpContext?.Request.Headers["User-Agent"].ToString(),
-            Sessao = httpContext?.Session.Id
+            Sessao = sessionId
         };
 
         await _auditoriaRepo.AddAsync(log);
