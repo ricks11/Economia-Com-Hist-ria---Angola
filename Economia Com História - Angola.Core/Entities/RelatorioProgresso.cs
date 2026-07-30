@@ -21,7 +21,14 @@ public class RelatorioProgresso
     // ✅ Usar UrlDownload (como está na tabela) em vez de CaminhoArquivo
     public string? UrlDownload { get; set; }
 
-    // ❌ Removido: CaminhoArquivo, MensagemErro, ParametrosJson
+    // ✅ Adicionado: MensagemErro para armazenar erros durante o processamento
+    public string? MensagemErro { get; set; }
+
+    // ✅ Adicionado: DataInicio e DataFim para filtros de período
+    public DateTime? DataInicio { get; set; }
+    public DateTime? DataFim { get; set; }
+
+    // ❌ Removido: CaminhoArquivo, ParametrosJson
     // Essas colunas não existem na tabela
 
     public int UtilizadorId { get; set; }

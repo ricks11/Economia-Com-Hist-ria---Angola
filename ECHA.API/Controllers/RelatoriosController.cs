@@ -52,6 +52,14 @@ public class RelatoriosController : ControllerBase
         if (string.IsNullOrWhiteSpace(request.Titulo))
             return BadRequest(new { message = "Título é obrigatório." });
 
+        // Validar que a data de fim não é anterior à data de início
+        if (request.Fim.HasValue && request.Inicio.HasValue && request.Fim.Value < request.Inicio.Value)
+            return BadRequest(new { message = "A data de fim não pode ser anterior à data de início." });
+
+        // Validar que a data de fim não seja anterior à data de início
+        if (request.Fim.HasValue && request.Inicio.HasValue && request.Fim.Value < request.Inicio.Value)
+            return BadRequest(new { message = "A data de fim não pode ser anterior à data de início." });
+
         var status = await _relatorioService.SolicitarRelatorioAsync(userId, request, ct);
         await _auditoriaService.RegistarAsync(
             userId,
@@ -96,7 +104,7 @@ public class RelatoriosController : ControllerBase
         var nomeFicheiro = $"relatorio_{id}.csv";
 
         await _auditoriaService.RegistarAsync(
-            id,
+            userId,
             "DescarregarRelatorio",
             "Relatorio",
             id,

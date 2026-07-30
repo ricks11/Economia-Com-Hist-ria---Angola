@@ -40,7 +40,9 @@ public class RelatorioService : IRelatorioService
             EscolaId = request.EscolaId,
             Estado = EstadoRelatorio.Pendente,
             DataSolicitacao = DateTime.UtcNow,
-            UrlDownload = null
+            UrlDownload = null,
+            DataInicio = request.Inicio,
+            DataFim = request.Fim
         };
 
         _context.RelatoriosProgresso.Add(relatorio);
@@ -65,17 +67,55 @@ public class RelatorioService : IRelatorioService
             await dbContext.SaveChangesAsync();
 
             // Simular processamento
-            await Task.Delay(new Random().Next(3000, 8000));
+            await Task.Delay(1000);
 
-            // Gerar ficheiro CSV (sempre CSV para evitar dependências pesadas)
+            // Gerar relatório com base nos parâmetros do relatório
             var fileName = $"relatorio_{relatorio.Id}_{DateTime.Now:yyyyMMddHHmmss}.csv";
             var filePath = Path.Combine(Path.GetTempPath(), fileName);
-            var dados = new List<string> { "ID,Nome,Email,Pontos" };
-            // Simular dados (podes substituir por dados reais)
-            for (int i = 1; i <= 100; i++)
+
+            // Cabeçalho do CSV
+            var dados = new List<string> { "ID,Nome,Email,Escola,Turma,Data de Registo" };
+
+            // Consulta base para utilizadores
+            var usersQuery = dbContext.Utilizadores
+                .Include(u => u.Escola)
+                .Include(u => u.Turma)
+                .AsQueryable();
+
+            // Aplicar filtros baseado nos parâmetros do relatório
+            if (relatorio.EscolaId.HasValue)
             {
-                dados.Add($"{i},Utilizador{i},user{i}@email.com,{new Random().Next(0, 500)}");
+                usersQuery = usersQuery.Where(u => u.EscolaId == relatorio.EscolaId.Value);
             }
+
+            if (relatorio.TurmaId.HasValue)
+            {
+                usersQuery = usersQuery.Where(u => u.TurmaId == relatorio.TurmaId.Value);
+            }
+
+            // Filtro por período de data
+            if (relatorio.DataInicio.HasValue)
+            {
+                usersQuery = usersQuery.Where(u => u.DataRegisto >= relatorio.DataInicio.Value);
+            }
+
+            if (relatorio.DataFim.HasValue)
+            {
+                usersQuery = usersQuery.Where(u => u.DataRegisto <= relatorio.DataFim.Value);
+            }
+
+            // Executar consulta e adicionar resultados ao CSV
+            var users = await usersQuery.ToListAsync();
+            foreach (var user in users)
+            {
+                var escolaNome = user.Escola?.Nome ?? "N/A";
+                var turmaNome = user.Turma?.Nome ?? "N/A";
+                var dataRegisto = user.DataRegisto.ToString("yyyy-MM-dd HH:mm:ss");
+
+                // Aspas para lidar com vírgulas nos nomes
+                dados.Add($"\"{user.Id}\",\"{user.Nome}\",\"{user.Email}\",\"{escolaNome}\",\"{turmaNome}\",\"{dataRegisto}\"");
+            }
+
             await System.IO.File.WriteAllLinesAsync(filePath, dados);
 
             // 🔧 Guardar o caminho completo na coluna UrlDownload
@@ -96,7 +136,7 @@ public class RelatorioService : IRelatorioService
             {
                 relatorio.Estado = EstadoRelatorio.Erro;
                 relatorio.DataConclusao = DateTime.UtcNow;
-                // A coluna MensagemErro não existe, por isso não a guardamos
+                relatorio.MensagemErro = ex.Message;
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -112,7 +152,7 @@ public class RelatorioService : IRelatorioService
             r.DataSolicitacao,
             r.DataConclusao,
             r.Estado == EstadoRelatorio.Concluido ? $"/api/relatorios/{r.Id}/download" : null,
-            null // MensagemErro removida
+            r.MensagemErro // MensagemErro do relatório
         );
     }
 
@@ -161,6 +201,7 @@ public class RelatorioService : IRelatorioService
         {
             // Atualizar estado para erro (se necessário)
             relatorio.Estado = EstadoRelatorio.Erro;
+            relatorio.MensagemErro = "Arquivo do relatório não encontrado no servidor.";
             await _context.SaveChangesAsync(ct);
             return null;
         }
